@@ -1,6 +1,7 @@
 package de.tomade.saoufomat2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -26,7 +27,8 @@ public class MainMenu extends Activity {
                     }
                     case MotionEvent.ACTION_UP:
 
-                        // Your action here on button click
+                        Intent intent = new Intent(getApplicationContext(), CreatePlayerActivity.class);
+                        startActivity(intent);
 
                     case MotionEvent.ACTION_CANCEL: {
                         ImageButton view = (ImageButton) v;
