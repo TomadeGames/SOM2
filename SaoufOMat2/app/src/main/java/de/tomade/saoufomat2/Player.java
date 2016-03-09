@@ -7,13 +7,15 @@ public class Player {
     String name;
     int weight;
     String gender;
+    int drinks = 0;
 
     public Player(){};
 
-    public Player(String name, int weight, String gender){
+    public Player(String name, int weight, String gender, int drinks){
         this.name = name;
         this.weight = weight;
         this.gender = gender;
+        this.drinks = drinks;
     }
 
     public String getName(){
@@ -38,5 +40,13 @@ public class Player {
 
     public void setGender(String gender){
         this.gender = gender;
+    }
+
+    public int getDrinks(){
+        return this.drinks;
+    }
+
+    public void setDrinks(int drinks){
+        this.drinks = drinks;
     }
 }
