@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">SaoufOMat 2</string>
+    <string name="app_name">SaufOMat 2</string>
+    <string-array name="spGenderChoose">
+        <item>Mann</item>
+        <item>Frau</item>
+    </string-array>
 </resources>

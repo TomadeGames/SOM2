@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="de.tomade.saoufomat2.NewPlayerDialog">
+
+    <EditText
+        android:id="@+id/etxtName"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="Name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gewicht (in kg)"
+        android:id="@+id/txtvWeight"
+        android:layout_below="@+id/etxtName"
+        android:layout_alignLeft="@+id/etxtName"
+        android:layout_alignStart="@+id/etxtName"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="3"
+        android:id="@+id/etxtWeight"
+        android:layout_below="@+id/etxtName"
+        android:layout_toRightOf="@+id/txtvWeight"
+        android:layout_toEndOf="@+id/txtvWeight"
+        android:text="70"/>
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:id="@+id/spGender"
+        android:entries="@array/spGenderChoose"
+        android:layout_below="@+id/etxtName"
+        android:layout_toRightOf="@+id/etxtWeight"
+        android:layout_toEndOf="@+id/etxtWeight"
+        android:layout_marginLeft="88dp"
+        android:layout_marginStart="88dp" />
+
+    <!-- <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/npWeight"
+        android:layout_below="@+id/edtName"
+        android:layout_toRightOf="@+id/txtvWeight"
+        android:layout_toEndOf="@+id/txtvWeight"/>-->
+
+
+</RelativeLayout>
