@@ -28,9 +28,6 @@
         <activity
             android:name=".activity.mainGame.MainGameActivity"
             android:label="@string/title_activity_main_game"></activity>
-        <activity android:name=".NewPlayerDialog"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog">
-        </activity>
 
     </application>
 
