@@ -22,13 +22,28 @@
         android:cropToPadding="false"
         android:layout_height="70dp"
         android:layout_width="100dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginStart="55dp"
         android:background="#00ffffff"
+        android:layout_marginBottom="38dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="40dp" />
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:id="@+id/gamesButton"
+        android:src="@drawable/minigames_button"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:background="#00ffffff"
+        android:layout_alignTop="@+id/startButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="85dp"
+        android:layout_marginEnd="85dp" />
 
 
 </RelativeLayout>
