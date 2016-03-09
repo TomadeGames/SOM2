@@ -1,9 +1,7 @@
 package de.tomade.saoufomat2.activity.mainGame;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.SurfaceHolder;
-import android.widget.ImageView;
 
 import java.text.DecimalFormat;
 
@@ -14,7 +12,6 @@ import java.text.DecimalFormat;
 public class MainGameThread extends Thread {
     private static final String TAG = MainGameThread.class.getSimpleName();
 
-    private MainGameState gameState = MainGameState.GAME_START;
 
     // desired fps
     private final static int MAX_FPS = 50;
@@ -86,7 +83,6 @@ public class MainGameThread extends Thread {
 
     public void run() {
         Canvas canvas;
-        Log.d(TAG, "Starting game loop");
 
         // initialise timing elements for stat gathering
         initTimingElements();
@@ -115,7 +111,7 @@ public class MainGameThread extends Thread {
 
                     // calculate how long did the cycle take
                     timeDiff = System.currentTimeMillis() - beginTime;
-
+                    gamePanel.setElapsedTime((int)timeDiff);
                     // calculate sleep time
                     sleepTime = (int) (FRAME_PERIOD - timeDiff);
 
@@ -134,10 +130,6 @@ public class MainGameThread extends Thread {
                         this.gamePanel.update(); // update without rendering
                         sleepTime += FRAME_PERIOD;  // add frame period to check if in next frame
                         framesSkipped++;
-                    }
-
-                    if (framesSkipped > 0) {
-                        Log.d(TAG, "Skipped:" + framesSkipped);
                     }
 
                     // for statistics
@@ -160,7 +152,6 @@ public class MainGameThread extends Thread {
      * The statistics - it is called every cycle, it checks if time since last
      * store is greater than the statistics gathering period (1 sec) and if so
      * it calculates the FPS for the last period and stores it.
-     * <p/>
      * It tracks the number of frames per period. The number of frames since
      * the start of the period are summed up and the calculation takes part
      * only if the next period and the frame count is reset to 0.
@@ -204,7 +195,6 @@ public class MainGameThread extends Thread {
 
             statusIntervalTimer = System.currentTimeMillis();
             lastStatusStore = statusIntervalTimer;
-//          Log.d(TAG, "Average FPS:" + df.format(averageFps));
             gamePanel.setAvgFps("FPS: " + df.format(averageFps));
         }
     }
@@ -215,14 +205,5 @@ public class MainGameThread extends Thread {
         for (int i = 0; i < FPS_HISTORY_NR; i++) {
             fpsStore[i] = 0.0;
         }
-        Log.d(TAG + ".initTimingElements()", "Timing elements for stats initialised");
-    }
-
-    public MainGameState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(MainGameState gameState) {
-        this.gameState = gameState;
     }
 }
