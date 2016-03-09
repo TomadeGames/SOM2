@@ -1,4 +1,4 @@
-package de.tomade.saoufomat2.activity.model;
+package de.tomade.saoufomat2.model;
 
 import java.util.EventListener;
 

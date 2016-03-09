@@ -1,7 +1,6 @@
-package de.tomade.saoufomat2.activity.model;
+package de.tomade.saoufomat2.model;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 import java.util.ArrayList;
 import java.util.List;

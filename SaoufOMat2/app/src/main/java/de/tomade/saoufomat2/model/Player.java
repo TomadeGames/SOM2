@@ -1,4 +1,4 @@
-package de.tomade.saoufomat2;
+package de.tomade.saoufomat2.model;
 
 /**
  * Created by markk on 09.03.2016.

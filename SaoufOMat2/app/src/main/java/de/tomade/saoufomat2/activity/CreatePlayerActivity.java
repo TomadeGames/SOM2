@@ -1,13 +1,9 @@
-package de.tomade.saoufomat2;
+package de.tomade.saoufomat2.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import de.tomade.saoufomat2.model.Player;
+import de.tomade.saoufomat2.R;
 
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     Button btnNewPlayer = null;

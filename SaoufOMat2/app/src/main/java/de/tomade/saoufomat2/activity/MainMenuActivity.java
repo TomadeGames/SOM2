@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
-import de.tomade.saoufomat2.CreatePlayerActivity;
 import de.tomade.saoufomat2.R;
 import de.tomade.saoufomat2.activity.mainGame.MainGameActivity;
 

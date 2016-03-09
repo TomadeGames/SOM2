@@ -14,10 +14,10 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import de.tomade.saoufomat2.R;
-import de.tomade.saoufomat2.activity.model.ButtonEvent;
-import de.tomade.saoufomat2.activity.model.ButtonListener;
-import de.tomade.saoufomat2.activity.model.DrawableButton;
-import de.tomade.saoufomat2.activity.model.Icon;
+import de.tomade.saoufomat2.model.ButtonEvent;
+import de.tomade.saoufomat2.model.ButtonListener;
+import de.tomade.saoufomat2.model.DrawableButton;
+import de.tomade.saoufomat2.model.Icon;
 
 /**
  * Created by woors on 09.03.2016.
