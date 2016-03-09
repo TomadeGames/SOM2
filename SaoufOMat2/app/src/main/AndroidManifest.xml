@@ -9,7 +9,7 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".MainMenu">
+        <activity android:name=".activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,9 +23,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.ChooseMiniGameActivity" />
+        <activity
+            android:name=".activity.mainGame.MainGameActivity"
+            android:label="@string/title_activity_main_game"></activity>
         <activity android:name=".NewPlayerDialog"
             android:theme="@android:style/Theme.DeviceDefault.Dialog">
         </activity>
+
     </application>
 
 </manifest>
