@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_width="fill_parent"
+    android:layout_height="55dp"
     android:background="@color/foreground_material_dark"
     android:clickable="true"
     android:orientation="horizontal">
@@ -20,12 +20,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ibDelete"
-        android:src="@android:drawable/ic_delete" />
+        android:src="@android:drawable/ic_delete"
+        android:layout_marginTop="5dp" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ibEdit"
-        android:src="@android:drawable/ic_menu_edit" />
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp" />
 
 </LinearLayout>
