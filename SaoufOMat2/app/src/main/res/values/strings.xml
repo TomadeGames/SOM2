@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">SaoufOMat 2</string>
     <string name="title_activity_main_game">MainGameActivity</string>
+    <string name="app_name">SaufOMat 2</string>
     <string-array name="spGenderChoose">
         <item>Mann</item>
         <item>Frau</item>
