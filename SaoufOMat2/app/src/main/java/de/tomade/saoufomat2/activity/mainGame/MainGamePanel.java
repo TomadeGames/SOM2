@@ -18,6 +18,7 @@ import de.tomade.saoufomat2.model.ButtonEvent;
 import de.tomade.saoufomat2.model.ButtonListener;
 import de.tomade.saoufomat2.model.DrawableButton;
 import de.tomade.saoufomat2.model.Icon;
+import de.tomade.saoufomat2.model.task.TaskFactory;
 
 /**
  * Created by woors on 09.03.2016.
@@ -37,17 +38,27 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private MainGameState gameState = MainGameState.GAME_START;
 
+    private TaskFactory taskFactory;
+
     public MainGamePanel(Context context) {
         super(context);
         getHolder().addCallback(this);
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
         Point size = new Point();
-        display.getSize(size);
+        wm.getDefaultDisplay().getSize(size);
         screenWith = size.x;
         screenHeight = size.y;
 
+        initContent();
+        taskFactory = new TaskFactory();
+
+
+        thread = new MainGameThread(getHolder(), this);
+        setFocusable(true);
+    }
+
+    private void initContent(){
         Bitmap beerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.beer_icon);
         Bitmap cocktailIcon = BitmapFactory.decodeResource(getResources(), R.drawable.cocktail_icon);
         Bitmap shotIcon = BitmapFactory.decodeResource(getResources(), R.drawable.shot_icon);
@@ -65,8 +76,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 startButtonPressed();
             }
         });
-        thread = new MainGameThread(getHolder(), this);
-        setFocusable(true);
     }
 
     @Override
@@ -169,21 +178,23 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void render(Canvas canvas) {
-        canvas.drawColor(Color.BLACK);
-        Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine_background);
-        background = Bitmap.createScaledBitmap(background, canvas.getWidth(), canvas.getHeight(), true);
-        canvas.drawBitmap(background, 0, 0, null);
+        if(canvas != null) {
+            canvas.drawColor(Color.BLACK);
+            Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine_background);
+            background = Bitmap.createScaledBitmap(background, canvas.getWidth(), canvas.getHeight(), true);
+            canvas.drawBitmap(background, 0, 0, null);
 
-        Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
-        slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
-        canvas.drawBitmap(slotMachine, 0, 0, null);
+            Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
+            slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
+            canvas.drawBitmap(slotMachine, 0, 0, null);
 
-        for (Icon icon : icons) {
-            icon.draw(canvas);
+            for (Icon icon : icons) {
+                icon.draw(canvas);
+            }
+            button.draw(canvas);
+            // display fps
+            displayFps(canvas, avgFps);
         }
-        button.draw(canvas);
-        // display fps
-        displayFps(canvas, avgFps);
     }
 
     private void displayFps(Canvas canvas, String fps) {
