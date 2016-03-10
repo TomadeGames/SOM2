@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 /**
  * Created by woors on 09.03.2016.
  */
-public class Icon {
+public class DrawableImage {
     protected Bitmap bitmap;
     protected int x;
     protected int y;
@@ -15,7 +15,7 @@ public class Icon {
     protected int height;
     protected boolean visible = true;
 
-    public Icon(Bitmap bitmap, int x, int y, int width, int height){
+    public DrawableImage(Bitmap bitmap, int x, int y, int width, int height){
         this.setX(x);
         this.setY(y);
         this.setWith(width);

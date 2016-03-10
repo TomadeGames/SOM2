@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by woors on 09.03.2016.
  */
-public class DrawableButton extends Icon {
+public class DrawableButton extends DrawableImage {
 
     protected List<ButtonListener> listenerList = new ArrayList<>();
 
