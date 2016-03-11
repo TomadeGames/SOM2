@@ -18,7 +18,6 @@ import de.tomade.saoufomat2.R;
 import de.tomade.saoufomat2.model.ButtonEvent;
 import de.tomade.saoufomat2.model.ButtonListener;
 import de.tomade.saoufomat2.model.DrawableButton;
-import de.tomade.saoufomat2.model.DrawableImage;
 import de.tomade.saoufomat2.model.IconState;
 import de.tomade.saoufomat2.model.SlotMachineIcon;
 import de.tomade.saoufomat2.model.task.TaskFactory;
@@ -32,6 +31,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private static final int hardChance = 3;
     private static final int gameChance = 1;
     private static final String TAG = MainGamePanel.class.getSimpleName();
+    private int getIconStopY()
+    {
+        return (int) (screenHeight/2.68);
+    }
 
     private MainGameThread thread;
 
@@ -124,30 +127,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void update() {
-        switch (gameState){
-            case GAME_START:
-                break;
-            case ROLLING_ALL:
-                moveIcon(icons[0], 0.1f);
-                moveIcon(icons[1], 0.15f);
-                moveIcon(icons[2], 0.2f);
-                break;
-            case STOP1:
-                moveIcon(icons[1], 0.15f);
-                moveIcon(icons[2], 0.2f);
-                break;
-            case STOP2:
-                moveIcon(icons[2], 0.2f);
-                break;
-            case STOP_ALL:
-                break;
-            default:
-                System.out.println("ERROR: Illegal MainGameState!!!");
-                break;
-        }
+        moveIcons();
     }
 
-    private void moveIcon(SlotMachineIcon icon, float speed){
+    private void moveSingleIcon(SlotMachineIcon icon, float speed) {
         int chanceSum = easyChance + mediumChance + hardChance + gameChance;
         icon.setY(icon.getY() + (int) (speed * getElapsedTime()));
         if(icon.getY() > screenHeight){
@@ -165,6 +148,25 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             else if(rnd < chanceSum) {
                 icon.setState(IconState.GAME);
             }
+        }
+    }
+
+    private void moveIcons(){
+        float[] speeds = {1f,1.5f,2f};
+        switch (gameState){
+            case ROLLING_ALL:
+                for(int i = 0; i < 3; i++) {
+                   moveSingleIcon(icons[i],speeds[i]);
+                }
+                break;
+            case STOP1:
+                for(int i = 1; i < 3; i++) {
+                    moveSingleIcon(icons[i], speeds[i]);
+                }
+                break;
+            case STOP2:
+                moveSingleIcon(icons[2],speeds[2]);
+                break;
         }
     }
 
