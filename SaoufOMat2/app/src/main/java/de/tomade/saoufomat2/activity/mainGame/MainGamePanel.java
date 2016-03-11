@@ -27,8 +27,13 @@ import de.tomade.saoufomat2.model.task.TaskFactory;
  * Created by woors on 09.03.2016.
  */
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    private MainGameThread thread;
+    private static final int easyChance = 4;
+    private static final int mediumChance = 4;
+    private static final int hardChance = 3;
+    private static final int gameChance = 1;
     private static final String TAG = MainGamePanel.class.getSimpleName();
+
+    private MainGameThread thread;
 
     private SlotMachineIcon[] icons;
     private DrawableButton button;
@@ -40,12 +45,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int screenHeight;
 
     private MainGameState gameState = MainGameState.GAME_START;
+    private static Random random;
 
     private TaskFactory taskFactory;
 
     public MainGamePanel(Context context) {
         super(context);
         getHolder().addCallback(this);
+        this.random = new Random();
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Point size = new Point();
@@ -68,9 +75,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         Bitmap startButton = BitmapFactory.decodeResource(getResources(), R.drawable.start_button);
         Bitmap gameIcon = BitmapFactory.decodeResource(getResources(), R.drawable.dice_icon);
         icons = new SlotMachineIcon[3];
-        icons[0] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/3.3 - screenWith/30) , (int)(screenHeight / 2.68), screenWith / 10,(int)(screenHeight / 2.6), IconState.EASY);
-        icons[1] = new SlotMachineIcon(cocktailIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/2 - screenWith/30), (int)(screenHeight / 2.68), screenWith / 8, screenHeight / 3, IconState.EASY);
-        icons[2] = new SlotMachineIcon(shotIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/2.9*2 - screenWith/30), (int)(screenHeight / 2.68), screenWith / 11, screenHeight / 5, IconState.EASY);
+        icons[0] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/3.3 - screenWith/30) , (int)(screenHeight / 2.68), screenWith,screenHeight, IconState.EASY);
+        icons[1] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/2 - screenWith/30), (int)(screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
+        icons[2] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/2.9*2 - screenWith/30), (int)(screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
 
         button = new DrawableButton(startButton, (int)(screenWith / 1.35), (int)(screenHeight / 1.4), screenWith / 5, screenHeight / 5);
         button.addListener(new ButtonListener() {
@@ -121,16 +128,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             case GAME_START:
                 break;
             case ROLLING_ALL:
-                moveIcon(icons[0]);
-                moveIcon(icons[1]);
-                moveIcon(icons[2]);
+                moveIcon(icons[0], 0.1f);
+                moveIcon(icons[1], 0.15f);
+                moveIcon(icons[2], 0.2f);
                 break;
             case STOP1:
-                moveIcon(icons[1]);
-                moveIcon(icons[2]);
+                moveIcon(icons[1], 0.15f);
+                moveIcon(icons[2], 0.2f);
                 break;
             case STOP2:
-                moveIcon(icons[2]);
+                moveIcon(icons[2], 0.2f);
                 break;
             case STOP_ALL:
                 break;
@@ -140,29 +147,25 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    private void moveIcon(SlotMachineIcon icon){
-        icon.setY(icon.getY() + (int)(0.1* getElapsedTime()));
+    private void moveIcon(SlotMachineIcon icon, float speed){
+        int chanceSum = easyChance + mediumChance + hardChance + gameChance;
+        icon.setY(icon.getY() + (int) (speed * getElapsedTime()));
         if(icon.getY() > screenHeight){
             icon.setY(0);
-            Random rnd = new Random();
-            switch (rnd.nextInt(4)){
-                case 0:
-                    icon.setState(IconState.EASY);
-                    break;
-                case 1:
-                    icon.setState(IconState.MEDIUM);
-                    break;
-                case 2:
-                    icon.setState(IconState.HARD);
-                    break;
-                case 3:
-                    icon.setState(IconState.GAME);
-                default:
-                    System.out.println("ERROR: fehlerhafter IconState in moveIcon");
-                    break;
+            int rnd = this.random.nextInt(chanceSum);
+            if(rnd < easyChance) {
+                icon.setState(IconState.EASY);
+            }
+            else if(rnd < easyChance + mediumChance) {
+                icon.setState(IconState.MEDIUM);
+            }
+            else if (rnd < easyChance + mediumChance + hardChance) {
+                icon.setState(IconState.HARD);
+            }
+            else if(rnd < chanceSum) {
+                icon.setState(IconState.GAME);
             }
         }
-        System.out.println("Gamestate: " + gameState + "iconY: " + icon.getY());
     }
 
     private void startButtonPressed() {
@@ -204,13 +207,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             background = Bitmap.createScaledBitmap(background, canvas.getWidth(), canvas.getHeight(), true);
             canvas.drawBitmap(background, 0, 0, null);
 
-            Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
-            slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
-            canvas.drawBitmap(slotMachine, 0, 0, null);
-
             for (SlotMachineIcon icon : icons) {
                 icon.draw(canvas);
             }
+
+            Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
+            slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
+            canvas.drawBitmap(slotMachine, 0, 0, null);
             button.draw(canvas);
             // display fps
             displayFps(canvas, avgFps);
