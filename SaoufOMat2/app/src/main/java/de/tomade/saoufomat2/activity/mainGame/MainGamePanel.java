@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,7 +20,10 @@ import de.tomade.saoufomat2.model.ButtonEvent;
 import de.tomade.saoufomat2.model.ButtonListener;
 import de.tomade.saoufomat2.model.DrawableButton;
 import de.tomade.saoufomat2.model.IconState;
+import de.tomade.saoufomat2.model.SaufOMeter;
 import de.tomade.saoufomat2.model.SlotMachineIcon;
+import de.tomade.saoufomat2.model.task.Task;
+import de.tomade.saoufomat2.model.task.TaskDifficult;
 import de.tomade.saoufomat2.model.task.TaskFactory;
 
 /**
@@ -30,27 +34,36 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private static final int mediumChance = 4;
     private static final int hardChance = 3;
     private static final int gameChance = 1;
+
     private static final String TAG = MainGamePanel.class.getSimpleName();
     private int getIconStopY()
     {
-        return (int) (screenHeight/3);
+        return (int) (screenHeight/2.8);
     }
 
+    //Thread
     private MainGameThread thread;
-
-    private SlotMachineIcon[] icons;
-    private DrawableButton button;
-
     private String avgFps;
     private int elapsedTime;
 
+    //Images
+    private SlotMachineIcon[] icons;
+    private DrawableButton button;
+    private SaufOMeter saufOMeter;
+
+    //ScreenSize
     private int screenWith;
     private int screenHeight;
 
     private MainGameState gameState = MainGameState.GAME_START;
     private static Random random;
 
+    //Task
     private TaskFactory taskFactory;
+    private Task currentTask;
+
+    //SaufOMeter
+    private int saufOMeterEndFrame = 0;
 
     public MainGamePanel(Context context) {
         super(context);
@@ -82,6 +95,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         icons[1] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/2 - screenWith/30), (int)(screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
         icons[2] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int)(screenWith/2.9*2 - screenWith/30), (int)(screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
 
+        Bitmap[] saufoMeterFrames = new Bitmap[13];
+        saufoMeterFrames[0] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer0);
+        saufoMeterFrames[1] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer1);
+        saufoMeterFrames[2] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer2);
+        saufoMeterFrames[3] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer3);
+        saufoMeterFrames[4] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer4);
+        saufoMeterFrames[5] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer5);
+        saufoMeterFrames[6] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer6);
+        saufoMeterFrames[7] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer7);
+        saufoMeterFrames[8] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer8);
+        saufoMeterFrames[9] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer9);
+        saufoMeterFrames[10] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer10);
+        saufoMeterFrames[11] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer11);
+        saufoMeterFrames[12] = BitmapFactory.decodeResource(getResources(), R.drawable.saufometer12);
+
+        this.saufOMeter = new SaufOMeter(saufoMeterFrames, 50,50 ,100 ,100);
         button = new DrawableButton(startButton, (int)(screenWith / 1.35), (int)(screenHeight / 1.4), screenWith / 5, screenHeight / 5);
         button.addListener(new ButtonListener() {
             @Override
@@ -127,7 +156,82 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void update() {
-        moveIcons();
+        if(this.gameState != MainGameState.All_IN_POSITION) {
+            moveIcons();
+        }
+        else{
+            TaskDifficult difficult = getCurrentDifficult();
+            if(difficult != TaskDifficult.GAME){
+                currentTask = taskFactory.getTask(difficult);
+                this.gameState = MainGameState.MOVE_SAUFOMETER;
+            }
+            else{
+
+            }
+        }
+    }
+
+    @Nullable
+    private TaskDifficult getCurrentDifficult(){
+        float difficult = 0;
+        int gameCount = 0;
+        if(icons[0].getState() == icons[1].getState()
+                && icons[0].getState() == icons[2].getState()){
+            switch (icons[0].getState()){
+                case EASY:
+                    return TaskDifficult.EASY_WIN;
+                case MEDIUM:
+                    return TaskDifficult.MEDIUM_WIN;
+                case HARD:
+                    return TaskDifficult.HARD_WIN;
+            }
+        }
+        for (int i = 0; i < 3; i++){
+            switch (icons[i].getState()){
+                case EASY:
+                    difficult += 0.2;
+                    break;
+                case MEDIUM:
+                    difficult += 1.4;
+                    break;
+                case HARD:
+                    difficult += 2.8;
+                    break;
+                case GAME:
+                    gameCount++;
+                    break;
+            }
+        }
+        difficult = ((difficult) / (3-gameCount));
+        int tmpDiff = (int)difficult;
+        if(this.random.nextInt(3) < gameCount){
+            return TaskDifficult.GAME;
+        }
+        if(difficult > 0.6){
+            this.saufOMeterEndFrame++;
+        }
+        if(difficult > 0.95){
+            this.saufOMeterEndFrame++;
+        }
+        if(difficult > 1.5){
+            this.saufOMeterEndFrame++;
+        }
+        if(difficult > 2){
+            this.saufOMeterEndFrame++;
+        }
+        if(difficult > 2.2){
+            this.saufOMeterEndFrame++;
+        }
+
+        switch (tmpDiff){
+            case 0:
+                return TaskDifficult.EASY;
+            case 1:
+                return TaskDifficult.MEDIUM;
+            case 2:
+                return TaskDifficult.HARD;
+        }
+        return null;
     }
 
     private void moveSingleIcon(SlotMachineIcon icon, float speed) {
@@ -160,19 +264,34 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 }
                 break;
             case STOP1:
-                icons[0].setY(icons[0].getY() + getIconStopY() - icons[0].getY() / 2);
+                icons[0].setY(icons[0].getY()+(getIconStopY() - icons[0].getY())/2);
                 for(int i = 1; i < 3; i++) {
                     moveSingleIcon(icons[i], speeds[i]);
                 }
                 break;
             case STOP2:
-                icons[0].setY(icons[0].getY() + getIconStopY() - icons[0].getY() / 2);
-                icons[1].setY(icons[1].getY() + getIconStopY() - icons[1].getY() / 2);
+                icons[0].setY(icons[0].getY()+(getIconStopY() - icons[0].getY())/2);
+                icons[1].setY(icons[1].getY()+(getIconStopY() - icons[1].getY())/2);
                 moveSingleIcon(icons[2],speeds[2]);
                 break;
             case STOP_ALL:
-                for(int i = 1; i < 3; i++) {
-                    icons[i].setY(icons[i].getY() + getIconStopY() - icons[i].getY() / 2);;
+                boolean[] iconsOnPosition = {false, false, false};
+                for(int i = 0; i < 3; i++) {
+                    icons[i].setY(icons[i].getY()+(getIconStopY() - icons[i].getY())/2);
+                    System.out.println("icons " + i + ".y: " + icons[i].getY() + " stop: " + getIconStopY());
+                    if(icons[i].getY() < getIconStopY() + getIconStopY() * 0.1
+                            &&icons[i].getY() > getIconStopY() - getIconStopY() * 0.1){
+                        iconsOnPosition[i] = true;
+                    }
+                }
+                boolean positionReached = true;
+                for(int i = 0; i < 3; i++)
+                if(!iconsOnPosition[i]){
+                    positionReached = false;
+                }
+                if (positionReached){
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>JO<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                    this.gameState = MainGameState.All_IN_POSITION;
                 }
                 break;
         }
@@ -221,11 +340,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
             canvas.drawBitmap(slotMachine, 0, 0, null);
 
-            for (SlotMachineIcon icon : icons) {
+            for (SlotMachineIcon icon : this.icons) {
                 icon.draw(canvas);
             }
+            this.saufOMeter.draw(canvas);
 
-            button.draw(canvas);
+            this.button.draw(canvas);
             // display fps
             displayFps(canvas, avgFps);
         }

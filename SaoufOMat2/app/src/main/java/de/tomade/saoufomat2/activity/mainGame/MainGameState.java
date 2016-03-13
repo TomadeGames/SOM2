@@ -9,5 +9,6 @@ public enum MainGameState {
     STOP1,
     STOP2,
     STOP_ALL,
-    All_IN_POSITION
+    All_IN_POSITION,
+    MOVE_SAUFOMETER
 }

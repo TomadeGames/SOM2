@@ -7,5 +7,8 @@ public enum TaskTarget {
     SELF,
     ALL,
     NEIGHBOUR,
-    NO
+    CHOOSE_ONE,
+    CHOOSE_TWO,
+    CHOOSE_THREE,
+    ALL_BUT_SELF
 }

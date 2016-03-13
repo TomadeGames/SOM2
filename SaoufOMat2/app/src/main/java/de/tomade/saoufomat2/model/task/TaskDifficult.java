@@ -6,5 +6,9 @@ package de.tomade.saoufomat2.model.task;
 public enum TaskDifficult {
     EASY,
     MEDIUM,
-    HARD
+    HARD,
+    EASY_WIN,
+    MEDIUM_WIN,
+    HARD_WIN,
+    GAME
 }
