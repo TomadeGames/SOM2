@@ -8,5 +8,6 @@ public enum MainGameState {
     ROLLING_ALL,
     STOP1,
     STOP2,
-    STOP_ALL
+    STOP_ALL,
+    All_IN_POSITION
 }

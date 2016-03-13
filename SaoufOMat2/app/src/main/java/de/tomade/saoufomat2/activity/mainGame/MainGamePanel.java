@@ -33,7 +33,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private static final String TAG = MainGamePanel.class.getSimpleName();
     private int getIconStopY()
     {
-        return (int) (screenHeight/2.68);
+        return (int) (screenHeight/3);
     }
 
     private MainGameThread thread;
@@ -160,12 +160,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 }
                 break;
             case STOP1:
+                icons[0].setY(icons[0].getY() + getIconStopY() - icons[0].getY() / 2);
                 for(int i = 1; i < 3; i++) {
                     moveSingleIcon(icons[i], speeds[i]);
                 }
                 break;
             case STOP2:
+                icons[0].setY(icons[0].getY() + getIconStopY() - icons[0].getY() / 2);
+                icons[1].setY(icons[1].getY() + getIconStopY() - icons[1].getY() / 2);
                 moveSingleIcon(icons[2],speeds[2]);
+                break;
+            case STOP_ALL:
+                for(int i = 1; i < 3; i++) {
+                    icons[i].setY(icons[i].getY() + getIconStopY() - icons[i].getY() / 2);;
+                }
                 break;
         }
     }
@@ -209,13 +217,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             background = Bitmap.createScaledBitmap(background, canvas.getWidth(), canvas.getHeight(), true);
             canvas.drawBitmap(background, 0, 0, null);
 
+            Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
+            slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
+            canvas.drawBitmap(slotMachine, 0, 0, null);
+
             for (SlotMachineIcon icon : icons) {
                 icon.draw(canvas);
             }
 
-            Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
-            slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
-            canvas.drawBitmap(slotMachine, 0, 0, null);
             button.draw(canvas);
             // display fps
             displayFps(canvas, avgFps);
