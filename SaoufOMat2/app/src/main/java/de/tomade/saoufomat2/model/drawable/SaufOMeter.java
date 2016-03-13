@@ -1,4 +1,4 @@
-package de.tomade.saoufomat2.model;
+package de.tomade.saoufomat2.model.drawable;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

@@ -1,7 +1,9 @@
-package de.tomade.saoufomat2.model;
+package de.tomade.saoufomat2.model.drawable;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
+import de.tomade.saoufomat2.model.IconState;
 
 /**
  * Created by woors on 10.03.2016.
@@ -15,6 +17,16 @@ public class SlotMachineIcon extends DrawableImage {
     private Bitmap imageHard;
 
     private IconState state;
+
+    public SlotMachineIcon(Bitmap imageEasy, Bitmap imageMedium, Bitmap imageHard, Bitmap imageGame, int x, int y, int width, int height, IconState state) {
+        super(imageGame, x, y, width / 6, height / 3);
+        this.screenHeight = height;
+        this.screenWith = width;
+        this.imageMedium = Bitmap.createScaledBitmap(imageMedium, getCocktailWith(), getCocktailHeight(), true);
+        this.imageHard = Bitmap.createScaledBitmap(imageHard, getShotWith(), getShotHeight(), true);
+        this.imageEasy = Bitmap.createScaledBitmap(imageEasy, getBeerWith(), getBeerHeight(), true);
+        this.setState(state);
+    }
 
     private int getBeerWith() {
         return screenWith / 10;
@@ -46,16 +58,6 @@ public class SlotMachineIcon extends DrawableImage {
 
     private int getGameHeight() {
         return screenHeight / 3;
-    }
-
-    public SlotMachineIcon(Bitmap imageEasy, Bitmap imageMedium, Bitmap imageHard, Bitmap imageGame, int x, int y, int width, int height, IconState state) {
-        super(imageGame, x, y, width / 6, height / 3);
-        this.screenHeight = height;
-        this.screenWith = width;
-        this.imageMedium = Bitmap.createScaledBitmap(imageMedium, getCocktailWith(), getCocktailHeight(), true);
-        this.imageHard = Bitmap.createScaledBitmap(imageHard, getShotWith(), getShotHeight(), true);
-        this.imageEasy = Bitmap.createScaledBitmap(imageEasy, getBeerWith(), getBeerHeight(), true);
-        this.setState(state);
     }
 
     @Override

@@ -1,9 +1,11 @@
-package de.tomade.saoufomat2.model;
+package de.tomade.saoufomat2.model.drawable.button;
 
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.tomade.saoufomat2.model.drawable.DrawableImage;
 
 /**
  * Created by woors on 09.03.2016.
