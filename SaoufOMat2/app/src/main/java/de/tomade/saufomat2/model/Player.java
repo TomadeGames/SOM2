@@ -75,6 +75,8 @@ public class Player implements Parcelable {
         this.drinks = drinks;
     }
 
+    public void increaseDrinks(int increase){this.drinks += increase; }
+
     @Override
     public int describeContents() {
         return 0;

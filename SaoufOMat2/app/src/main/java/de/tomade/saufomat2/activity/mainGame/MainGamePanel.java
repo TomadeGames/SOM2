@@ -94,6 +94,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
     }
 
+    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players){
+        this(context);
+        this.currentPlayer = currentPlayer;
+        this.player = players;
+    }
+
     private int getIconStopY() {
         return (int) (screenHeight / 2.8);
     }
