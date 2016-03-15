@@ -5,4 +5,5 @@
         <item>Mann</item>
         <item>Frau</item>
     </string-array>
+    <string name="title_activity_task_view">TaskViewActivity</string>
 </resources>

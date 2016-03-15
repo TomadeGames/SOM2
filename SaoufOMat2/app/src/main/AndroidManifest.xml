@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.tomade.saoufomat2">
+    package="de.tomade.saufomat2">
 
     <application
         android:allowBackup="true"
@@ -9,26 +9,27 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".activity.MainMenuActivity">
+        <activity android:name="de.tomade.saufomat2.activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CreatePlayerActivity">
+        <activity android:name="de.tomade.saufomat2.activity.CreatePlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.ChooseMiniGameActivity" />
+        <activity android:name="de.tomade.saufomat2.activity.ChooseMiniGameActivity" />
         <activity
-            android:name=".activity.mainGame.MainGameActivity"
-            android:label="@string/title_activity_main_game"></activity>
-
+            android:name="de.tomade.saufomat2.activity.mainGame.MainGameActivity"
+            android:label="@string/title_activity_main_game" />
+        <activity
+            android:name="de.tomade.saufomat2.activity.mainGame.TaskViewActivity"
+            android:label="@string/title_activity_task_view"></activity>
     </application>
 
 </manifest>
