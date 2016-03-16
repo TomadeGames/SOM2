@@ -6,9 +6,20 @@ package de.tomade.saufomat2.model.task;
 public enum TaskTarget {
     SELF,
     ALL,
+    ALL_BUT_SELF,
     NEIGHBOUR,
+    NEIGHBOUR_LEFT,
+    NEIGHBOUR_RIGHT,
+    SELF_AND_NEIGHBOURS,
+    SELF_AND_CHOOSE_ONE,
     CHOOSE_ONE,
     CHOOSE_TWO,
     CHOOSE_THREE,
-    ALL_BUT_SELF
+    CHOOSE_FIVE,
+    CHOOSE_ALL,
+    COIN,
+    SWITCH_PLACE_RIGHT,
+    SWITCH_PLACE_LEFT,
+    MEN,
+    WOMEN
 }

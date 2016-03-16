@@ -1,16 +1,13 @@
 package de.tomade.saufomat2.activity.mainGame;
 
-import android.content.Intent;
-import android.media.Image;
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -19,6 +16,7 @@ import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.task.Task;
 
 public class TaskViewActivity extends Activity {
+    private static final String TAG = TaskViewActivity.class.getSimpleName();
     private ArrayList<Player> players;
     private Task currentTask;
     private Player currentPlayer;
@@ -32,7 +30,7 @@ public class TaskViewActivity extends Activity {
         if (extras != null) {
             this.players = extras.getParcelableArrayList("player");
             this.currentTask = (Task) extras.getSerializable("task");
-            this.currentPlayer = (Player) extras.getSerializable("currentPlayer");
+            this.currentPlayer = (Player) extras.getParcelable("currentPlayer");
         }
 
         TextView taskText = (TextView) this.findViewById(R.id.taskText);

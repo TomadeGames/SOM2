@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -69,13 +70,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Task currentTask;
 
     //SaufOMeter
-    private int saufOMeterEndFrame = 0;
+    private int saufOMeterEndFrame = 1;
     private float saufometerUpdateCounter = saufometerRotateTime;
     private float waitCounter = mainViewWaitTime;
     private float saufometerBlinkingCounter = saufometerBlinkTime;
     private int blinkCounter = 0;
+    private boolean framesSet = false;
 
-    public MainGamePanel(Context context) {
+    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players) {
         super(context);
         getHolder().addCallback(this);
         this.random = new Random();
@@ -92,10 +94,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         thread = new MainGameThread(getHolder(), this);
         setFocusable(true);
-    }
-
-    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players){
-        this(context);
         this.currentPlayer = currentPlayer;
         this.player = players;
     }
@@ -194,7 +192,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             if (saufometerUpdateCounter <= 0) {
                 saufometerUpdateCounter = saufometerRotateTime;
                 this.saufOMeter.setCurrentFrame(this.saufOMeter.getCurrentFrame() + 1);
-                if (this.saufOMeter.getCurrentFrame() == this.saufOMeterEndFrame) {
+                Log.d(TAG, "endFrame: " + saufOMeterEndFrame + ", currFrame: " + this.saufOMeter.getCurrentFrame());
+                if (this.saufOMeter.getCurrentFrame() >= this.saufOMeterEndFrame) {
                     this.saufOMeterEndFrame = 1;
                     TaskDifficult diff = getCurrentDifficult();
                     if (diff == TaskDifficult.EASY_WIN
@@ -254,7 +253,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         intent.putExtra("task", this.currentTask);
         intent.putParcelableArrayListExtra("player", this.player);
         intent.putExtra("currentPlayer", this.currentPlayer);
+        this.thread.setRunning(false);
         this.getContext().startActivity(intent);
+
     }
 
     @Nullable
@@ -265,10 +266,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 && icons[0].getState() == icons[2].getState()) {
             switch (icons[0].getState()) {
                 case EASY:
+                    this.saufOMeterEndFrame = 7;
                     return TaskDifficult.EASY_WIN;
                 case MEDIUM:
+                    this.saufOMeterEndFrame = 8;
                     return TaskDifficult.MEDIUM_WIN;
                 case HARD:
+                    this.saufOMeterEndFrame = 9;
                     return TaskDifficult.HARD_WIN;
             }
         }
@@ -290,25 +294,27 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
         difficult = ((difficult) / (3 - gameCount));
         int tmpDiff = (int) difficult;
-        if (this.random.nextInt(3) < gameCount) {
-            return TaskDifficult.GAME;
+        if (!this.framesSet) {
+            this.framesSet = true;
+            if (this.random.nextInt(3) < gameCount) {
+                return TaskDifficult.GAME;
+            }
+            if (difficult > 0.6) {
+                this.saufOMeterEndFrame++;
+            }
+            if (difficult > 0.95) {
+                this.saufOMeterEndFrame++;
+            }
+            if (difficult > 1.5) {
+                this.saufOMeterEndFrame++;
+            }
+            if (difficult > 2) {
+                this.saufOMeterEndFrame++;
+            }
+            if (difficult > 2.2) {
+                this.saufOMeterEndFrame++;
+            }
         }
-        if (difficult > 0.6) {
-            this.saufOMeterEndFrame++;
-        }
-        if (difficult > 0.95) {
-            this.saufOMeterEndFrame++;
-        }
-        if (difficult > 1.5) {
-            this.saufOMeterEndFrame++;
-        }
-        if (difficult > 2) {
-            this.saufOMeterEndFrame++;
-        }
-        if (difficult > 2.2) {
-            this.saufOMeterEndFrame++;
-        }
-
         switch (tmpDiff) {
             case 0:
                 return TaskDifficult.EASY;
@@ -361,8 +367,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 boolean[] iconsOnPosition = {false, false, false};
                 for (int i = 0; i < 3; i++) {
                     icons[i].setY(icons[i].getY() + (getIconStopY() - icons[i].getY()) / 2);
-                    if (icons[i].getY() < getIconStopY() + getIconStopY() * 0.1
-                            && icons[i].getY() > getIconStopY() - getIconStopY() * 0.1) {
+                    if (icons[i].getY() < getIconStopY() + getIconStopY() * 0.01
+                            && icons[i].getY() > getIconStopY() - getIconStopY() * 0.01) {
                         iconsOnPosition[i] = true;
                     }
                 }
