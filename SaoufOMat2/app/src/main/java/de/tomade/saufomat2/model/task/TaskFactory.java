@@ -191,7 +191,6 @@ public class TaskFactory {
         allTasks.add(new Task("Der letzte der Hans schreit trinkt 2", TaskDifficult.MEDIUM, 2, 0, TaskTarget.CHOOSE_ONE));
         allTasks.add(new Task("Ruf deine Eltern an", TaskDifficult.HARD, 0, 3, TaskTarget.SELF));
 
-
         allTasks.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
         allTasks.add(new Task("Alle ausser dir trinken drei", TaskDifficult.MEDIUM_WIN, 3, 0 ,TaskTarget.ALL_BUT_SELF));
         allTasks.add(new Task("Suche drei Mitspieler aus, die einen Kurzen deiner Wahl trinken", TaskDifficult.HARD_WIN, 1, 0, TaskTarget.CHOOSE_THREE));

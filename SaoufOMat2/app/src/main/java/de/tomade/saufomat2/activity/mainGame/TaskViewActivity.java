@@ -3,10 +3,11 @@ package de.tomade.saufomat2.activity.mainGame;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,7 +31,11 @@ public class TaskViewActivity extends Activity {
         if (extras != null) {
             this.players = extras.getParcelableArrayList("player");
             this.currentTask = (Task) extras.getSerializable("task");
-            this.currentPlayer = (Player) extras.getParcelable("currentPlayer");
+            this.currentPlayer = Player.getPlayerById(this.players, extras.getInt("currentPlayer"));
+        }
+
+        for (Player p : players) {
+            Log.d(TAG, p.getName() + " id: " + p.getId() + " next: " + p.getNextPlayerId());
         }
 
         TextView taskText = (TextView) this.findViewById(R.id.taskText);
@@ -42,6 +47,13 @@ public class TaskViewActivity extends Activity {
             this.findViewById(R.id.noButton).setVisibility(View.GONE);
         } else {
             costText.setText("Trink " + this.currentTask.getCost());
+        }
+
+        LinearLayout playerLayout = (LinearLayout) this.findViewById(R.id.playerLayout);
+        for (Player p : this.players) {
+            TextView textView = new TextView(this);
+            textView.setText(p.getName() + " " + p.getDrinks());
+            playerLayout.addView(textView);
         }
 
         ((ImageButton) findViewById(R.id.yesButton)).setOnTouchListener(new View.OnTouchListener() {
@@ -99,21 +111,15 @@ public class TaskViewActivity extends Activity {
         });
     }
 
-    @Nullable
-    private Player getPlayerById(int id) {
-        for (Player p : players) {
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-        return null;
-    }
-
     private void chanceToMainView() {
-        this.currentPlayer = getPlayerById(this.currentPlayer.getNextPlayerId());
+        Log.d(TAG, "curr: " + this.currentPlayer.getId() + " next: " + this.currentPlayer.getNextPlayerId());
+        this.currentPlayer = Player.getPlayerById(this.players, this.currentPlayer.getNextPlayerId());
         Intent intent = new Intent(getApplicationContext(), MainGameActivity.class);
-        intent.putExtra("currentPlayer", currentPlayer);
+        intent.putExtra("currentPlayer", currentPlayer.getId());
         intent.putExtra("player", players);
+        for (Player p : players) {
+            Log.d(TAG, p.getName() + " drinks: " + p.getDrinks());
+        }
         startActivity(intent);
     }
 
@@ -123,8 +129,8 @@ public class TaskViewActivity extends Activity {
                 this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
                 break;
             case NEIGHBOUR:
-                getPlayerById(currentPlayer.getNextPlayerId()).increaseDrinks(this.currentTask.getDrinkCount());
-                getPlayerById(currentPlayer.getLastPlayerId()).increaseDrinks(this.currentTask.getDrinkCount());
+                Player.getPlayerById(this.players, currentPlayer.getNextPlayerId()).increaseDrinks(this.currentTask.getDrinkCount());
+                Player.getPlayerById(this.players, currentPlayer.getLastPlayerId()).increaseDrinks(this.currentTask.getDrinkCount());
                 break;
             case CHOOSE_ONE:
                 break;
@@ -150,6 +156,7 @@ public class TaskViewActivity extends Activity {
 
     private void noButtonPressed() {
         this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
+        Log.d(TAG, "player: " + currentPlayer.getDrinks() + " cost: " + currentTask.getCost());
         chanceToMainView();
     }
 }

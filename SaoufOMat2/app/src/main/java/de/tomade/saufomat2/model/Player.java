@@ -2,13 +2,28 @@ package de.tomade.saufomat2.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by markk on 09.03.2016.
  */
 public class Player implements Parcelable {
+    public static final Parcelable.Creator<Player> CREATOR =
+            new Parcelable.Creator<Player>() {
+
+                @Override
+                public Player createFromParcel(Parcel source) {
+                    return new Player(source);
+                }
+
+                @Override
+                public Player[] newArray(int size) {
+                    return new Player[size];
+                }
+
+            };
     private static int nextId = 0;
     private int id;
     private String name;
@@ -17,11 +32,12 @@ public class Player implements Parcelable {
     private int drinks = 0;
     private int nextPlayerId;
     private int lastPlayerId;
+    ;
 
-    public Player(){
+    public Player() {
         this.id = this.nextId;
         this.nextId++;
-    };
+    }
 
     public Player(String name, int weight, String gender, int drinks, int nextPlayerId, int lastPlayerId){
         this();
@@ -39,6 +55,18 @@ public class Player implements Parcelable {
         this.weight = in.readInt();
         this.gender = in.readString();
         this.drinks = in.readInt();
+        this.nextPlayerId = in.readInt();
+        this.lastPlayerId = in.readInt();
+    }
+
+    @Nullable
+    public static Player getPlayerById(List<Player> playerList, int id) {
+        for (Player p : playerList) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
     }
 
     public int getId(){return this.id; }
@@ -75,7 +103,9 @@ public class Player implements Parcelable {
         this.drinks = drinks;
     }
 
-    public void increaseDrinks(int increase){this.drinks += increase; }
+    public void increaseDrinks(int increase) {
+        this.drinks += increase;
+    }
 
     @Override
     public int describeContents() {
@@ -89,21 +119,9 @@ public class Player implements Parcelable {
         dest.writeInt(this.weight);
         dest.writeString(this.gender);
         dest.writeInt(this.drinks);
+        dest.writeInt(this.nextPlayerId);
+        dest.writeInt(this.lastPlayerId);
     }
-    public static final Parcelable.Creator<Player> CREATOR =
-            new Parcelable.Creator<Player>() {
-
-                @Override
-                public Player createFromParcel(Parcel source) {
-                    return new Player(source);
-                }
-
-                @Override
-                public Player[] newArray(int size) {
-                    return new Player[size];
-                }
-
-            };
 
     public int getNextPlayerId() {
         return nextPlayerId;

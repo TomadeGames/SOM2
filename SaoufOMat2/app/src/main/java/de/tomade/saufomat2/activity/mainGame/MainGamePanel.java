@@ -1,7 +1,6 @@
 package de.tomade.saufomat2.activity.mainGame;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -77,7 +76,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int blinkCounter = 0;
     private boolean framesSet = false;
 
-    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players) {
+    public MainGamePanel(Context context, int currentPlayerId, ArrayList<Player> players) {
         super(context);
         getHolder().addCallback(this);
         this.random = new Random();
@@ -94,8 +93,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         thread = new MainGameThread(getHolder(), this);
         setFocusable(true);
-        this.currentPlayer = currentPlayer;
         this.player = players;
+        this.currentPlayer = Player.getPlayerById(this.player, currentPlayerId);
     }
 
     private int getIconStopY() {
@@ -249,12 +248,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void changeToTaskView(){
-        Intent intent = new Intent(this.getContext().getApplicationContext(), TaskViewActivity.class);
-        intent.putExtra("task", this.currentTask);
-        intent.putParcelableArrayListExtra("player", this.player);
-        intent.putExtra("currentPlayer", this.currentPlayer);
         this.thread.setRunning(false);
-        this.getContext().startActivity(intent);
+        MainGameActivity currActivity = (MainGameActivity) this.getContext();
+        currActivity.changeToTaskView(this.currentTask, this.player, this.currentPlayer.getId());
 
     }
 

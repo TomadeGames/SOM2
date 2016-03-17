@@ -2,67 +2,116 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:contextClickable="true">
+    android:contextClickable="true"
+    android:gravity="center">
 
     <ImageView
+        android:id="@+id/backgroundImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/backgroundImage"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:scaleType="fitXY"
         android:src="@drawable/main_game_background" />
 
     <ImageButton
         android:id="@+id/yesButton"
-        android:src="@drawable/check_button"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:layout_height="60dp"
         android:layout_width="200dp"
-        android:background="#00ffffff"
+        android:layout_height="60dp"
         android:layout_alignBottom="@+id/backgroundImage"
+        android:layout_alignEnd="@+id/backgroundImage"
         android:layout_alignRight="@+id/backgroundImage"
-        android:layout_alignEnd="@+id/backgroundImage" />
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/check_button" />
 
     <ImageButton
         android:id="@+id/noButton"
-        android:src="@drawable/no_button"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:layout_height="60dp"
         android:layout_width="200dp"
-        android:background="#00ffffff"
+        android:layout_height="60dp"
         android:layout_alignBottom="@+id/backgroundImage"
         android:layout_toLeftOf="@+id/yesButton"
-        android:layout_toStartOf="@+id/yesButton" />
+        android:layout_toStartOf="@+id/yesButton"
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/no_button" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
         android:id="@+id/costText"
-        android:layout_alignTop="@+id/noButton"
-        android:layout_alignLeft="@+id/noButton"
-        android:layout_alignStart="@+id/noButton"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/noButton"
+        android:layout_alignEnd="@+id/noButton"
+        android:layout_alignLeft="@+id/noButton"
+        android:layout_alignRight="@+id/noButton"
+        android:layout_alignStart="@+id/noButton"
+        android:layout_below="@+id/taskTextLayout"
+        android:gravity="center"
         android:text="Large Text"
-        android:id="@+id/taskText"
-        android:layout_marginBottom="132dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RelativeLayout
+        android:id="@+id/taskTextLayout"
+        android:layout_width="600dp"
+        android:layout_height="600dp"
         android:layout_above="@+id/yesButton"
-        android:layout_toRightOf="@+id/costText"
-        android:layout_toEndOf="@+id/costText"
-        android:textColor="#000000" />
+        android:layout_alignLeft="@+id/noButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/noButton"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/taskText"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:maxLines="10"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/playerRelativeLayout"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/noButton"
+        android:layout_toStartOf="@+id/noButton"
+        android:gravity="left">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:foregroundGravity="left">
+
+            <LinearLayout
+                android:id="@+id/playerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/scrollView"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
