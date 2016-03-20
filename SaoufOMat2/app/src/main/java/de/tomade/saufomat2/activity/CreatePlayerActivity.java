@@ -3,6 +3,7 @@ package de.tomade.saufomat2.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -17,11 +18,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.R;
 
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     Button btnNewPlayer = null;
+    Button btnStartGame = null;
     LinearLayout linearLayout = null;
     ArrayList<Player> players = new ArrayList<Player>();
     ArrayList<View> playerelements = new ArrayList<View>();
@@ -32,18 +35,27 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         setContentView(R.layout.activity_create_player);
 
         this.linearLayout = (LinearLayout) findViewById(R.id.llCreatePlayer);
+
         this.btnNewPlayer = (Button) findViewById(R.id.btnNewPlayer);
+        this.btnStartGame = (Button) findViewById(R.id.btnStartGame);
+
         this.btnNewPlayer.setOnClickListener(this);
+        this.btnStartGame.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnNewPlayer:
-                //Intent intent = new Intent(this, NewPlayerDialog.class);
-                //startActivity(intent);
                 Player newPlayer = new Player();
                 showDialog(newPlayer);
+                break;
+            case R.id.btnStartGame:
+                Intent intent = new Intent(this, MainGameActivity.class);
+                intent.putExtra("player", players);
+                intent.putExtra("currentPlayer", players.get(0));
+                this.finish();
+                this.startActivity(intent);
         }
     }
 
@@ -88,7 +100,16 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             }
         }
         if (!duplicate) {
+            if (players != null && !players.isEmpty()) {
+                players.get(players.size()-1).setNextPlayerId(player.getId());
+            }
             this.players.add(player);
+            if(players.size() > 1){
+                players.get(players.size()-1).setLastPlayerId(players.get(players.size()-2).getId());
+            }
+            for(Player tmp : players){
+                System.out.println(tmp.toString());
+            }
             displayPlayer(player);
         } else {
             Toast.makeText(CreatePlayerActivity.this, "Name bereits vorhanden!", Toast.LENGTH_LONG).show();
@@ -96,7 +117,6 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     public void displayPlayer(final Player player) {
-        //TODO Editieren
         LayoutInflater inflater = this.getLayoutInflater();
         final View playerView = inflater.inflate(R.layout.player_element, null);
         playerelements.add(playerView);
@@ -108,8 +128,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 linearLayout.removeView(playerView);
-                players.remove(player);
                 playerelements.remove(playerView);
+                removePlayer(player);
             }
         });
 
@@ -124,6 +144,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     public void editPlayer(View playerelemnt) {
+
+        //TODO überarbeiten
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
         );
@@ -189,6 +211,19 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             if (textView.getText().toString().equals(player.getName())) {
                 playerelements.remove(tmp);
             }
+        }
+        int lastPlayerId = player.getLastPlayerId();
+        int nextPLayerId = player.getNextPlayerId();
+        System.out.println("LastplayerId: " + lastPlayerId + " NextPlayerID: " + nextPLayerId);
+        if(player.getHasNextPlayer() && player.getHastLastPlayer()){
+            Player.getPlayerById(players, lastPlayerId).setNextPlayerId(nextPLayerId);
+            Player.getPlayerById(players, nextPLayerId).setLastPlayerId(lastPlayerId);
+        } else if(player.getHasNextPlayer() && !player.getHastLastPlayer()){
+            Player.getPlayerById(players, nextPLayerId).setLastPlayerId(-1);
+            Player.getPlayerById(players, nextPLayerId).setHasLastPlayer(false);
+        } else {
+            Player.getPlayerById(players, lastPlayerId).setNextPlayerId(-1);
+            Player.getPlayerById(players, lastPlayerId).setHasNextPlayer(false);
         }
         players.remove(player);
     }
