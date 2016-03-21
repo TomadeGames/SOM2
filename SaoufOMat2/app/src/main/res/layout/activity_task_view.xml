@@ -28,33 +28,6 @@
         android:scaleType="fitXY"
         android:src="@drawable/check_button" />
 
-    <ImageButton
-        android:id="@+id/noButton"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_alignBottom="@+id/backgroundImage"
-        android:layout_toLeftOf="@+id/yesButton"
-        android:layout_toStartOf="@+id/yesButton"
-        android:adjustViewBounds="true"
-        android:background="#00ffffff"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:src="@drawable/no_button" />
-
-    <TextView
-        android:id="@+id/costText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/noButton"
-        android:layout_alignEnd="@+id/noButton"
-        android:layout_alignLeft="@+id/noButton"
-        android:layout_alignRight="@+id/noButton"
-        android:layout_alignStart="@+id/noButton"
-        android:layout_below="@+id/taskTextLayout"
-        android:gravity="center"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <RelativeLayout
         android:id="@+id/taskTextLayout"
         android:layout_width="600dp"
@@ -63,7 +36,6 @@
         android:layout_alignLeft="@+id/noButton"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/noButton"
         android:gravity="right">
 
@@ -77,12 +49,25 @@
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/currentPlayerNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="21dp"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/playerRelativeLayout"
         android:layout_width="200dp"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -113,5 +98,59 @@
 
 
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/optionsButton"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/options_button" />
+
+    <ImageButton
+        android:id="@+id/alcoholButton"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_alignEnd="@+id/playerRelativeLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/playerRelativeLayout"
+        android:layout_toLeftOf="@+id/optionsButton"
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/alcohol_button" />
+
+
+    <ImageButton
+        android:id="@+id/noButton"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/yesButton"
+        android:layout_toStartOf="@+id/yesButton"
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/no_button" />
+
+    <TextView
+        android:id="@+id/costText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

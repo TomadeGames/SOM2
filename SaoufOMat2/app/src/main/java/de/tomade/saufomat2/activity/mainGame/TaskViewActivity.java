@@ -4,23 +4,27 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.task.Task;
 
-public class TaskViewActivity extends Activity {
+public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
     private ArrayList<Player> players;
+    private Map<Integer, TextView> playerTexts = new HashMap<>();
     private Task currentTask;
     private Player currentPlayer;
+    private boolean drinkCountShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,8 @@ public class TaskViewActivity extends Activity {
         for (Player p : players) {
             Log.d(TAG, p.getName() + " id: " + p.getId() + " next: " + p.getNextPlayerId());
         }
-
+        TextView currentPlayerNameText = (TextView) this.findViewById(R.id.currentPlayerNameText);
+        currentPlayerNameText.setText(this.currentPlayer.getName());
         TextView taskText = (TextView) this.findViewById(R.id.taskText);
         taskText.setText(this.currentTask.getText());
         int cost = this.currentTask.getCost();
@@ -52,63 +57,38 @@ public class TaskViewActivity extends Activity {
         LinearLayout playerLayout = (LinearLayout) this.findViewById(R.id.playerLayout);
         for (Player p : this.players) {
             TextView textView = new TextView(this);
-            textView.setText(p.getName() + " " + p.getDrinks());
+            textView.setText(p.getName() + ": " + p.getDrinks());
             playerLayout.addView(textView);
+            this.playerTexts.put(p.getId(), textView);
         }
 
-        ((ImageButton) findViewById(R.id.yesButton)).setOnTouchListener(new View.OnTouchListener() {
+        ImageButton noButton = (ImageButton) findViewById(R.id.noButton);
+        ImageButton yesButton = (ImageButton) findViewById(R.id.yesButton);
+        ImageButton optionsButton = (ImageButton) findViewById(R.id.optionsButton);
+        ImageButton alcoholButton = (ImageButton) findViewById(R.id.alcoholButton);
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        ImageButton view = (ImageButton) v;
-                        //TODO: pressedButtonImage
-                        //view.setImageResource(R.drawable.[pressedButton]);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
+        noButton.setOnClickListener(this);
+        yesButton.setOnClickListener(this);
+        optionsButton.setOnClickListener(this);
+        alcoholButton.setOnClickListener(this);
+    }
 
-                        yesButtonPressed();
-
-                    case MotionEvent.ACTION_CANCEL: {
-                        ImageButton view = (ImageButton) v;
-                        view.setImageResource(R.drawable.check_button);
-                        view.invalidate();
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-
-        ((ImageButton) findViewById(R.id.noButton)).setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        ImageButton view = (ImageButton) v;
-                        //TODO: pressedButtonImage
-                        //view.setImageResource(R.drawable.[pressedButton]);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-
-                        noButtonPressed();
-
-                    case MotionEvent.ACTION_CANCEL: {
-                        ImageButton view = (ImageButton) v;
-                        view.setImageResource(R.drawable.no_button);
-                        view.invalidate();
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.yesButton:
+                yesButtonPressed();
+                break;
+            case R.id.noButton:
+                noButtonPressed();
+                break;
+            case R.id.optionsButton:
+                optionsButtonPressed();
+                break;
+            case R.id.alcoholButton:
+                alcoholButtonPressed();
+                break;
+        }
     }
 
     private void chanceToMainView() {
@@ -158,5 +138,44 @@ public class TaskViewActivity extends Activity {
         this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
         Log.d(TAG, "player: " + currentPlayer.getDrinks() + " cost: " + currentTask.getCost());
         chanceToMainView();
+    }
+
+
+    //TODO
+    private void optionsButtonPressed() {
+
+    }
+
+    private void alcoholButtonPressed() {
+        if (drinkCountShown) {
+            for (Map.Entry<Integer, TextView> e : this.playerTexts.entrySet()) {
+                Player p = Player.getPlayerById(this.players, e.getKey());
+                e.getValue().setText(p.getName() + ": " + p.getDrinks());
+            }
+        } else {
+            for (Map.Entry<Integer, TextView> e : this.playerTexts.entrySet()) {
+                Player p = Player.getPlayerById(this.players, e.getKey());
+                float alc = calculateAlkohol(p.getDrinks(), p.getWeight(), p.getIsMan());
+                String text = p.getName() + ": " + new DecimalFormat("#.##").format(alc);
+                e.getValue().setText(text + "%");
+            }
+        }
+        drinkCountShown = !drinkCountShown;
+    }
+
+    private float calculateAlkohol(int drinks, int weight, boolean isMan) {
+        float alcPercent = 0.18f;
+        int amount = 20;
+        float alc = amount * alcPercent * drinks * 0.81f;
+
+        float reducedWight;
+        if (isMan) {
+            reducedWight = weight * 0.7f;
+        } else {
+            reducedWight = weight * 0.6f;
+        }
+        float erg = alc / reducedWight;
+        erg -= erg * 0.2f;
+        return erg;
     }
 }

@@ -28,7 +28,7 @@ public class Player implements Parcelable {
     private int id;
     private String name;
     private int weight;
-    private String gender;
+    private boolean isMan;
     private int drinks = 0;
     private int nextPlayerId;
     private int lastPlayerId;
@@ -36,15 +36,15 @@ public class Player implements Parcelable {
     private boolean hasLastPlayer = false;
 
     public Player() {
-        this.id = this.nextId;
-        this.nextId++;
+        this.id = nextId;
+        nextId++;
     }
 
-    public Player(String name, int weight, String gender, int drinks, int nextPlayerId, int lastPlayerId) {
+    public Player(String name, int weight, boolean isMan, int drinks, int nextPlayerId, int lastPlayerId) {
         this();
         this.name = name;
         this.weight = weight;
-        this.gender = gender;
+        this.isMan = isMan;
         this.drinks = drinks;
         this.nextPlayerId = nextPlayerId;
         this.lastPlayerId = lastPlayerId;
@@ -54,7 +54,7 @@ public class Player implements Parcelable {
         this.id = in.readInt();
         this.name = in.readString();
         this.weight = in.readInt();
-        this.gender = in.readString();
+        this.isMan = in.readByte() != 0;
         this.drinks = in.readInt();
         this.nextPlayerId = in.readInt();
         this.lastPlayerId = in.readInt();
@@ -90,12 +90,12 @@ public class Player implements Parcelable {
         this.weight = weight;
     }
 
-    public String getGender() {
-        return this.gender;
+    public boolean getIsMan() {
+        return this.isMan;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setIsMan(boolean isMan) {
+        this.isMan = isMan;
     }
 
     public int getDrinks() {
@@ -120,7 +120,7 @@ public class Player implements Parcelable {
         dest.writeInt(this.id);
         dest.writeString(this.name);
         dest.writeInt(this.weight);
-        dest.writeString(this.gender);
+        dest.writeByte((byte) (this.isMan ? 1 : 0));
         dest.writeInt(this.drinks);
         dest.writeInt(this.nextPlayerId);
         dest.writeInt(this.lastPlayerId);
@@ -161,8 +161,8 @@ public class Player implements Parcelable {
     }
 
     public String toString() {
-        return "Name: " + this.getName() + " Gewicht: " + this.getWeight() + " Geschlecht: " +
-                this.getGender() + " ID: " + this.getId() + " LastPlayerID: " + this.getLastPlayerId() +
+        return "Name: " + this.getName() + " Gewicht: " + this.getWeight() + " Mann?: " +
+                this.getIsMan() + " ID: " + this.getId() + " LastPlayerID: " + this.getLastPlayerId() +
                 " NextPlayerID: " + this.getNextPlayerId() + "\n" + " HasLastPlayerBoolean: " + this.getHastLastPlayer() +
                 " HasNextPlayerBoolean: " + this.getHasNextPlayer();
     }

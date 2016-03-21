@@ -29,53 +29,28 @@ public class MainGameActivity extends Activity {
             setContentView(new MainGamePanel(this, currentPlayer, players));
         }
         else{
-            //TODO: später entfernen wenn Spieler von Mark übergeben werden
-            ArrayList<Player> players = new ArrayList<>();
             Player p0 = new Player();
-            p0.setName("TestPlayer0");
-            p0.setDrinks(0);
-            p0.setGender("m");
-            p0.setWeight(70);
-            Log.d(TAG, "p0: " + p0.getId());
-
             Player p1 = new Player();
-            p1.setName("TestPlayer1");
-            p1.setDrinks(0);
-            p1.setGender("w");
-            p1.setWeight(75);
-            Log.d(TAG, "p1: " + p1.getId());
 
-            Player p2 = new Player();
-            p2.setName("TestPlayer2");
-            p2.setDrinks(0);
-            p2.setGender("m");
-            p2.setWeight(80);
-            Log.d(TAG, "p2: " + p2.getId());
-
-            Player p3 = new Player();
-            p3.setName("TestPlayer3");
-            p3.setDrinks(0);
-            p3.setGender("w");
-            p3.setWeight(65);
-            Log.d(TAG, "p3: " + p3.getId());
-
+            p0.setName("p0");
+            p0.setLastPlayerId(p1.getId());
+            p0.setWeight(80);
             p0.setNextPlayerId(p1.getId());
-            p0.setLastPlayerId(p3.getId());
+            p0.setIsMan(true);
+            p0.setDrinks(0);
 
-            p1.setNextPlayerId(p2.getId());
+            p1.setName("p1");
             p1.setLastPlayerId(p0.getId());
+            p1.setWeight(85);
+            p1.setNextPlayerId(p0.getId());
+            p1.setIsMan(false);
+            p1.setDrinks(0);
 
-            p2.setNextPlayerId(p3.getId());
-            p2.setLastPlayerId(p1.getId());
-
-            p3.setNextPlayerId(p0.getId());
-            p3.setLastPlayerId(p3.getId());
-
+            ArrayList<Player> players = new ArrayList<>();
             players.add(p0);
             players.add(p1);
-            players.add(p2);
-            players.add(p3);
-            setContentView(new MainGamePanel(this, p0.getId(), players));
+            int currentPlayer = p0.getId();
+            setContentView(new MainGamePanel(this, currentPlayer, players));
         }
     }
 

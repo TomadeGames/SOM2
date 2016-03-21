@@ -10,5 +10,6 @@ public enum TaskDifficult {
     EASY_WIN,
     MEDIUM_WIN,
     HARD_WIN,
-    GAME
+    GAME,
+    UNDEFINED
 }

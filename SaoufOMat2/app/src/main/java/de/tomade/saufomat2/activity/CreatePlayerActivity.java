@@ -1,8 +1,8 @@
 package de.tomade.saufomat2.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -18,10 +18,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.model.Player;
-import de.tomade.saufomat2.R;
 
+
+//TODO:
+//Wenn kein Spieler erstellt wurde und man auf Start drückt, stürzt das Spiel ab
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     Button btnNewPlayer = null;
     Button btnStartGame = null;
@@ -53,7 +56,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             case R.id.btnStartGame:
                 Intent intent = new Intent(this, MainGameActivity.class);
                 intent.putExtra("player", players);
-                intent.putExtra("currentPlayer", players.get(0));
+                intent.putExtra("currentPlayer", players.get(0).getId());
                 this.finish();
                 this.startActivity(intent);
         }
@@ -76,8 +79,15 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                     public void onClick(DialogInterface dialog, int id) {
                         newPlayer.setName(etxtName.getText().toString());
                         newPlayer.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                        newPlayer.setGender(spGender.getSelectedItem().toString());
-                        if (!newPlayer.getName().isEmpty() && newPlayer.getWeight() > 0 && !newPlayer.getGender().isEmpty()) {
+                        boolean genderSet = false;
+                        if (spGender.getSelectedItem().equals("Mann")) {
+                            newPlayer.setIsMan(true);
+                            genderSet = true;
+                        } else if (spGender.getSelectedItem().equals("Frau")) {
+                            newPlayer.setIsMan(false);
+                            genderSet = true;
+                        }
+                        if (!newPlayer.getName().isEmpty() && newPlayer.getWeight() > 0 && genderSet) {
                             addPlayer(newPlayer);
                         } else {
                             Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
@@ -168,7 +178,12 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
         etxtName.setText(player.getName());
         etxtWeight.setText(String.valueOf(player.getWeight()));
-        spGender.setSelection(getIndex(spGender, player.getGender()));
+        if (player.getIsMan()) {
+            spGender.setSelection(getIndex(spGender, "Mann"));
+        } else {
+            spGender.setSelection(getIndex(spGender, "Frau"));
+        }
+
 
         final Player finalPlayer = player;
         builder.setMessage("Spieler Bearbeiten")
@@ -179,7 +194,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                             txtvName.setText(finalPlayer.getName());
                             finalPlayer.setName(etxtName.getText().toString());
                             finalPlayer.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                            finalPlayer.setGender(spGender.getSelectedItem().toString());
+                            finalPlayer.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
                         } else {
                             Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
                         }

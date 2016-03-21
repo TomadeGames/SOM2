@@ -67,6 +67,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     //Task
     private TaskFactory taskFactory;
     private Task currentTask;
+    private TaskDifficult currentDifficult = TaskDifficult.UNDEFINED;
 
     //SaufOMeter
     private int saufOMeterEndFrame = 1;
@@ -79,7 +80,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     public MainGamePanel(Context context, int currentPlayerId, ArrayList<Player> players) {
         super(context);
         getHolder().addCallback(this);
-        this.random = new Random();
+        random = new Random();
 
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Point size = new Point();
@@ -109,7 +110,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         Bitmap gameIcon = BitmapFactory.decodeResource(getResources(), R.drawable.dice_icon);
         icons = new SlotMachineIcon[3];
         icons[0] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int) (screenWith / 3.3 - screenWith / 30), (int) (screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
-        icons[1] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int) (screenWith / 2 - screenWith / 30), (int) (screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
+        icons[1] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, screenWith / 2 - screenWith / 30, (int) (screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
         icons[2] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int) (screenWith / 2.9 * 2 - screenWith / 30), (int) (screenHeight / 2.68), screenWith, screenHeight, IconState.EASY);
 
         Bitmap[] saufOMeterFrames = new Bitmap[13];
@@ -179,70 +180,77 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 || this.gameState == MainGameState.STOP_ALL) {
             moveIcons();
         } else if (this.gameState == MainGameState.All_IN_POSITION) {
-            TaskDifficult difficult = getCurrentDifficult();
-            if (difficult != TaskDifficult.GAME) {
-                currentTask = taskFactory.getTask(difficult);
+            getCurrentDifficult();
+            if (this.currentDifficult != TaskDifficult.GAME) {
+                currentTask = taskFactory.getTask(this.currentDifficult);
                 this.gameState = MainGameState.MOVE_SAUFOMETER;
             } else {
                 //TODO:Game starten
             }
         } else if (this.gameState == MainGameState.MOVE_SAUFOMETER) {
-            this.saufometerUpdateCounter -= this.elapsedTime;
-            if (saufometerUpdateCounter <= 0) {
-                saufometerUpdateCounter = saufometerRotateTime;
-                this.saufOMeter.setCurrentFrame(this.saufOMeter.getCurrentFrame() + 1);
-                Log.d(TAG, "endFrame: " + saufOMeterEndFrame + ", currFrame: " + this.saufOMeter.getCurrentFrame());
-                if (this.saufOMeter.getCurrentFrame() >= this.saufOMeterEndFrame) {
-                    this.saufOMeterEndFrame = 1;
-                    TaskDifficult diff = getCurrentDifficult();
-                    if (diff == TaskDifficult.EASY_WIN
-                            || diff == TaskDifficult.MEDIUM_WIN
-                            || diff == TaskDifficult.HARD_WIN) {
-                        this.gameState = MainGameState.SAUFOMETER_BLINKING;
-                    } else {
-                        this.gameState = MainGameState.WAITING;
-                    }
-                }
-            }
+            moveSaufometer();
         } else if (this.gameState == MainGameState.SAUFOMETER_BLINKING) {
-            saufometerBlinkingCounter -= this.elapsedTime;
-            if (this.saufometerBlinkingCounter <= 0) {
-                saufometerBlinkingCounter = saufometerBlinkTime;
-                blinkCounter++;
-                switch (getCurrentDifficult()) {
-                    case EASY_WIN:
-                        if (this.saufOMeter.getCurrentFrame() == 7) {
-                            this.saufOMeter.setCurrentFrame(10);
-                        } else {
-                            this.saufOMeter.setCurrentFrame(7);
-                        }
-                        break;
-                    case MEDIUM_WIN:
-                        if (this.saufOMeter.getCurrentFrame() == 8) {
-                            this.saufOMeter.setCurrentFrame(11);
-                        } else {
-                            this.saufOMeter.setCurrentFrame(8);
-                        }
-                        break;
-                    case HARD_WIN:
-                        if (this.saufOMeter.getCurrentFrame() == 9) {
-                            this.saufOMeter.setCurrentFrame(12);
-                        } else {
-                            this.saufOMeter.setCurrentFrame(9);
-                        }
-                        break;
-                }
-                if (blinkCounter > 4) {
-                    blinkCounter = 0;
-                    this.gameState = MainGameState.WAITING;
-                }
-            }
+            blinkSaufometer();
         } else if (this.gameState == MainGameState.WAITING) {
             this.waitCounter -= this.elapsedTime;
             if (this.waitCounter <= 0) {
-                this.waitCounter = this.mainViewWaitTime;
+                this.waitCounter = mainViewWaitTime;
                 this.gameState = MainGameState.SHOW_MAIN_VIEW;
                 changeToTaskView();
+            }
+        }
+    }
+
+    private void moveSaufometer() {
+        this.saufometerUpdateCounter -= this.elapsedTime;
+        if (saufometerUpdateCounter <= 0) {
+            saufometerUpdateCounter = saufometerRotateTime;
+            this.saufOMeter.setCurrentFrame(this.saufOMeter.getCurrentFrame() + 1);
+            Log.d(TAG, "endFrame: " + saufOMeterEndFrame + ", currFrame: " + this.saufOMeter.getCurrentFrame());
+            if (this.saufOMeter.getCurrentFrame() >= this.saufOMeterEndFrame) {
+                this.saufOMeterEndFrame = 1;
+                if (this.currentDifficult == TaskDifficult.EASY_WIN
+                        || this.currentDifficult == TaskDifficult.MEDIUM_WIN
+                        || this.currentDifficult == TaskDifficult.HARD_WIN) {
+                    this.gameState = MainGameState.SAUFOMETER_BLINKING;
+                } else {
+                    this.gameState = MainGameState.WAITING;
+                }
+            }
+        }
+    }
+
+    private void blinkSaufometer() {
+        saufometerBlinkingCounter -= this.elapsedTime;
+        if (this.saufometerBlinkingCounter <= 0) {
+            saufometerBlinkingCounter = saufometerBlinkTime;
+            blinkCounter++;
+            switch (this.currentDifficult) {
+                case EASY_WIN:
+                    if (this.saufOMeter.getCurrentFrame() == 7) {
+                        this.saufOMeter.setCurrentFrame(10);
+                    } else {
+                        this.saufOMeter.setCurrentFrame(7);
+                    }
+                    break;
+                case MEDIUM_WIN:
+                    if (this.saufOMeter.getCurrentFrame() == 8) {
+                        this.saufOMeter.setCurrentFrame(11);
+                    } else {
+                        this.saufOMeter.setCurrentFrame(8);
+                    }
+                    break;
+                case HARD_WIN:
+                    if (this.saufOMeter.getCurrentFrame() == 9) {
+                        this.saufOMeter.setCurrentFrame(12);
+                    } else {
+                        this.saufOMeter.setCurrentFrame(9);
+                    }
+                    break;
+            }
+            if (blinkCounter > 4) {
+                blinkCounter = 0;
+                this.gameState = MainGameState.WAITING;
             }
         }
     }
@@ -255,7 +263,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Nullable
-    private TaskDifficult getCurrentDifficult() {
+    private void getCurrentDifficult() {
         float difficult = 0;
         int gameCount = 0;
         if (icons[0].getState() == icons[1].getState()
@@ -263,13 +271,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             switch (icons[0].getState()) {
                 case EASY:
                     this.saufOMeterEndFrame = 7;
-                    return TaskDifficult.EASY_WIN;
+                    currentDifficult = TaskDifficult.EASY_WIN;
+                    return;
                 case MEDIUM:
                     this.saufOMeterEndFrame = 8;
-                    return TaskDifficult.MEDIUM_WIN;
+                    currentDifficult = TaskDifficult.MEDIUM_WIN;
+                    return;
                 case HARD:
                     this.saufOMeterEndFrame = 9;
-                    return TaskDifficult.HARD_WIN;
+                    currentDifficult = TaskDifficult.HARD_WIN;
+                    return;
             }
         }
         for (int i = 0; i < 3; i++) {
@@ -292,8 +303,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         int tmpDiff = (int) difficult;
         if (!this.framesSet) {
             this.framesSet = true;
-            if (this.random.nextInt(3) < gameCount) {
-                return TaskDifficult.GAME;
+            if (random.nextInt(3) < gameCount) {
+                currentDifficult = TaskDifficult.GAME;
+                return;
             }
             if (difficult > 0.6) {
                 this.saufOMeterEndFrame++;
@@ -313,13 +325,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
         switch (tmpDiff) {
             case 0:
-                return TaskDifficult.EASY;
+                currentDifficult = TaskDifficult.EASY;
+                return;
             case 1:
-                return TaskDifficult.MEDIUM;
+                currentDifficult = TaskDifficult.MEDIUM;
+                return;
             case 2:
-                return TaskDifficult.HARD;
+                currentDifficult = TaskDifficult.HARD;
+                return;
         }
-        return null;
+        currentDifficult = TaskDifficult.UNDEFINED;
     }
 
     private void moveSingleIcon(SlotMachineIcon icon, float speed) {
@@ -327,7 +342,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         icon.setY(icon.getY() + (int) (speed * getElapsedTime()));
         if (icon.getY() > screenHeight) {
             icon.setY(0);
-            int rnd = this.random.nextInt(chanceSum);
+            int rnd = random.nextInt(chanceSum);
             if (rnd < easyChance) {
                 icon.setState(IconState.EASY);
             } else if (rnd < easyChance + mediumChance) {
@@ -418,6 +433,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
             slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
             canvas.drawBitmap(slotMachine, 0, 0, null);
+
+            Paint currentPlayerTextPaint = new Paint();
+            currentPlayerTextPaint.setTextSize(100);
+            currentPlayerTextPaint.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText(this.currentPlayer.getName(), canvas.getWidth() / 2, this.screenHeight / 15, currentPlayerTextPaint);
 
             this.saufOMeter.draw(canvas);
 

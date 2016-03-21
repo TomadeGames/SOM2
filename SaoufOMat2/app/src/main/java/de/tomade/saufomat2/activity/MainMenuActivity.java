@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 
 public class MainMenuActivity extends Activity {
 
@@ -16,7 +15,7 @@ public class MainMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        ((ImageButton)findViewById(R.id.startButton)).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.startButton).setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -43,7 +42,7 @@ public class MainMenuActivity extends Activity {
             }
         });
 
-        ((ImageButton)findViewById(R.id.gamesButton)).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.gamesButton).setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -56,7 +55,7 @@ public class MainMenuActivity extends Activity {
                     }
                     case MotionEvent.ACTION_UP:
 
-                        Intent intent = new Intent(getApplicationContext(), MainGameActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), ChooseMiniGameActivity.class);
                         startActivity(intent);
 
                     case MotionEvent.ACTION_CANCEL: {

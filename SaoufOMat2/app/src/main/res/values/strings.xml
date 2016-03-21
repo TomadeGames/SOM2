@@ -6,4 +6,5 @@
         <item>Frau</item>
     </string-array>
     <string name="title_activity_task_view">TaskViewActivity</string>
+    <string name="zurueck">Zurück</string>
 </resources>
