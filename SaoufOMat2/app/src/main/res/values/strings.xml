@@ -7,4 +7,5 @@
     </string-array>
     <string name="title_activity_task_view">TaskViewActivity</string>
     <string name="zurueck">Zurück</string>
+    <string name="title_activity_busfahren">BusfahrenActivity</string>
 </resources>
