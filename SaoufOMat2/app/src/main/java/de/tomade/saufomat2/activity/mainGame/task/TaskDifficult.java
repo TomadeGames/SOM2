@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.model.task;
+package de.tomade.saufomat2.activity.mainGame.task;
 
 /**
  * Created by woors on 10.03.2016.

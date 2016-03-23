@@ -3,7 +3,7 @@ package de.tomade.saufomat2.model.drawable;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import de.tomade.saufomat2.model.IconState;
+import de.tomade.saufomat2.activity.mainGame.IconState;
 
 /**
  * Created by woors on 10.03.2016.

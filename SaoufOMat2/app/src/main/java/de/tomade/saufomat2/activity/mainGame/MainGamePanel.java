@@ -17,17 +17,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.model.IconState;
-import de.tomade.saufomat2.model.MainGameState;
+import de.tomade.saufomat2.activity.mainGame.task.Task;
+import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
+import de.tomade.saufomat2.activity.mainGame.task.TaskFactory;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.SaufOMeter;
 import de.tomade.saufomat2.model.drawable.SlotMachineIcon;
 import de.tomade.saufomat2.model.drawable.button.ButtonEvent;
 import de.tomade.saufomat2.model.drawable.button.ButtonListener;
 import de.tomade.saufomat2.model.drawable.button.DrawableButton;
-import de.tomade.saufomat2.model.task.Task;
-import de.tomade.saufomat2.model.task.TaskDifficult;
-import de.tomade.saufomat2.model.task.TaskFactory;
 
 /**
  * Created by woors on 09.03.2016.

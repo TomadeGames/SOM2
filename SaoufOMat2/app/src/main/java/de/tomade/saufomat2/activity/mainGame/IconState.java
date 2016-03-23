@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.model;
+package de.tomade.saufomat2.activity.mainGame;
 
 /**
  * Created by woors on 10.03.2016.

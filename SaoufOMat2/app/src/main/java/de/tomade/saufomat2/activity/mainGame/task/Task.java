@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.model.task;
+package de.tomade.saufomat2.activity.mainGame.task;
 
 import java.io.Serializable;
 

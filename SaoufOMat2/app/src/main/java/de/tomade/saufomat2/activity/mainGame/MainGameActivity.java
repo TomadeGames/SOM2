@@ -9,8 +9,8 @@ import android.view.WindowManager;
 
 import java.util.ArrayList;
 
+import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.model.Player;
-import de.tomade.saufomat2.model.task.Task;
 
 
 public class MainGameActivity extends Activity {

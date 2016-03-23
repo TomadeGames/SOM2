@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.tomade.saufomat2.R;
+import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.model.Player;
-import de.tomade.saufomat2.model.task.Task;
 
 public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();

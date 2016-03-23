@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import de.tomade.saufomat2.R;
+import de.tomade.saufomat2.activity.busfahren.BusfahrenActivity;
 import de.tomade.saufomat2.model.miniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
@@ -137,6 +138,9 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
             case BIERGEBALLER:
                 break;
             case BUSFAHREN:
+                Intent intent = new Intent(this.getApplicationContext(), BusfahrenActivity.class);
+                intent.putExtra("fromMenue", 1);
+                this.startActivity(intent);
                 break;
             case CIRCLE_OF_DEATH:
                 break;
