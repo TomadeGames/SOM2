@@ -31,8 +31,11 @@
             android:name=".activity.mainGame.TaskViewActivity"
             android:label="@string/title_activity_task_view" />
         <activity
-            android:name=".activity.busfahren.BusfahrenActivity"
+            android:name=".activity.miniGames.busfahren.BusfahrenActivity"
             android:label="@string/title_activity_busfahren" />
+        <activity
+            android:name=".activity.miniGames.IchHabNochNieActivity"
+            android:label="@string/title_activity_ich_hab_noch_nie"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.activity.busfahren;
+package de.tomade.saufomat2.activity.miniGames.busfahren;
 
 /**
  * Created by woors on 23.03.2016.

@@ -3,11 +3,13 @@ package de.tomade.saufomat2.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.busfahren.BusfahrenActivity;
+import de.tomade.saufomat2.activity.miniGames.IchHabNochNieActivity;
+import de.tomade.saufomat2.activity.miniGames.busfahren.BusfahrenActivity;
 import de.tomade.saufomat2.model.miniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
@@ -29,6 +31,61 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         backButton.setOnClickListener(this);
         this.currentGameButton.setOnClickListener(this);
 
+        initButtons();
+    }
+
+    private void initButtons() {
+        findViewById(R.id.leftButton).setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageButton view = (ImageButton) v;
+                        view.setImageResource(R.drawable.left_button_pressed);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+
+                        leftButtonPressed();
+
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageButton view = (ImageButton) v;
+                        view.setImageResource(R.drawable.left_button);
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+
+        findViewById(R.id.rightButton).setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageButton view = (ImageButton) v;
+                        view.setImageResource(R.drawable.right_button_pressed);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+
+                        rightButtonPressed();
+
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageButton view = (ImageButton) v;
+                        view.setImageResource(R.drawable.right_button);
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -49,7 +106,6 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         }
     }
 
-    //TODO
     private void leftButtonPressed() {
         switch (this.currentGame) {
             case AUGENSAUFEN:
@@ -87,7 +143,6 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         }
     }
 
-    //TODO
     private void rightButtonPressed() {
         switch (this.currentGame) {
             case AUGENSAUFEN:
@@ -130,21 +185,28 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         this.startActivity(intent);
     }
 
-    //TODO
+    private void startGame(Intent intent) {
+        intent.putExtra("fromMenue", true);
+        this.startActivity(intent);
+    }
+
+    //TODO Spiele implementieren und verlinken
     private void currentGameButtonPressed() {
+        Intent intent;
         switch (this.currentGame) {
             case AUGENSAUFEN:
                 break;
             case BIERGEBALLER:
                 break;
             case BUSFAHREN:
-                Intent intent = new Intent(this.getApplicationContext(), BusfahrenActivity.class);
-                intent.putExtra("fromMenue", 1);
-                this.startActivity(intent);
+                intent = new Intent(this.getApplicationContext(), BusfahrenActivity.class);
+                startGame(intent);
                 break;
             case CIRCLE_OF_DEATH:
                 break;
             case ICH_HAB_NOCH_NIE:
+                intent = new Intent(this.getApplicationContext(), IchHabNochNieActivity.class);
+                startGame(intent);
                 break;
             case KINGS:
                 break;

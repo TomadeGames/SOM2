@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.activity.busfahren;
+package de.tomade.saufomat2.activity.miniGames.busfahren;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,7 +39,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
 
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
-            this.fromMenue = extras.getInt("fromMenue") == 1;
+            this.fromMenue = extras.getBoolean("fromMenue");
         }
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
