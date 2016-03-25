@@ -35,7 +35,10 @@
             android:label="@string/title_activity_busfahren" />
         <activity
             android:name=".activity.miniGames.IchHabNochNieActivity"
-            android:label="@string/title_activity_ich_hab_noch_nie"></activity>
+            android:label="@string/title_activity_ich_hab_noch_nie" />
+        <activity
+            android:name=".activity.miniGames.AugensaufenActivity"
+            android:label="@string/title_activity_augensaufen"></activity>
     </application>
 
 </manifest>

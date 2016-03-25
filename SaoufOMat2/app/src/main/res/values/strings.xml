@@ -10,4 +10,5 @@
     <string name="title_activity_busfahren">BusfahrenActivity</string>
     <string name="zur_ck">Zurück</string>
     <string name="title_activity_ich_hab_noch_nie">IchHabNochNieActivity</string>
+    <string name="title_activity_augensaufen">AugensaufenActivity</string>
 </resources>
