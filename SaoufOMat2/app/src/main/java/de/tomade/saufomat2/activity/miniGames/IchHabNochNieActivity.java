@@ -13,6 +13,7 @@ import java.util.Random;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
+import de.tomade.saufomat2.model.MiniGame;
 
 public class IchHabNochNieActivity extends Activity implements View.OnClickListener {
     private static final String TAG = IchHabNochNieActivity.class.getSimpleName();
@@ -69,6 +70,7 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.backButton) {
             Intent intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
+            intent.putExtra("lastGame", MiniGame.ICH_HAB_NOCH_NIE);
             this.startActivity(intent);
         } else {
             if (this.tutorialShown) {
@@ -92,7 +94,6 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
         this.taskView.setText(HAB_NIE + this.currentTask);
     }
 
-    //TODO
     private void showTutorial() {
         this.taskView.setText("Anleitung:\nEs werden Sätze generiert, die mit \"Ich hab noch nie\" beginnen. Jeder, der die verneinte Handlung doch schon mal gemacht hat, muss trinken. Danach wird das Handy weitergegeben.");
         tutorialShown = true;

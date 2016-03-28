@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:touchscreenBlocksFocus="true"
-    tools:context="de.tomade.saufomat2.activity.miniGames.AugensaufenActivity">
+    tools:context=".activity.miniGames.augensaufen.AugensaufenActivity">
 
     <ImageView
         android:id="@+id/backgroundImage"
@@ -48,7 +48,6 @@
             android:layout_width="fill_parent"
             android:layout_height="100dp"
             android:gravity="center"
-            android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000000" />
 
@@ -63,4 +62,31 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#000000" />
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="#00ffffff"
+        android:scaleType="center"
+        android:src="@drawable/no_button" />
+
+    <TextView
+        android:id="@+id/backText"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/backButton"
+        android:layout_alignLeft="@+id/backButton"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignRight="@+id/backButton"
+        android:layout_alignTop="@+id/backButton"
+        android:gravity="center"
+        android:text="@string/zur_ck"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

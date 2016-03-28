@@ -12,6 +12,7 @@ import android.widget.TextView;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
+import de.tomade.saufomat2.model.MiniGame;
 import de.tomade.saufomat2.model.card.Card;
 import de.tomade.saufomat2.model.card.CardValue;
 
@@ -153,6 +154,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
         Intent intent;
         if (fromMenue) {
             intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
+            intent.putExtra("lastGame", MiniGame.BUSFAHREN);
         } else {
             intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         }

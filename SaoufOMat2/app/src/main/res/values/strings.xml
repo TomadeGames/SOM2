@@ -11,4 +11,5 @@
     <string name="zur_ck">Zurück</string>
     <string name="title_activity_ich_hab_noch_nie">IchHabNochNieActivity</string>
     <string name="title_activity_augensaufen">AugensaufenActivity</string>
+    <string name="n_chster_spieler">Nächster Spieler</string>
 </resources>

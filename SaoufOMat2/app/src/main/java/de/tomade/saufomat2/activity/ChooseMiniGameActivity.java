@@ -9,11 +9,12 @@ import android.widget.ImageButton;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.IchHabNochNieActivity;
+import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenActivity;
 import de.tomade.saufomat2.activity.miniGames.busfahren.BusfahrenActivity;
-import de.tomade.saufomat2.model.miniGame;
+import de.tomade.saufomat2.model.MiniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
-    private miniGame currentGame = miniGame.BUSFAHREN;
+    private MiniGame currentGame = MiniGame.BUSFAHREN;
     private ImageButton currentGameButton;
 
     @Override
@@ -25,6 +26,37 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         ImageButton rightButton = (ImageButton) this.findViewById(R.id.rightButton);
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
         this.currentGameButton = (ImageButton) this.findViewById(R.id.currentGameButton);
+
+        Bundle extras = this.getIntent().getExtras();
+        if (extras != null) {
+            this.currentGame = (MiniGame) extras.getSerializable("lastGame");
+            switch (this.currentGame) {
+                case AUGENSAUFEN:
+                    this.currentGameButton.setImageResource(R.drawable.augensaufen_screen);
+                    break;
+                case BIERGEBALLER:
+                    this.currentGameButton.setImageResource(R.drawable.biergeballer_screen);
+                    break;
+                case BUSFAHREN:
+                    this.currentGameButton.setImageResource(R.drawable.busfahrer_screen);
+                    break;
+                case CIRCLE_OF_DEATH:
+                    this.currentGameButton.setImageResource(R.drawable.circle_of_death_screen);
+                    break;
+                case ICH_HAB_NOCH_NIE:
+                    this.currentGameButton.setImageResource(R.drawable.ich_hab_nie_screen);
+                    break;
+                case KINGS:
+                    this.currentGameButton.setImageResource(R.drawable.kings_screen);
+                    break;
+                case KISTEN_STAPELN:
+                    this.currentGameButton.setImageResource(R.drawable.kistenstapeln_screen);
+                    break;
+                case WERF_DICH_DICHT:
+                    this.currentGameButton.setImageResource(R.drawable.werf_dich_dicht_screen);
+                    break;
+            }
+        }
 
         leftButton.setOnClickListener(this);
         rightButton.setOnClickListener(this);
@@ -109,35 +141,35 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
     private void leftButtonPressed() {
         switch (this.currentGame) {
             case AUGENSAUFEN:
-                currentGame = miniGame.WERF_DICH_DICHT;
+                currentGame = MiniGame.WERF_DICH_DICHT;
                 this.currentGameButton.setImageResource(R.drawable.werf_dich_dicht_screen);
                 break;
             case BIERGEBALLER:
-                currentGame = miniGame.AUGENSAUFEN;
+                currentGame = MiniGame.AUGENSAUFEN;
                 this.currentGameButton.setImageResource(R.drawable.augensaufen_screen);
                 break;
             case BUSFAHREN:
-                currentGame = miniGame.BIERGEBALLER;
+                currentGame = MiniGame.BIERGEBALLER;
                 this.currentGameButton.setImageResource(R.drawable.biergeballer_screen);
                 break;
             case CIRCLE_OF_DEATH:
-                currentGame = miniGame.BUSFAHREN;
+                currentGame = MiniGame.BUSFAHREN;
                 this.currentGameButton.setImageResource(R.drawable.busfahrer_screen);
                 break;
             case ICH_HAB_NOCH_NIE:
-                currentGame = miniGame.CIRCLE_OF_DEATH;
+                currentGame = MiniGame.CIRCLE_OF_DEATH;
                 this.currentGameButton.setImageResource(R.drawable.circle_of_death_screen);
                 break;
             case KINGS:
-                currentGame = miniGame.ICH_HAB_NOCH_NIE;
+                currentGame = MiniGame.ICH_HAB_NOCH_NIE;
                 this.currentGameButton.setImageResource(R.drawable.ich_hab_nie_screen);
                 break;
             case KISTEN_STAPELN:
-                currentGame = miniGame.KINGS;
+                currentGame = MiniGame.KINGS;
                 this.currentGameButton.setImageResource(R.drawable.kings_screen);
                 break;
             case WERF_DICH_DICHT:
-                currentGame = miniGame.KISTEN_STAPELN;
+                currentGame = MiniGame.KISTEN_STAPELN;
                 this.currentGameButton.setImageResource(R.drawable.kistenstapeln_screen);
                 break;
         }
@@ -146,35 +178,35 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
     private void rightButtonPressed() {
         switch (this.currentGame) {
             case AUGENSAUFEN:
-                currentGame = miniGame.BIERGEBALLER;
+                currentGame = MiniGame.BIERGEBALLER;
                 this.currentGameButton.setImageResource(R.drawable.biergeballer_screen);
                 break;
             case BIERGEBALLER:
-                currentGame = miniGame.BUSFAHREN;
+                currentGame = MiniGame.BUSFAHREN;
                 this.currentGameButton.setImageResource(R.drawable.busfahrer_screen);
                 break;
             case BUSFAHREN:
-                currentGame = miniGame.CIRCLE_OF_DEATH;
+                currentGame = MiniGame.CIRCLE_OF_DEATH;
                 this.currentGameButton.setImageResource(R.drawable.circle_of_death_screen);
                 break;
             case CIRCLE_OF_DEATH:
-                currentGame = miniGame.ICH_HAB_NOCH_NIE;
+                currentGame = MiniGame.ICH_HAB_NOCH_NIE;
                 this.currentGameButton.setImageResource(R.drawable.ich_hab_nie_screen);
                 break;
             case ICH_HAB_NOCH_NIE:
-                currentGame = miniGame.KINGS;
+                currentGame = MiniGame.KINGS;
                 this.currentGameButton.setImageResource(R.drawable.kings_screen);
                 break;
             case KINGS:
-                currentGame = miniGame.KISTEN_STAPELN;
+                currentGame = MiniGame.KISTEN_STAPELN;
                 this.currentGameButton.setImageResource(R.drawable.kistenstapeln_screen);
                 break;
             case KISTEN_STAPELN:
-                currentGame = miniGame.WERF_DICH_DICHT;
+                currentGame = MiniGame.WERF_DICH_DICHT;
                 this.currentGameButton.setImageResource(R.drawable.werf_dich_dicht_screen);
                 break;
             case WERF_DICH_DICHT:
-                currentGame = miniGame.AUGENSAUFEN;
+                currentGame = MiniGame.AUGENSAUFEN;
                 this.currentGameButton.setImageResource(R.drawable.augensaufen_screen);
                 break;
         }
@@ -195,6 +227,8 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         Intent intent;
         switch (this.currentGame) {
             case AUGENSAUFEN:
+                intent = new Intent(this.getApplicationContext(), AugensaufenActivity.class);
+                startGame(intent);
                 break;
             case BIERGEBALLER:
                 break;

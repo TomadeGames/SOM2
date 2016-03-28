@@ -3,7 +3,7 @@ package de.tomade.saufomat2.model;
 /**
  * Created by woors on 22.03.2016.
  */
-public enum miniGame {
+public enum MiniGame {
     AUGENSAUFEN,
     BIERGEBALLER,
     BUSFAHREN,
