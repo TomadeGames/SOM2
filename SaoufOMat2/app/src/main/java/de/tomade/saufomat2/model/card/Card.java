@@ -51,9 +51,6 @@ public class Card {
     }
 
     public boolean isHigherAs(Card c) {
-        if (this.getValue() == c.getValue()) {
-            return false;
-        }
         return this.getValueAsInt() > c.getValueAsInt();
     }
 

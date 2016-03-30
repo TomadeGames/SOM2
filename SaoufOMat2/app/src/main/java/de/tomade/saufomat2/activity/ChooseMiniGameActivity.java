@@ -11,6 +11,7 @@ import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.IchHabNochNieActivity;
 import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenActivity;
 import de.tomade.saufomat2.activity.miniGames.busfahren.BusfahrenActivity;
+import de.tomade.saufomat2.activity.miniGames.werfDichDicht.WerfDichDichtActivity;
 import de.tomade.saufomat2.model.MiniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
@@ -247,6 +248,8 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
             case KISTEN_STAPELN:
                 break;
             case WERF_DICH_DICHT:
+                intent = new Intent(this.getApplicationContext(), WerfDichDichtActivity.class);
+                startGame(intent);
                 break;
         }
     }

@@ -38,7 +38,10 @@
             android:label="@string/title_activity_ich_hab_noch_nie" />
         <activity
             android:name=".activity.miniGames.augensaufen.AugensaufenActivity"
-            android:label="@string/title_activity_augensaufen"></activity>
+            android:label="@string/title_activity_augensaufen" />
+        <activity
+            android:name=".activity.miniGames.werfDichDicht.WerfDichDichtActivity"
+            android:label="@string/title_activity_werf_dich_dicht"></activity>
     </application>
 
 </manifest>

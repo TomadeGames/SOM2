@@ -12,4 +12,6 @@
     <string name="title_activity_ich_hab_noch_nie">IchHabNochNieActivity</string>
     <string name="title_activity_augensaufen">AugensaufenActivity</string>
     <string name="n_chster_spieler">Nächster Spieler</string>
+    <string name="title_activity_werf_dich_dicht">WerfDichDichtActivity</string>
+    <string name="wer_dich_dicht_tutorial">Anleitung:\nEs wird nacheinander Gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler es leer trinken und ist nochmal an der Reihe.</string>
 </resources>

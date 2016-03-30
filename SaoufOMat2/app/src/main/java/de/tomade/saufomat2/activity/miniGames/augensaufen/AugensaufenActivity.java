@@ -76,12 +76,12 @@ public class AugensaufenActivity extends Activity implements View.OnClickListene
     }
 
     private void stopRolling() {
+        this.gameState = AugensaufenState.RESULT;
         this.bottomText.setText("Trink " + (this.currentDiceIndex + 1));
         if (!fromMenue) {
             Player currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayerId);
             currentPlayer.setDrinks(currentPlayer.getDrinks() + this.currentDiceIndex + 1);
         }
-        this.gameState = AugensaufenState.RESULT;
     }
 
     private void restart() {

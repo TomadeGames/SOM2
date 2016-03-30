@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +19,8 @@ import de.tomade.saufomat2.model.card.Card;
 import de.tomade.saufomat2.model.card.CardValue;
 
 public class BusfahrenActivity extends Activity implements View.OnClickListener {
+    public static final String TAG = BusfahrenActivity.class.getSimpleName();
+
     private ImageButton leftButton;
     private ImageButton rightButton;
     private TextView leftText;
@@ -24,6 +28,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     private TextView taskText;
     private TextView drinkCounterText;
     private TextView plusText;
+    private View tutorail;
 
     private int drinkCount = 0;
     private BusfahrenState gameState = BusfahrenState.RED_BLACK;
@@ -68,6 +73,10 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
         drinkCounterText = (TextView) this.findViewById(R.id.drinkCounterText);
         plusText = (TextView) this.findViewById(R.id.drinkCounterPlusText);
 
+        this.tutorail = this.findViewById(R.id.tutorialPanel);
+        ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
+
+        tutorialButton.setOnClickListener(this);
         this.leftButton.setOnClickListener(this);
         this.rightButton.setOnClickListener(this);
     }
@@ -92,20 +101,39 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View v) {
-        if (buttonsClickable) {
-            buttonsClickable = false;
-            switch (v.getId()) {
-                case R.id.leftButton:
-                    leftButtonPressed();
-                    break;
-                case R.id.rightButton:
-                    rightButtonPressed();
-                    break;
-                case R.id.backButton:
-                    leaveGame();
-                    break;
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == 0) {
+            if(this.tutorail.getVisibility() == View.VISIBLE) {
+                this.tutorail.setVisibility(View.GONE);
             }
+        }
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(this.tutorail.getVisibility() == View.GONE) {
+            if (buttonsClickable) {
+                buttonsClickable = false;
+                switch (v.getId()) {
+                    case R.id.leftButton:
+                        leftButtonPressed();
+                        break;
+                    case R.id.rightButton:
+                        rightButtonPressed();
+                        break;
+                    case R.id.backButton:
+                        leaveGame();
+                        break;
+                    case R.id.tutorialButton:
+                        this.tutorail.setVisibility(View.VISIBLE);
+                        buttonsClickable = true;
+                        break;
+                }
+            }
+        }
+        else{
+            this.tutorail.setVisibility(View.GONE);
         }
     }
 
@@ -247,6 +275,11 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     }
 
     public boolean checkRightButton() {
+        if(this.gameState == BusfahrenState.HIGHER_LOWER){
+            if(this.cards[1].getValueAsInt() == this.cards[0].getValueAsInt()){
+                return false;
+            }
+        }
         return !this.checkLeftButton();
     }
 

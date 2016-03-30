@@ -247,4 +247,43 @@
 
     </RelativeLayout>
 
+    <ImageButton
+        android:id="@+id/tutorialButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#00ffffff"
+        android:scaleType="fitXY"
+        android:src="@drawable/help" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tutorialPanel"
+        android:gravity="center"
+        android:layout_margin="15dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/imageView3"
+            android:src="@drawable/popup"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Anleitung:\nEs liegen 5 Karten bereit und zu jeder Karte, gibt es eine Frage, die der Spieler beantworten muss.\nDer Spieler muss alle 5 Fragen richtig beantworten um das Spiel zu beenden.\nScheitert er an einer Frage, muss er die Anzahl der offenen Karten trinken und von vorne anfangen."
+            android:id="@+id/textView2"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textColor="#000000" />
+    </RelativeLayout>
+
 </RelativeLayout>
