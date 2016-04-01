@@ -3,10 +3,12 @@ package de.tomade.saufomat2.activity.mainGame;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -38,20 +40,21 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             this.currentPlayer = Player.getPlayerById(this.players, extras.getInt("currentPlayer"));
         }
 
-        for (Player p : players) {
-            Log.d(TAG, p.getName() + " id: " + p.getId() + " next: " + p.getNextPlayerId());
-        }
+
         TextView currentPlayerNameText = (TextView) this.findViewById(R.id.currentPlayerNameText);
         currentPlayerNameText.setText(this.currentPlayer.getName());
         TextView taskText = (TextView) this.findViewById(R.id.taskText);
         taskText.setText(this.currentTask.getText());
         int cost = this.currentTask.getCost();
+
+        ImageButton noButton = (ImageButton) this.findViewById(R.id.noButton);
         TextView costText = (TextView) this.findViewById(R.id.costText);
         if (cost <= 0) {
-            costText.setVisibility(View.GONE);
-            this.findViewById(R.id.noButton).setVisibility(View.GONE);
+            noButton.setImageResource(R.drawable.gray_button);
+            costText.setVisibility(View.INVISIBLE);
         } else {
             costText.setText("Trink " + this.currentTask.getCost());
+            noButton.setOnClickListener(this);
         }
 
         LinearLayout playerLayout = (LinearLayout) this.findViewById(R.id.playerLayout);
@@ -62,12 +65,10 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             this.playerTexts.put(p.getId(), textView);
         }
 
-        ImageButton noButton = (ImageButton) findViewById(R.id.noButton);
         ImageButton yesButton = (ImageButton) findViewById(R.id.yesButton);
         ImageButton optionsButton = (ImageButton) findViewById(R.id.optionsButton);
         ImageButton alcoholButton = (ImageButton) findViewById(R.id.alcoholButton);
 
-        noButton.setOnClickListener(this);
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
         alcoholButton.setOnClickListener(this);

@@ -27,6 +27,7 @@ public class MainGameActivity extends Activity {
             ArrayList<Player> players = extras.getParcelableArrayList("player");
             int currentPlayer = extras.getInt("currentPlayer");
             setContentView(new MainGamePanel(this, currentPlayer, players));
+
         }
         else{
             Player p0 = new Player();
@@ -51,6 +52,7 @@ public class MainGameActivity extends Activity {
             players.add(p1);
             int currentPlayer = p0.getId();
             setContentView(new MainGamePanel(this, currentPlayer, players));
+
         }
     }
 

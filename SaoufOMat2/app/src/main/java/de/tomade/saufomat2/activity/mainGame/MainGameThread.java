@@ -12,7 +12,6 @@ import java.text.DecimalFormat;
 public class MainGameThread extends Thread {
     private static final String TAG = MainGameThread.class.getSimpleName();
 
-
     // desired fps
     private final static int MAX_FPS = 50;
 

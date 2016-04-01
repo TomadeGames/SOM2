@@ -31,21 +31,21 @@ import de.tomade.saufomat2.model.drawable.button.DrawableButton;
  * Created by woors on 09.03.2016.
  */
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    private static final int easyChance = 4;
-    private static final int mediumChance = 4;
-    private static final int hardChance = 3;
-    private static final int gameChance = 1;
+    private static final int EASY_CHANCE = 4;
+    private static final int MEDIUM_CHANCE = 4;
+    private static final int HARD_CHANCE = 3;
+    private static final int GAME_CHANCE = 1;
 
-    private static final int saufometerBlinkTime = 600;
-    private static final int saufometerRotateTime = 300;
-    private static final int mainViewWaitTime = 7500;
+    private static final int SAUFOMETER_BLINK_TIME = 300;
+    private static final int SAUFOMETER_ROTATE_TIME = 100;
+    private static final int MAIN_VIEW_WAIT_TIME = 1000;
     private static final String TAG = MainGamePanel.class.getSimpleName();
     private static Random random;
 
     //Thread
-    private MainGameThread thread;
+    private MainGameLoopThread thread;
     private String avgFps;
-    private int elapsedTime;
+    private long elapsedTime;
 
     //Player
     private Player currentPlayer;
@@ -62,6 +62,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private MainGameState gameState = MainGameState.GAME_START;
 
+    private Bitmap background;
+    private Bitmap slotMachine;
+    private Paint currentPlayerTextPaint;
+
     //Task
     private TaskFactory taskFactory;
     private Task currentTask;
@@ -69,9 +73,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     //SaufOMeter
     private int saufOMeterEndFrame = 1;
-    private float saufometerUpdateCounter = saufometerRotateTime;
-    private float waitCounter = mainViewWaitTime;
-    private float saufometerBlinkingCounter = saufometerBlinkTime;
+    private float saufometerUpdateCounter = SAUFOMETER_ROTATE_TIME;
+    private float waitCounter = MAIN_VIEW_WAIT_TIME;
+    private float saufometerBlinkingCounter = SAUFOMETER_BLINK_TIME;
     private int blinkCounter = 0;
     private boolean framesSet = false;
 
@@ -89,8 +93,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         initContent();
         taskFactory = new TaskFactory();
 
-
-        thread = new MainGameThread(getHolder(), this);
+        thread = new MainGameLoopThread(getHolder(), this);
         setFocusable(true);
         this.player = players;
         this.currentPlayer = Player.getPlayerById(this.player, currentPlayerId);
@@ -101,6 +104,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void initContent() {
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine_background);
+        background = Bitmap.createScaledBitmap(background, this.screenWith, this.screenHeight, true);
+
+        this.slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
+        this.slotMachine = Bitmap.createScaledBitmap(slotMachine, this.screenWith, this.screenHeight, true);
+
+        this.currentPlayerTextPaint = new Paint();
+        this.currentPlayerTextPaint.setTextSize(100);
+        this.currentPlayerTextPaint.setTextAlign(Paint.Align.CENTER);
+
         Bitmap beerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.beer_icon);
         Bitmap cocktailIcon = BitmapFactory.decodeResource(getResources(), R.drawable.cocktail_icon);
         Bitmap shotIcon = BitmapFactory.decodeResource(getResources(), R.drawable.shot_icon);
@@ -192,7 +205,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         } else if (this.gameState == MainGameState.WAITING) {
             this.waitCounter -= this.elapsedTime;
             if (this.waitCounter <= 0) {
-                this.waitCounter = mainViewWaitTime;
+                this.waitCounter = MAIN_VIEW_WAIT_TIME;
                 this.gameState = MainGameState.SHOW_MAIN_VIEW;
                 changeToTaskView();
             }
@@ -202,7 +215,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private void moveSaufometer() {
         this.saufometerUpdateCounter -= this.elapsedTime;
         if (saufometerUpdateCounter <= 0) {
-            saufometerUpdateCounter = saufometerRotateTime;
+            saufometerUpdateCounter = SAUFOMETER_ROTATE_TIME;
             this.saufOMeter.setCurrentFrame(this.saufOMeter.getCurrentFrame() + 1);
             Log.d(TAG, "endFrame: " + saufOMeterEndFrame + ", currFrame: " + this.saufOMeter.getCurrentFrame());
             if (this.saufOMeter.getCurrentFrame() >= this.saufOMeterEndFrame) {
@@ -221,7 +234,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private void blinkSaufometer() {
         saufometerBlinkingCounter -= this.elapsedTime;
         if (this.saufometerBlinkingCounter <= 0) {
-            saufometerBlinkingCounter = saufometerBlinkTime;
+            saufometerBlinkingCounter = SAUFOMETER_BLINK_TIME;
             blinkCounter++;
             switch (this.currentDifficult) {
                 case EASY_WIN:
@@ -336,16 +349,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void moveSingleIcon(SlotMachineIcon icon, float speed) {
-        int chanceSum = easyChance + mediumChance + hardChance + gameChance;
+        int chanceSum = EASY_CHANCE + MEDIUM_CHANCE + HARD_CHANCE + GAME_CHANCE;
         icon.setY(icon.getY() + (int) (speed * getElapsedTime()));
         if (icon.getY() > screenHeight) {
             icon.setY(0);
             int rnd = random.nextInt(chanceSum);
-            if (rnd < easyChance) {
+            if (rnd < EASY_CHANCE) {
                 icon.setState(IconState.EASY);
-            } else if (rnd < easyChance + mediumChance) {
+            } else if (rnd < EASY_CHANCE + MEDIUM_CHANCE) {
                 icon.setState(IconState.MEDIUM);
-            } else if (rnd < easyChance + mediumChance + hardChance) {
+            } else if (rnd < EASY_CHANCE + MEDIUM_CHANCE + HARD_CHANCE) {
                 icon.setState(IconState.HARD);
             } else if (rnd < chanceSum) {
                 icon.setState(IconState.GAME);
@@ -354,7 +367,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void moveIcons() {
-        float[] speeds = {1f, 1.5f, 2f};
+        float[] speeds = {3.5f, 5f, 6.5f};
         switch (gameState) {
             case ROLLING_ALL:
                 for (int i = 0; i < 3; i++) {
@@ -421,44 +434,30 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void render(Canvas canvas) {
         if (canvas != null) {
-            Bitmap background = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine_background);
-            background = Bitmap.createScaledBitmap(background, canvas.getWidth(), canvas.getHeight(), true);
             canvas.drawBitmap(background, 0, 0, null);
 
             for (SlotMachineIcon icon : this.icons) {
                 icon.draw(canvas);
             }
-            Bitmap slotMachine = BitmapFactory.decodeResource(getResources(), R.drawable.slot_machine);
-            slotMachine = Bitmap.createScaledBitmap(slotMachine, canvas.getWidth(), canvas.getHeight(), true);
             canvas.drawBitmap(slotMachine, 0, 0, null);
 
-            Paint currentPlayerTextPaint = new Paint();
-            currentPlayerTextPaint.setTextSize(100);
-            currentPlayerTextPaint.setTextAlign(Paint.Align.CENTER);
-            canvas.drawText(this.currentPlayer.getName(), canvas.getWidth() / 2, this.screenHeight / 15, currentPlayerTextPaint);
+            canvas.drawText(this.currentPlayer.getName(), canvas.getWidth() / 2, this.screenHeight / 15, this.currentPlayerTextPaint);
 
             this.saufOMeter.draw(canvas);
 
             this.button.draw(canvas);
-            // display fps
-            displayFps(canvas, avgFps);
-        }
-    }
-
-    private void displayFps(Canvas canvas, String fps) {
-        if (canvas != null && fps != null) {
-            Paint paint = new Paint();
-            paint.setARGB(255, 255, 255, 255);
-            canvas.drawText(fps, this.getWidth() - 50, 20, paint);
+            if(this.avgFps != null) {
+                canvas.drawText(avgFps, this.getWidth() - 200, 250, this.currentPlayerTextPaint);
+            }
         }
     }
 
 
-    public int getElapsedTime() {
+    public long getElapsedTime() {
         return elapsedTime;
     }
 
-    public void setElapsedTime(int elapsedTime) {
+    public void setElapsedTime(long elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
 }

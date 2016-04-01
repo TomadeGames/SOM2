@@ -12,36 +12,40 @@
         <activity android:name=".activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.CreatePlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.ChooseMiniGameActivity" />
         <activity
             android:name=".activity.mainGame.MainGameActivity"
-            android:label="@string/title_activity_main_game" />
+            android:label="@string/title_activity_main_game"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.mainGame.TaskViewActivity"
-            android:label="@string/title_activity_task_view" />
+            android:label="@string/title_activity_task_view"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.miniGames.busfahren.BusfahrenActivity"
-            android:label="@string/title_activity_busfahren" />
+            android:label="@string/title_activity_busfahren"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.miniGames.IchHabNochNieActivity"
-            android:label="@string/title_activity_ich_hab_noch_nie" />
+            android:label="@string/title_activity_ich_hab_noch_nie"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.miniGames.augensaufen.AugensaufenActivity"
-            android:label="@string/title_activity_augensaufen" />
+            android:label="@string/title_activity_augensaufen"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.miniGames.werfDichDicht.WerfDichDichtActivity"
-            android:label="@string/title_activity_werf_dich_dicht"></activity>
+            android:label="@string/title_activity_werf_dich_dicht"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
