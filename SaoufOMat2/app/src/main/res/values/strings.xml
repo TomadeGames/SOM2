@@ -14,4 +14,14 @@
     <string name="n_chster_spieler">Nächster Spieler</string>
     <string name="title_activity_werf_dich_dicht">WerfDichDichtActivity</string>
     <string name="wer_dich_dicht_tutorial">Anleitung:\nEs wird nacheinander Gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler es leer trinken und ist nochmal an der Reihe.</string>
+    <string name="title_activity_kisten_stapeln">KistenStapelnActivity</string>
+    <string name="title_activity_kings">KingsActivity</string>
+    <string name="Biergeballer">Biergeballer</string>
+    <string name="Augensaufen">Augensaufen</string>
+    <string name="WerfDichDicht">Werf dich dicht</string>
+    <string name="Busfahren">Busfahren</string>
+    <string name="CircleOfDeath">Circle of Death</string>
+    <string name="IchHabNochNie">Ich hab noch nie</string>
+    <string name="Kings">Kings</string>
+    <string name="KistenStapeln">Kisten stapeln</string>
 </resources>

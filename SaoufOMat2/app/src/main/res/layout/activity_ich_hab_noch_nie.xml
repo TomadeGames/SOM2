@@ -14,10 +14,12 @@
         android:src="@drawable/tepich" />
 
     <RelativeLayout
-        android:layout_width="550dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/backButton"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp">
 
         <ImageButton
@@ -61,24 +63,24 @@
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
         android:background="#00ffffff"
-        android:src="@drawable/no_button"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="5dp" />
+        android:src="@drawable/no_button" />
 
     <TextView
         android:id="@+id/backText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/backButton"
+        android:layout_alignLeft="@+id/backButton"
+        android:layout_alignRight="@+id/backButton"
         android:layout_alignTop="@+id/backButton"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/zurueck"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ffffff"
-        android:layout_alignLeft="@+id/backButton"
-        android:layout_alignBottom="@+id/backButton"
-        android:layout_alignRight="@+id/backButton" />
+        android:textColor="#ffffff" />
 </RelativeLayout>

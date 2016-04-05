@@ -4,17 +4,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.card.Card;
 import de.tomade.saufomat2.model.card.CardValue;
 
@@ -184,7 +186,20 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
             intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
             intent.putExtra("lastGame", MiniGame.BUSFAHREN);
         } else {
+            Bundle extras = this.getIntent().getExtras();
+            int playerId;
+            ArrayList<Player> playerList;
             intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
+            if (extras != null) {
+                playerList = extras.getParcelableArrayList("player");
+                playerId = extras.getInt("currentPlayerId");
+
+                Player p = Player.getPlayerById(playerList, playerId);
+                p.increaseDrinks(this.drinkCount);
+
+                intent.putParcelableArrayListExtra("player", playerList);
+                intent.putExtra("currentPlayerId", p.getNextPlayerId());
+            }
         }
         this.startActivity(intent);
     }

@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/diceImage"
-        android:layout_margin="30dp">
+        android:layout_margin="20dp">
 
         <ImageView
             android:id="@+id/imageView2"

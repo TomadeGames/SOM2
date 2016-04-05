@@ -41,8 +41,13 @@ public class Card {
     public static Card getRandomCard() {
         int color = random.nextInt(4);
         int value = random.nextInt(13);
-        Card card = new Card(color, value);
-        return card;
+        return new Card(color, value);
+    }
+
+    public static Card getRandomCard7OrHigher() {
+        int color = random.nextInt(4);
+        int value = random.nextInt(8) + 5;
+        return new Card(color, value);
     }
 
     public boolean isRed() {
@@ -84,7 +89,11 @@ public class Card {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(CardValue value) {
+        this.value = value;
+    }
+
+    public void setValue(int value) throws IllegalArgumentException {
         switch (value) {
             case 0:
                 this.setValue(CardValue.TWO);
@@ -125,11 +134,9 @@ public class Card {
             case 12:
                 this.setValue(CardValue.ACE);
                 break;
+            default:
+                throw new IllegalArgumentException("Der Kartenwert muss zwischen 0 und 12 liegen");
         }
-    }
-
-    public void setValue(CardValue value) {
-        this.value = value;
     }
 
     public int getValueAsInt() {
@@ -168,7 +175,11 @@ public class Card {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(CardColor color) {
+        this.color = color;
+    }
+
+    public void setColor(int color) throws IllegalArgumentException {
         switch (color) {
             case 0:
                 this.setColor(CardColor.DIAMOND);
@@ -182,11 +193,10 @@ public class Card {
             case 3:
                 this.setColor(CardColor.SPADE);
                 break;
+            default:
+                throw new IllegalArgumentException("Der Kartenfarbe muss zwischen 0 und 3 liegen");
         }
-    }
 
-    public void setColor(CardColor color) {
-        this.color = color;
     }
 
     public int getImageId() {

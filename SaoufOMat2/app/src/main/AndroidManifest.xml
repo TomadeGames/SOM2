@@ -12,12 +12,14 @@
         <activity android:name=".activity.MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.CreatePlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -46,6 +48,13 @@
             android:name=".activity.miniGames.werfDichDicht.WerfDichDichtActivity"
             android:label="@string/title_activity_werf_dich_dicht"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.miniGames.KistenStapelnActivity"
+            android:label="@string/title_activity_kisten_stapeln"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.miniGames.kings.KingsActivity"
+            android:label="@string/title_activity_kings"></activity>
     </application>
 
 </manifest>
