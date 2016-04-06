@@ -12,6 +12,7 @@ import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.IchHabNochNieActivity;
 import de.tomade.saufomat2.activity.miniGames.KistenStapelnActivity;
 import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenActivity;
+import de.tomade.saufomat2.activity.miniGames.bierrutsche.Bierrutsche;
 import de.tomade.saufomat2.activity.miniGames.busfahren.BusfahrenActivity;
 import de.tomade.saufomat2.activity.miniGames.kings.KingsActivity;
 import de.tomade.saufomat2.activity.miniGames.werfDichDicht.WerfDichDichtActivity;
@@ -49,7 +50,7 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
                     this.currentGameButton.setImageResource(R.drawable.busfahrer_screen);
                     this.gameText.setText(R.string.Busfahren);
                     break;
-                case CIRCLE_OF_DEATH:
+                case BIERRUTSCHE:
                     this.currentGameButton.setImageResource(R.drawable.circle_of_death_screen);
                     this.gameText.setText(R.string.CircleOfDeath);
                     break;
@@ -169,13 +170,13 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
                 this.currentGameButton.setImageResource(R.drawable.biergeballer_screen);
                 this.gameText.setText(R.string.Biergeballer);
                 break;
-            case CIRCLE_OF_DEATH:
+            case BIERRUTSCHE:
                 currentGame = MiniGame.BUSFAHREN;
                 this.currentGameButton.setImageResource(R.drawable.busfahrer_screen);
                 this.gameText.setText(R.string.Busfahren);
                 break;
             case ICH_HAB_NOCH_NIE:
-                currentGame = MiniGame.CIRCLE_OF_DEATH;
+                currentGame = MiniGame.BIERRUTSCHE;
                 this.currentGameButton.setImageResource(R.drawable.circle_of_death_screen);
                 this.gameText.setText(R.string.CircleOfDeath);
                 break;
@@ -210,11 +211,11 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
                 this.gameText.setText(R.string.Busfahren);
                 break;
             case BUSFAHREN:
-                currentGame = MiniGame.CIRCLE_OF_DEATH;
+                currentGame = MiniGame.BIERRUTSCHE;
                 this.currentGameButton.setImageResource(R.drawable.circle_of_death_screen);
                 this.gameText.setText(R.string.CircleOfDeath);
                 break;
-            case CIRCLE_OF_DEATH:
+            case BIERRUTSCHE:
                 currentGame = MiniGame.ICH_HAB_NOCH_NIE;
                 this.currentGameButton.setImageResource(R.drawable.ich_hab_nie_screen);
                 this.gameText.setText(R.string.IchHabNochNie);
@@ -266,7 +267,9 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
                 intent = new Intent(this.getApplicationContext(), BusfahrenActivity.class);
                 startGame(intent);
                 break;
-            case CIRCLE_OF_DEATH:
+            case BIERRUTSCHE:
+                intent = new Intent(this.getApplicationContext(), Bierrutsche.class);
+                startGame(intent);
                 break;
             case ICH_HAB_NOCH_NIE:
                 intent = new Intent(this.getApplicationContext(), IchHabNochNieActivity.class);

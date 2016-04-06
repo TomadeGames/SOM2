@@ -54,7 +54,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.miniGames.kings.KingsActivity"
-            android:label="@string/title_activity_kings"></activity>
+            android:label="@string/title_activity_kings" />
+        <activity
+            android:name=".activity.miniGames.bierrutsche.Bierrutsche"
+            android:label="@string/title_activity_bierrutsche"></activity>
     </application>
 
 </manifest>

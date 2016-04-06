@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backgroundLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.tomade.saufomat2.activity.miniGames.bierrutsche.Bierrutsche">
+
+    <de.tomade.saufomat2.model.drawable.DynamicImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="1500dp"
+        android:layout_height="fill_parent"
+        android:src="@drawable/bierrutsche_background" />
+
+    <ImageView
+        android:id="@+id/startImage"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/beerImage"
+        android:scaleType="fitXY"
+        android:src="@drawable/bierrutsche_startfeld" />
+
+    <ImageView
+        android:id="@+id/targetImage"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/bierrutsche_tisch" />
+
+    <ImageView
+        android:id="@+id/beerImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/beer_icon" />
+
+    <ImageButton
+        android:id="@+id/tutorialButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#00000000"
+        android:scaleType="fitXY"
+        android:src="@drawable/help" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="#00ffffff"
+        android:scaleType="center"
+        android:src="@drawable/no_button" />
+
+    <TextView
+        android:id="@+id/backText"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/backButton"
+        android:layout_alignLeft="@+id/backButton"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignRight="@+id/backButton"
+        android:layout_alignTop="@+id/backButton"
+        android:gravity="center"
+        android:text="@string/zur_ck"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <RelativeLayout
+        android:id="@+id/tutorialPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/tutorialPopup"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/popup" />
+
+        <TextView
+            android:id="@+id/tutorialText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Anleitung:\nJeder Spieler bekommt 3 Versuche, die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Wer die Flasche am Ende am weitesten geschubst hat muss nicht trinken.\nFür jede Flasche die runter fällt muss man zusätzlich einen Trinken"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000" />
+    </RelativeLayout>
+    <![CDATA[
+
+    />
+
+]]>
+</RelativeLayout>

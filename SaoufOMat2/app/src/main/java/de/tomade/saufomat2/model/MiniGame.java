@@ -6,6 +6,7 @@ package de.tomade.saufomat2.model;
 public enum MiniGame {
     AUGENSAUFEN,
     BIERGEBALLER,
+    BIERRUTSCHE,
     BUSFAHREN,
     CIRCLE_OF_DEATH,
     ICH_HAB_NOCH_NIE,
