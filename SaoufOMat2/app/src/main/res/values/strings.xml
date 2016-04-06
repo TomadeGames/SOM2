@@ -25,4 +25,5 @@
     <string name="Kings">Kings</string>
     <string name="KistenStapeln">Kisten stapeln</string>
     <string name="title_activity_bierrutsche">Bierrutsche</string>
+    <string name="bierrutsche_tutorial">Anleitung:\nJeder Spieler bekommt 3 Versuche, die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Wer die Flasche am Ende am weitesten geschubst hat muss nicht trinken.\nFür jede Flasche die runter fällt muss man zusätzlich einen Trinken</string>
 </resources>

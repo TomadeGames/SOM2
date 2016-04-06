@@ -12,7 +12,7 @@ import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.IchHabNochNieActivity;
 import de.tomade.saufomat2.activity.miniGames.KistenStapelnActivity;
 import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenActivity;
-import de.tomade.saufomat2.activity.miniGames.bierrutsche.Bierrutsche;
+import de.tomade.saufomat2.activity.miniGames.bierrutsche.BierrutscheActivity;
 import de.tomade.saufomat2.activity.miniGames.busfahren.BusfahrenActivity;
 import de.tomade.saufomat2.activity.miniGames.kings.KingsActivity;
 import de.tomade.saufomat2.activity.miniGames.werfDichDicht.WerfDichDichtActivity;
@@ -268,7 +268,7 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
                 startGame(intent);
                 break;
             case BIERRUTSCHE:
-                intent = new Intent(this.getApplicationContext(), Bierrutsche.class);
+                intent = new Intent(this.getApplicationContext(), BierrutscheActivity.class);
                 startGame(intent);
                 break;
             case ICH_HAB_NOCH_NIE:

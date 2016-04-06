@@ -56,7 +56,7 @@
             android:name=".activity.miniGames.kings.KingsActivity"
             android:label="@string/title_activity_kings" />
         <activity
-            android:name=".activity.miniGames.bierrutsche.Bierrutsche"
+            android:name=".activity.miniGames.bierrutsche.BierrutscheActivity"
             android:label="@string/title_activity_bierrutsche"></activity>
     </application>
 
