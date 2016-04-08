@@ -17,20 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.model.Player;
 
-
-//TODO:
-//Wenn kein Spieler erstellt wurde und man auf Start drückt, stürzt das Spiel ab
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     Button btnNewPlayer = null;
     Button btnStartGame = null;
     LinearLayout linearLayout = null;
-    ArrayList<Player> players = new ArrayList<Player>();
-    ArrayList<View> playerelements = new ArrayList<View>();
+    ArrayList<Player> players = new ArrayList<>();
+    Map<Integer, View> playerelements = new HashMap<>();
+    static int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +54,23 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                 showDialog(newPlayer);
                 break;
             case R.id.btnStartGame:
-                Intent intent = new Intent(this, MainGameActivity.class);
-                intent.putExtra("player", players);
-                intent.putExtra("currentPlayer", players.get(0).getId());
-                this.finish();
-                this.startActivity(intent);
+                if (!players.isEmpty()) {
+                    Intent intent = new Intent(this, MainGameActivity.class);
+                    intent.putExtra("player", players);
+                    intent.putExtra("currentPlayer", players.get(0).getId());
+                    this.finish();
+                    this.startActivity(intent);
+                }else {
+                    Toast.makeText(CreatePlayerActivity.this, "Keine Spieler vorhanden", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
 
     public void showDialog(final Player newPlayer) {
+        for(Player tmp: players) {
+            System.out.println(tmp.toString());
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
         );
@@ -72,6 +80,9 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final EditText etxtName = (EditText) view.findViewById(R.id.etxtName);
         final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
         final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
+
+        etxtName.setText("");
+        etxtWeight.setText("70");
 
         builder.setMessage("Neuer Spieler")
                 .setView(view)
@@ -111,13 +122,13 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         }
         if (!duplicate) {
             if (players != null && !players.isEmpty()) {
-                players.get(players.size()-1).setNextPlayerId(player.getId());
+                players.get(players.size() - 1).setNextPlayerId(player.getId());
             }
             this.players.add(player);
-            if(players.size() > 1){
-                players.get(players.size()-1).setLastPlayerId(players.get(players.size()-2).getId());
+            if (players.size() > 1) {
+                players.get(players.size() - 1).setLastPlayerId(players.get(players.size() - 2).getId());
             }
-            for(Player tmp : players){
+            for (Player tmp : players) {
                 System.out.println(tmp.toString());
             }
             displayPlayer(player);
@@ -127,9 +138,12 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     public void displayPlayer(final Player player) {
+        final int playerViewId = id;
+        id++;
+        final int playerId = player.getId();
         LayoutInflater inflater = this.getLayoutInflater();
         final View playerView = inflater.inflate(R.layout.player_element, null);
-        playerelements.add(playerView);
+        playerelements.put(playerViewId, playerView);
 
         TextView playername = (TextView) playerView.findViewById(R.id.txtvPlayerName);
         playername.setText(player.getName());
@@ -146,16 +160,16 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final ImageButton edit = (ImageButton) playerView.findViewById(R.id.ibEdit);
         edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                editPlayer(playerView);
+                editPlayer(playerViewId, playerId);
             }
         });
-
         this.linearLayout.addView(playerView);
     }
 
-    public void editPlayer(View playerelemnt) {
+    public void editPlayer(int playerViewId, int playerId) {
+        View playerelemnt = playerelements.get(playerViewId);
+        final Player player = Player.getPlayerById(players, playerId);
 
-        //TODO überarbeiten
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
         );
@@ -168,14 +182,6 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
         final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
 
-        Player player = null;
-        for (Player tmp : players) {
-            if (tmp.getName().equals(txtvName.getText().toString())) ;
-            {
-                player = tmp;
-            }
-        }
-
         etxtName.setText(player.getName());
         etxtWeight.setText(String.valueOf(player.getWeight()));
         if (player.getIsMan()) {
@@ -184,17 +190,15 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             spGender.setSelection(getIndex(spGender, "Frau"));
         }
 
-
-        final Player finalPlayer = player;
         builder.setMessage("Spieler Bearbeiten")
                 .setView(view)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (!etxtName.getText().toString().isEmpty() && Integer.parseInt(etxtWeight.getText().toString()) > 0 && !etxtWeight.getText().toString().isEmpty()) {
-                            txtvName.setText(finalPlayer.getName());
-                            finalPlayer.setName(etxtName.getText().toString());
-                            finalPlayer.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                            finalPlayer.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
+                            player.setName(etxtName.getText().toString());
+                            player.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
+                            player.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
+                            txtvName.setText(player.getName());
                         } else {
                             Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
                         }
@@ -221,24 +225,15 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     public void removePlayer(Player player) {
-        for (View tmp : playerelements) {
-            TextView textView = (TextView) tmp.findViewById(R.id.txtvPlayerName);
-            if (textView.getText().toString().equals(player.getName())) {
-                playerelements.remove(tmp);
-            }
-        }
         int lastPlayerId = player.getLastPlayerId();
         int nextPLayerId = player.getNextPlayerId();
         System.out.println("LastplayerId: " + lastPlayerId + " NextPlayerID: " + nextPLayerId);
-        if(player.getHasNextPlayer() && player.getHastLastPlayer()){
+        if (player.getHasNextPlayer() && player.getHastLastPlayer()) {
             Player.getPlayerById(players, lastPlayerId).setNextPlayerId(nextPLayerId);
             Player.getPlayerById(players, nextPLayerId).setLastPlayerId(lastPlayerId);
-        } else if(player.getHasNextPlayer() && !player.getHastLastPlayer()){
+        } else if (player.getHasNextPlayer() && !player.getHastLastPlayer()) {
             Player.getPlayerById(players, nextPLayerId).setLastPlayerId(-1);
             Player.getPlayerById(players, nextPLayerId).setHasLastPlayer(false);
-        } else {
-            Player.getPlayerById(players, lastPlayerId).setNextPlayerId(-1);
-            Player.getPlayerById(players, lastPlayerId).setHasNextPlayer(false);
         }
         players.remove(player);
     }

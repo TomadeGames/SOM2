@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="55dp"
-    android:background="@color/foreground_material_dark"
-    android:clickable="true"
-    android:orientation="horizontal">
+    android:layout_height="55dp">
 
-    <TextView
-        android:id="@+id/txtvPlayerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="Spielername"
-        android:textColor="@color/bright_foreground_material_light"
-        android:textSize="18sp" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@xml/customborder"
+        android:layout_marginBottom="5dp">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ibDelete"
-        android:src="@android:drawable/ic_delete"
-        android:layout_marginTop="5dp" />
+        <TextView
+            android:id="@+id/txtvPlayerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Spielername"
+            android:textColor="@color/bright_foreground_material_light"
+            android:textSize="18sp" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ibEdit"
-        android:src="@android:drawable/ic_menu_edit"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="5dp" />
+        <ImageButton
+            android:id="@+id/ibDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@+id/ibEdit"
+            android:src="@android:drawable/ic_delete"
+            android:layout_gravity="bottom|right" />
 
+        <ImageButton
+            android:id="@+id/ibEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_gravity="top|right" />
+
+    </RelativeLayout>
 </LinearLayout>

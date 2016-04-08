@@ -12,9 +12,9 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         android:id="@+id/svCreatePlayer"
-        android:layout_below="@+id/btnNewPlayer"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -28,26 +28,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Neuer Spieler"
         android:id="@+id/btnNewPlayer"
+        android:background="@drawable/btn_new_player"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="98dp"
-        android:layout_marginStart="98dp"
-        android:paddingBottom="15dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"/>
+        android:layout_marginLeft="80dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Spiel starten"
         android:id="@+id/btnStartGame"
-        android:layout_alignBottom="@+id/btnNewPlayer"
-        android:layout_toRightOf="@+id/btnNewPlayer"
-        android:layout_toEndOf="@+id/btnNewPlayer"
-        android:layout_marginLeft="84dp"
-        android:layout_marginStart="84dp" />
+        android:background="@drawable/btn_start_game"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"/>
 
 </RelativeLayout>
