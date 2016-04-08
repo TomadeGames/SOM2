@@ -2,6 +2,7 @@ package de.tomade.saufomat2.activity.miniGames.bierrutsche;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -147,15 +148,27 @@ public class BierrutscheActivity extends Activity implements View.OnClickListene
             scrollWidth = maximumLength * accuracy / 100;
         }
 
+
+        int tableScrollDistance = screenWidth*accuracy/100 - screenWidth/2;
+        int tableScrollDelay = (int)((1/(float)accuracy) * ANIMATION_DURATION * 50);
+        if(tableScrollDistance < 0){
+            tableScrollDistance = 0;
+        }
+        if(accuracy <= 50){
+            tableScrollDelay = 0;
+        }
+        Log.d(TAG, "tableScrollDistance: " + tableScrollDistance + " tableScrollDelay: " + tableScrollDelay);
+
         ObjectAnimator backgroundX = ObjectAnimator.ofFloat(backgroundImage, View.TRANSLATION_X, 0, -scrollWidth);
         backgroundX.setDuration(ANIMATION_DURATION);
 
         ObjectAnimator startFieldX = ObjectAnimator.ofFloat(startField, View.TRANSLATION_X, 0, -scrollWidth);
         startFieldX.setDuration(ANIMATION_DURATION);
 
-        targetX = ObjectAnimator.ofFloat(targetImage, View.TRANSLATION_X, 0, -screenWidth / 2);
-        targetX.setDuration(ANIMATION_DURATION);
-        targetX.setStartDelay(ANIMATION_DURATION - ANIMATION_DURATION / 10);
+        //TODO: Linear Interpolieren
+        targetX = ObjectAnimator.ofFloat(targetImage, View.TRANSLATION_X, 0, -tableScrollDistance);
+        targetX.setDuration(ANIMATION_DURATION - tableScrollDelay);
+        targetX.setStartDelay(tableScrollDelay);
 
         ValueAnimator animator = new ValueAnimator();
         animator.setObjectValues(0, accuracy);
@@ -186,15 +199,12 @@ public class BierrutscheActivity extends Activity implements View.OnClickListene
             backgroundX.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    fallingGlassX.start();
                     turningGlass.start();
                     fallingGlassY.start();
-                    targetX.start();
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-
                 }
 
                 @Override
@@ -207,7 +217,7 @@ public class BierrutscheActivity extends Activity implements View.OnClickListene
 
                 }
             });
-            targetX.addListener(new Animator.AnimatorListener() {
+            fallingGlassY.addListener(new Animator.AnimatorListener() {
 
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -232,7 +242,7 @@ public class BierrutscheActivity extends Activity implements View.OnClickListene
                 }
             });
         } else {
-            backgroundX.addListener(new Animator.AnimatorListener() {
+            targetX.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
 
@@ -257,6 +267,7 @@ public class BierrutscheActivity extends Activity implements View.OnClickListene
         }
         backgroundX.start();
         startFieldX.start();
+        targetX.start();
         animator.start();
     }
 
@@ -303,6 +314,7 @@ public class BierrutscheActivity extends Activity implements View.OnClickListene
         Log.d(TAG, "BeerPos x: " + this.beerStartPositionX + " y: " + this.beerStartPositionY);
         this.beerImage.setRotation(0);
         this.targetImage.setX(0);
+        this.backgroundImage.setX(0);
         this.startField.setX(0);
         this.gameState = BierrutscheState.START;
     }
