@@ -26,4 +26,6 @@
     <string name="KistenStapeln">Kisten stapeln</string>
     <string name="title_activity_bierrutsche">Bierrutsche</string>
     <string name="bierrutsche_tutorial">Anleitung:\nJeder Spieler bekommt 3 Versuche, die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Wer die Flasche am Ende am weitesten geschubst hat muss nicht trinken.\nFür jede Flasche die runter fällt muss man zusätzlich einen Trinken</string>
+    <string name="kisten_stapeln_tutorial">Anleitung:\nDie Spieler müssen abwechselnd\nBierkisten auf den Hügel fallen lassen\num einen Turm zu bilden.\nWenn ein Spieler den Turm umwirft\nmuss er die Anzahl der Kisten trinken.</string>
+    <string name="title_activity_biergeballer">BiergeballerActivity</string>
 </resources>

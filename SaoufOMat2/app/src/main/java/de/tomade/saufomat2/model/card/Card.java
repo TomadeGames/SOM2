@@ -419,4 +419,9 @@ public class Card {
                 break;
         }
     }
+
+    @Override
+    public String toString(){
+        return "Card: " + " " + this.getColor() + this.getValue() ;
+    }
 }

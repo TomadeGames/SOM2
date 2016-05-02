@@ -9,7 +9,9 @@
         android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".activity.MainMenuActivity">
+        <activity
+            android:name=".activity.MainMenuActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +25,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ChooseMiniGameActivity" />
+        <activity
+            android:name=".activity.ChooseMiniGameActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.mainGame.MainGameActivity"
             android:label="@string/title_activity_main_game"
@@ -37,7 +41,7 @@
             android:label="@string/title_activity_busfahren"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.miniGames.IchHabNochNieActivity"
+            android:name=".activity.miniGames.ichHabNochNie.IchHabNochNieActivity"
             android:label="@string/title_activity_ich_hab_noch_nie"
             android:screenOrientation="landscape" />
         <activity
@@ -49,7 +53,7 @@
             android:label="@string/title_activity_werf_dich_dicht"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.miniGames.KistenStapelnActivity"
+            android:name=".activity.miniGames.kistenStapeln.KistenStapelnActivity"
             android:label="@string/title_activity_kisten_stapeln"
             android:screenOrientation="portrait" />
         <activity
@@ -57,7 +61,18 @@
             android:label="@string/title_activity_kings" />
         <activity
             android:name=".activity.miniGames.bierrutsche.BierrutscheActivity"
-            android:label="@string/title_activity_bierrutsche"></activity>
+            android:label="@string/title_activity_bierrutsche" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".activity.miniGames.biergeballer.BiergeballerActivity"
+            android:label="@string/title_activity_biergeballer"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.activity.miniGames;
+package de.tomade.saufomat2.activity.miniGames.ichHabNochNie;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import java.util.Random;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
+import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.model.MiniGame;
 
 public class IchHabNochNieActivity extends Activity implements View.OnClickListener {
@@ -69,8 +70,13 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.backButton) {
-            Intent intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
-            intent.putExtra("lastGame", MiniGame.ICH_HAB_NOCH_NIE);
+            Intent intent;
+            if(fromMenue) {
+                intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
+                intent.putExtra("lastGame", MiniGame.ICH_HAB_NOCH_NIE);
+            } else {
+                intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
+            }
             this.startActivity(intent);
         } else {
             if (this.tutorialShown) {

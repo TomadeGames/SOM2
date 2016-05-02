@@ -9,8 +9,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.miniGames.IchHabNochNieActivity;
-import de.tomade.saufomat2.activity.miniGames.KistenStapelnActivity;
+import de.tomade.saufomat2.activity.miniGames.biergeballer.BiergeballerActivity;
+import de.tomade.saufomat2.activity.miniGames.ichHabNochNie.IchHabNochNieActivity;
+import de.tomade.saufomat2.activity.miniGames.kistenStapeln.KistenStapelnActivity;
 import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenActivity;
 import de.tomade.saufomat2.activity.miniGames.bierrutsche.BierrutscheActivity;
 import de.tomade.saufomat2.activity.miniGames.busfahren.BusfahrenActivity;
@@ -262,6 +263,8 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
                 startGame(intent);
                 break;
             case BIERGEBALLER:
+                intent = new Intent(this.getApplicationContext(), BiergeballerActivity.class);
+                startGame(intent);
                 break;
             case BUSFAHREN:
                 intent = new Intent(this.getApplicationContext(), BusfahrenActivity.class);
