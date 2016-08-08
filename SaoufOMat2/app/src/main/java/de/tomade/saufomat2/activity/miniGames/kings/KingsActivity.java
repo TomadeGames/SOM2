@@ -52,23 +52,23 @@ public class KingsActivity extends Activity implements View.OnClickListener {
                 this.playerList = extras.getParcelableArrayList("player");
                 this.currentPlayerId = extras.getInt("currentPlayerId");
                 if (3 * this.playerList.size() > 20) {
-                    this.maximumCards = 2 * this.playerList.size();
+                    this.setMaximumCards(2 * this.playerList.size());
                 } else {
-                    this.maximumCards = 3 * this.playerList.size();
+                    this.setMaximumCards(3 * this.playerList.size());
                 }
             }
         }
         this.cardImage = (ImageView) this.findViewById(R.id.cardImage);
         this.bottomLayout = (RelativeLayout) this.findViewById(R.id.popupPanel);
-        this.popupText = (TextView) this.findViewById(R.id.popupText);
+        this.setPopupText((TextView) this.findViewById(R.id.popupText));
         this.cardCounterText = (TextView) this.findViewById(R.id.cardcounterText);
-        this.cardCounterText.setText(cardCount + " / " + this.maximumCards);
+        this.cardCounterText.setText(getCardCount() + " / " + this.getMaximumCards());
 
         if (!this.fromMenue) {
-            this.popupText.setText(Player.getPlayerById(this.playerList, this.currentPlayerId).getName() + "\nTippen um die Karte aufzudecken");
+            this.getPopupText().setText(Player.getPlayerById(this.playerList, this.currentPlayerId).getName() + "\nTippen um die Karte aufzudecken");
         }
 
-        this.lastText = this.popupText.getText().toString();
+        this.lastText = this.getPopupText().getText().toString();
 
         ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
         tutorialButton.setOnClickListener(this);
@@ -77,7 +77,7 @@ public class KingsActivity extends Activity implements View.OnClickListener {
             backButton.setOnClickListener(this);
         } else {
             backButton.setVisibility(View.GONE);
-            this.maximumCards = 32;
+            this.setMaximumCards(32);
         }
 
     }
@@ -85,27 +85,27 @@ public class KingsActivity extends Activity implements View.OnClickListener {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == 0) {
-            if (tutorialShown) {
+            if (isTutorialShown()) {
                 hideTutorial();
             } else {
-                switch (this.gameState) {
+                switch (this.getGameState()) {
                     case START:
-                        this.gameState = KingsState.ROUND_END;
+                        this.setGameState(KingsState.ROUND_END);
                         getTask();
                         break;
                     case ROUND_END:
                         if (this.fromMenue) {
-                            this.popupText.setText("Nächster Spieler");
+                            this.getPopupText().setText("Nächster Spieler");
                         } else {
                             this.currentPlayerId = Player.getPlayerById(this.playerList, this.currentPlayerId).getNextPlayerId();
-                            if (cardCount < maximumCards) {
-                                this.popupText.setText(Player.getPlayerById(this.playerList, this.currentPlayerId).getName() + "\nTippen um die Karte aufzudecken");
+                            if (getCardCount() < getMaximumCards()) {
+                                this.getPopupText().setText(Player.getPlayerById(this.playerList, this.currentPlayerId).getName() + "\nTippen um die Karte aufzudecken");
                             } else {
-                                this.popupText.setText("Spiel vorbei");
-                                this.gameState = KingsState.GAME_OVER;
+                                this.getPopupText().setText("Spiel vorbei");
+                                this.setGameState(KingsState.GAME_OVER);
                             }
                         }
-                        this.gameState = KingsState.START;
+                        this.setGameState(KingsState.START);
                         break;
                     case GAME_OVER:
                         leaveGame();
@@ -138,7 +138,7 @@ public class KingsActivity extends Activity implements View.OnClickListener {
                 this.startActivity(intent);
                 break;
             case R.id.tutorialButton:
-                if (this.tutorialShown) {
+                if (this.isTutorialShown()) {
                     hideTutorial();
                 } else {
                     showTutorial();
@@ -148,53 +148,53 @@ public class KingsActivity extends Activity implements View.OnClickListener {
     }
 
     private void showTutorial() {
-        if (!this.tutorialShown) {
-            this.tutorialShown = true;
-            this.lastText = this.popupText.getText().toString();
-            this.popupText.setText("Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.");
+        if (!this.isTutorialShown()) {
+            this.setTutorialShown(true);
+            this.lastText = this.getPopupText().getText().toString();
+            this.getPopupText().setText("Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.");
         }
     }
 
     private void hideTutorial() {
-        if (this.tutorialShown) {
-            this.tutorialShown = false;
-            this.popupText.setText(this.lastText);
+        if (this.isTutorialShown()) {
+            this.setTutorialShown(false);
+            this.getPopupText().setText(this.lastText);
         }
     }
 
     private void getTask() {
         boolean validCard = false;
-        if (lastCards.size() >= 32) {
-            this.cardCount = 0;
-            lastCards.clear();
+        if (getLastCards().size() >= 32) {
+            this.setCardCount(0);
+            getLastCards().clear();
         }
         while (!validCard) {
             validCard = true;
-            card = Card.getRandomCard7OrHigher();
-            for (Card c : this.lastCards) {
-                if (card.equals(c)) {
+            setCard(Card.getRandomCard7OrHigher());
+            for (Card c : this.getLastCards()) {
+                if (getCard().equals(c)) {
                     validCard = false;
                 }
             }
         }
-        this.lastCards.add(card);
-        this.cardImage.setImageResource(card.getImageId());
-        switch (card.getValue()) {
+        this.getLastCards().add(getCard());
+        this.cardImage.setImageResource(getCard().getImageId());
+        switch (getCard().getValue()) {
             case SEVEN:
-                this.popupText.setText("7\nDein linker Nachbar muss einen Trinken!");
+                this.getPopupText().setText("7\nDein linker Nachbar muss einen Trinken!");
                 break;
             case EIGHT:
-                this.popupText.setText("8\nDein rechter Nachbar muss einen Trinken!");
+                this.getPopupText().setText("8\nDein rechter Nachbar muss einen Trinken!");
                 break;
             case NINE:
-                this.popupText.setText("9\nDu darfst dir jemanden aussuchen, der trinken muss!");
+                this.getPopupText().setText("9\nDu darfst dir jemanden aussuchen, der trinken muss!");
                 break;
             case TEN:
-                this.popupText.setText("10\nDiesem Spieler dürfen keine Fragen beantwortet werden!");
+                this.getPopupText().setText("10\nDiesem Spieler dürfen keine Fragen beantwortet werden!");
 
                 break;
             case JACK:
-                this.popupText.setText("Bube\nAlle Männer müssen trinken!");
+                this.getPopupText().setText("Bube\nAlle Männer müssen trinken!");
                 if (!this.fromMenue) {
                     for (Player p : playerList) {
                         if (p.getIsMan()) {
@@ -204,7 +204,7 @@ public class KingsActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case QUEEN:
-                this.popupText.setText("Dame\nAlle Frauen müssen trinken!");
+                this.getPopupText().setText("Dame\nAlle Frauen müssen trinken!");
                 if (!this.fromMenue) {
                     for (Player p : playerList) {
                         if (!p.getIsMan()) {
@@ -214,10 +214,10 @@ public class KingsActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case KING:
-                this.popupText.setText("König\nDu darfst dir eine Regel ausdenken, die für dieses Spiel bestehen bleibt!");
+                this.getPopupText().setText("König\nDu darfst dir eine Regel ausdenken, die für dieses Spiel bestehen bleibt!");
                 break;
             case ACE:
-                this.popupText.setText("Ass\nAlle müssen trinken!");
+                this.getPopupText().setText("Ass\nAlle müssen trinken!");
                 if (!this.fromMenue) {
                     for (Player p : playerList) {
                         p.increaseDrinks(1);
@@ -225,7 +225,63 @@ public class KingsActivity extends Activity implements View.OnClickListener {
                 }
                 break;
         }
-        this.cardCount++;
-        this.cardCounterText.setText(this.cardCount + " / " + this.maximumCards);
+        this.setCardCount(this.getCardCount() + 1);
+        this.cardCounterText.setText(this.getCardCount() + " / " + this.getMaximumCards());
+    }
+
+    public TextView getPopupText() {
+        return popupText;
+    }
+
+    public void setPopupText(TextView popupText) {
+        this.popupText = popupText;
+    }
+
+    public int getMaximumCards() {
+        return maximumCards;
+    }
+
+    public void setMaximumCards(int maximumCards) {
+        this.maximumCards = maximumCards;
+    }
+
+    public int getCardCount() {
+        return cardCount;
+    }
+
+    public void setCardCount(int cardCount) {
+        this.cardCount = cardCount;
+    }
+
+    public boolean isTutorialShown() {
+        return tutorialShown;
+    }
+
+    public void setTutorialShown(boolean tutorialShown) {
+        this.tutorialShown = tutorialShown;
+    }
+
+    public KingsState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(KingsState gameState) {
+        this.gameState = gameState;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public List<Card> getLastCards() {
+        return lastCards;
+    }
+
+    public void setLastCards(List<Card> lastCards) {
+        this.lastCards = lastCards;
     }
 }

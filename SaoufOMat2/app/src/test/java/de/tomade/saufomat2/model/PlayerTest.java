@@ -13,13 +13,13 @@ import java.util.List;
 public class PlayerTest {
 
     @Test
-    public void ConstructorTest1() {
+    public void constructorTest1() {
         int id = new Player().getId();
         Assert.assertNotSame("Zwei Spieler mit sleber ID", id, new Player().getId());
     }
 
     @Test
-    public void ConstructorTest2() {
+    public void constructorTest2() {
         String name = "test";
         int weight = 1;
         boolean isMan = true;

@@ -15,7 +15,13 @@ public class Task implements Serializable{
     public Task(String text, TaskDifficult difficult, int drinkCount, int cost, TaskTarget target){
         this.text = text;
         this.difficult = difficult;
+        if(drinkCount < 0) {
+            drinkCount = 0;
+        }
         this.drinkCount = drinkCount;
+        if(cost < 0){
+            cost = 0;
+        }
         this.cost = cost;
         this.target = target;
     }

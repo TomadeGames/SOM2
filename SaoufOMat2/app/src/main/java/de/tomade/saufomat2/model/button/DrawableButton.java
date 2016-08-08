@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.model.drawable.button;
+package de.tomade.saufomat2.model.button;
 
 import android.graphics.Bitmap;
 
@@ -22,17 +22,19 @@ public class DrawableButton extends DrawableImage {
         listenerList.add(listener);
     }
 
-    public void removeListener(ButtonListener listener) {
-        listenerList.remove(listener);
+    public boolean removeListener(ButtonListener listener) {
+        return listenerList.remove(listener);
     }
 
-    public void checkClick(float xPressed, float yPressed) {
+    public boolean checkClick(float xPressed, float yPressed) {
         int posTopRightX = this.getX() - this.getWith() / 2;
         int posTopRightY = this.getY() - this.getHeight() / 2;
-        if (xPressed > posTopRightX && xPressed < posTopRightX + this.getWith()
-                && yPressed > posTopRightY && yPressed < posTopRightY + this.getHeight()) {
+        if (xPressed >= posTopRightX && xPressed <= posTopRightX + this.getWith()
+                && yPressed >= posTopRightY && yPressed <= posTopRightY + this.getHeight()) {
             this.fireEvent(new ButtonEvent(this));
+            return true;
         }
+        return false;
     }
 
     protected void fireEvent(ButtonEvent evt) {

@@ -1,13 +1,15 @@
-package de.tomade.saufomat2.activity.mainGame;
+package de.tomade.saufomat2.threading;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import de.tomade.saufomat2.activity.mainGame.MainGamePanel;
+
 /**
  * Created by woors on 30.03.2016.
  */
-public class MainGameLoopThread extends Thread {
-    private MainGamePanel view;
+public class GameLoopThread extends Thread {
+    private ThreadedView view;
     private boolean running = false;
     private long timeThisFrame;
     private long fps;
@@ -15,7 +17,7 @@ public class MainGameLoopThread extends Thread {
     private SurfaceHolder surfaceHolder;
 
 
-    public MainGameLoopThread(SurfaceHolder surfaceHolder, MainGamePanel view) {
+    public GameLoopThread(SurfaceHolder surfaceHolder, ThreadedView view) {
         this.view = view;
         this.surfaceHolder = surfaceHolder;
     }

@@ -28,7 +28,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     Button btnNewPlayer = null;
     Button btnStartGame = null;
     LinearLayout linearLayout = null;
-    ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     Map<Integer, View> playerelements = new HashMap<>();
     static int id = 0;
 
@@ -54,10 +54,10 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                 showDialog(newPlayer);
                 break;
             case R.id.btnStartGame:
-                if (!players.isEmpty()) {
+                if (!getPlayers().isEmpty()) {
                     Intent intent = new Intent(this, MainGameActivity.class);
-                    intent.putExtra("player", players);
-                    intent.putExtra("currentPlayer", players.get(0).getId());
+                    intent.putExtra("player", getPlayers());
+                    intent.putExtra("currentPlayer", getPlayers().get(0).getId());
                     this.finish();
                     this.startActivity(intent);
                 }else {
@@ -67,8 +67,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         }
     }
 
-    public void showDialog(final Player newPlayer) {
-        for(Player tmp: players) {
+    private void showDialog(final Player newPlayer) {
+        for(Player tmp: getPlayers()) {
             System.out.println(tmp.toString());
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -113,22 +113,22 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         builder.show();
     }
 
-    public void addPlayer(Player player) {
+    private void addPlayer(Player player) {
         boolean duplicate = false;
-        for (Player tmp : players) {
+        for (Player tmp : getPlayers()) {
             if (tmp.getName().equals(player.getName())) {
                 duplicate = true;
             }
         }
         if (!duplicate) {
-            if (players != null && !players.isEmpty()) {
-                players.get(players.size() - 1).setNextPlayerId(player.getId());
+            if (getPlayers() != null && !getPlayers().isEmpty()) {
+                getPlayers().get(getPlayers().size() - 1).setNextPlayerId(player.getId());
             }
-            this.players.add(player);
-            if (players.size() > 1) {
-                players.get(players.size() - 1).setLastPlayerId(players.get(players.size() - 2).getId());
+            this.getPlayers().add(player);
+            if (getPlayers().size() > 1) {
+                getPlayers().get(getPlayers().size() - 1).setLastPlayerId(getPlayers().get(getPlayers().size() - 2).getId());
             }
-            for (Player tmp : players) {
+            for (Player tmp : getPlayers()) {
                 System.out.println(tmp.toString());
             }
             displayPlayer(player);
@@ -137,7 +137,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         }
     }
 
-    public void displayPlayer(final Player player) {
+    private void displayPlayer(final Player player) {
         final int playerViewId = id;
         id++;
         final int playerId = player.getId();
@@ -166,9 +166,9 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         this.linearLayout.addView(playerView);
     }
 
-    public void editPlayer(int playerViewId, int playerId) {
+    private void editPlayer(int playerViewId, int playerId) {
         View playerelemnt = playerelements.get(playerViewId);
-        final Player player = Player.getPlayerById(players, playerId);
+        final Player player = Player.getPlayerById(getPlayers(), playerId);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
@@ -224,17 +224,25 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         return index;
     }
 
-    public void removePlayer(Player player) {
+    private void removePlayer(Player player) {
         int lastPlayerId = player.getLastPlayerId();
         int nextPLayerId = player.getNextPlayerId();
         System.out.println("LastplayerId: " + lastPlayerId + " NextPlayerID: " + nextPLayerId);
         if (player.getHasNextPlayer() && player.getHastLastPlayer()) {
-            Player.getPlayerById(players, lastPlayerId).setNextPlayerId(nextPLayerId);
-            Player.getPlayerById(players, nextPLayerId).setLastPlayerId(lastPlayerId);
+            Player.getPlayerById(getPlayers(), lastPlayerId).setNextPlayerId(nextPLayerId);
+            Player.getPlayerById(getPlayers(), nextPLayerId).setLastPlayerId(lastPlayerId);
         } else if (player.getHasNextPlayer() && !player.getHastLastPlayer()) {
-            Player.getPlayerById(players, nextPLayerId).setLastPlayerId(-1);
-            Player.getPlayerById(players, nextPLayerId).setHasLastPlayer(false);
+            Player.getPlayerById(getPlayers(), nextPLayerId).setLastPlayerId(-1);
+            Player.getPlayerById(getPlayers(), nextPLayerId).setHasLastPlayer(false);
         }
-        players.remove(player);
+        getPlayers().remove(player);
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 }

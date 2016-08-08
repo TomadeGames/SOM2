@@ -48,7 +48,7 @@ public class AugensaufenActivity extends Activity implements View.OnClickListene
         }
 
         this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
-        this.bottomText = (TextView) this.findViewById(R.id.bottemLargeText);
+        this.setBottomText((TextView) this.findViewById(R.id.bottemLargeText));
         this.playerText = (TextView) this.findViewById(R.id.playerText);
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
@@ -57,9 +57,9 @@ public class AugensaufenActivity extends Activity implements View.OnClickListene
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(TAG, "Touch, state: " + gameState + " action: " + event.getAction());
+        Log.d(TAG, "Touch, state: " + getGameState() + " action: " + event.getAction());
         if (event.getAction() == 0) {
-            switch (this.gameState) {
+            switch (this.getGameState()) {
                 case START:
                     startRolling();
                     break;
@@ -76,16 +76,16 @@ public class AugensaufenActivity extends Activity implements View.OnClickListene
     }
 
     private void stopRolling() {
-        this.gameState = AugensaufenState.RESULT;
-        this.bottomText.setText("Trink " + (this.currentDiceIndex + 1));
+        this.setGameState(AugensaufenState.RESULT);
+        this.getBottomText().setText("Trink " + (this.getCurrentDiceIndex() + 1));
         if (!fromMenue) {
             Player currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayerId);
-            currentPlayer.setDrinks(currentPlayer.getDrinks() + this.currentDiceIndex + 1);
+            currentPlayer.setDrinks(currentPlayer.getDrinks() + this.getCurrentDiceIndex() + 1);
         }
     }
 
     private void restart() {
-        this.bottomText.setText("Tippen zum Würfeln");
+        this.getBottomText().setText("Tippen zum Würfeln");
         if (fromMenue) {
             this.playerText.setText("Nächster Spieler");
         } else {
@@ -94,18 +94,18 @@ public class AugensaufenActivity extends Activity implements View.OnClickListene
             currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayerId);
             this.playerText.setText(currentPlayer.getName());
         }
-        this.gameState = AugensaufenState.START;
+        this.setGameState(AugensaufenState.START);
     }
 
     private void startRolling() {
-        this.gameState = AugensaufenState.ROLLING;
+        this.setGameState(AugensaufenState.ROLLING);
         final Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (gameState == AugensaufenState.ROLLING) {
-                    currentDiceIndex = random.nextInt(6);
-                    switch (currentDiceIndex) {
+                if (getGameState() == AugensaufenState.ROLLING) {
+                    setCurrentDiceIndex(random.nextInt(6));
+                    switch (getCurrentDiceIndex()) {
                         case 0:
                             diceImage.setImageResource(R.drawable.dice1);
                             break;
@@ -138,5 +138,29 @@ public class AugensaufenActivity extends Activity implements View.OnClickListene
             intent.putExtra("lastGame", MiniGame.AUGENSAUFEN);
             this.startActivity(intent);
         }
+    }
+
+    public AugensaufenState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(AugensaufenState gameState) {
+        this.gameState = gameState;
+    }
+
+    public TextView getBottomText() {
+        return bottomText;
+    }
+
+    public void setBottomText(TextView bottomText) {
+        this.bottomText = bottomText;
+    }
+
+    public int getCurrentDiceIndex() {
+        return currentDiceIndex;
+    }
+
+    public void setCurrentDiceIndex(int currentDiceIndex) {
+        this.currentDiceIndex = currentDiceIndex;
     }
 }

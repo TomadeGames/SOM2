@@ -12,5 +12,6 @@ public enum MiniGame {
     ICH_HAB_NOCH_NIE,
     KINGS,
     KISTEN_STAPELN,
-    WERF_DICH_DICHT
+    WERF_DICH_DICHT,
+    MEMORY
 }

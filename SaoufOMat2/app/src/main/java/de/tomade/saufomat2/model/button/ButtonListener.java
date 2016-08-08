@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.model.drawable.button;
+package de.tomade.saufomat2.model.button;
 
 import java.util.EventListener;
 

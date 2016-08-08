@@ -41,7 +41,9 @@
         android:layout_below="@+id/etxtName"
         android:layout_toRightOf="@+id/txtvWeight"
         android:layout_toEndOf="@+id/txtvWeight"
-        android:text="70"/>
+        android:text="70"
+        android:editable="false"
+        android:textIsSelectable="false" />
 
     <Spinner
         android:layout_width="130dp"

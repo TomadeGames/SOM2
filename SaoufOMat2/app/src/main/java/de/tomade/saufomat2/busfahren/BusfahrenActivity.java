@@ -1,4 +1,4 @@
-package de.tomade.saufomat2.activity.miniGames.busfahren;
+package de.tomade.saufomat2.busfahren;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,7 +30,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     private TextView taskText;
     private TextView drinkCounterText;
     private TextView plusText;
-    private View tutorail;
+    private View tutorial;
 
     private int drinkCount = 0;
     private BusfahrenState gameState = BusfahrenState.RED_BLACK;
@@ -51,7 +51,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
         }
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
-        if (!fromMenue) {
+        if (!isFromMenue()) {
             backButton.setVisibility(View.GONE);
         } else {
             backButton.setOnClickListener(this);
@@ -61,11 +61,11 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
         this.cardImages = new ImageView[5];
         initCards();
 
-        this.cardImages[0] = (ImageView) this.findViewById(R.id.card1Image);
-        this.cardImages[1] = (ImageView) this.findViewById(R.id.card2Image);
-        this.cardImages[2] = (ImageView) this.findViewById(R.id.card3Image);
-        this.cardImages[3] = (ImageView) this.findViewById(R.id.card4Image);
-        this.cardImages[4] = (ImageView) this.findViewById(R.id.card5Image);
+        this.getCardImages()[0] = (ImageView) this.findViewById(R.id.card1Image);
+        this.getCardImages()[1] = (ImageView) this.findViewById(R.id.card2Image);
+        this.getCardImages()[2] = (ImageView) this.findViewById(R.id.card3Image);
+        this.getCardImages()[3] = (ImageView) this.findViewById(R.id.card4Image);
+        this.getCardImages()[4] = (ImageView) this.findViewById(R.id.card5Image);
 
         this.leftButton = (ImageButton) this.findViewById(R.id.leftButton);
         this.rightButton = (ImageButton) this.findViewById(R.id.rightButton);
@@ -75,26 +75,26 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
         drinkCounterText = (TextView) this.findViewById(R.id.drinkCounterText);
         plusText = (TextView) this.findViewById(R.id.drinkCounterPlusText);
 
-        this.tutorail = this.findViewById(R.id.tutorialPanel);
+        this.tutorial = this.findViewById(R.id.tutorialPanel);
         ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
 
         tutorialButton.setOnClickListener(this);
-        this.leftButton.setOnClickListener(this);
-        this.rightButton.setOnClickListener(this);
+        this.getLeftButton().setOnClickListener(this);
+        this.getRightButton().setOnClickListener(this);
     }
 
     private void initCards() {
-        this.cards[0] = Card.getRandomCard();
+        this.getCards()[0] = Card.getRandomCard();
 
         for (int i = 1; i < 5; i++) {
 
             boolean valid = false;
             while (!valid) {
                 valid = true;
-                this.cards[i] = Card.getRandomCard();
+                this.getCards()[i] = Card.getRandomCard();
                 for (int j = 0; j < i; j++) {
-                    if (this.cards[i].getValue() == this.cards[j].getValue()
-                            && this.cards[i].getColor() == this.cards[j].getColor()) {
+                    if (this.getCards()[i].getValue() == this.getCards()[j].getValue()
+                            && this.getCards()[i].getColor() == this.getCards()[j].getColor()) {
                         valid = false;
                     }
                 }
@@ -105,8 +105,8 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == 0) {
-            if(this.tutorail.getVisibility() == View.VISIBLE) {
-                this.tutorail.setVisibility(View.GONE);
+            if(this.getTutorial().getVisibility() == View.VISIBLE) {
+                this.getTutorial().setVisibility(View.GONE);
             }
         }
         return true;
@@ -114,8 +114,8 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if(this.tutorail.getVisibility() == View.GONE) {
-            if (buttonsClickable) {
+        if(this.getTutorial().getVisibility() == View.GONE) {
+            if (isButtonsClickable()) {
                 buttonsClickable = false;
                 switch (v.getId()) {
                     case R.id.leftButton:
@@ -128,50 +128,50 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
                         leaveGame();
                         break;
                     case R.id.tutorialButton:
-                        this.tutorail.setVisibility(View.VISIBLE);
+                        this.getTutorial().setVisibility(View.VISIBLE);
                         buttonsClickable = true;
                         break;
                 }
             }
         }
         else{
-            this.tutorail.setVisibility(View.GONE);
+            this.getTutorial().setVisibility(View.GONE);
         }
     }
 
     private void nextState() {
-        switch (this.gameState) {
+        switch (this.getGameState()) {
             case RED_BLACK:
                 this.gameState = BusfahrenState.HIGHER_LOWER;
-                this.taskText.setText("Ist die nächste Karte höher oder tiefer?");
-                this.leftButton.setImageResource(R.drawable.busfahren_higher_button);
-                this.rightButton.setImageResource(R.drawable.busfahren_lower_button);
-                this.leftText.setText("Höher");
-                this.rightText.setText("Tiefer");
+                this.getTaskText().setText("Ist die nächste Karte höher oder tiefer?");
+                this.getLeftButton().setImageResource(R.drawable.busfahren_higher_button);
+                this.getRightButton().setImageResource(R.drawable.busfahren_lower_button);
+                this.getLeftText().setText("Höher");
+                this.getRightText().setText("Tiefer");
                 break;
             case HIGHER_LOWER:
                 this.gameState = BusfahrenState.BETWEEN_NOT_BETWEEN;
-                this.taskText.setText("Ist die nächste Karte dazwischen oder nicht dazwischen?");
-                this.leftButton.setImageResource(R.drawable.bussfahren_between_button);
-                this.rightButton.setImageResource(R.drawable.busfahren_not_between_button);
-                this.leftText.setText("Dazwischen");
-                this.rightText.setText("Nicht\nDazwischen");
+                this.getTaskText().setText("Ist die nächste Karte dazwischen oder nicht dazwischen?");
+                this.getLeftButton().setImageResource(R.drawable.bussfahren_between_button);
+                this.getRightButton().setImageResource(R.drawable.busfahren_not_between_button);
+                this.getLeftText().setText("Dazwischen");
+                this.getRightText().setText("Nicht\nDazwischen");
                 break;
             case BETWEEN_NOT_BETWEEN:
                 this.gameState = BusfahrenState.SAME_NOT_SAME;
-                this.taskText.setText("Ist die nächste Karte die selbe, wie die Letze?");
-                this.leftButton.setImageResource(R.drawable.busfahren_again);
-                this.rightButton.setImageResource(R.drawable.busfahren_not_again_button);
-                this.leftText.setText("Gleich");
-                this.rightText.setText("Nicht\nGleich");
+                this.getTaskText().setText("Ist die nächste Karte die selbe, wie die Letze?");
+                this.getLeftButton().setImageResource(R.drawable.busfahren_again);
+                this.getRightButton().setImageResource(R.drawable.busfahren_not_again_button);
+                this.getLeftText().setText("Gleich");
+                this.getRightText().setText("Nicht\nGleich");
                 break;
             case SAME_NOT_SAME:
                 this.gameState = BusfahrenState.ACE_NO_ACE;
-                this.taskText.setText("Ist die nächste Karte ein Ass?");
-                this.leftButton.setImageResource(R.drawable.busfahren_ace_button);
-                this.rightButton.setImageResource(R.drawable.busfahren_no_ace_button);
-                this.leftText.setText("Ass");
-                this.rightText.setText("Kein\nAss");
+                this.getTaskText().setText("Ist die nächste Karte ein Ass?");
+                this.getLeftButton().setImageResource(R.drawable.busfahren_ace_button);
+                this.getRightButton().setImageResource(R.drawable.busfahren_no_ace_button);
+                this.getLeftText().setText("Ass");
+                this.getRightText().setText("Kein\nAss");
                 break;
             case ACE_NO_ACE:
                 leaveGame();
@@ -182,7 +182,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
 
     private void leaveGame() {
         Intent intent;
-        if (fromMenue) {
+        if (isFromMenue()) {
             intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
             intent.putExtra("lastGame", MiniGame.BUSFAHREN);
         } else {
@@ -195,7 +195,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
                 playerId = extras.getInt("currentPlayerId");
 
                 Player p = Player.getPlayerById(playerList, playerId);
-                p.increaseDrinks(this.drinkCount);
+                p.increaseDrinks(this.getDrinkCount());
 
                 intent.putParcelableArrayListExtra("player", playerList);
                 intent.putExtra("currentPlayerId", p.getNextPlayerId());
@@ -207,27 +207,27 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     private void startTimer(final boolean correctAnswer) {
         final Handler mHandler = new Handler();
         if (!correctAnswer) {
-            this.plusText.setVisibility(View.VISIBLE);
-            switch (this.gameState) {
+            this.getPlusText().setVisibility(View.VISIBLE);
+            switch (this.getGameState()) {
                 case RED_BLACK:
                     drinkCount += 1;
-                    this.plusText.setText("+1");
+                    this.getPlusText().setText("+1");
                     break;
                 case HIGHER_LOWER:
                     drinkCount += 2;
-                    this.plusText.setText("+2");
+                    this.getPlusText().setText("+2");
                     break;
                 case BETWEEN_NOT_BETWEEN:
                     drinkCount += 3;
-                    this.plusText.setText("+3");
+                    this.getPlusText().setText("+3");
                     break;
                 case SAME_NOT_SAME:
                     drinkCount += 4;
-                    this.plusText.setText("+4");
+                    this.getPlusText().setText("+4");
                     break;
                 case ACE_NO_ACE:
                     drinkCount += 5;
-                    this.plusText.setText("+5");
+                    this.getPlusText().setText("+5");
             }
         }
         mHandler.postDelayed(new Runnable() {
@@ -239,13 +239,13 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
                     if (correctAnswer) {
                         nextState();
                     } else {
-                        plusText.setVisibility(View.GONE);
-                        plusText.setTextSize(30);
+                        getPlusText().setVisibility(View.GONE);
+                        getPlusText().setTextSize(30);
                         restart();
                     }
                 } else {
                     if (!correctAnswer) {
-                        plusText.setTextSize(30 - counter * 10 / 4);
+                        getPlusText().setTextSize(30 - counter * 10 / 4);
                     }
                 }
                 counter++;
@@ -255,13 +255,13 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     }
 
     private void restart() {
-        drinkCounterText.setText("" + drinkCount);
+        getDrinkCounterText().setText("" + getDrinkCount());
         initCards();
-        this.leftButton.setImageResource(R.drawable.busfahren_red_button);
-        this.rightButton.setImageResource(R.drawable.busfahren_balck_button);
-        this.leftText.setText("Rot");
-        this.rightText.setText("Schwarz");
-        for (ImageView i : cardImages) {
+        this.getLeftButton().setImageResource(R.drawable.busfahren_red_button);
+        this.getRightButton().setImageResource(R.drawable.busfahren_balck_button);
+        this.getLeftText().setText("Rot");
+        this.getRightText().setText("Schwarz");
+        for (ImageView i : getCardImages()) {
             i.setImageResource(R.drawable.rueckseite);
         }
         this.gameState = BusfahrenState.RED_BLACK;
@@ -269,29 +269,29 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
     }
 
     private boolean checkLeftButton() {
-        switch (this.gameState) {
+        switch (this.getGameState()) {
             case RED_BLACK:
-                this.cardImages[0].setImageResource(cards[0].getImageId());
-                return cards[0].isRed();
+                this.getCardImages()[0].setImageResource(getCards()[0].getImageId());
+                return getCards()[0].isRed();
             case HIGHER_LOWER:
-                this.cardImages[1].setImageResource(cards[1].getImageId());
-                return cards[1].isHigherAs(cards[0]);
+                this.getCardImages()[1].setImageResource(getCards()[1].getImageId());
+                return getCards()[1].isHigherAs(getCards()[0]);
             case BETWEEN_NOT_BETWEEN:
-                this.cardImages[2].setImageResource(cards[2].getImageId());
-                return cards[2].isBetween(cards[0], cards[1]);
+                this.getCardImages()[2].setImageResource(getCards()[2].getImageId());
+                return getCards()[2].isBetween(getCards()[0], getCards()[1]);
             case SAME_NOT_SAME:
-                this.cardImages[3].setImageResource(cards[3].getImageId());
-                return cards[3].getValue() == cards[2].getValue();
+                this.getCardImages()[3].setImageResource(getCards()[3].getImageId());
+                return getCards()[3].getValue() == getCards()[2].getValue();
             case ACE_NO_ACE:
-                this.cardImages[4].setImageResource(cards[4].getImageId());
-                return cards[4].getValue() == CardValue.ACE;
+                this.getCardImages()[4].setImageResource(getCards()[4].getImageId());
+                return getCards()[4].getValue() == CardValue.ACE;
         }
         return false;
     }
 
     public boolean checkRightButton() {
-        if(this.gameState == BusfahrenState.HIGHER_LOWER){
-            if(this.cards[1].getValueAsInt() == this.cards[0].getValueAsInt()){
+        if(this.getGameState() == BusfahrenState.HIGHER_LOWER){
+            if(this.getCards()[1].getValueAsInt() == this.getCards()[0].getValueAsInt()){
                 return false;
             }
         }
@@ -304,5 +304,61 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
 
     private void rightButtonPressed() {
         startTimer(checkRightButton());
+    }
+
+    public ImageButton getLeftButton() {
+        return leftButton;
+    }
+
+    public ImageButton getRightButton() {
+        return rightButton;
+    }
+
+    public TextView getLeftText() {
+        return leftText;
+    }
+
+    public TextView getRightText() {
+        return rightText;
+    }
+
+    public TextView getTaskText() {
+        return taskText;
+    }
+
+    public TextView getDrinkCounterText() {
+        return drinkCounterText;
+    }
+
+    public TextView getPlusText() {
+        return plusText;
+    }
+
+    public View getTutorial() {
+        return tutorial;
+    }
+
+    public int getDrinkCount() {
+        return drinkCount;
+    }
+
+    public BusfahrenState getGameState() {
+        return gameState;
+    }
+
+    public boolean isButtonsClickable() {
+        return buttonsClickable;
+    }
+
+    public boolean isFromMenue() {
+        return fromMenue;
+    }
+
+    public Card[] getCards() {
+        return cards;
+    }
+
+    public ImageView[] getCardImages() {
+        return cardImages;
     }
 }

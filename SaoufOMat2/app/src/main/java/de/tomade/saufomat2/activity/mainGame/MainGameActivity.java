@@ -16,6 +16,7 @@ import de.tomade.saufomat2.model.Player;
 public class MainGameActivity extends Activity {
 
     private static final String TAG  = MainGameActivity.class.getSimpleName();
+    private MainGamePanel panel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,8 @@ public class MainGameActivity extends Activity {
         if (extras != null) {
             ArrayList<Player> players = extras.getParcelableArrayList("player");
             int currentPlayer = extras.getInt("currentPlayer");
-            setContentView(new MainGamePanel(this, currentPlayer, players));
+            setPanel(new MainGamePanel(this, currentPlayer, players));
+            setContentView(getPanel());
 
         }
         else{
@@ -51,7 +53,8 @@ public class MainGameActivity extends Activity {
             players.add(p0);
             players.add(p1);
             int currentPlayer = p0.getId();
-            setContentView(new MainGamePanel(this, currentPlayer, players));
+            setPanel(new MainGamePanel(this, currentPlayer, players));
+            setContentView(getPanel());
 
         }
     }
@@ -75,5 +78,13 @@ public class MainGameActivity extends Activity {
     protected void onStop(){
         Log.d(TAG, "Stopping...");
         super.onStop();
+    }
+
+    public MainGamePanel getPanel() {
+        return panel;
+    }
+
+    public void setPanel(MainGamePanel panel) {
+        this.panel = panel;
     }
 }

@@ -49,8 +49,8 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
         initLists();
 
         this.taskView = (TextView) this.findViewById(R.id.taskText);
-        this.currentTask = getQuestion();
-        this.taskView.setText(HAB_NIE + this.currentTask);
+        this.setCurrentTask(getQuestion());
+        this.taskView.setText(HAB_NIE + this.getCurrentTask());
 
         ImageButton popup = (ImageButton) this.findViewById(R.id.popupButton);
         ImageButton tutorial = (ImageButton) this.findViewById(R.id.tutorialButton);
@@ -79,9 +79,9 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
             }
             this.startActivity(intent);
         } else {
-            if (this.tutorialShown) {
-                this.tutorialShown = false;
-                this.taskView.setText(HAB_NIE + this.currentTask);
+            if (this.isTutorialShown()) {
+                this.setTutorialShown(false);
+                this.taskView.setText(HAB_NIE + this.getCurrentTask());
             } else {
                 switch (v.getId()) {
                     case R.id.popupButton:
@@ -96,18 +96,18 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
     }
 
     private void nextQuestion() {
-        this.currentTask = getQuestion();
-        this.taskView.setText(HAB_NIE + this.currentTask);
+        this.setCurrentTask(getQuestion());
+        this.taskView.setText(HAB_NIE + this.getCurrentTask());
     }
 
     private void showTutorial() {
         this.taskView.setText("Anleitung:\nEs werden Sätze generiert, die mit \"Ich hab noch nie\" beginnen. Jeder, der die verneinte Handlung doch schon mal gemacht hat, muss trinken. Danach wird das Handy weitergegeben.");
-        tutorialShown = true;
+        setTutorialShown(true);
     }
 
     private void initLists() {
-        this.allQuestions.add("ein Pferd geritten");
-        this.allQuestions.add("ein meine Eltern nackt gesehen");
+        this.getAllQuestions().add("ein Pferd geritten");
+        this.getAllQuestions().add("ein meine Eltern nackt gesehen");
         String[] strings = {
                 "so getan als würde ich vor einem Millionenpublikum stehen und singe",
                 "ein Telefonat von mehr als 5 Stunden geführt",
@@ -302,25 +302,57 @@ public class IchHabNochNieActivity extends Activity implements View.OnClickListe
                 "ein Tier auf den Mund geküsst"
         };
         for (String s : strings) {
-            this.allQuestions.add(s);
+            this.getAllQuestions().add(s);
         }
 
         refreshList();
     }
 
     private String getQuestion() {
-        int index = random.nextInt(currentQuestions.size());
-        String erg = currentQuestions.get(index);
-        currentQuestions.remove(index);
-        if (currentQuestions.size() <= 0) {
+        int index = random.nextInt(getCurrentQuestions().size());
+        String erg = getCurrentQuestions().get(index);
+        getCurrentQuestions().remove(index);
+        if (getCurrentQuestions().size() <= 0) {
             refreshList();
         }
         return erg;
     }
 
     private void refreshList() {
-        for (String s : this.allQuestions) {
-            this.currentQuestions.add(s);
+        for (String s : this.getAllQuestions()) {
+            this.getCurrentQuestions().add(s);
         }
+    }
+
+    public List<String> getCurrentQuestions() {
+        return currentQuestions;
+    }
+
+    public void setCurrentQuestions(List<String> currentQuestions) {
+        this.currentQuestions = currentQuestions;
+    }
+
+    public List<String> getAllQuestions() {
+        return allQuestions;
+    }
+
+    public void setAllQuestions(List<String> allQuestions) {
+        this.allQuestions = allQuestions;
+    }
+
+    public boolean isTutorialShown() {
+        return tutorialShown;
+    }
+
+    public void setTutorialShown(boolean tutorialShown) {
+        this.tutorialShown = tutorialShown;
+    }
+
+    public String getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(String currentTask) {
+        this.currentTask = currentTask;
     }
 }

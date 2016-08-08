@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.Random;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
-import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenState;
 import de.tomade.saufomat2.model.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
@@ -69,7 +66,7 @@ public class WerfDichDichtActivity extends Activity implements View.OnClickListe
 
         this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
         this.popupImage = (ImageView) this.findViewById(R.id.popupImage);
-        this.popupText = (TextView) this.findViewById(R.id.popupText);
+        this.setPopupText((TextView) this.findViewById(R.id.popupText));
         this.glasses[0] = (ImageView) this.findViewById(R.id.glas0Image);
         this.glasses[1] = (ImageView) this.findViewById(R.id.glas1Image);
         this.glasses[2] = (ImageView) this.findViewById(R.id.glas2Image);
@@ -82,14 +79,14 @@ public class WerfDichDichtActivity extends Activity implements View.OnClickListe
         backButton.setOnClickListener(this);
         tutorialButton.setOnClickListener(this);
 
-        this.tutorial = this.findViewById(R.id.tutorialPanel);
+        this.setTutorial(this.findViewById(R.id.tutorialPanel));
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(this.tutorial.getVisibility() == View.GONE) {
+        if(this.getTutorial().getVisibility() == View.GONE) {
             if (event.getAction() == 0) {
-                switch (this.gameState) {
+                switch (this.getGameState()) {
                     case START:
                         startRolling();
                         break;
@@ -101,7 +98,7 @@ public class WerfDichDichtActivity extends Activity implements View.OnClickListe
             }
         }
         else{
-            this.tutorial.setVisibility(View.GONE);
+            this.getTutorial().setVisibility(View.GONE);
         }
         return super.onTouchEvent(event);
     }
@@ -115,23 +112,23 @@ public class WerfDichDichtActivity extends Activity implements View.OnClickListe
                 this.startActivity(intent);
                 break;
             case R.id.tutorialButton:
-                this.tutorial.setVisibility(View.VISIBLE);
+                this.getTutorial().setVisibility(View.VISIBLE);
                 break;
         }
     }
 
     private void startRolling() {
-        this.animationCounter = 0;
-        this.popupText.setVisibility(View.GONE);
+        this.setAnimationCounter(0);
+        this.getPopupText().setVisibility(View.GONE);
         this.popupImage.setVisibility(View.GONE);
-        this.gameState = WerfDichDichtState.ROLLING;
+        this.setGameState(WerfDichDichtState.ROLLING);
         final Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (gameState == WerfDichDichtState.ROLLING) {
-                    currentDiceIndex = random.nextInt(6);
-                    switch (currentDiceIndex) {
+                if (getGameState() == WerfDichDichtState.ROLLING) {
+                    setCurrentDiceIndex(random.nextInt(6));
+                    switch (getCurrentDiceIndex()) {
                         case 0:
                             diceImage.setImageResource(R.drawable.dice1);
                             break;
@@ -158,99 +155,147 @@ public class WerfDichDichtActivity extends Activity implements View.OnClickListe
     }
 
     private void stopAnimation() {
-        this.gameState = WerfDichDichtState.STOP;
+        this.setGameState(WerfDichDichtState.STOP);
         this.popupImage.setVisibility(View.VISIBLE);
-        this.popupText.setVisibility(View.VISIBLE);
+        this.getPopupText().setVisibility(View.VISIBLE);
 
-        if (isFull[currentDiceIndex]) {
-            this.popupText.setText("Trink einen");
+        if (getIsFull()[getCurrentDiceIndex()]) {
+            this.getPopupText().setText("Trink einen");
             if(!fromMenue){
                 Player currentPlayer = Player.getPlayerById(playerList, currentPlayerId);
                 currentPlayer.setDrinks(currentPlayer.getDrinks() + 1);
             }
         } else {
             if (fromMenue) {
-                this.popupText.setText("Nächster Spieler");
+                this.getPopupText().setText("Nächster Spieler");
             } else {
                 Player currentPlayer = Player.getPlayerById(playerList, currentPlayerId);
                 this.currentPlayerId = currentPlayer.getNextPlayerId();
                 currentPlayer = Player.getPlayerById(playerList, currentPlayer.getNextPlayerId());
-                this.popupText.setText(currentPlayer.getName() + " ist dran");
+                this.getPopupText().setText(currentPlayer.getName() + " ist dran");
             }
         }
-        isFull[currentDiceIndex] = !isFull[currentDiceIndex];
+        getIsFull()[getCurrentDiceIndex()] = !getIsFull()[getCurrentDiceIndex()];
 
-        this.gameState = WerfDichDichtState.START;
+        this.setGameState(WerfDichDichtState.START);
     }
 
     private void stopRolling() {
-        this.gameState = WerfDichDichtState.GLASS_ANIMATION;
+        this.setGameState(WerfDichDichtState.GLASS_ANIMATION);
         final Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (gameState == WerfDichDichtState.GLASS_ANIMATION) {
-                    switch (animationCounter) {
+                if (getGameState() == WerfDichDichtState.GLASS_ANIMATION) {
+                    switch (getAnimationCounter()) {
                         case 0:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_2);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_2);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_7);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_7);
                             }
                             break;
                         case 1:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_3);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_3);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_6);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_6);
                             }
                             break;
                         case 2:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_4);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_4);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_5);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_5);
                             }
                             break;
                         case 3:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_5);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_5);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_4);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_4);
                             }
                             break;
                         case 4:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_6);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_6);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_3);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_3);
                             }
                             break;
                         case 5:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_7);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_7);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_2);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_2);
                             }
                             break;
                         case 6:
-                            if (!isFull[currentDiceIndex]) {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_8);
+                            if (!getIsFull()[getCurrentDiceIndex()]) {
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_8);
                             } else {
-                                glasses[currentDiceIndex].setImageResource(R.drawable.schnapsglas_1);
+                                glasses[getCurrentDiceIndex()].setImageResource(R.drawable.schnapsglas_1);
                             }
                             break;
                         case 7:
                             stopAnimation();
                             break;
                     }
-                    animationCounter++;
-                    if(animationCounter <= 7) {
+                    setAnimationCounter(getAnimationCounter() + 1);
+                    if(getAnimationCounter() <= 7) {
                         mHandler.postDelayed(this, WerfDichDichtActivity.ANIMATION_DELAY);
                     }
                 }
 
             }
         }, WerfDichDichtActivity.ANIMATION_DELAY);
+    }
+
+    public boolean[] getIsFull() {
+        return isFull;
+    }
+
+    public void setIsFull(boolean[] isFull) {
+        this.isFull = isFull;
+    }
+
+    public WerfDichDichtState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(WerfDichDichtState gameState) {
+        this.gameState = gameState;
+    }
+
+    public int getCurrentDiceIndex() {
+        return currentDiceIndex;
+    }
+
+    public void setCurrentDiceIndex(int currentDiceIndex) {
+        this.currentDiceIndex = currentDiceIndex;
+    }
+
+    public View getTutorial() {
+        return tutorial;
+    }
+
+    public void setTutorial(View tutorial) {
+        this.tutorial = tutorial;
+    }
+
+    public int getAnimationCounter() {
+        return animationCounter;
+    }
+
+    public void setAnimationCounter(int animationCounter) {
+        this.animationCounter = animationCounter;
+    }
+
+    public TextView getPopupText() {
+        return popupText;
+    }
+
+    public void setPopupText(TextView popupText) {
+        this.popupText = popupText;
     }
 }
