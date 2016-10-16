@@ -4,23 +4,19 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.busfahren.BusfahrenActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.*;
 
 /**
  * Created by woors on 19.07.2016.

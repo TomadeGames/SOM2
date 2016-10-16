@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.card.Card;
 import de.tomade.saufomat2.model.card.CardValue;
@@ -159,7 +159,7 @@ public class BusfahrenActivity extends Activity implements View.OnClickListener 
                 break;
             case BETWEEN_NOT_BETWEEN:
                 this.gameState = BusfahrenState.SAME_NOT_SAME;
-                this.getTaskText().setText("Ist die nächste Karte die selbe, wie die Letze?");
+                this.getTaskText().setText("Ist die nächste Karte dieselbe, wie die Letze?");
                 this.getLeftButton().setImageResource(R.drawable.busfahren_again);
                 this.getRightButton().setImageResource(R.drawable.busfahren_not_again_button);
                 this.getLeftText().setText("Gleich");

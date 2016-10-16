@@ -5,8 +5,6 @@ import org.junit.runners.Suite;
 
 import de.tomade.saufomat2.activity.ChooseMiniGameActivityTest;
 import de.tomade.saufomat2.activity.CreatePlayerActivityTest;
-import de.tomade.saufomat2.activity.mainGame.MainGameActivityTest;
-import de.tomade.saufomat2.activity.mainGame.TaskViewActivityTest;
 import de.tomade.saufomat2.activity.miniGames.augensaufen.AugensaufenActivityTest;
 import de.tomade.saufomat2.activity.miniGames.ichHabNochNie.IchHabNochNieActivityTest;
 import de.tomade.saufomat2.activity.miniGames.kings.KingsActivityTest;
@@ -24,9 +22,7 @@ import de.tomade.saufomat2.busfahren.BusfahrenActivityTest;
         WerfDichDichtActivityTest.class,
         KingsActivityTest.class,
         IchHabNochNieActivityTest.class,
-        AugensaufenActivityTest.class,
-        TaskViewActivityTest.class,
-        MainGameActivityTest.class
+        AugensaufenActivityTest.class
 })
 public class AllActivityTest {
 }

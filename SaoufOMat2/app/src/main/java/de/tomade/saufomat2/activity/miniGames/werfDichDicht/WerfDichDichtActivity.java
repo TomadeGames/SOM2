@@ -15,7 +15,7 @@ import java.util.Random;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
 public class WerfDichDichtActivity extends Activity implements View.OnClickListener{

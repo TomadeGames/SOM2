@@ -405,7 +405,7 @@ public class CardTest {
 
     @Test
     public void setCardValueAsIntTestSeven() {
-        Card c1 = new Card(CardColor.CLUB, CardValue.ACE);
+        Card c1 = new Card(CardColor.HEART, CardValue.ACE);
         c1.setValue(5);
         Assert.assertEquals(c1.getValue(), CardValue.SEVEN);
     }

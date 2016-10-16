@@ -110,7 +110,7 @@
             android:src="@drawable/no_button" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/backText"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignBottom="@+id/backButton"

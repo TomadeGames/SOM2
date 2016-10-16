@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 
 import de.tomade.saufomat2.activity.mainGame.task.Task;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
 
@@ -59,9 +60,18 @@ public class MainGameActivity extends Activity {
         }
     }
 
-    public void changeToTaskView(Task currentTask, ArrayList<Player> player, int currentPlayerId) {
+    public void changeToTaskViewWithTask(Task currentTask, ArrayList<Player> player, int currentPlayerId) {
         Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
         intent.putExtra("task", currentTask);
+        intent.putParcelableArrayListExtra("player", player);
+        intent.putExtra("currentPlayer", currentPlayerId);
+        this.finish();
+        this.startActivity(intent);
+    }
+
+    public void changeToTaskViewWithGame(MiniGame miniGame, ArrayList<Player> player, int currentPlayerId){
+        Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
+        intent.putExtra("miniGame", miniGame);
         intent.putParcelableArrayListExtra("player", player);
         intent.putExtra("currentPlayer", currentPlayerId);
         this.finish();

@@ -243,7 +243,7 @@ public class BusfahrenActivityTest {
         Assert.assertEquals(getErrorMessage(), drinkCount, activity.getDrinkCount());
     }
 
-    /* Entfernt, da neu laden der Activity nicht funktioniert
+    /* Entfernt, da bei richtiger Antwort die Aktivity gewechselt wird.
     @Test
     public void testAceButton() throws InterruptedException { //links
         answerQuestion(0, true);

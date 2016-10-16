@@ -17,7 +17,7 @@ import de.tomade.saufomat2.busfahren.BusfahrenActivity;
 import de.tomade.saufomat2.activity.miniGames.kings.KingsActivity;
 import de.tomade.saufomat2.activity.miniGames.memory.MemoryActivity;
 import de.tomade.saufomat2.activity.miniGames.werfDichDicht.WerfDichDichtActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
     private MiniGame currentGame = MiniGame.BUSFAHREN;

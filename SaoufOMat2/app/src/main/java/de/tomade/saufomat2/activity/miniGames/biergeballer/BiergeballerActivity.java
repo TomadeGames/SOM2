@@ -8,7 +8,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,7 +23,7 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 
 //TODO: am start werden direkt beim rechten spieler 2 leben abgezogen
 public class BiergeballerActivity extends Activity implements View.OnTouchListener, View.OnClickListener {

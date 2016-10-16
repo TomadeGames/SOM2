@@ -2,7 +2,6 @@ package de.tomade.saufomat2.activity.miniGames.bierrutsche;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -26,7 +25,7 @@ import java.util.Map;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.DynamicImageView;
 

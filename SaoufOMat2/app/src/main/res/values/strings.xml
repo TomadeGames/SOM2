@@ -30,4 +30,5 @@
     <string name="title_activity_biergeballer">BiergeballerActivity</string>
     <string name="biergeballer_tutorial">Anleitung:\nZwei Spieler treten gegeneinander an.\nJeder bekommt eine Bierkiste, aus der nach einiger Zeit Bierflaschen geschosen werden.\nDie Spieler müssen versuchen, die gegnerischen Falschen zu fangen. Wer 3 Flaschen verfehlt muss die Anzahl der Leben des gegners trinken.</string>
     <string name="title_activity_memory">MemoryActivity</string>
+    <string name="kings_tutorial">Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.</string>
 </resources>

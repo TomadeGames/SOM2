@@ -194,13 +194,24 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                 .setView(view)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (!etxtName.getText().toString().isEmpty() && Integer.parseInt(etxtWeight.getText().toString()) > 0 && !etxtWeight.getText().toString().isEmpty()) {
-                            player.setName(etxtName.getText().toString());
-                            player.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                            player.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
-                            txtvName.setText(player.getName());
-                        } else {
-                            Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
+                        boolean duplicate = false;
+                        for (Player tmp : getPlayers()) {
+                            if (tmp.getName().equals(etxtName.getText().toString())) {
+                                duplicate = true;
+                            }
+                        }
+                        if(!duplicate) {
+                            if (!etxtName.getText().toString().isEmpty() && Integer.parseInt(etxtWeight.getText().toString()) > 0 && !etxtWeight.getText().toString().isEmpty()) {
+                                player.setName(etxtName.getText().toString());
+                                player.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
+                                player.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
+                                txtvName.setText(player.getName());
+                            } else {
+                                Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(CreatePlayerActivity.this, "Der Name ist schon vorhanden!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })

@@ -16,6 +16,7 @@ import java.util.Map;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.task.Task;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
 public class TaskViewActivity extends Activity implements View.OnClickListener {
@@ -23,8 +24,10 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     private ArrayList<Player> players;
     private Map<Integer, TextView> playerTexts = new HashMap<>();
     private Task currentTask;
+    private MiniGame miniGame = null;
     private Player currentPlayer;
     private boolean drinkCountShown = false;
+    private boolean isGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             this.players = extras.getParcelableArrayList("player");
-            this.setCurrentTask((Task) extras.getSerializable("task"));
+            if(extras.containsKey("task")) {
+                this.setCurrentTask((Task) extras.getSerializable("task"));
+                isGame = false;
+            }
+            else{
+                this.miniGame = (MiniGame) extras.getSerializable("miniGame");
+                isGame = true;
+            }
             this.setCurrentPlayer(Player.getPlayerById(this.getPlayers(), extras.getInt("currentPlayer")));
 
         }
@@ -43,11 +53,18 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         TextView currentPlayerNameText = (TextView) this.findViewById(R.id.currentPlayerNameText);
         currentPlayerNameText.setText(this.getCurrentPlayer().getName());
         TextView taskText = (TextView) this.findViewById(R.id.taskText);
-        taskText.setText(this.getCurrentTask().getText());
-        int cost = this.getCurrentTask().getCost();
-
         ImageButton noButton = (ImageButton) this.findViewById(R.id.noButton);
         TextView costText = (TextView) this.findViewById(R.id.costText);
+        int cost = 0;
+
+        if(isGame){
+            taskText.setText(this.miniGame + "");
+        }
+        else {
+            taskText.setText(this.getCurrentTask().getText());
+            cost = this.getCurrentTask().getCost();
+        }
+
         if (cost <= 0) {
             noButton.setImageResource(R.drawable.gray_button);
             costText.setVisibility(View.INVISIBLE);
@@ -104,34 +121,45 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void yesButtonPressed() {
-        switch (this.getCurrentTask().getTarget()) {
-            case SELF:
-                this.getCurrentPlayer().increaseDrinks(this.getCurrentTask().getDrinkCount());
-                break;
-            case NEIGHBOUR:
-                Player.getPlayerById(this.getPlayers(), getCurrentPlayer().getNextPlayerId()).increaseDrinks(this.getCurrentTask().getDrinkCount());
-                Player.getPlayerById(this.getPlayers(), getCurrentPlayer().getLastPlayerId()).increaseDrinks(this.getCurrentTask().getDrinkCount());
-                break;
-            case CHOOSE_ONE:
-                break;
-            case CHOOSE_TWO:
-                break;
-            case CHOOSE_THREE:
-                break;
-            case ALL:
-                for (Player p : getPlayers()) {
-                    p.increaseDrinks(this.getCurrentTask().getDrinkCount());
-                }
-                break;
-            case ALL_BUT_SELF:
-                for (Player p : getPlayers()) {
-                    if (p.getId() != this.getCurrentPlayer().getId()) {
+        if(isGame){
+            Class activityClass = MiniGame.getMiniGameClass(this.miniGame);
+            Intent intent = new Intent(this, activityClass);
+            intent.putExtra("fromMenue", false);
+            intent.putParcelableArrayListExtra("player", this.players);
+            this.currentPlayer = Player.getPlayerById(this.players, currentPlayer.getNextPlayerId());
+            intent.putExtra("currentPlayerId", this.currentPlayer.getId());
+            this.startActivity(intent);
+        }
+        else {
+            switch (this.getCurrentTask().getTarget()) {
+                case SELF:
+                    this.getCurrentPlayer().increaseDrinks(this.getCurrentTask().getDrinkCount());
+                    break;
+                case NEIGHBOUR:
+                    Player.getPlayerById(this.getPlayers(), getCurrentPlayer().getNextPlayerId()).increaseDrinks(this.getCurrentTask().getDrinkCount());
+                    Player.getPlayerById(this.getPlayers(), getCurrentPlayer().getLastPlayerId()).increaseDrinks(this.getCurrentTask().getDrinkCount());
+                    break;
+                case CHOOSE_ONE:
+                    break;
+                case CHOOSE_TWO:
+                    break;
+                case CHOOSE_THREE:
+                    break;
+                case ALL:
+                    for (Player p : getPlayers()) {
                         p.increaseDrinks(this.getCurrentTask().getDrinkCount());
                     }
-                }
-                break;
+                    break;
+                case ALL_BUT_SELF:
+                    for (Player p : getPlayers()) {
+                        if (p.getId() != this.getCurrentPlayer().getId()) {
+                            p.increaseDrinks(this.getCurrentTask().getDrinkCount());
+                        }
+                    }
+                    break;
+            }
+            chanceToMainView();
         }
-        chanceToMainView();
     }
 
     private void noButtonPressed() {

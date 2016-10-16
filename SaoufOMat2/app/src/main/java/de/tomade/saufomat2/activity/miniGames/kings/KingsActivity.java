@@ -16,7 +16,7 @@ import java.util.List;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.model.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.card.Card;
 
@@ -73,10 +73,12 @@ public class KingsActivity extends Activity implements View.OnClickListener {
         ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
         tutorialButton.setOnClickListener(this);
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
+        View backLabel = this.findViewById(R.id.backText);
         if (this.fromMenue) {
             backButton.setOnClickListener(this);
         } else {
             backButton.setVisibility(View.GONE);
+            backLabel.setVisibility(View.GONE);
             this.setMaximumCards(32);
         }
 
@@ -151,7 +153,7 @@ public class KingsActivity extends Activity implements View.OnClickListener {
         if (!this.isTutorialShown()) {
             this.setTutorialShown(true);
             this.lastText = this.getPopupText().getText().toString();
-            this.getPopupText().setText("Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.");
+            this.getPopupText().setText(R.string.kings_tutorial);
         }
     }
 

@@ -14,12 +14,14 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
 import de.tomade.saufomat2.activity.mainGame.task.TaskFactory;
+import de.tomade.saufomat2.activity.miniGames.MiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.SaufOMeter;
 import de.tomade.saufomat2.model.drawable.SlotMachineIcon;
@@ -36,7 +38,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
     private static final int HARD_CHANCE = 3;
-    private static final int GAME_CHANCE = 1;
+    private static final int GAME_CHANCE = 100000;
 
     private static final int SAUFOMETER_BLINK_TIME = 300;
     private static final int SAUFOMETER_ROTATE_TIME = 100;
@@ -72,6 +74,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private TaskFactory taskFactory;
     private Task currentTask;
     private TaskDifficult currentDifficult = TaskDifficult.UNDEFINED;
+
+    //MiniGames
+    private List<MiniGame> miniGameList = new ArrayList<>();
+    private MiniGame currentMiniGame;
 
     //SaufOMeter
     private int saufOMeterEndFrame = 1;
@@ -196,10 +202,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         } else if (this.gameState == MainGameState.All_IN_POSITION) {
             getCurrentDifficult();
             if (this.currentDifficult != TaskDifficult.GAME) {
-                currentTask = taskFactory.getTask(this.currentDifficult);
+                this.currentTask = taskFactory.getTask(this.currentDifficult);
+                this.currentMiniGame = null;
                 this.gameState = MainGameState.MOVE_SAUFOMETER;
             } else {
-                //TODO:Game starten
+                this.currentMiniGame = MiniGame.getRandomMiniGameAndRemoveFromList(miniGameList);
+                this.gameState = MainGameState.MOVE_SAUFOMETER;
+                this.currentTask = null;
+
             }
         } else if (this.gameState == MainGameState.MOVE_SAUFOMETER) {
             moveSaufometer();
@@ -272,8 +282,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private void changeToTaskView(){
         this.thread.setRunning(false);
         MainGameActivity currActivity = (MainGameActivity) this.getContext();
-        currActivity.changeToTaskView(this.currentTask, this.player, this.currentPlayer.getId());
-
+        if(!currentDifficult.equals(TaskDifficult.GAME)) {
+            currActivity.changeToTaskViewWithTask(this.currentTask, this.player, this.currentPlayer.getId());
+        }
+        else {
+            currActivity.changeToTaskViewWithGame(this.currentMiniGame, this.player, this.currentPlayer.getId());
+        }
     }
 
     @Nullable
