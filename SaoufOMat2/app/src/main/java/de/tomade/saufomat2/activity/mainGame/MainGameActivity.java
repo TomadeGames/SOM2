@@ -10,13 +10,13 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 
 import de.tomade.saufomat2.activity.mainGame.task.Task;
-import de.tomade.saufomat2.activity.miniGames.MiniGame;
+import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
 
 public class MainGameActivity extends Activity {
 
-    private static final String TAG  = MainGameActivity.class.getSimpleName();
+    private static final String TAG = MainGameActivity.class.getSimpleName();
     private MainGamePanel panel;
 
     @Override
@@ -31,8 +31,7 @@ public class MainGameActivity extends Activity {
             setPanel(new MainGamePanel(this, currentPlayer, players));
             setContentView(getPanel());
 
-        }
-        else{
+        } else {
             Player p0 = new Player();
             Player p1 = new Player();
 
@@ -69,7 +68,7 @@ public class MainGameActivity extends Activity {
         this.startActivity(intent);
     }
 
-    public void changeToTaskViewWithGame(MiniGame miniGame, ArrayList<Player> player, int currentPlayerId){
+    public void changeToTaskViewWithGame(MiniGame miniGame, ArrayList<Player> player, int currentPlayerId) {
         Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
         intent.putExtra("miniGame", miniGame);
         intent.putParcelableArrayListExtra("player", player);
@@ -79,19 +78,19 @@ public class MainGameActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         Log.d(TAG, "Destroying...");
         super.onDestroy();
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         Log.d(TAG, "Stopping...");
         super.onStop();
     }
 
     public MainGamePanel getPanel() {
-        return panel;
+        return this.panel;
     }
 
     public void setPanel(MainGamePanel panel) {

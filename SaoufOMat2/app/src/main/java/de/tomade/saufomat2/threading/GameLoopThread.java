@@ -3,18 +3,16 @@ package de.tomade.saufomat2.threading;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import de.tomade.saufomat2.activity.mainGame.MainGamePanel;
-
 /**
+ * Thread für die GameLoop
  * Created by woors on 30.03.2016.
  */
 public class GameLoopThread extends Thread {
     private ThreadedView view;
     private boolean running = false;
-    private long timeThisFrame;
     private long fps;
 
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
 
 
     public GameLoopThread(SurfaceHolder surfaceHolder, ThreadedView view) {
@@ -23,47 +21,46 @@ public class GameLoopThread extends Thread {
     }
 
     public void setRunning(boolean run) {
-        running = run;
+        this.running = run;
     }
 
-    public boolean getRunning(){
-        return running;
+    public boolean getRunning() {
+        return this.running;
     }
 
     @Override
     public void run() {
-        while (running) {
+        while (this.running) {
 
             // Capture the current time in milliseconds in startFrameTime
             long startFrameTime = System.currentTimeMillis();
 
             // Update the frame
-            view.update();
+            this.view.update();
 
             // Draw the frame
             Canvas canvas = null;
             try {
-                canvas = surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder) {
-                    view.render(canvas);
+                canvas = this.surfaceHolder.lockCanvas();
+                synchronized (this.surfaceHolder) {
+                    this.view.render(canvas);
                 }
-            }
-            finally {
+            } finally {
                 if (canvas != null) {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                    this.surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
 
             // Calculate the fps this frame
             // We can then use the result to
             // time animations and more.
-            this.timeThisFrame = System.currentTimeMillis() - startFrameTime;
-            this.view.setElapsedTime(this.timeThisFrame);
+            long timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            this.view.setElapsedTime(timeThisFrame);
             if (timeThisFrame > 0) {
-                fps = 1000 / timeThisFrame;
+                this.fps = 1000 / timeThisFrame;
             }
 
-            this.view.setAvgFps("fps: " + fps);
+            this.view.setAvgFps("fps: " + this.fps);
         }
     }
 }

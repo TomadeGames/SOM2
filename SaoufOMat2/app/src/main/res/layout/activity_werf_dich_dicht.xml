@@ -166,7 +166,7 @@
         android:layout_alignRight="@+id/backButton"
         android:layout_alignTop="@+id/backButton"
         android:gravity="center"
-        android:text="@string/zur_ck"
+        android:text="@string/button.back"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageButton
@@ -201,7 +201,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/wer_dich_dicht_tutorial"
+            android:text="@string/minigame.wer_dich_dicht.tutorial"
             android:id="@+id/tutorialText"
             android:layout_margin="10dp"
             android:gravity="center"

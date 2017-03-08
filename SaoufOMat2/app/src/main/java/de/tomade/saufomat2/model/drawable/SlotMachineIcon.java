@@ -29,35 +29,27 @@ public class SlotMachineIcon extends DrawableImage {
     }
 
     private int getBeerWith() {
-        return screenWith / 10;
+        return this.screenWith / 10;
     }
 
     private int getBeerHeight() {
-        return (int) (screenHeight / 2.6);
+        return (int) (this.screenHeight / 2.6);
     }
 
     private int getCocktailWith() {
-        return screenWith / 8;
+        return this.screenWith / 8;
     }
 
     private int getCocktailHeight() {
-        return screenHeight / 3;
+        return this.screenHeight / 3;
     }
 
     private int getShotWith() {
-        return screenWith / 11;
+        return this.screenWith / 11;
     }
 
     private int getShotHeight() {
-        return screenHeight / 5;
-    }
-
-    private int getGameWith() {
-        return screenWith / 6;
-    }
-
-    private int getGameHeight() {
-        return screenHeight / 3;
+        return this.screenHeight / 5;
     }
 
     @Override
@@ -78,12 +70,12 @@ public class SlotMachineIcon extends DrawableImage {
                     image = this.bitmap;
                     break;
             }
-            canvas.drawBitmap(image, x - (image.getWidth() / 2), y - (image.getHeight() / 2), null);
+            canvas.drawBitmap(image, this.x - (image.getWidth() / 2), this.y - (image.getHeight() / 2), null);
         }
     }
 
     public IconState getState() {
-        return state;
+        return this.state;
     }
 
     public void setState(IconState state) {

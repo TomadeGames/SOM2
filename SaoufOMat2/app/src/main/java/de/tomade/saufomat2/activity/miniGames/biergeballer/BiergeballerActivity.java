@@ -3,10 +3,8 @@ package de.tomade.saufomat2.activity.miniGames.biergeballer;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.app.Activity;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,23 +19,21 @@ import java.util.List;
 import java.util.Random;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
-import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.activity.miniGames.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
 //TODO: am start werden direkt beim rechten spieler 2 leben abgezogen
-public class BiergeballerActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
-    private static final String TAG = BiergeballerActivity.class.getSimpleName();
+//TODO: getränkezähler setzten
+//TODO: Spielernamen beim Start einblenden
+public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchListener, View.OnClickListener {
+    private static final int BEER_WIDTH = 40;
+    private static final int BEER_HEIGHT = 80;
+
     private static Random random = new Random();
-    private boolean fromMenue = false;
     private boolean tutorialShown = false;
-    private boolean gameActiv = true;
+    private boolean gameActive = true;
 
     private int screenWidth;
     private int screenHeight;
-
-    private final int beerWidth = 40;
-    private final int beerHeight = 80;
 
     private int beerSpeed = 1000;
     private int beerSpawnTimeLeft = random.nextInt(1000) + 1000;
@@ -63,12 +59,6 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
         wm.getDefaultDisplay().getSize(size);
         this.screenWidth = size.x;
         this.screenHeight = size.y;
-
-        Bundle extras = this.getIntent().getExtras();
-
-        if (extras != null) {
-            this.fromMenue = extras.getBoolean("fromMenue");
-        }
 
         this.cratePlayer0 = this.findViewById(R.id.player0Crate);
         this.cratePlayer1 = this.findViewById(R.id.player1Crate);
@@ -98,27 +88,31 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
         leftHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (gameActiv) {
+                if (BiergeballerActivity.this.gameActive) {
                     shootBeer(true);
-                    beerSpawnTimeLeft -= random.nextInt(beerSpawnTimeLeft / spawnTimeScale);
-                    beerSpeed -= random.nextInt(beerSpeed / speedScale);
+                    BiergeballerActivity.this.beerSpawnTimeLeft -= random.nextInt(BiergeballerActivity.this
+                            .beerSpawnTimeLeft / spawnTimeScale);
+                    BiergeballerActivity.this.beerSpeed -= random.nextInt(BiergeballerActivity.this.beerSpeed /
+                            speedScale);
                 }
-                leftHandler.postDelayed(this, beerSpawnTimeLeft);
+                leftHandler.postDelayed(this, BiergeballerActivity.this.beerSpawnTimeLeft);
             }
-        }, beerSpawnTimeLeft);
+        }, this.beerSpawnTimeLeft);
 
         final Handler rightHandler = new Handler();
         rightHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (gameActiv) {
+                if (BiergeballerActivity.this.gameActive) {
                     shootBeer(false);
-                    beerSpawnTimeRight -= random.nextInt(beerSpawnTimeRight / spawnTimeScale);
-                    beerSpeed -= random.nextInt(beerSpeed / speedScale);
+                    BiergeballerActivity.this.beerSpawnTimeRight -= random.nextInt(BiergeballerActivity.this
+                            .beerSpawnTimeRight / spawnTimeScale);
+                    BiergeballerActivity.this.beerSpeed -= random.nextInt(BiergeballerActivity.this.beerSpeed /
+                            speedScale);
                 }
-                rightHandler.postDelayed(this, beerSpawnTimeRight);
+                rightHandler.postDelayed(this, BiergeballerActivity.this.beerSpawnTimeRight);
             }
-        }, beerSpawnTimeRight);
+        }, this.beerSpawnTimeRight);
 
     }
 
@@ -128,41 +122,40 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
         rlLeft.setLayoutParams(new RelativeLayout.LayoutParams(this.screenWidth / 2, this.screenHeight));
     }
 
-    private void checkCollision(boolean left){
+    private void checkCollision(boolean left) {
         List<View> removeing = new ArrayList<>();
-        if(left){
-            for(View v: beersFromRight){
-                if (cratePlayer0.getX() < v.getX() + v.getWidth() &&
-                        cratePlayer0.getX() + cratePlayer0.getWidth() > v.getX() &&
-                        cratePlayer0.getY() < v.getY() + v.getHeight() &&
-                        cratePlayer0.getHeight() + cratePlayer0.getY() > v.getY()) {
+        if (left) {
+            for (View v : this.beersFromRight) {
+                if (this.cratePlayer0.getX() < v.getX() + v.getWidth() &&
+                        this.cratePlayer0.getX() + this.cratePlayer0.getWidth() > v.getX() &&
+                        this.cratePlayer0.getY() < v.getY() + v.getHeight() &&
+                        this.cratePlayer0.getHeight() + this.cratePlayer0.getY() > v.getY()) {
                     removeing.add(v);
                 }
             }
-            for(View v: removeing){
-                beersFromRight.remove(v);
+            for (View v : removeing) {
+                this.beersFromRight.remove(v);
             }
-        }
-        else{
-            for(View v: beersFromLeft){
-                if (cratePlayer0.getX() < v.getX() + v.getWidth() &&
-                        cratePlayer0.getX() + cratePlayer0.getWidth() > v.getX() &&
-                        cratePlayer0.getY() < v.getY() + v.getHeight() &&
-                        cratePlayer0.getHeight() + cratePlayer0.getY() > v.getY()) {
+        } else {
+            for (View v : this.beersFromLeft) {
+                if (this.cratePlayer0.getX() < v.getX() + v.getWidth() &&
+                        this.cratePlayer0.getX() + this.cratePlayer0.getWidth() > v.getX() &&
+                        this.cratePlayer0.getY() < v.getY() + v.getHeight() &&
+                        this.cratePlayer0.getHeight() + this.cratePlayer0.getY() > v.getY()) {
                     removeing.add(v);
                 }
             }
-            for(View v: removeing){
-                beersFromLeft.remove(v);
+            for (View v : removeing) {
+                this.beersFromLeft.remove(v);
             }
         }
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (tutorialShown) {
+        if (this.tutorialShown) {
             this.tutorialPanel.setVisibility(View.GONE);
-            tutorialShown = false;
+            this.tutorialShown = false;
         } else {
             switch (v.getId()) {
                 case R.id.player0Crate:
@@ -190,34 +183,21 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
         return true;
     }
 
-    private void leaveGame() {
-        Intent intent;
-        if (this.fromMenue) {
-            intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
-            intent.putExtra("lastGame", MiniGame.BIERGEBALLER);
-        } else {
-            intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
-        }
-        this.startActivity(intent);
-    }
-
     private void shootBeer(boolean fromLeft) {
         final ImageView beer = new ImageView(this);
         beer.setScaleType(ImageView.ScaleType.FIT_XY);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                this.beerWidth,
-                this.beerHeight);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(BEER_WIDTH, BEER_HEIGHT);
         beer.setImageResource(R.drawable.beer_icon);
-        allLayout.addView(beer, lp);
+        this.allLayout.addView(beer, lp);
 
         if (fromLeft) {
             beer.setRotation(90);
             beer.setX(this.cratePlayer1.getWidth() / 2);
             beer.setY(this.cratePlayer0.getY());
-            beersFromLeft.add(beer);
-            ObjectAnimator leftAnim = ObjectAnimator.ofFloat(beer, "x", screenWidth + beerWidth);
+            this.beersFromLeft.add(beer);
+            ObjectAnimator leftAnim = ObjectAnimator.ofFloat(beer, "x", this.screenWidth + BEER_WIDTH);
             leftAnim.setInterpolator(new LinearInterpolator());
-            leftAnim.setDuration(beerSpeed);
+            leftAnim.setDuration(this.beerSpeed);
             leftAnim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -226,7 +206,7 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if(beersFromLeft.contains(beer)){
+                    if (BiergeballerActivity.this.beersFromLeft.contains(beer)) {
                         hideHeart(false);
                     }
                 }
@@ -244,12 +224,12 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
             leftAnim.start();
         } else {
             beer.setRotation(270);
-            beer.setX(screenWidth - this.cratePlayer1.getWidth() / 2);
+            beer.setX(this.screenWidth - this.cratePlayer1.getWidth() / 2);
             beer.setY(this.cratePlayer1.getY());
-            beersFromRight.add(beer);
-            ObjectAnimator rightAnim = ObjectAnimator.ofFloat(beer, "x", 0 - beerWidth * 2);
+            this.beersFromRight.add(beer);
+            ObjectAnimator rightAnim = ObjectAnimator.ofFloat(beer, "x", 0 - BEER_WIDTH * 2);
             rightAnim.setInterpolator(new LinearInterpolator());
-            rightAnim.setDuration(beerSpeed);
+            rightAnim.setDuration(this.beerSpeed);
             rightAnim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -258,7 +238,7 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if(beersFromRight.contains(beer)){
+                    if (BiergeballerActivity.this.beersFromRight.contains(beer)) {
                         hideHeart(false);
                     }
                 }
@@ -280,14 +260,13 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
     private void hideHeart(boolean left) {
         for (int i = 2; i > 0; i--) {
             if (left) {
-                if (hearts[0][i].getVisibility() == View.VISIBLE) {
-                    hearts[0][i].setVisibility(View.GONE);
+                if (this.hearts[0][i].getVisibility() == View.VISIBLE) {
+                    this.hearts[0][i].setVisibility(View.GONE);
                     return;
                 }
-            }
-            else{
-                if (hearts[1][i].getVisibility() == View.VISIBLE) {
-                    hearts[1][i].setVisibility(View.GONE);
+            } else {
+                if (this.hearts[1][i].getVisibility() == View.VISIBLE) {
+                    this.hearts[1][i].setVisibility(View.GONE);
                     return;
                 }
             }
@@ -296,18 +275,18 @@ public class BiergeballerActivity extends Activity implements View.OnTouchListen
 
     @Override
     public void onClick(View v) {
-        if (tutorialShown) {
+        if (this.tutorialShown) {
             this.tutorialPanel.setVisibility(View.GONE);
-            tutorialShown = false;
+            this.tutorialShown = false;
         } else {
             switch (v.getId()) {
                 case R.id.backButton:
                     leaveGame();
                     break;
                 case R.id.tutorialButton:
-                    if (!tutorialShown) {
-                        tutorialShown = true;
-                        this.tutorialText.setText(R.string.biergeballer_tutorial);
+                    if (!this.tutorialShown) {
+                        this.tutorialShown = true;
+                        this.tutorialText.setText(R.string.minigame_biergeballer_tutorial);
                         this.tutorialPanel.setVisibility(View.VISIBLE);
                     }
                     break;

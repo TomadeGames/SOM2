@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId 'de.tomade.saufomat2'
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        jackOptions {
+            enabled true
+            jackInProcess false
+        }
     }
     buildTypes {
         release {
@@ -22,14 +26,19 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
     compile group: 'org.mockito', name: 'mockito-all', version: '1.8.4'
+    androidTestCompile 'com.android.support:support-annotations:25.2.0'
 }

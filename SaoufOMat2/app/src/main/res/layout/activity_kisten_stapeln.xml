@@ -63,7 +63,7 @@
         android:layout_alignBottom="@+id/backButton"
         android:layout_alignRight="@+id/backButton"
         android:gravity="center"
-        android:text="@string/zur_ck" />
+        android:text="@string/button.back" />
 
     <ImageButton
         android:id="@+id/tutorialButton"
@@ -133,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/kisten_stapeln_tutorial"
+            android:text="@string/minigame.kisten_stapeln.tutorial"
             android:id="@+id/tutorialText"
             android:layout_alignTop="@+id/tutorialPopup"
             android:layout_alignLeft="@+id/tutorialPopup"

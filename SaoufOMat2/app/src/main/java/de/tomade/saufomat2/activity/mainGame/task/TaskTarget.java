@@ -21,5 +21,8 @@ public enum TaskTarget {
     SWITCH_PLACE_RIGHT,
     SWITCH_PLACE_LEFT,
     MEN,
-    WOMEN
+    WOMEN,
+    VICTOM,
+    ONCE,
+    UNDEFINED
 }

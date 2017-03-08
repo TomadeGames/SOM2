@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.miniGames.MiniGame;
+import de.tomade.saufomat2.constant.MiniGame;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -26,38 +26,27 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 public class ChooseMiniGameActivityTest {
 
-    /*
-    AUGENSAUFEN
-    BIERGEBALLER
-    BUSFAHREN
-    BIERRUTSCHE
-    ICH_HAB_NOCH_NIE
-    KINGS
-    KISTEN_STAPELN
-    WERF_DICH_DICHT
-    */
-
     @Rule
-    public ActivityTestRule<ChooseMiniGameActivity> activityRule = new ActivityTestRule<>(ChooseMiniGameActivity.class, true, false);
+    public ActivityTestRule<ChooseMiniGameActivity> activityRule = new ActivityTestRule<>(ChooseMiniGameActivity
+            .class, true, false);
     private MiniGame currentGame;
 
-    private void goToGame(MiniGame game, boolean left){
+    private void goToGame(MiniGame game, boolean left) {
         int fromLeft = 0;
         int fromRight = 0;
-        switch (game){
+        switch (game) {
             case AUGENSAUFEN:
                 fromLeft = 2;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -65,16 +54,15 @@ public class ChooseMiniGameActivityTest {
             case BIERGEBALLER:
                 fromLeft = 1;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -82,16 +70,15 @@ public class ChooseMiniGameActivityTest {
             case BUSFAHREN:
                 fromLeft = 0;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -99,17 +86,16 @@ public class ChooseMiniGameActivityTest {
             case BIERRUTSCHE:
                 fromLeft = 7;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
+                } else {
 
-                    for(int i = 0; i < fromRight; i++){
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -117,16 +103,15 @@ public class ChooseMiniGameActivityTest {
             case ICH_HAB_NOCH_NIE:
                 fromLeft = 6;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -134,16 +119,15 @@ public class ChooseMiniGameActivityTest {
             case KINGS:
                 fromLeft = 5;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -151,16 +135,15 @@ public class ChooseMiniGameActivityTest {
             case KISTEN_STAPELN:
                 fromLeft = 4;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -168,16 +151,15 @@ public class ChooseMiniGameActivityTest {
             case WERF_DICH_DICHT:
                 fromLeft = 3;
                 fromRight = 8 - fromLeft;
-                if(fromRight < 0){
+                if (fromRight < 0) {
                     fromRight *= -1;
                 }
-                if(left){
-                    for(int i = 0; i < fromLeft; i++){
+                if (left) {
+                    for (int i = 0; i < fromLeft; i++) {
                         onView(withId(R.id.leftButton)).perform(click());
                     }
-                }
-                else{
-                    for(int i = 0; i < fromRight; i++){
+                } else {
+                    for (int i = 0; i < fromRight; i++) {
                         onView(withId(R.id.rightButton)).perform(click());
                     }
                 }
@@ -186,403 +168,404 @@ public class ChooseMiniGameActivityTest {
     }
 
     @Test
-    public void testBusfahrenLeftFromLeft(){
+    public void testBusfahrenLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BUSFAHREN, true);
-        currentGame = MiniGame.BIERGEBALLER;
+        this.currentGame = MiniGame.BIERGEBALLER;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBusfahrenRightFromLeft(){
+    public void testBusfahrenRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BUSFAHREN, true);
-        currentGame = MiniGame.BIERRUTSCHE;
+        this.currentGame = MiniGame.BIERRUTSCHE;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBiergeballerLeftFromLeft(){
+    public void testBiergeballerLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERGEBALLER, true);
-        currentGame = MiniGame.AUGENSAUFEN;
+        this.currentGame = MiniGame.AUGENSAUFEN;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBiergeballerRightFromLeft(){
+    public void testBiergeballerRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERGEBALLER, true);
-        currentGame = MiniGame.BUSFAHREN;
+        this.currentGame = MiniGame.BUSFAHREN;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testAugensaufenLeftFromLeft(){
+    public void testAugensaufenLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.AUGENSAUFEN, true);
-        currentGame = MiniGame.WERF_DICH_DICHT;
+        this.currentGame = MiniGame.WERF_DICH_DICHT;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testAugensaufenRightFromLeft(){
+    public void testAugensaufenRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.AUGENSAUFEN, true);
-        currentGame = MiniGame.BIERGEBALLER;
+        this.currentGame = MiniGame.BIERGEBALLER;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testWerfDichDichtLeftFromLeft(){
+    public void testWerfDichDichtLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.WERF_DICH_DICHT, true);
-        currentGame = MiniGame.KISTEN_STAPELN;
+        this.currentGame = MiniGame.KISTEN_STAPELN;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testWerfDichDichtRightFromLeft(){
+    public void testWerfDichDichtRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.WERF_DICH_DICHT, true);
-        currentGame = MiniGame.AUGENSAUFEN;
+        this.currentGame = MiniGame.AUGENSAUFEN;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKistenStapelnLeftFromLeft(){
+    public void testKistenStapelnLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KISTEN_STAPELN, true);
-        currentGame = MiniGame.KINGS;
+        this.currentGame = MiniGame.KINGS;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKistenStapelnRightFromLeft(){
+    public void testKistenStapelnRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KISTEN_STAPELN, true);
-        currentGame = MiniGame.WERF_DICH_DICHT;
+        this.currentGame = MiniGame.WERF_DICH_DICHT;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKingsLeftFromLeft(){
+    public void testKingsLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KINGS, true);
-        currentGame = MiniGame.ICH_HAB_NOCH_NIE;
+        this.currentGame = MiniGame.ICH_HAB_NOCH_NIE;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKingsRightFromLeft(){
+    public void testKingsRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KINGS, true);
-        currentGame = MiniGame.KISTEN_STAPELN;
+        this.currentGame = MiniGame.KISTEN_STAPELN;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
 
     }
 
     @Test
-    public void testIchHabNochNieLeftFromLeft(){
+    public void testIchHabNochNieLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.ICH_HAB_NOCH_NIE, true);
-        currentGame = MiniGame.BIERRUTSCHE;
+        this.currentGame = MiniGame.BIERRUTSCHE;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testIchHabNochNieRightFromLeft(){
+    public void testIchHabNochNieRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.ICH_HAB_NOCH_NIE, true);
-        currentGame = MiniGame.KINGS;
+        this.currentGame = MiniGame.KINGS;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBierrutscheLeftFromLeft(){
+    public void testBierrutscheLeftFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERRUTSCHE, true);
-        currentGame = MiniGame.BUSFAHREN;
+        this.currentGame = MiniGame.BUSFAHREN;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBierrutscheRightFromLeft(){
+    public void testBierrutscheRightFromLeft() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERRUTSCHE, true);
-        currentGame = MiniGame.ICH_HAB_NOCH_NIE;
+        this.currentGame = MiniGame.ICH_HAB_NOCH_NIE;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
 
     @Test
-    public void testBusfahrenLeftFromRight(){
+    public void testBusfahrenLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BUSFAHREN, false);
-        currentGame = MiniGame.BIERGEBALLER;
+        this.currentGame = MiniGame.BIERGEBALLER;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBusfahrenRightFromRight(){
+    public void testBusfahrenRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BUSFAHREN, false);
-        currentGame = MiniGame.BIERRUTSCHE;
+        this.currentGame = MiniGame.BIERRUTSCHE;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBiergeballerLeftFromRight(){
+    public void testBiergeballerLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERGEBALLER, false);
-        currentGame = MiniGame.AUGENSAUFEN;
+        this.currentGame = MiniGame.AUGENSAUFEN;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBiergeballerRightFromRight(){
+    public void testBiergeballerRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERGEBALLER, false);
-        currentGame = MiniGame.BUSFAHREN;
+        this.currentGame = MiniGame.BUSFAHREN;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame, activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testAugensaufenLeftFromRight(){
+    public void testAugensaufenLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.AUGENSAUFEN, false);
-        currentGame = MiniGame.WERF_DICH_DICHT;
+        this.currentGame = MiniGame.WERF_DICH_DICHT;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testAugensaufenRightFromRight(){
+    public void testAugensaufenRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.AUGENSAUFEN, false);
-        currentGame = MiniGame.BIERGEBALLER;
+        this.currentGame = MiniGame.BIERGEBALLER;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testWerfDichDichtLeftFromRight(){
+    public void testWerfDichDichtLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.WERF_DICH_DICHT, false);
-        currentGame = MiniGame.KISTEN_STAPELN;
+        this.currentGame = MiniGame.KISTEN_STAPELN;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testWerfDichDichtRightFromRight(){
+    public void testWerfDichDichtRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.WERF_DICH_DICHT, false);
-        currentGame = MiniGame.AUGENSAUFEN;
+        this.currentGame = MiniGame.AUGENSAUFEN;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKistenStapelnLeftFromRight(){
+    public void testKistenStapelnLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KISTEN_STAPELN, false);
-        currentGame = MiniGame.KINGS;
+        this.currentGame = MiniGame.KINGS;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKistenStapelnRightFromRight(){
+    public void testKistenStapelnRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KISTEN_STAPELN, false);
-        currentGame = MiniGame.WERF_DICH_DICHT;
+        this.currentGame = MiniGame.WERF_DICH_DICHT;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKingsLeftFromRight(){
+    public void testKingsLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KINGS, false);
-        currentGame = MiniGame.ICH_HAB_NOCH_NIE;
+        this.currentGame = MiniGame.ICH_HAB_NOCH_NIE;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testKingsRightFromRight(){
+    public void testKingsRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.KINGS, false);
-        currentGame = MiniGame.KISTEN_STAPELN;
+        this.currentGame = MiniGame.KISTEN_STAPELN;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testIchHabNochNieLeftFromRight(){
+    public void testIchHabNochNieLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.ICH_HAB_NOCH_NIE, false);
-        currentGame = MiniGame.BIERRUTSCHE;
+        this.currentGame = MiniGame.BIERRUTSCHE;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testIchHabNochNieRightFromRight(){
+    public void testIchHabNochNieRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.ICH_HAB_NOCH_NIE, false);
-        currentGame = MiniGame.KINGS;
+        this.currentGame = MiniGame.KINGS;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBierrutscheLeftFromRight(){
+    public void testBierrutscheLeftFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERRUTSCHE, false);
-        currentGame = MiniGame.BUSFAHREN;
+        this.currentGame = MiniGame.BUSFAHREN;
         onView(withId(R.id.leftButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testBierrutscheRightFromRight(){
+    public void testBierrutscheRightFromRight() {
         Intent intent = new Intent();
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
         goToGame(MiniGame.BIERRUTSCHE, false);
-        currentGame = MiniGame.ICH_HAB_NOCH_NIE;
+        this.currentGame = MiniGame.ICH_HAB_NOCH_NIE;
         onView(withId(R.id.rightButton)).perform(click());
-        Assert.assertEquals(currentGame,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(this.currentGame, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartAtAugensaufen(){
+    public void testStartAtAugensaufen() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.AUGENSAUFEN;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartAtBiergeballer(){
+    public void testStartAtBiergeballer() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.BIERGEBALLER;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartAtBusfahren(){
+    public void testStartAtBusfahren() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.BUSFAHREN;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
+
     @Test
-    public void testStartAtBierrutsche(){
+    public void testStartAtBierrutsche() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.BIERRUTSCHE;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartAtIchHabNochNie(){
+    public void testStartAtIchHabNochNie() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.ICH_HAB_NOCH_NIE;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartAtKings(){
+    public void testStartAtKings() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.KINGS;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartAtKistenStapeln(){
+    public void testStartAtKistenStapeln() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.KISTEN_STAPELN;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 
     @Test
-    public void testStartWerfDichDicht(){
+    public void testStartWerfDichDicht() {
         Intent intent = new Intent();
         MiniGame game = MiniGame.WERF_DICH_DICHT;
         intent.putExtra("lastGame", game);
-        activityRule.launchActivity(intent);
+        this.activityRule.launchActivity(intent);
 
-        Assert.assertEquals(game,  activityRule.getActivity().getCurrentGame());
+        Assert.assertEquals(game, this.activityRule.getActivity().getCurrentGame());
     }
 }

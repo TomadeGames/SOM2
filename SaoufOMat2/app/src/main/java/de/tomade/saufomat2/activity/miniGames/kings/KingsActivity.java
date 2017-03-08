@@ -1,13 +1,11 @@
 package de.tomade.saufomat2.activity.miniGames.kings;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,23 +13,19 @@ import java.util.List;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
-import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.activity.miniGames.MiniGame;
+import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
+import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.card.Card;
 
-public class KingsActivity extends Activity implements View.OnClickListener {
+public class KingsActivity extends BaseMiniGame implements View.OnClickListener {
     private ImageView cardImage;
-    private RelativeLayout bottomLayout;
     private TextView popupText;
     private TextView cardCounterText;
 
-    private ArrayList<Player> playerList;
-    private int currentPlayerId;
     private int maximumCards;
     private int cardCount = 0;
 
-    private boolean fromMenue = false;
     private boolean tutorialShown = false;
     private KingsState gameState = KingsState.START;
 
@@ -43,92 +37,74 @@ public class KingsActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kings);
+        this.setContentView(R.layout.activity_kings);
 
-        Bundle extras = this.getIntent().getExtras();
-        if (extras != null) {
-            this.fromMenue = extras.getBoolean("fromMenue");
-            if (!this.fromMenue) {
-                this.playerList = extras.getParcelableArrayList("player");
-                this.currentPlayerId = extras.getInt("currentPlayerId");
-                if (3 * this.playerList.size() > 20) {
-                    this.setMaximumCards(2 * this.playerList.size());
-                } else {
-                    this.setMaximumCards(3 * this.playerList.size());
-                }
+
+        if (this.fromMainGame) {
+            if (3 * this.playerList.size() > 20) {
+                this.maximumCards = 2 * this.playerList.size();
+            } else {
+                this.maximumCards = 3 * this.playerList.size();
             }
         }
-        this.cardImage = (ImageView) this.findViewById(R.id.cardImage);
-        this.bottomLayout = (RelativeLayout) this.findViewById(R.id.popupPanel);
-        this.setPopupText((TextView) this.findViewById(R.id.popupText));
-        this.cardCounterText = (TextView) this.findViewById(R.id.cardcounterText);
-        this.cardCounterText.setText(getCardCount() + " / " + this.getMaximumCards());
 
-        if (!this.fromMenue) {
-            this.getPopupText().setText(Player.getPlayerById(this.playerList, this.currentPlayerId).getName() + "\nTippen um die Karte aufzudecken");
+        this.cardImage = (ImageView) this.findViewById(R.id.cardImage);
+        this.popupText = (TextView) this.findViewById(R.id.popupText);
+        this.cardCounterText = (TextView) this.findViewById(R.id.cardcounterText);
+        this.cardCounterText.setText(this.cardCount + " / " + this.maximumCards);
+
+        if (this.fromMainGame) {
+            this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this.currentPlayer.getName()));
         }
 
-        this.lastText = this.getPopupText().getText().toString();
+        this.lastText = this.popupText.getText().toString();
 
         ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
         tutorialButton.setOnClickListener(this);
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
         View backLabel = this.findViewById(R.id.backText);
-        if (this.fromMenue) {
+        if (!this.fromMainGame) {
             backButton.setOnClickListener(this);
         } else {
             backButton.setVisibility(View.GONE);
             backLabel.setVisibility(View.GONE);
-            this.setMaximumCards(32);
+            this.maximumCards = 32;
         }
-
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == 0) {
-            if (isTutorialShown()) {
-                hideTutorial();
+            if (this.tutorialShown) {
+                this.hideTutorial();
             } else {
-                switch (this.getGameState()) {
+                switch (this.gameState) {
                     case START:
-                        this.setGameState(KingsState.ROUND_END);
-                        getTask();
+                        this.gameState = KingsState.ROUND_END;
+                        this.getTask();
                         break;
                     case ROUND_END:
-                        if (this.fromMenue) {
-                            this.getPopupText().setText("Nächster Spieler");
+                        if (!this.fromMainGame) {
+                            this.popupText.setText(R.string.minigame_kings_next_player);
                         } else {
-                            this.currentPlayerId = Player.getPlayerById(this.playerList, this.currentPlayerId).getNextPlayerId();
-                            if (getCardCount() < getMaximumCards()) {
-                                this.getPopupText().setText(Player.getPlayerById(this.playerList, this.currentPlayerId).getName() + "\nTippen um die Karte aufzudecken");
+                            this.nextTurn();
+                            if (this.cardCount < this.maximumCards) {
+                                this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
+                                        .currentPlayer.getName()));
                             } else {
-                                this.getPopupText().setText("Spiel vorbei");
-                                this.setGameState(KingsState.GAME_OVER);
+                                this.popupText.setText(R.string.minigame_kings_game_over);
+                                this.gameState = KingsState.GAME_OVER;
                             }
                         }
-                        this.setGameState(KingsState.START);
+                        this.gameState = KingsState.START;
                         break;
                     case GAME_OVER:
-                        leaveGame();
+                        this.leaveGame();
                         break;
                 }
             }
         }
         return true;
-    }
-
-    private void leaveGame() {
-        Intent intent;
-        if (this.fromMenue) {
-            intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
-            intent.putExtra("lastGame", MiniGame.KINGS);
-        } else {
-            intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
-            intent.putParcelableArrayListExtra("player", this.playerList);
-            intent.putExtra("currentPlayerId", this.currentPlayerId);
-        }
-        this.startActivity(intent);
     }
 
     @Override
@@ -140,150 +116,86 @@ public class KingsActivity extends Activity implements View.OnClickListener {
                 this.startActivity(intent);
                 break;
             case R.id.tutorialButton:
-                if (this.isTutorialShown()) {
-                    hideTutorial();
+                if (this.tutorialShown) {
+                    this.hideTutorial();
                 } else {
-                    showTutorial();
+                    this.showTutorial();
                 }
                 break;
         }
     }
 
     private void showTutorial() {
-        if (!this.isTutorialShown()) {
-            this.setTutorialShown(true);
-            this.lastText = this.getPopupText().getText().toString();
-            this.getPopupText().setText(R.string.kings_tutorial);
+        if (!this.tutorialShown) {
+            this.tutorialShown = true;
+            this.lastText = this.popupText.getText().toString();
+            this.popupText.setText(R.string.minigame_kings_tutorial);
         }
     }
 
     private void hideTutorial() {
-        if (this.isTutorialShown()) {
-            this.setTutorialShown(false);
-            this.getPopupText().setText(this.lastText);
+        if (this.tutorialShown) {
+            this.tutorialShown = false;
+            this.popupText.setText(this.lastText);
         }
     }
 
     private void getTask() {
         boolean validCard = false;
-        if (getLastCards().size() >= 32) {
-            this.setCardCount(0);
-            getLastCards().clear();
+        if (this.lastCards.size() >= 32) {
+            this.cardCount = 0;
+            this.lastCards.clear();
         }
         while (!validCard) {
             validCard = true;
-            setCard(Card.getRandomCard7OrHigher());
-            for (Card c : this.getLastCards()) {
-                if (getCard().equals(c)) {
+            this.card = Card.getRandomCard7OrHigher();
+            for (Card c : this.lastCards) {
+                if (this.card.equals(c)) {
                     validCard = false;
                 }
             }
         }
-        this.getLastCards().add(getCard());
-        this.cardImage.setImageResource(getCard().getImageId());
-        switch (getCard().getValue()) {
+        this.lastCards.add(this.card);
+        this.cardImage.setImageResource(this.card.getImageId());
+        switch (this.card.getValue()) {
             case SEVEN:
-                this.getPopupText().setText("7\nDein linker Nachbar muss einen Trinken!");
+                this.popupText.setText(R.string.minigame_kings_card_value_seven);
                 break;
             case EIGHT:
-                this.getPopupText().setText("8\nDein rechter Nachbar muss einen Trinken!");
+                this.popupText.setText(R.string.minigame_kings_card_value_eight);
                 break;
             case NINE:
-                this.getPopupText().setText("9\nDu darfst dir jemanden aussuchen, der trinken muss!");
+                this.popupText.setText(R.string.minigame_kings_card_value_nine);
                 break;
             case TEN:
-                this.getPopupText().setText("10\nDiesem Spieler dürfen keine Fragen beantwortet werden!");
+                this.popupText.setText(R.string.minigame_kings_card_value_ten);
 
                 break;
             case JACK:
-                this.getPopupText().setText("Bube\nAlle Männer müssen trinken!");
-                if (!this.fromMenue) {
-                    for (Player p : playerList) {
-                        if (p.getIsMan()) {
-                            p.increaseDrinks(1);
-                        }
-                    }
+                this.popupText.setText(R.string.minigame_kings_card_value_jack);
+                if (this.fromMainGame) {
+                    this.playerList.stream().filter(Player::getIsMan).forEach(p -> p.increaseDrinks(1));
                 }
                 break;
             case QUEEN:
-                this.getPopupText().setText("Dame\nAlle Frauen müssen trinken!");
-                if (!this.fromMenue) {
-                    for (Player p : playerList) {
-                        if (!p.getIsMan()) {
-                            p.increaseDrinks(1);
-                        }
-                    }
+                this.popupText.setText(R.string.minigame_kings_card_value_queen);
+                if (this.fromMainGame) {
+                    this.playerList.stream().filter(p -> !p.getIsMan()).forEach(p -> p.increaseDrinks(1));
                 }
                 break;
             case KING:
-                this.getPopupText().setText("König\nDu darfst dir eine Regel ausdenken, die für dieses Spiel bestehen bleibt!");
+                this.popupText.setText(R.string.minigame_kings_card_value_king);
                 break;
             case ACE:
-                this.getPopupText().setText("Ass\nAlle müssen trinken!");
-                if (!this.fromMenue) {
-                    for (Player p : playerList) {
-                        p.increaseDrinks(1);
-                    }
+                this.popupText.setText(R.string.minigame_kings_card_value_ace);
+                if (this.fromMainGame) {
+                    this.playerList.forEach(player -> player.increaseDrinks(1));
                 }
                 break;
+            default:
+                break;
         }
-        this.setCardCount(this.getCardCount() + 1);
-        this.cardCounterText.setText(this.getCardCount() + " / " + this.getMaximumCards());
-    }
-
-    public TextView getPopupText() {
-        return popupText;
-    }
-
-    public void setPopupText(TextView popupText) {
-        this.popupText = popupText;
-    }
-
-    public int getMaximumCards() {
-        return maximumCards;
-    }
-
-    public void setMaximumCards(int maximumCards) {
-        this.maximumCards = maximumCards;
-    }
-
-    public int getCardCount() {
-        return cardCount;
-    }
-
-    public void setCardCount(int cardCount) {
-        this.cardCount = cardCount;
-    }
-
-    public boolean isTutorialShown() {
-        return tutorialShown;
-    }
-
-    public void setTutorialShown(boolean tutorialShown) {
-        this.tutorialShown = tutorialShown;
-    }
-
-    public KingsState getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(KingsState gameState) {
-        this.gameState = gameState;
-    }
-
-    public Card getCard() {
-        return card;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
-    }
-
-    public List<Card> getLastCards() {
-        return lastCards;
-    }
-
-    public void setLastCards(List<Card> lastCards) {
-        this.lastCards = lastCards;
+        this.cardCount = this.cardCount + 1;
+        this.cardCounterText.setText(this.cardCount + " / " + this.maximumCards);
     }
 }

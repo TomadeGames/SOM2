@@ -86,7 +86,7 @@
         android:layout_alignRight="@+id/backButton"
         android:layout_alignTop="@+id/backButton"
         android:gravity="center"
-        android:text="@string/zur_ck"
+        android:text="@string/button.back"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center"
-    tools:context=".busfahren.BusfahrenActivity">
+    tools:context=".activity.miniGames.busfahren.BusfahrenActivity">
 
     <ImageView
         android:id="@+id/backgroundImage"
@@ -242,7 +242,7 @@
             android:layout_alignRight="@+id/backButton"
             android:layout_alignTop="@+id/backButton"
             android:gravity="center"
-            android:text="@string/zur_ck"
+            android:text="@string/button.back"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
@@ -266,7 +266,7 @@
         android:id="@+id/tutorialPanel"
         android:gravity="center"
         android:layout_margin="15dp"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="fill_parent"

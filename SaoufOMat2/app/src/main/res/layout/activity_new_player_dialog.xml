@@ -43,13 +43,14 @@
         android:layout_toEndOf="@+id/txtvWeight"
         android:text="70"
         android:editable="false"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        android:maxLines="1" />
 
     <Spinner
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:id="@+id/spGender"
-        android:entries="@array/spGenderChoose"
+        android:entries="@array/gender"
         android:layout_alignTop="@+id/etxtWeight"
         android:layout_alignRight="@+id/etxtName"
         android:layout_alignEnd="@+id/etxtName" />
