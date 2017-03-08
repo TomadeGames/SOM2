@@ -2,7 +2,6 @@ package de.tomade.saufomat2.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -22,8 +21,11 @@ import java.util.Map;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
+import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
 
+//TODO: Zurück-Button
+//TODO: fertig stellen
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     Button btnNewPlayer = null;
     Button btnStartGame = null;
@@ -35,12 +37,12 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_player);
+        this.setContentView(R.layout.activity_create_player);
 
-        this.linearLayout = (LinearLayout) findViewById(R.id.llCreatePlayer);
+        this.linearLayout = (LinearLayout) this.findViewById(R.id.llCreatePlayer);
 
-        this.btnNewPlayer = (Button) findViewById(R.id.btnNewPlayer);
-        this.btnStartGame = (Button) findViewById(R.id.btnStartGame);
+        this.btnNewPlayer = (Button) this.findViewById(R.id.btnNewPlayer);
+        this.btnStartGame = (Button) this.findViewById(R.id.btnStartGame);
 
         this.btnNewPlayer.setOnClickListener(this);
         this.btnStartGame.setOnClickListener(this);
@@ -51,24 +53,25 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         switch (v.getId()) {
             case R.id.btnNewPlayer:
                 Player newPlayer = new Player();
-                showDialog(newPlayer);
+                this.showDialog(newPlayer);
                 break;
             case R.id.btnStartGame:
-                if (!getPlayers().isEmpty()) {
+                if (!this.players.isEmpty()) {
                     Intent intent = new Intent(this, MainGameActivity.class);
-                    intent.putExtra("player", getPlayers());
-                    intent.putExtra("currentPlayer", getPlayers().get(0).getId());
+                    intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
+                    intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.players.get(0).getId());
                     this.finish();
                     this.startActivity(intent);
-                }else {
-                    Toast.makeText(CreatePlayerActivity.this, "Keine Spieler vorhanden", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(CreatePlayerActivity.this, R.string.create_player_no_player, Toast.LENGTH_LONG)
+                            .show();
                 }
                 break;
         }
     }
 
     private void showDialog(final Player newPlayer) {
-        for(Player tmp: getPlayers()) {
+        for (Player tmp : this.players) {
             System.out.println(tmp.toString());
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -84,30 +87,27 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         etxtName.setText("");
         etxtWeight.setText("70");
 
-        builder.setMessage("Neuer Spieler")
+        builder.setMessage(R.string.create_player_new_player)
                 .setView(view)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        newPlayer.setName(etxtName.getText().toString());
-                        newPlayer.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                        boolean genderSet = false;
-                        if (spGender.getSelectedItem().equals("Mann")) {
-                            newPlayer.setIsMan(true);
-                            genderSet = true;
-                        } else if (spGender.getSelectedItem().equals("Frau")) {
-                            newPlayer.setIsMan(false);
-                            genderSet = true;
-                        }
-                        if (!newPlayer.getName().isEmpty() && newPlayer.getWeight() > 0 && genderSet) {
-                            addPlayer(newPlayer);
-                        } else {
-                            Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
-                        }
+                .setPositiveButton("OK", (dialog, id1) -> {
+                    newPlayer.setName(etxtName.getText().toString());
+                    newPlayer.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
+                    boolean genderSet = false;
+                    if (spGender.getSelectedItem().equals("Mann")) {
+                        newPlayer.setIsMan(true);
+                        genderSet = true;
+                    } else if (spGender.getSelectedItem().equals("Frau")) {
+                        newPlayer.setIsMan(false);
+                        genderSet = true;
+                    }
+                    if (!newPlayer.getName().isEmpty() && newPlayer.getWeight() > 0 && genderSet) {
+                        this.addPlayer(newPlayer);
+                    } else {
+                        Toast.makeText(CreatePlayerActivity.this, R.string.create_player_check_data, Toast
+                                .LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+                .setNegativeButton(R.string.button_abort, (dialog, id12) -> {
                 });
         builder.create();
         builder.show();
@@ -115,25 +115,27 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
     private void addPlayer(Player player) {
         boolean duplicate = false;
-        for (Player tmp : getPlayers()) {
+        for (Player tmp : this.players) {
             if (tmp.getName().equals(player.getName())) {
                 duplicate = true;
             }
         }
         if (!duplicate) {
-            if (getPlayers() != null && !getPlayers().isEmpty()) {
-                getPlayers().get(getPlayers().size() - 1).setNextPlayerId(player.getId());
+            if (this.players != null && !this.players.isEmpty()) {
+                this.players.get(this.players.size() - 1).setNextPlayerId(player.getId());
             }
-            this.getPlayers().add(player);
-            if (getPlayers().size() > 1) {
-                getPlayers().get(getPlayers().size() - 1).setLastPlayerId(getPlayers().get(getPlayers().size() - 2).getId());
+            this.players.add(player);
+            if (this.players.size() > 1) {
+                this.players.get(this.players.size() - 1).setLastPlayerId(this.players.get(this.players.size() - 2)
+                        .getId());
             }
-            for (Player tmp : getPlayers()) {
+            for (Player tmp : this.players) {
                 System.out.println(tmp.toString());
             }
-            displayPlayer(player);
+            this.displayPlayer(player);
         } else {
-            Toast.makeText(CreatePlayerActivity.this, "Name bereits vorhanden!", Toast.LENGTH_LONG).show();
+            Toast.makeText(CreatePlayerActivity.this, R.string.create_player_name_already_taken, Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
@@ -143,32 +145,26 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final int playerId = player.getId();
         LayoutInflater inflater = this.getLayoutInflater();
         final View playerView = inflater.inflate(R.layout.player_element, null);
-        playerelements.put(playerViewId, playerView);
+        this.playerelements.put(playerViewId, playerView);
 
         TextView playername = (TextView) playerView.findViewById(R.id.txtvPlayerName);
         playername.setText(player.getName());
 
         ImageButton delete = (ImageButton) playerView.findViewById(R.id.ibDelete);
-        delete.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                linearLayout.removeView(playerView);
-                playerelements.remove(playerView);
-                removePlayer(player);
-            }
+        delete.setOnClickListener(v -> {
+            CreatePlayerActivity.this.linearLayout.removeView(playerView);
+            CreatePlayerActivity.this.playerelements.remove(playerView);
+            this.removePlayer(player);
         });
 
         final ImageButton edit = (ImageButton) playerView.findViewById(R.id.ibEdit);
-        edit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                editPlayer(playerViewId, playerId);
-            }
-        });
+        edit.setOnClickListener(v -> this.editPlayer(playerViewId, playerId));
         this.linearLayout.addView(playerView);
     }
 
     private void editPlayer(int playerViewId, int playerId) {
-        View playerelemnt = playerelements.get(playerViewId);
-        final Player player = Player.getPlayerById(getPlayers(), playerId);
+        View playerelemnt = this.playerelements.get(playerViewId);
+        final Player player = Player.getPlayerById(this.players, playerId);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
@@ -185,39 +181,38 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         etxtName.setText(player.getName());
         etxtWeight.setText(String.valueOf(player.getWeight()));
         if (player.getIsMan()) {
-            spGender.setSelection(getIndex(spGender, "Mann"));
+            spGender.setSelection(this.getIndex(spGender, this.getString(R.string.enum_gender_man)));
         } else {
-            spGender.setSelection(getIndex(spGender, "Frau"));
+            spGender.setSelection(this.getIndex(spGender, this.getString(R.string.enum_gender_woman)));
         }
 
-        builder.setMessage("Spieler Bearbeiten")
+        builder.setMessage(R.string.create_player_edit_player)
                 .setView(view)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        boolean duplicate = false;
-                        for (Player tmp : getPlayers()) {
-                            if (tmp.getName().equals(etxtName.getText().toString())) {
-                                duplicate = true;
-                            }
+                .setPositiveButton(R.string.button_ok, (dialog, id12) -> {
+                    boolean duplicate = false;
+                    for (Player tmp : CreatePlayerActivity.this.players) {
+                        if (tmp.getName().equals(etxtName.getText().toString())) {
+                            duplicate = true;
                         }
-                        if(!duplicate) {
-                            if (!etxtName.getText().toString().isEmpty() && Integer.parseInt(etxtWeight.getText().toString()) > 0 && !etxtWeight.getText().toString().isEmpty()) {
-                                player.setName(etxtName.getText().toString());
-                                player.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                                player.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
-                                txtvName.setText(player.getName());
-                            } else {
-                                Toast.makeText(CreatePlayerActivity.this, "Daten überprüfen!", Toast.LENGTH_SHORT).show();
-                            }
+                    }
+                    if (!duplicate) {
+                        if (!etxtName.getText().toString().isEmpty() && Integer.parseInt(etxtWeight.getText()
+                                .toString()) > 0 && !etxtWeight.getText().toString().isEmpty()) {
+                            player.setName(etxtName.getText().toString());
+                            player.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
+                            player.setIsMan(spGender.getSelectedItem().toString().equals("Mann"));
+                            txtvName.setText(player.getName());
+                        } else {
+                            Toast.makeText(CreatePlayerActivity.this, R.string.create_player_check_data, Toast
+                                    .LENGTH_SHORT)
+                                    .show();
                         }
-                        else{
-                            Toast.makeText(CreatePlayerActivity.this, "Der Name ist schon vorhanden!", Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        Toast.makeText(CreatePlayerActivity.this, R.string.create_player_name_already_taken, Toast
+                                .LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+                .setNegativeButton(R.string.button_abort, (dialog, id1) -> {
                 });
         builder.create();
         builder.show();
@@ -240,20 +235,12 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         int nextPLayerId = player.getNextPlayerId();
         System.out.println("LastplayerId: " + lastPlayerId + " NextPlayerID: " + nextPLayerId);
         if (player.getHasNextPlayer() && player.getHastLastPlayer()) {
-            Player.getPlayerById(getPlayers(), lastPlayerId).setNextPlayerId(nextPLayerId);
-            Player.getPlayerById(getPlayers(), nextPLayerId).setLastPlayerId(lastPlayerId);
+            Player.getPlayerById(this.players, lastPlayerId).setNextPlayerId(nextPLayerId);
+            Player.getPlayerById(this.players, nextPLayerId).setLastPlayerId(lastPlayerId);
         } else if (player.getHasNextPlayer() && !player.getHastLastPlayer()) {
-            Player.getPlayerById(getPlayers(), nextPLayerId).setLastPlayerId(-1);
-            Player.getPlayerById(getPlayers(), nextPLayerId).setHasLastPlayer(false);
+            Player.getPlayerById(this.players, nextPLayerId).setLastPlayerId(-1);
+            Player.getPlayerById(this.players, nextPLayerId).setHasLastPlayer(false);
         }
-        getPlayers().remove(player);
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
+        this.players.remove(player);
     }
 }

@@ -52,7 +52,7 @@ public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_biergeballer);
+        this.setContentView(R.layout.activity_biergeballer);
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         Point size = new Point();
@@ -164,7 +164,7 @@ public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchLi
                             break;
                         case MotionEvent.ACTION_MOVE:
                             this.cratePlayer0.setY(event.getRawY());
-                            checkCollision(true);
+                            this.checkCollision(true);
                             break;
                     }
                     break;
@@ -174,7 +174,7 @@ public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchLi
                             break;
                         case MotionEvent.ACTION_MOVE:
                             this.cratePlayer1.setY(event.getRawY());
-                            checkCollision(false);
+                            this.checkCollision(false);
                             break;
                     }
                     break;
@@ -281,7 +281,7 @@ public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchLi
         } else {
             switch (v.getId()) {
                 case R.id.backButton:
-                    leaveGame();
+                    this.leaveGame();
                     break;
                 case R.id.tutorialButton:
                     if (!this.tutorialShown) {

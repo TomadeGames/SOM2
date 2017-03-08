@@ -31,7 +31,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_augensaufen);
+        this.setContentView(R.layout.activity_augensaufen);
         random = new Random();
 
 
@@ -49,13 +49,13 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         if (event.getAction() == 0) {
             switch (this.gameState) {
                 case START:
-                    startRolling();
+                    this.startRolling();
                     break;
                 case ROLLING:
-                    stopRolling();
+                    this.stopRolling();
                     break;
                 case RESULT:
-                    restart();
+                    this.restart();
                     break;
             }
             return true;
@@ -65,7 +65,8 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
 
     private void stopRolling() {
         this.gameState = AugensaufenState.RESULT;
-        this.bottomText.setText(getString(R.string.minigame_augensaufen_drink_amount, (this.currentDiceIndex + 1)));
+        this.bottomText.setText(this.getString(R.string.minigame_augensaufen_drink_amount, (this.currentDiceIndex +
+                1)));
         if (this.fromMainGame) {
             if (this.currentPlayer == null) {
                 throw new IllegalStateException("currentPlayer cannot be Null");

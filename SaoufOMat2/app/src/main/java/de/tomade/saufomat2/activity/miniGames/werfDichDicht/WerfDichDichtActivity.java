@@ -175,49 +175,62 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
                                 WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
                                         .setImageResource(R.drawable.schnapsglas_2);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_7);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_7);
                             }
                             break;
                         case 1:
                             if (!WerfDichDichtActivity.this.isFull[WerfDichDichtActivity.this.currentDiceIndex]) {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_3);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_3);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_6);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_6);
                             }
                             break;
                         case 2:
                             if (!WerfDichDichtActivity.this.isFull[WerfDichDichtActivity.this.currentDiceIndex]) {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_4);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_4);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_5);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_5);
                             }
                             break;
                         case 3:
                             if (!WerfDichDichtActivity.this.isFull[WerfDichDichtActivity.this.currentDiceIndex]) {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_5);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_5);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_4);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_4);
                             }
                             break;
                         case 4:
                             if (!WerfDichDichtActivity.this.isFull[WerfDichDichtActivity.this.currentDiceIndex]) {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_6);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_6);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_3);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_3);
                             }
                             break;
                         case 5:
                             if (!WerfDichDichtActivity.this.isFull[WerfDichDichtActivity.this.currentDiceIndex]) {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_7);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_7);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_2);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_2);
                             }
                             break;
                         case 6:
                             if (!WerfDichDichtActivity.this.isFull[WerfDichDichtActivity.this.currentDiceIndex]) {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_8);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_8);
                             } else {
-                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex].setImageResource(R.drawable.schnapsglas_1);
+                                WerfDichDichtActivity.this.glasses[WerfDichDichtActivity.this.currentDiceIndex]
+                                        .setImageResource(R.drawable.schnapsglas_1);
                             }
                             break;
                         case 7:

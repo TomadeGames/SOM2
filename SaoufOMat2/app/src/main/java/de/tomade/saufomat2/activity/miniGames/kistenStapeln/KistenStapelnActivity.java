@@ -278,7 +278,8 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
 
         for (int i = 0; i < this.towerImageList.size(); i++) {
 
-            ObjectAnimator anim = ObjectAnimator.ofFloat(this.towerImageList.get(i), "y", this.towerImageList.get(i).getY() + movingDistance);
+            ObjectAnimator anim = ObjectAnimator.ofFloat(this.towerImageList.get(i), "y", this.towerImageList.get(i)
+                    .getY() + movingDistance);
             anim.setDuration(1000);
             if (i == this.towerImageList.size() - 1) {
                 anim.addListener(new Animator.AnimatorListener() {
