@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +71,26 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_bierrutsche);
+
+        if (this.playerList == null) {
+            Player player1 = new Player();
+            player1.setName(this.getString(R.string.default_player_player1));
+
+            Player player2 = new Player();
+            player2.setName(this.getString(R.string.default_player_player2));
+
+            player1.setNextPlayerId(player2.getId());
+            player1.setLastPlayerId(player2.getId());
+
+            player2.setNextPlayerId(player1.getId());
+            player2.setLastPlayerId(player1.getId());
+
+            this.playerList = new ArrayList<>();
+            this.playerList.add(player1);
+            this.playerList.add(player2);
+
+            this.currentPlayer = player1;
+        }
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         Point size = new Point();

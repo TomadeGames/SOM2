@@ -13,6 +13,8 @@ import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 import de.tomade.saufomat2.model.card.Card;
 import de.tomade.saufomat2.model.card.CardValue;
 
+//TODO: wenn aus minispielmenü soll das spiel neu starten und nicht beendet werden. Vieleicht eine Frage ob neu
+// gestartet werden soll?
 public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListener {
     public static final String TAG = BusfahrenActivity.class.getSimpleName();
 
