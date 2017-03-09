@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +30,12 @@ import de.tomade.saufomat2.model.Player;
 //TODO: Zurück-Button
 //TODO: fertig stellen
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
+    static int id = 0;
     Button btnNewPlayer = null;
     Button btnStartGame = null;
     LinearLayout linearLayout = null;
-    private ArrayList<Player> players = new ArrayList<>();
     Map<Integer, View> playerelements = new HashMap<>();
-    static int id = 0;
+    private ArrayList<Player> players = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             System.out.println(tmp.toString());
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
+                new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault)
         );
         final LayoutInflater inflater = this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.activity_new_player_dialog, null);
@@ -84,9 +86,17 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final EditText etxtName = (EditText) view.findViewById(R.id.etxtName);
         final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
         final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGender.setAdapter(arrayAdapter);
 
         etxtName.setText("");
         etxtWeight.setText("70");
+
+        final NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
+        np.setMinValue(0);
+        np.setMaxValue(999);
+        np.setValue(70);
 
         builder.setMessage(R.string.create_player_new_player)
                 .setView(view)
@@ -104,7 +114,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                             genderSet = true;
                         }
                         if (!newPlayer.getName().isEmpty() && newPlayer.getWeight() > 0 && genderSet) {
-                            addPlayer(newPlayer);
+                            CreatePlayerActivity.this.addPlayer(newPlayer);
                         } else {
                             Toast.makeText(CreatePlayerActivity.this, R.string.create_player_check_data, Toast
                                     .LENGTH_SHORT).show();
@@ -164,7 +174,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             public void onClick(View view) {
                 CreatePlayerActivity.this.linearLayout.removeView(playerView);
                 CreatePlayerActivity.this.playerelements.remove(playerView);
-                removePlayer(player);
+                CreatePlayerActivity.this.removePlayer(player);
             }
         });
 
@@ -172,7 +182,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editPlayer(playerViewId, playerId);
+                CreatePlayerActivity.this.editPlayer(playerViewId, playerId);
             }
         });
         this.linearLayout.addView(playerView);
@@ -183,7 +193,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final Player player = Player.getPlayerById(this.players, playerId);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
+                new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault)
         );
         final LayoutInflater inflater = this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.activity_new_player_dialog, null);
@@ -193,6 +203,9 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final EditText etxtName = (EditText) view.findViewById(R.id.etxtName);
         final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
         final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGender.setAdapter(arrayAdapter);
 
         etxtName.setText(player.getName());
         etxtWeight.setText(String.valueOf(player.getWeight()));
