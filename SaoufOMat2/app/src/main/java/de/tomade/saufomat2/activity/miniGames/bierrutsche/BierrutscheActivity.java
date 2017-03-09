@@ -172,8 +172,13 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
         ValueAnimator animator = new ValueAnimator();
         animator.setObjectValues(0, accuracy);
-        animator.addUpdateListener(animation -> BierrutscheActivity.this.scoreText.setText(String.valueOf(animation
-                .getAnimatedValue())));
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                BierrutscheActivity.this.scoreText.setText(String.valueOf(animation
+                        .getAnimatedValue()));
+            }
+        });
         animator.setEvaluator(new TypeEvaluator<Integer>() {
             public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
                 return Math.round(startValue + (endValue - startValue) * fraction);

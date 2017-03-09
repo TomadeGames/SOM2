@@ -18,6 +18,7 @@ import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 
+//TODO: Wenn man aus dem Hauptspiel dieses Spiel startet
 public class AugensaufenActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = AugensaufenActivity.class.getSimpleName();
     private static final int DICE_ROLL_DELAY = 100;

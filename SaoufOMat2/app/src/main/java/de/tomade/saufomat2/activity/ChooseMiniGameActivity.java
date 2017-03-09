@@ -79,48 +79,54 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
     }
 
     private void initButtons() {
-        this.findViewById(R.id.leftButton).setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    ImageButton view = (ImageButton) v;
-                    view.setImageResource(R.drawable.left_button_pressed);
-                    v.invalidate();
-                    break;
-                }
-                case MotionEvent.ACTION_UP:
+        this.findViewById(R.id.leftButton).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageButton imageButton = (ImageButton) view;
+                        imageButton.setImageResource(R.drawable.left_button_pressed);
+                        imageButton.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
 
-                    this.leftButtonPressed();
+                        leftButtonPressed();
 
-                case MotionEvent.ACTION_CANCEL: {
-                    ImageButton view = (ImageButton) v;
-                    view.setImageResource(R.drawable.left_button);
-                    view.invalidate();
-                    break;
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageButton imageButton = (ImageButton) view;
+                        imageButton.setImageResource(R.drawable.left_button);
+                        imageButton.invalidate();
+                        break;
+                    }
                 }
+                return true;
             }
-            return true;
         });
 
-        this.findViewById(R.id.rightButton).setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    ImageButton view = (ImageButton) v;
-                    view.setImageResource(R.drawable.right_button_pressed);
-                    v.invalidate();
-                    break;
-                }
-                case MotionEvent.ACTION_UP:
+        this.findViewById(R.id.rightButton).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageButton view = (ImageButton) v;
+                        view.setImageResource(R.drawable.right_button_pressed);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
 
-                    this.rightButtonPressed();
+                        rightButtonPressed();
 
-                case MotionEvent.ACTION_CANCEL: {
-                    ImageButton view = (ImageButton) v;
-                    view.setImageResource(R.drawable.right_button);
-                    view.invalidate();
-                    break;
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageButton view = (ImageButton) v;
+                        view.setImageResource(R.drawable.right_button);
+                        view.invalidate();
+                        break;
+                    }
                 }
+                return true;
             }
-            return true;
         });
     }
 

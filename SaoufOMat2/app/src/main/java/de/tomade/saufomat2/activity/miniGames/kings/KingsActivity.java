@@ -174,13 +174,21 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
             case JACK:
                 this.popupText.setText(R.string.minigame_kings_card_value_jack);
                 if (this.fromMainGame) {
-                    this.playerList.stream().filter(Player::getIsMan).forEach(p -> p.increaseDrinks(1));
+                    for (Player player : this.playerList) {
+                        if (player.getIsMan()) {
+                            player.increaseDrinks(1);
+                        }
+                    }
                 }
                 break;
             case QUEEN:
                 this.popupText.setText(R.string.minigame_kings_card_value_queen);
                 if (this.fromMainGame) {
-                    this.playerList.stream().filter(p -> !p.getIsMan()).forEach(p -> p.increaseDrinks(1));
+                    for (Player player : this.playerList) {
+                        if (!player.getIsMan()) {
+                            player.increaseDrinks(1);
+                        }
+                    }
                 }
                 break;
             case KING:
@@ -189,7 +197,9 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
             case ACE:
                 this.popupText.setText(R.string.minigame_kings_card_value_ace);
                 if (this.fromMainGame) {
-                    this.playerList.forEach(player -> player.increaseDrinks(1));
+                    for (Player player : this.playerList) {
+                        player.increaseDrinks(1);
+                    }
                 }
                 break;
             default:

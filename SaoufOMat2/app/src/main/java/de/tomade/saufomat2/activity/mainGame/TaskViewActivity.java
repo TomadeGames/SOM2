@@ -158,11 +158,16 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                 case CHOOSE_THREE:
                     break;
                 case ALL:
-                    this.players.forEach(player -> player.increaseDrinks(this.currentTask.getDrinkCount()));
+                    for (Player player : this.players) {
+                        player.increaseDrinks(TaskViewActivity.this.currentTask.getDrinkCount());
+                    }
                     break;
                 case ALL_BUT_SELF:
-                    this.players.stream().filter(p -> p.getId() != this.currentPlayer.getId())
-                            .forEach(p -> p.increaseDrinks(this.currentTask.getDrinkCount()));
+                    for (Player player : this.players) {
+                        if (player.getId() != this.currentPlayer.getId()) {
+                            player.increaseDrinks(this.currentTask.getDrinkCount());
+                        }
+                    }
                     break;
                 default:
                     break;

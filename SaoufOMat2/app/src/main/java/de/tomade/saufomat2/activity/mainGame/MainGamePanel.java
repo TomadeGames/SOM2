@@ -22,6 +22,8 @@ import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
 import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.factory.TaskFactory;
 import de.tomade.saufomat2.model.Player;
+import de.tomade.saufomat2.model.button.ButtonEvent;
+import de.tomade.saufomat2.model.button.ButtonListener;
 import de.tomade.saufomat2.model.button.DrawableButton;
 import de.tomade.saufomat2.model.drawable.SaufOMeter;
 import de.tomade.saufomat2.model.drawable.SlotMachineIcon;
@@ -158,7 +160,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         this.setButton(new DrawableButton(startButton, (int) (this.screenWith / 1.35), (int) (this.screenHeight /
                 1.4), this.screenWith / 5, this.screenHeight / 5));
-        this.getButton().addListener(event -> this.startButtonPressed());
+        this.getButton().addListener(new ButtonListener() {
+            @Override
+            public void onInput(ButtonEvent event) {
+                MainGamePanel.this.startButtonPressed();
+            }
+        });
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 
 import de.tomade.saufomat2.activity.mainGame.task.Task;
+import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
@@ -22,14 +23,15 @@ public class MainGameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams
+                .FLAG_FULLSCREEN);
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
-            ArrayList<Player> players = extras.getParcelableArrayList("player");
-            int currentPlayer = extras.getInt("currentPlayer");
-            setPanel(new MainGamePanel(this, currentPlayer, players));
-            setContentView(getPanel());
+            ArrayList<Player> players = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
+            int currentPlayer = extras.getInt(IntentParameter.CURRENT_PLAYER_ID);
+            this.setPanel(new MainGamePanel(this, currentPlayer, players));
+            this.setContentView(this.getPanel());
 
         } else {
             Player p0 = new Player();
@@ -53,8 +55,8 @@ public class MainGameActivity extends Activity {
             players.add(p0);
             players.add(p1);
             int currentPlayer = p0.getId();
-            setPanel(new MainGamePanel(this, currentPlayer, players));
-            setContentView(getPanel());
+            this.setPanel(new MainGamePanel(this, currentPlayer, players));
+            this.setContentView(this.getPanel());
 
         }
     }
