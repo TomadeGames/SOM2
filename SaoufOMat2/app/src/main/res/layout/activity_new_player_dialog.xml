@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="de.tomade.saufomat2.NewPlayerDialog">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/etxtName"
@@ -14,7 +12,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="Name"/>
+        android:hint="Name" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +24,7 @@
         android:layout_alignStart="@+id/etxtName"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -38,16 +36,24 @@
         android:layout_toRightOf="@+id/txtvWeight"
         android:layout_toEndOf="@+id/txtvWeight"
         android:text="70"
-        android:editable="false"
         android:textIsSelectable="false"
-        android:maxLines="1"/>
+        android:maxLines="1" />
+
+    <NumberPicker
+        android:id="@+id/np"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.DeviceDefault"
+        android:layout_below="@+id/spGender"
+        android:layout_alignLeft="@+id/etxtWeight"
+        android:layout_alignStart="@+id/etxtWeight"
+        android:layout_marginTop="47dp" />
 
     <Spinner
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:id="@+id/spGender"
-        android:entries="@array/gender"
         android:layout_alignTop="@+id/etxtWeight"
         android:layout_alignRight="@+id/etxtName"
-        android:layout_alignEnd="@+id/etxtName"/>
+        android:layout_alignEnd="@+id/etxtName" />
 </RelativeLayout>
