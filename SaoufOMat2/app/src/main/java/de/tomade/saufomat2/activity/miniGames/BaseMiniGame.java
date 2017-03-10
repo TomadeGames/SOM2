@@ -3,6 +3,7 @@ package de.tomade.saufomat2.activity.miniGames;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -41,6 +42,7 @@ public abstract class BaseMiniGame extends Activity {
                         .CURRENT_PLAYER_ID));
             }
         }
+        Log.d(BaseMiniGame.class.getSimpleName(), "bla");
     }
 
     /**

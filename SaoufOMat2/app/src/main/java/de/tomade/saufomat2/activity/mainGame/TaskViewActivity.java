@@ -23,7 +23,7 @@ import de.tomade.saufomat2.model.Player;
 
 public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
-    private ArrayList<Player> players;
+    private ArrayList<Player> playerList;
     private Map<Integer, TextView> playerTexts = new HashMap<>();
     private Task currentTask;
     private MiniGame miniGame = null;
@@ -38,15 +38,16 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
-            this.players = extras.getParcelableArrayList("player");
-            if (extras.containsKey("task")) {
-                this.currentTask = (Task) extras.getSerializable("task");
+            this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
+            if (extras.containsKey(IntentParameter.CURRENT_TASK)) {
+                this.currentTask = (Task) extras.getSerializable(IntentParameter.CURRENT_TASK);
                 this.isGame = false;
             } else {
-                this.miniGame = (MiniGame) extras.getSerializable("miniGame");
+                this.miniGame = (MiniGame) extras.getSerializable(IntentParameter.CURRENT_MINI_GAME);
                 this.isGame = true;
             }
-            this.currentPlayer = Player.getPlayerById(this.players, extras.getInt("currentPlayer"));
+            this.currentPlayer = Player.getPlayerById(this.playerList, extras.getInt(IntentParameter
+                    .CURRENT_PLAYER_ID));
 
         }
 
@@ -86,7 +87,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         }
 
         LinearLayout playerLayout = (LinearLayout) this.findViewById(R.id.playerLayout);
-        for (Player p : this.players) {
+        for (Player p : this.playerList) {
             TextView textView = new TextView(this);
             textView.setText(p.getName() + ": " + p.getDrinks());
             playerLayout.addView(textView);
@@ -122,11 +123,11 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
     private void chanceToMainView() {
         Log.d(TAG, "curr: " + this.currentPlayer.getId() + " next: " + this.currentPlayer.getNextPlayerId());
-        this.currentPlayer = Player.getPlayerById(this.players, this.currentPlayer.getNextPlayerId());
+        this.currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId());
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.currentPlayer.getId());
-        intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
-        for (Player p : this.players) {
+        intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
+        for (Player p : this.playerList) {
             Log.d(TAG, p.getName() + " drinks: " + p.getDrinks());
         }
         this.startActivity(intent);
@@ -136,8 +137,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         if (this.isGame) {
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
-            intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, this.players);
-            this.currentPlayer = Player.getPlayerById(this.players, this.currentPlayer.getNextPlayerId());
+            intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, this.playerList);
+            this.currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId());
             intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.currentPlayer.getId());
             this.startActivity(intent);
         } else {
@@ -146,9 +147,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                     this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
                     break;
                 case NEIGHBOUR:
-                    Player.getPlayerById(this.players, this.currentPlayer.getNextPlayerId()).increaseDrinks(this
+                    Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId()).increaseDrinks(this
                             .currentTask.getDrinkCount());
-                    Player.getPlayerById(this.players, this.currentPlayer.getLastPlayerId()).increaseDrinks(this
+                    Player.getPlayerById(this.playerList, this.currentPlayer.getLastPlayerId()).increaseDrinks(this
                             .currentTask.getDrinkCount());
                     break;
                 case CHOOSE_ONE:
@@ -158,12 +159,12 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                 case CHOOSE_THREE:
                     break;
                 case ALL:
-                    for (Player player : this.players) {
+                    for (Player player : this.playerList) {
                         player.increaseDrinks(TaskViewActivity.this.currentTask.getDrinkCount());
                     }
                     break;
                 case ALL_BUT_SELF:
-                    for (Player player : this.players) {
+                    for (Player player : this.playerList) {
                         if (player.getId() != this.currentPlayer.getId()) {
                             player.increaseDrinks(this.currentTask.getDrinkCount());
                         }
@@ -191,12 +192,12 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     private void alcoholButtonPressed() {
         if (this.drinkCountShown) {
             for (Map.Entry<Integer, TextView> e : this.playerTexts.entrySet()) {
-                Player p = Player.getPlayerById(this.players, e.getKey());
+                Player p = Player.getPlayerById(this.playerList, e.getKey());
                 e.getValue().setText(p.getName() + ": " + p.getDrinks());
             }
         } else {
             for (Map.Entry<Integer, TextView> e : this.playerTexts.entrySet()) {
-                Player p = Player.getPlayerById(this.players, e.getKey());
+                Player p = Player.getPlayerById(this.playerList, e.getKey());
                 float alc = this.calculateAlkohol(p.getDrinks(), p.getWeight(), p.getIsMan());
                 String text = p.getName() + ": " + new DecimalFormat("#.##").format(alc);
                 e.getValue().setText(text + "%");

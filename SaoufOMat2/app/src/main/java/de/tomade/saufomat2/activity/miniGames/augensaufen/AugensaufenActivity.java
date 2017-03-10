@@ -28,6 +28,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
     private TextView bottomText;
     private TextView playerText;
     private int currentDiceIndex = 0;
+    private int turnCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,9 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         this.playerText = (TextView) this.findViewById(R.id.playerText);
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
+        if (this.fromMainGame) {
+            backButton.setVisibility(View.GONE);
+        }
         backButton.setOnClickListener(this);
     }
 
@@ -50,7 +54,11 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         if (event.getAction() == 0) {
             switch (this.gameState) {
                 case START:
-                    this.startRolling();
+                    if (this.turnCount == this.playerList.size()) {
+                        this.leaveGame();
+                    } else {
+                        this.startRolling();
+                    }
                     break;
                 case ROLLING:
                     this.stopRolling();
@@ -82,7 +90,13 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
             this.playerText.setText(R.string.minigame_augensaufen_next_player);
         } else {
             this.nextTurn();
-            this.playerText.setText(this.currentPlayer.getName());
+            this.turnCount++;
+
+            if (this.turnCount == this.playerList.size()) {
+                this.playerText.setText(R.string.minigame_augensaufen_game_over);
+            } else {
+                this.playerText.setText(this.currentPlayer.getName());
+            }
         }
         this.gameState = AugensaufenState.START;
     }

@@ -16,8 +16,6 @@ import de.tomade.saufomat2.model.card.CardValue;
 //TODO: wenn aus minispielmenü soll das spiel neu starten und nicht beendet werden. Vieleicht eine Frage ob neu
 // gestartet werden soll?
 public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListener {
-    public static final String TAG = BusfahrenActivity.class.getSimpleName();
-
     private ImageButton leftButton;
     private ImageButton rightButton;
     private TextView leftText;
@@ -37,18 +35,20 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busfahren);
+        this.setContentView(R.layout.activity_busfahren);
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
         if (this.fromMainGame) {
+            TextView backText = (TextView) this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
+            backText.setVisibility(View.GONE);
         } else {
             backButton.setOnClickListener(this);
         }
 
         this.cards = new Card[5];
         this.cardImages = new ImageView[5];
-        initCards();
+        this.initCards();
 
         this.cardImages[0] = (ImageView) this.findViewById(R.id.card1Image);
         this.cardImages[1] = (ImageView) this.findViewById(R.id.card2Image);

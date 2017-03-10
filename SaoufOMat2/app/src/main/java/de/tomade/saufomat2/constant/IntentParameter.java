@@ -10,4 +10,6 @@ public interface IntentParameter {
     String PLAYER_LIST = "playerList";
     String CURRENT_PLAYER_ID = "currentPlayerId";
     String LAST_GAME = "lastGame";
+    String CURRENT_TASK = "currentTask";
+    String CURRENT_MINI_GAME = "currentMiniGame";
 }

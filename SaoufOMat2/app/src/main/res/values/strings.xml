@@ -74,4 +74,5 @@
     <string name="button.back">Zurück</string>
     <string name="default_player.player2">Spieler 2</string>
     <string name="default_player.player1">Spieler 1</string>
+    <string name="minigame.augensaufen.game_over">Spiel vorbei</string>
 </resources>

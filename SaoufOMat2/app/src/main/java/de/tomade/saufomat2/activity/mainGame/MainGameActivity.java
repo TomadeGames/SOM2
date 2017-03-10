@@ -34,6 +34,7 @@ public class MainGameActivity extends Activity {
             this.setContentView(this.getPanel());
 
         } else {
+            //Wenn kein Spieler im Spielermenü eingetragen wurde
             Player p0 = new Player();
             Player p1 = new Player();
 
