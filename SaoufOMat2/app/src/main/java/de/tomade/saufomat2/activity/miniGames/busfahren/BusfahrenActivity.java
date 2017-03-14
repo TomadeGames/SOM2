@@ -13,7 +13,8 @@ import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 import de.tomade.saufomat2.model.card.Card;
 import de.tomade.saufomat2.model.card.CardValue;
 
-//TODO: wenn aus minispielmenü soll das spiel neu starten und nicht beendet werden. Vieleicht eine Frage ob neu
+//TODO: wenn View aus minispielmenü heraus gestertet wird, soll das spiel neu starten und nicht beendet werden.
+// Vieleicht eine Frage ob neu
 // gestartet werden soll?
 public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListener {
     private ImageButton leftButton;
@@ -108,10 +109,10 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                 this.buttonsClickable = false;
                 switch (v.getId()) {
                     case R.id.leftButton:
-                        leftButtonPressed();
+                        this.leftButtonPressed();
                         break;
                     case R.id.rightButton:
-                        rightButtonPressed();
+                        this.rightButtonPressed();
                         break;
                     case R.id.backButton:
                         this.currentPlayer.increaseDrinks(this.drinkCount);
@@ -163,7 +164,7 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                 this.rightText.setText(R.string.minigame_busfahren_question_last_answer_right);
                 break;
             case ACE_NO_ACE:
-                leaveGame();
+                this.leaveGame();
                 break;
         }
         this.buttonsClickable = true;
@@ -221,7 +222,7 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
 
     private void restart() {
         this.drinkCounterText.setText("" + this.drinkCount);
-        initCards();
+        this.initCards();
         this.leftButton.setImageResource(R.drawable.busfahren_red_button);
         this.rightButton.setImageResource(R.drawable.busfahren_balck_button);
         this.leftText.setText(R.string.minigame_busfahren_question_first_answer_left);

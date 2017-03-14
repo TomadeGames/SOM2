@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:touchscreenBlocksFocus="true"
-    tools:context=".activity.miniGames.augensaufen.AugensaufenActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                tools:context=".activity.miniGames.augensaufen.AugensaufenActivity">
+
+    <TextView
+        android:id="@+id/turnCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#ffffff"/>
+
+    <TextView
+        android:id="@+id/turnCounterPlusText"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="40dp"
+        android:gravity="left|center_vertical"
+        android:text="+1"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/backgroundImage"
@@ -13,7 +39,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:scaleType="fitXY"
-        android:src="@drawable/tepich" />
+        android:src="@drawable/tepich"
+        android:contentDescription="@string/minigame.augensaufen.background.description"/>
 
     <ImageView
         android:id="@+id/diceImage"
@@ -23,7 +50,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="25dp"
         android:scaleType="fitXY"
-        android:src="@drawable/dice1" />
+        android:src="@drawable/dice1"
+        android:contentDescription="@string/minigame.augensaufen.dice_image.description"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,13 +61,14 @@
         android:id="@+id/textfieldLayout">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/popupWindow"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/minigame.augensaufen.taskfield.description"
             android:scaleType="fitXY"
-            android:src="@drawable/popup" />
+            android:src="@drawable/popup"/>
 
         <TextView
             android:id="@+id/playerText"
@@ -47,7 +76,7 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/bottemLargeText"
@@ -56,9 +85,9 @@
             android:layout_below="@+id/playerText"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="Tippe zum Würfeln"
+            android:text="@string/minigame.augensaufen.tap_to_start"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
 
     </RelativeLayout>
 
@@ -73,7 +102,8 @@
         android:layout_marginLeft="5dp"
         android:background="#00ffffff"
         android:scaleType="center"
-        android:src="@drawable/no_button" />
+        android:src="@drawable/no_button"
+        android:contentDescription="@string/minigame.augensaufen.back_button.description"/>
 
     <TextView
         android:id="@+id/backText"
@@ -87,6 +117,12 @@
         android:layout_alignTop="@+id/backButton"
         android:gravity="center"
         android:text="@string/button.back"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
+    <de.tomade.saufomat2.model.drawable.TurnCounter
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/turnCounterPlusText"
+        android:layout_alignRight="@+id/textfieldLayout"
+        android:layout_alignEnd="@+id/textfieldLayout"/>
 </RelativeLayout>

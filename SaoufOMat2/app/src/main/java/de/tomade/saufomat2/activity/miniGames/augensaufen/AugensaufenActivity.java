@@ -18,7 +18,7 @@ import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 
-//TODO: Wenn man aus dem Hauptspiel dieses Spiel startet
+//TODO: Rundenzähler fehlt noch
 public class AugensaufenActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = AugensaufenActivity.class.getSimpleName();
     private static final int DICE_ROLL_DELAY = 100;
@@ -44,6 +44,8 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
         if (this.fromMainGame) {
             backButton.setVisibility(View.GONE);
+            TextView backText = (TextView) this.findViewById(R.id.backText);
+            backText.setVisibility(View.GONE);
         }
         backButton.setOnClickListener(this);
     }

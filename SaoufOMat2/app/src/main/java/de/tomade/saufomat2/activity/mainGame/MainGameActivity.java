@@ -64,18 +64,21 @@ public class MainGameActivity extends Activity {
 
     public void changeToTaskViewWithTask(Task currentTask, ArrayList<Player> player, int currentPlayerId) {
         Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
-        intent.putExtra("task", currentTask);
-        intent.putParcelableArrayListExtra("player", player);
-        intent.putExtra("currentPlayer", currentPlayerId);
-        this.finish();
-        this.startActivity(intent);
+        intent.putExtra(IntentParameter.MainGame.CURRENT_TASK, currentTask);
+        intent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
+        this.changeView(intent, player, currentPlayerId);
     }
 
     public void changeToTaskViewWithGame(MiniGame miniGame, ArrayList<Player> player, int currentPlayerId) {
         Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
-        intent.putExtra("miniGame", miniGame);
-        intent.putParcelableArrayListExtra("player", player);
-        intent.putExtra("currentPlayer", currentPlayerId);
+        intent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
+        intent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
+        this.changeView(intent, player, currentPlayerId);
+    }
+
+    private void changeView(Intent intent, ArrayList<Player> playerList, int currentPlayerId) {
+        intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, playerList);
+        intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, currentPlayerId);
         this.finish();
         this.startActivity(intent);
     }

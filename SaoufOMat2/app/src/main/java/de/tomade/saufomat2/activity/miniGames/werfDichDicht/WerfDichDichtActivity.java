@@ -34,7 +34,7 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_werf_dich_dicht);
+        this.setContentView(R.layout.activity_werf_dich_dicht);
 
         random = new Random();
 
@@ -73,10 +73,10 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
             if (event.getAction() == 0) {
                 switch (this.gameState) {
                     case START:
-                        startRolling();
+                        this.startRolling();
                         break;
                     case ROLLING:
-                        stopRolling();
+                        this.stopRolling();
                         break;
                     default:
                         break;
@@ -153,7 +153,7 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_next_player);
             } else {
                 this.nextTurn();
-                this.popupText.setText(getString(R.string.minigame_werf_dich_dicht_next_turn, this.currentPlayer
+                this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this.currentPlayer
                         .getName()));
             }
         }

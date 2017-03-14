@@ -37,18 +37,17 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         this.setContentView(R.layout.activity_task_view);
 
         Bundle extras = this.getIntent().getExtras();
-        if (extras != null) {
-            this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-            if (extras.containsKey(IntentParameter.CURRENT_TASK)) {
-                this.currentTask = (Task) extras.getSerializable(IntentParameter.CURRENT_TASK);
-                this.isGame = false;
-            } else {
-                this.miniGame = (MiniGame) extras.getSerializable(IntentParameter.CURRENT_MINI_GAME);
-                this.isGame = true;
-            }
-            this.currentPlayer = Player.getPlayerById(this.playerList, extras.getInt(IntentParameter
-                    .CURRENT_PLAYER_ID));
 
+        this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
+        this.currentPlayer = Player.getPlayerById(this.playerList, extras.getInt(IntentParameter
+                .CURRENT_PLAYER_ID));
+
+        if (!extras.getBoolean(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME)) {
+            this.currentTask = (Task) extras.getSerializable(IntentParameter.MainGame.CURRENT_TASK);
+            this.isGame = false;
+        } else {
+            this.miniGame = (MiniGame) extras.getSerializable(IntentParameter.MainGame.CURRENT_MINI_GAME);
+            this.isGame = true;
         }
 
 
@@ -60,7 +59,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         int cost = 0;
 
         if (this.isGame) {
-            taskText.setText(this.miniGame + "");
+            taskText.setText(this.getString(this.miniGame.getNameId()));
         } else {
             TaskDifficult difficult = this.currentTask.getDifficult();
             String taskTextValue = "";

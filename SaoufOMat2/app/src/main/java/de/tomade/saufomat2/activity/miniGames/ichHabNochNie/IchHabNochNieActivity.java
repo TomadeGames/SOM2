@@ -13,6 +13,8 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
+//TODO: Rundenzähler fehlt noch
+//TODO: Dieses Spiel endet nicht
 public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickListener {
     private static Random random;
 
@@ -23,6 +25,8 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
 
     private boolean tutorialShown = false;
     private String currentTask;
+    private int turnCount = 0;
+    private int maxTurns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,10 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
             back.setVisibility(View.INVISIBLE);
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backText.setVisibility(View.INVISIBLE);
+            this.maxTurns = this.playerList.size() * 3;
+            if (this.maxTurns > 30) {
+                this.maxTurns = 30;
+            }
         }
 
         popup.setOnClickListener(this);
@@ -78,8 +86,13 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
     }
 
     private void nextQuestion() {
-        this.currentTask = this.getQuestion();
-        this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
+        if (this.turnCount >= this.maxTurns) {
+            this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_game_over));
+        } else {
+            this.currentTask = this.getQuestion();
+            this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
+            this.turnCount++;
+        }
     }
 
     private void showTutorial() {

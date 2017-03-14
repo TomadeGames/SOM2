@@ -75,4 +75,10 @@
     <string name="default_player.player2">Spieler 2</string>
     <string name="default_player.player1">Spieler 1</string>
     <string name="minigame.augensaufen.game_over">Spiel vorbei</string>
+    <string name="minigame.ich_hab_noch_nie.game_over">Spiel vorbei</string>
+    <string name="minigame.augensaufen.taskfield.description">Aufgabenfeld</string>
+    <string name="minigame.augensaufen.dice_image.description">Würfel</string>
+    <string name="minigame.augensaufen.background.description">Hintergrundbild</string>
+    <string name="minigame.augensaufen.back_button.description">Zurück-Button</string>
+    <string name="minigame.busfahren.background.description">Hintergrundbild</string>
 </resources>

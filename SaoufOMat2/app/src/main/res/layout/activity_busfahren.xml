@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center"
-    tools:context=".activity.miniGames.busfahren.BusfahrenActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                tools:context=".activity.miniGames.busfahren.BusfahrenActivity">
 
     <ImageView
         android:id="@+id/backgroundImage"
@@ -14,7 +14,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="fitXY"
-        android:src="@drawable/tepich" />
+        android:src="@drawable/tepich"
+        android:contentDescription="@string/minigame.busfahren.background.description"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -32,7 +33,7 @@
             android:layout_alignParentTop="true"
             android:background="#00ffffff"
             android:scaleType="fitXY"
-            android:src="@drawable/rueckseite" />
+            android:src="@drawable/rueckseite"/>
 
         <ImageView
             android:id="@+id/card2Image"
@@ -43,7 +44,7 @@
             android:layout_alignParentTop="true"
             android:background="#00ffffff"
             android:scaleType="fitXY"
-            android:src="@drawable/rueckseite" />
+            android:src="@drawable/rueckseite"/>
 
         <ImageView
             android:id="@+id/card3Image"
@@ -54,7 +55,7 @@
             android:layout_alignParentTop="true"
             android:background="#00ffffff"
             android:scaleType="fitXY"
-            android:src="@drawable/rueckseite" />
+            android:src="@drawable/rueckseite"/>
 
         <ImageView
             android:id="@+id/card4Image"
@@ -65,7 +66,7 @@
             android:layout_alignParentTop="true"
             android:background="#00ffffff"
             android:scaleType="fitXY"
-            android:src="@drawable/rueckseite" />
+            android:src="@drawable/rueckseite"/>
 
         <ImageView
             android:id="@+id/card5Image"
@@ -76,7 +77,7 @@
             android:layout_alignParentTop="true"
             android:background="#00ffffff"
             android:scaleType="fitXY"
-            android:src="@drawable/rueckseite" />
+            android:src="@drawable/rueckseite"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -95,7 +96,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/popup" />
+            android:src="@drawable/popup"/>
 
         <TextView
             android:id="@+id/taskText"
@@ -106,7 +107,7 @@
             android:gravity="center"
             android:text="Wird die nächste Karte Rot oder Schwarz?"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -117,6 +118,7 @@
         android:gravity="center">
 
         <RelativeLayout
+            android:id="@+id/rightButtonLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -133,7 +135,7 @@
                 android:layout_marginLeft="90dp"
                 android:background="#00ffffff"
                 android:scaleType="fitXY"
-                android:src="@drawable/busfahren_balck_button" />
+                android:src="@drawable/busfahren_balck_button"/>
 
             <TextView
                 android:id="@+id/rightButtonText"
@@ -147,10 +149,11 @@
                 android:gravity="center"
                 android:text="Schwarz"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"/>
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/leftButtonLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
@@ -162,7 +165,7 @@
                 android:layout_marginRight="90dp"
                 android:background="#00ffffff"
                 android:scaleType="fitXY"
-                android:src="@drawable/busfahren_red_button" />
+                android:src="@drawable/busfahren_red_button"/>
 
             <TextView
                 android:id="@+id/leftButtonText"
@@ -176,7 +179,7 @@
                 android:gravity="center"
                 android:text="Rot"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"/>
 
         </RelativeLayout>
 
@@ -191,7 +194,7 @@
             android:gravity="center"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"/>
 
         <TextView
             android:id="@+id/drinkCounterPlusText"
@@ -204,8 +207,8 @@
             android:text="+1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#ffffff"
-            android:textSize="30dp"
-            android:visibility="gone" />
+            android:textSize="30sp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/drinkText"
@@ -216,7 +219,7 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Trink:"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <ImageButton
             android:id="@+id/backButton"
@@ -229,7 +232,7 @@
             android:layout_marginLeft="5dp"
             android:background="#00ffffff"
             android:scaleType="center"
-            android:src="@drawable/no_button" />
+            android:src="@drawable/no_button"/>
 
         <TextView
             android:id="@+id/textView"
@@ -243,7 +246,7 @@
             android:layout_alignTop="@+id/backButton"
             android:gravity="center"
             android:text="@string/button.back"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     </RelativeLayout>
 
@@ -258,7 +261,7 @@
         android:layout_marginTop="5dp"
         android:background="#00ffffff"
         android:scaleType="fitXY"
-        android:src="@drawable/help" />
+        android:src="@drawable/help"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -273,7 +276,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/imageView3"
             android:src="@drawable/popup"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -283,7 +286,7 @@
             android:id="@+id/textView2"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
     </RelativeLayout>
 
 </RelativeLayout>
