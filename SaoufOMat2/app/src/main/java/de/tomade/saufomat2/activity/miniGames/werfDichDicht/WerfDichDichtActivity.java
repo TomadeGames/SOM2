@@ -13,6 +13,7 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
+//TODO: ZurückButton darf nicht sichtbar sein, wenn man vom Hauptspiel kommt
 public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickListener {
     public static final String TAG = WerfDichDichtActivity.class.getSimpleName();
     private static Random random;
@@ -40,14 +41,6 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
 
         TextView playerText = (TextView) this.findViewById(R.id.nameText);
 
-        if (this.fromMainGame) {
-            playerText.setText(this.currentPlayer.getName());
-        } else {
-            playerText.setVisibility(View.GONE);
-            ImageView playerPopup = (ImageView) this.findViewById(R.id.nameBackground);
-            playerPopup.setVisibility(View.GONE);
-        }
-
 
         this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
         this.popupImage = (ImageView) this.findViewById(R.id.popupImage);
@@ -63,6 +56,19 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
         backButton.setOnClickListener(this);
         tutorialButton.setOnClickListener(this);
+
+        if (this.fromMainGame) {
+            playerText.setText(this.currentPlayer.getName());
+            TextView backText = (TextView) this.findViewById(R.id.backText);
+            backButton.setVisibility(View.GONE);
+            backText.setVisibility(View.GONE);
+
+        } else {
+            playerText.setVisibility(View.GONE);
+            ImageView playerPopup = (ImageView) this.findViewById(R.id.nameBackground);
+            playerPopup.setVisibility(View.GONE);
+        }
+
 
         this.tutorial = this.findViewById(R.id.tutorialPanel);
     }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,9 +20,10 @@ import java.util.List;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
+//TODO: Wenn man aus dem Hauptspiel kommt, müssen die Spielernamen und nicht "Nächster Spieler angezeigt werden"
 public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = KistenStapelnActivity.class.getSimpleName();
-    private final int BALANCE_TOLERANCE = 150;
+    private static final int BALANCE_TOLERANCE = 150;
     private float crateStartX;
     private float crateSTartY;
     private int createWidth;
@@ -52,7 +54,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kisten_stapeln);
+        this.setContentView(R.layout.activity_kisten_stapeln);
 
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         Point size = new Point();
@@ -69,7 +71,15 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
         this.crateCounter = (TextView) this.findViewById(R.id.crateCounter);
 
         this.findViewById(R.id.tutorialButton).setOnClickListener(this);
-        this.findViewById(R.id.backButton).setOnClickListener(this);
+        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
+        backButton.setOnClickListener(this);
+
+        if (this.fromMainGame) {
+            TextView backText = (TextView) this.findViewById(R.id.backText);
+            backButton.setVisibility(View.GONE);
+            backText.setText(View.GONE);
+        }
+
     }
 
     @Override
@@ -80,7 +90,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
         } else {
             switch (v.getId()) {
                 case R.id.backButton:
-                    leaveGame();
+                    this.leaveGame();
                     break;
                 case R.id.tutorialButton:
                     this.tutorialPanel.setVisibility(View.VISIBLE);
@@ -121,7 +131,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                onCrateLanded();
+                KistenStapelnActivity.this.onCrateLanded();
             }
 
             @Override
@@ -150,7 +160,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
                         this.crateSTartY = this.currentCrate.getY();
                         this.createWidth = this.currentCrate.getWidth();
                         this.crateHeight = this.currentCrate.getHeight();
-                        this.targetY = getTargetY();
+                        this.targetY = this.getTargetY();
                         this.touchDown = true;
                     } else if (this.gameState == KistenStapelnState.END_TURN) {
                         this.startTurn();
@@ -196,8 +206,16 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
     }
 
     private void endGame() {
+        String losingPlayerText = "";
+        int drinkCount = this.towerImageList.size() - 1;
+        if (this.fromMainGame) {
+            losingPlayerText = this.currentPlayer.getName() + "\n";
+            this.currentPlayer.increaseDrinks(drinkCount);
+        }
+        
         this.nextPlayerPanel.setVisibility(View.VISIBLE);
-        this.nextPlayerText.setText("Trink " + (this.towerImageList.size() - 1));
+        this.nextPlayerText.setText(losingPlayerText + this.getString(R.string.minigame_kisten_stapeln_drink,
+                drinkCount));
         this.gameState = KistenStapelnState.GAME_END;
     }
 
@@ -219,7 +237,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            endGame();
+                            KistenStapelnActivity.this.endGame();
                         }
 
                         @Override
@@ -247,7 +265,14 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
         }
         this.towerImageList.add(this.currentCrate);
         this.nextPlayerPanel.setVisibility(View.VISIBLE);
-        this.crateCounter.setText("Kisten: " + (this.towerImageList.size() - 1));
+
+        if (this.fromMainGame) {
+            this.nextTurn();
+            this.nextPlayerText.setText(this.currentPlayer.getName());
+        }
+
+        this.crateCounter.setText(this.getString(R.string.minigame_kisten_stapeln_crate_count, this.towerImageList
+                .size() - 1));
         this.currentCrate = new ImageView(this);
         this.currentCrate.setX(this.crateStartX);
         this.currentCrate.setY(this.crateSTartY);
@@ -267,7 +292,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
 
         if (this.towerHeight != 0) {
             this.gameState = KistenStapelnState.MOVING_TOWER;
-            moveTowerDown(this.towerHeight);
+            this.moveTowerDown(this.towerHeight);
         } else {
             this.gameState = KistenStapelnState.MOVING_CRATE;
         }
@@ -309,10 +334,6 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
     }
 
     private boolean checkIfFalling() {
-        if (this.balance > this.BALANCE_TOLERANCE
-                || this.balance < -this.BALANCE_TOLERANCE) {
-            return true;
-        }
-        return false;
+        return this.balance > BALANCE_TOLERANCE || this.balance < -BALANCE_TOLERANCE;
     }
 }

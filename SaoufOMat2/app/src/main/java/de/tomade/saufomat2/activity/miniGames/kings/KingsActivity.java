@@ -1,6 +1,5 @@
 package de.tomade.saufomat2.activity.miniGames.kings;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
-import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.card.Card;
 
@@ -46,6 +43,11 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
             } else {
                 this.maximumCards = 3 * this.playerList.size();
             }
+            if (this.maximumCards > 32) {
+                this.maximumCards = 32;
+            }
+        } else {
+            this.maximumCards = 32;
         }
 
         this.cardImage = (ImageView) this.findViewById(R.id.cardImage);
@@ -68,7 +70,6 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
         } else {
             backButton.setVisibility(View.GONE);
             backLabel.setVisibility(View.GONE);
-            this.maximumCards = 32;
         }
     }
 
@@ -91,12 +92,12 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
                             if (this.cardCount < this.maximumCards) {
                                 this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
                                         .currentPlayer.getName()));
+                                this.gameState = KingsState.START;
                             } else {
                                 this.popupText.setText(R.string.minigame_kings_game_over);
                                 this.gameState = KingsState.GAME_OVER;
                             }
                         }
-                        this.gameState = KingsState.START;
                         break;
                     case GAME_OVER:
                         this.leaveGame();
@@ -111,9 +112,7 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.backButton:
-                Intent intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
-                intent.putExtra("lastGame", MiniGame.KINGS);
-                this.startActivity(intent);
+                this.leaveGame();
                 break;
             case R.id.tutorialButton:
                 if (this.tutorialShown) {

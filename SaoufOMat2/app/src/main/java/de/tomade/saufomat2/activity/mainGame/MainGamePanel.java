@@ -35,6 +35,7 @@ import de.tomade.saufomat2.threading.ThreadedView;
  * <p>
  * Created by woors on 09.03.2016.
  */
+//TODO: Das zweite und dritte Icon bewegt sich nicht (Könnte auch nur am emulator liegen)
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback, ThreadedView {
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;

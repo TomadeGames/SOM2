@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 //TODO: am start werden direkt beim rechten spieler 2 leben abgezogen
 //TODO: getränkezähler setzten
 //TODO: Spielernamen beim Start einblenden
+//TODO: Das Spiel ist nicht im Hochformat
+//TODO: Das schießen sieht nicht sauber aus (Biere starten nicht aus der Kiste herraus, sondern dahinter)
 public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchListener, View.OnClickListener {
     private static final int BEER_WIDTH = 40;
     private static final int BEER_HEIGHT = 80;
@@ -74,7 +77,8 @@ public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchLi
         this.tutorialText = (TextView) this.findViewById(R.id.tutorialText);
         this.allLayout = (RelativeLayout) this.findViewById(R.id.allLayout);
 
-        this.findViewById(R.id.backButton).setOnClickListener(this);
+        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
+        backButton.setOnClickListener(this);
         this.findViewById(R.id.tutorialButton).setOnClickListener(this);
 
         this.tutorialPanel.setOnClickListener(this);
@@ -83,6 +87,12 @@ public class BiergeballerActivity extends BaseMiniGame implements View.OnTouchLi
 
         final int spawnTimeScale = 50;
         final int speedScale = 100;
+
+        if (this.fromMainGame) {
+            TextView backText = (TextView) this.findViewById(R.id.backText);
+            backButton.setVisibility(View.GONE);
+            backText.setVisibility(View.GONE);
+        }
 
         final Handler leftHandler = new Handler();
         leftHandler.postDelayed(new Runnable() {
