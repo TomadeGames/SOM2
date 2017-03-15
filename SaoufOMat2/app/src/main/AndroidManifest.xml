@@ -60,7 +60,7 @@
         <activity
             android:name=".activity.miniGames.kings.KingsActivity"
             android:label="@string/minigame.kings.caption"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".activity.miniGames.bierrutsche.BierrutscheActivity"
             android:label="@string/minigame.bierrutsche.caption"

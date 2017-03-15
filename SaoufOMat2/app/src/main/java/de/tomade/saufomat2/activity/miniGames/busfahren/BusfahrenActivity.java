@@ -115,7 +115,9 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                         this.rightButtonPressed();
                         break;
                     case R.id.backButton:
-                        this.currentPlayer.increaseDrinks(this.drinkCount);
+                        if (this.fromMainGame) {
+                            this.currentPlayer.increaseDrinks(this.drinkCount);
+                        }
                         this.leaveGame();
                         break;
                     case R.id.tutorialButton:
