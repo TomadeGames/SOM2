@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="de.tomade.saufomat2.activity.miniGames.biergeballer.BiergeballerActivity"
-    android:id="@+id/allLayout">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="de.tomade.saufomat2.activity.miniGames.biergeballer.BiergeballerActivity"
+                android:id="@+id/allLayout">
 
     <ImageView
         android:layout_width="fill_parent"
@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:src="@drawable/minigame_menue_background"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"/>
 
     <RelativeLayout
         android:layout_width="300dp"
@@ -33,7 +33,7 @@
             android:layout_alignParentStart="true"
             android:src="@drawable/beer_crate"
             android:scaleType="fitXY"
-            android:rotation="90" />
+            android:rotation="90"/>
 
         <RelativeLayout
             android:layout_width="30dp"
@@ -52,7 +52,7 @@
                 android:rotation="90"
                 android:scaleType="fitXY"
                 android:layout_marginTop="2dp"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -64,7 +64,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="5dp"
-                android:layout_below="@+id/heart0Left" />
+                android:layout_below="@+id/heart0Left"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -76,7 +76,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="5dp"
-                android:layout_below="@+id/heart1Left" />
+                android:layout_below="@+id/heart1Left"/>
         </RelativeLayout>
 
         <ImageButton
@@ -87,7 +87,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toStartOf="@+id/heartsLeft"
             android:layout_margin="5dp"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,7 +101,8 @@
             android:layout_alignBottom="@+id/backButton"
             android:layout_alignRight="@+id/backButton"
             android:layout_alignLeft="@+id/backButton"
-            android:layout_alignTop="@+id/backButton" />
+            android:layout_alignTop="@+id/backButton"
+            android:textColor="#ffffff"/>
 
     </RelativeLayout>
 
@@ -120,7 +121,7 @@
             android:rotation="270"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"/>
 
         <ImageButton
             android:id="@+id/tutorialButton"
@@ -132,7 +133,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"/>
 
         <RelativeLayout
             android:layout_width="30dp"
@@ -152,7 +153,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="5dp"
-                android:layout_alignParentBottom="true" />
+                android:layout_alignParentBottom="true"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -164,7 +165,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="5dp"
-                android:layout_above="@+id/heart0Right" />
+                android:layout_above="@+id/heart0Right"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -176,7 +177,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="5dp"
-                android:layout_above="@+id/heart1Right" />
+                android:layout_above="@+id/heart1Right"/>
 
         </RelativeLayout>
 
@@ -194,7 +195,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/tutorialImage"
             android:src="@drawable/popup"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -204,7 +205,7 @@
             android:id="@+id/tutorialText"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
     </RelativeLayout>
 
 </RelativeLayout>

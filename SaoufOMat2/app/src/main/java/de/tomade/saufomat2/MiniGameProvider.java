@@ -32,7 +32,7 @@ public class MiniGameProvider {
 
     public MiniGame getRandomMiniGameAndRemoveFromList() {
         if (this.miniGames.size() == 0) {
-            resetList();
+            this.resetList();
         }
         Random rnd = new Random(System.currentTimeMillis());
         int index = rnd.nextInt(this.miniGames.size());
