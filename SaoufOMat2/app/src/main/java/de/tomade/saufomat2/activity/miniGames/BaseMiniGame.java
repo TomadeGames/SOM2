@@ -45,14 +45,14 @@ public abstract class BaseMiniGame extends Activity {
     /**
      * Setzt den nächsten Spieler als aktuellen Spieler
      */
-    protected void nextTurn() {
+    protected void nextPlayer() {
         this.currentPlayer = this.currentPlayer.getNextPlayer();
     }
 
     /**
      * Setzt den vorherigen Spieler als aktuellen Spieler
      */
-    protected void lastTurn() {
+    protected void lastPlayer() {
         this.currentPlayer = this.currentPlayer.getLastPlayer();
     }
 

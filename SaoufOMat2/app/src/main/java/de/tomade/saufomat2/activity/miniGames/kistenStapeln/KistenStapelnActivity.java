@@ -212,7 +212,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
             losingPlayerText = this.currentPlayer.getName() + "\n";
             this.currentPlayer.increaseDrinks(drinkCount);
         }
-        
+
         this.nextPlayerPanel.setVisibility(View.VISIBLE);
         this.nextPlayerText.setText(losingPlayerText + this.getString(R.string.minigame_kisten_stapeln_drink,
                 drinkCount));
@@ -267,7 +267,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
         this.nextPlayerPanel.setVisibility(View.VISIBLE);
 
         if (this.fromMainGame) {
-            this.nextTurn();
+            this.nextPlayer();
             this.nextPlayerText.setText(this.currentPlayer.getName());
         }
 

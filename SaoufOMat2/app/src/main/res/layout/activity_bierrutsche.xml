@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/backgroundLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.miniGames.bierrutsche.BierrutscheActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/backgroundLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".activity.miniGames.bierrutsche.BierrutscheActivity">
 
     <de.tomade.saufomat2.model.drawable.DynamicImageView
         android:id="@+id/backgroundImage"
         android:layout_width="1500dp"
         android:layout_height="fill_parent"
-        android:src="@drawable/bierrutsche_background" />
+        android:src="@drawable/bierrutsche_background"/>
 
     <ImageView
         android:id="@+id/startImage"
@@ -21,7 +21,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/beerImage"
         android:scaleType="fitXY"
-        android:src="@drawable/bierrutsche_startfeld" />
+        android:src="@drawable/bierrutsche_startfeld"/>
 
     <ImageView
         android:id="@+id/targetImage"
@@ -29,7 +29,7 @@
         android:layout_height="250dp"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        android:src="@drawable/bierrutsche_tisch" />
+        android:src="@drawable/bierrutsche_tisch"/>
 
     <ImageView
         android:id="@+id/beerImage"
@@ -38,7 +38,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/beer_icon" />
+        android:src="@drawable/beer_icon"/>
 
     <ImageButton
         android:id="@+id/tutorialButton"
@@ -51,7 +51,7 @@
         android:layout_marginTop="5dp"
         android:background="#00000000"
         android:scaleType="fitXY"
-        android:src="@drawable/help" />
+        android:src="@drawable/help"/>
 
     <ImageButton
         android:id="@+id/backButton"
@@ -64,7 +64,7 @@
         android:layout_marginLeft="5dp"
         android:background="#00ffffff"
         android:scaleType="center"
-        android:src="@drawable/no_button" />
+        android:src="@drawable/no_button"/>
 
     <TextView
         android:id="@+id/backText"
@@ -72,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/backButton"
         android:layout_alignLeft="@+id/backButton"
+        android:layout_alignParentEnd="false"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
         android:layout_alignRight="@+id/backButton"
@@ -79,7 +80,7 @@
         android:gravity="center"
         android:text="@string/button.back"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignParentEnd="false" />
+        android:textColor="#ffffff"/>
 
     <RelativeLayout
         android:id="@+id/tutorialPanel"
@@ -93,7 +94,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/popup" />
+            android:src="@drawable/popup"/>
 
         <TextView
             android:id="@+id/tutorialText"
@@ -103,7 +104,7 @@
             android:gravity="center"
             android:text="@string/minigame.bierrutsche.tutorial"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -124,7 +125,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:scaleType="fitXY"
-            android:src="@drawable/popup" />
+            android:src="@drawable/popup"/>
 
         <TextView
             android:id="@+id/nameText"
@@ -134,7 +135,7 @@
             android:gravity="center"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
 
     </RelativeLayout>
 
@@ -148,7 +149,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/accuracyText"
@@ -160,7 +161,7 @@
         android:gravity="center_horizontal"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
     <![CDATA[
 
     />
