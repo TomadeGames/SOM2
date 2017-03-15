@@ -9,7 +9,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -30,8 +29,9 @@ import de.tomade.saufomat2.model.Player;
 //TODO: fertig stellen
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     static int id = 0;
-    Button btnNewPlayer = null;
-    Button btnStartGame = null;
+    ImageButton btnNewPlayer = null;
+    ImageButton btnStartGame = null;
+    ImageButton btnBack = null;
     LinearLayout linearLayout = null;
     Map<Integer, View> playerelements = new HashMap<>();
     private ArrayList<Player> players = new ArrayList<>();
@@ -43,8 +43,9 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
         this.linearLayout = (LinearLayout) this.findViewById(R.id.llCreatePlayer);
 
-        this.btnNewPlayer = (Button) this.findViewById(R.id.btnNewPlayer);
-        this.btnStartGame = (Button) this.findViewById(R.id.btnStartGame);
+        this.btnNewPlayer = (ImageButton) this.findViewById(R.id.btnNewPlayer);
+        this.btnStartGame = (ImageButton) this.findViewById(R.id.btnStartGame);
+        this.btnBack = (ImageButton) this.findViewById(R.id.btnBack);
 
         this.btnNewPlayer.setOnClickListener(this);
         this.btnStartGame.setOnClickListener(this);
@@ -53,6 +54,9 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btnBack:
+                this.finish();
+                break;
             case R.id.btnNewPlayer:
                 Player newPlayer = new Player();
                 this.showDialog(newPlayer);
@@ -109,11 +113,6 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
         etxtName.setText("");
         etxtWeight.setText("70");
-
-       /* final NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
-        np.setMinValue(0);
-        np.setMaxValue(999);
-        np.setValue(70);*/
 
         builder.setMessage(R.string.create_player_new_player)
                 .setView(view)
