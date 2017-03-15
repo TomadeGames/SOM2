@@ -25,6 +25,8 @@ import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
 
+// TODO: Drag and Drop zum sotieren der Spieler
+
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     static int id = 0;
     LinearLayout linearLayout = null;
