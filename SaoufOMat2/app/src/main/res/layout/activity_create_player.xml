@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".activity.CreatePlayerActivity"
-                android:background="#ffe6b3">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.CreatePlayerActivity"
+    android:background="#ffe6b3">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -26,11 +26,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnStartGame"
         android:background="@drawable/btn_start_game"
-        android:layout_alignParentTop="true"
+        android:layout_marginRight="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_alignBaseline="@+id/btnNewPlayer"
+        android:layout_alignBottom="@+id/btnNewPlayer"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -40,8 +41,9 @@
         android:elevation="0dp"
         android:layout_marginLeft="18dp"
         android:layout_marginStart="18dp"
+        android:layout_marginTop="11dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

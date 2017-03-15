@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,10 +92,10 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         etxtName.setText("");
         etxtWeight.setText("70");
 
-        final NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
+       /* final NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
         np.setMinValue(0);
         np.setMaxValue(999);
-        np.setValue(70);
+        np.setValue(70);*/
 
         builder.setMessage(R.string.create_player_new_player)
                 .setView(view)
