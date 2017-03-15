@@ -158,7 +158,7 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
             if (!this.fromMainGame) {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_next_player);
             } else {
-                this.nextTurn();
+                this.nextPlayer();
                 this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this.currentPlayer
                         .getName()));
             }

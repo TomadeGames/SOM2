@@ -339,7 +339,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             }
             this.statisticText.setText(Player.getPlayerById(this.playerList, id).getName() + ": " + max);
             Player lastPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getId());
-            this.nextTurn();
+            this.nextPlayer();
             this.nameText.setText(this.currentPlayer.getName());
             this.tutorialText.setText(lastPlayer.getName() + ": " + score + "\n\n" + this.currentPlayer.getName() + "" +
                     " ist dran");

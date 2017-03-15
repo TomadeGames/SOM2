@@ -83,4 +83,5 @@
     <string name="minigame.busfahren.background.description">Hintergrundbild</string>
     <string name="minigame.kisten_stapeln.crate_count">Kisten: %d</string>
     <string name="minigame.kisten_stapeln.drink">Trink %d</string>
+    <string name="minigame_augensaufen_tap_to_stop">Tippen zum Stoppen</string>
 </resources>

@@ -87,8 +87,9 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
                     case ROUND_END:
                         if (!this.fromMainGame) {
                             this.popupText.setText(R.string.minigame_kings_next_player);
+                            this.gameState = KingsState.START;
                         } else {
-                            this.nextTurn();
+                            this.nextPlayer();
                             if (this.cardCount < this.maximumCards) {
                                 this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
                                         .currentPlayer.getName()));

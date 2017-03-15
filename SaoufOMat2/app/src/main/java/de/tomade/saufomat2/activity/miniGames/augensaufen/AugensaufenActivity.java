@@ -56,7 +56,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         if (event.getAction() == 0) {
             switch (this.gameState) {
                 case START:
-                    if (this.turnCount == this.playerList.size()) {
+                    if (this.fromMainGame && this.turnCount >= this.playerList.size()) {
                         this.leaveGame();
                     } else {
                         this.startRolling();
@@ -79,9 +79,9 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         if (this.fromMainGame) {
             playerName = this.currentPlayer.getName();
         }
+        this.playerText.setText(playerName);
         this.gameState = AugensaufenState.RESULT;
-        this.bottomText.setText(playerName + this.getString(R.string.minigame_augensaufen_drink_amount, this
-                .currentDiceIndex + 1));
+        this.bottomText.setText(this.getString(R.string.minigame_augensaufen_drink_amount, this.currentDiceIndex + 1));
         if (this.fromMainGame) {
             if (this.currentPlayer == null) {
                 throw new IllegalStateException("currentPlayer cannot be Null");
@@ -95,7 +95,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         if (!this.fromMainGame) {
             this.playerText.setText(R.string.minigame_augensaufen_next_player);
         } else {
-            this.nextTurn();
+            this.nextPlayer();
             this.turnCount++;
 
             if (this.turnCount == this.playerList.size()) {
@@ -109,6 +109,8 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
 
     private void startRolling() {
         this.gameState = AugensaufenState.ROLLING;
+        this.playerText.setText("");
+        this.bottomText.setText(this.getString(R.string.minigame_augensaufen_tap_to_stop));
         final Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
