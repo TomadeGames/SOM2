@@ -39,8 +39,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         Bundle extras = this.getIntent().getExtras();
 
         this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-        this.currentPlayer = Player.getPlayerById(this.playerList, extras.getInt(IntentParameter
-                .CURRENT_PLAYER_ID));
+        this.currentPlayer = extras.getParcelable(IntentParameter.CURRENT_PLAYER);
 
         if (!extras.getBoolean(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME)) {
             this.currentTask = (Task) extras.getSerializable(IntentParameter.MainGame.CURRENT_TASK);
@@ -121,10 +120,10 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void chanceToMainView() {
-        Log.d(TAG, "curr: " + this.currentPlayer.getId() + " next: " + this.currentPlayer.getNextPlayerId());
-        this.currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId());
+        Log.d(TAG, "curr: " + this.currentPlayer.getName() + " next: " + this.currentPlayer.getNextPlayer().getName());
+        this.currentPlayer = this.currentPlayer.getNextPlayer();
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
-        intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.currentPlayer.getId());
+        intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
         for (Player p : this.playerList) {
             Log.d(TAG, p.getName() + " drinks: " + p.getDrinks());
@@ -137,8 +136,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
             intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, this.playerList);
-            this.currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId());
-            intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.currentPlayer.getId());
+            this.currentPlayer = this.currentPlayer.getNextPlayer();
+            intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             this.startActivity(intent);
         } else {
             switch (this.currentTask.getTarget()) {
@@ -146,10 +145,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                     this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
                     break;
                 case NEIGHBOUR:
-                    Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId()).increaseDrinks(this
-                            .currentTask.getDrinkCount());
-                    Player.getPlayerById(this.playerList, this.currentPlayer.getLastPlayerId()).increaseDrinks(this
-                            .currentTask.getDrinkCount());
+                    this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                    this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
                     break;
                 case CHOOSE_ONE:
                     break;

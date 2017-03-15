@@ -8,7 +8,7 @@ package de.tomade.saufomat2.constant;
 public interface IntentParameter {
     String FROM_MAIN_GAME = "fromMainGame";
     String PLAYER_LIST = "playerList";
-    String CURRENT_PLAYER_ID = "currentPlayerId";
+    String CURRENT_PLAYER = "currentPlayer";
     String LAST_GAME = "lastGame";
 
     interface MainGame {

@@ -45,15 +45,15 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
             if (this.currentGame == null) {
                 throw new NullPointerException("currentGame should not be null");
             }
-            for (int i = 0; i < this.allGames.length; i++) {
-                if (this.allGames[i].equals(this.currentGame)) {
-                    this.minigameIndex = i;
-                }
-            }
-            this.currentGameButton.setImageResource(this.currentGame.getScreenshotId());
             this.gameText.setText(this.currentGame.getNameId());
         }
 
+        for (int i = 0; i < this.allGames.length; i++) {
+            if (this.allGames[i].equals(this.currentGame)) {
+                this.minigameIndex = i;
+            }
+        }
+        this.currentGameButton.setImageResource(this.currentGame.getScreenshotId());
         leftButton.setOnClickListener(this);
         rightButton.setOnClickListener(this);
         backButton.setOnClickListener(this);

@@ -30,7 +30,7 @@ public class MainGameActivity extends Activity {
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             ArrayList<Player> players = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-            int currentPlayer = extras.getInt(IntentParameter.CURRENT_PLAYER_ID);
+            Player currentPlayer = extras.getParcelable(IntentParameter.CURRENT_PLAYER);
             panel = new MainGamePanel(this, currentPlayer, players);
             this.setContentView(panel);
 
@@ -40,46 +40,45 @@ public class MainGameActivity extends Activity {
             Player p1 = new Player();
 
             p0.setName("p0");
-            p0.setLastPlayerId(p1.getId());
+            p0.setLastPlayer(p1);
             p0.setWeight(80);
-            p0.setNextPlayerId(p1.getId());
+            p0.setNextPlayer(p1);
             p0.setIsMan(true);
             p0.setDrinks(0);
 
             p1.setName("p1");
-            p1.setLastPlayerId(p0.getId());
+            p1.setLastPlayer(p0);
             p1.setWeight(85);
-            p1.setNextPlayerId(p0.getId());
+            p1.setNextPlayer(p0);
             p1.setIsMan(false);
             p1.setDrinks(0);
 
             ArrayList<Player> players = new ArrayList<>();
             players.add(p0);
             players.add(p1);
-            int currentPlayer = p0.getId();
-            panel = new MainGamePanel(this, currentPlayer, players);
+            panel = new MainGamePanel(this, p0, players);
             this.setContentView(panel);
 
         }
     }
 
-    public void changeToTaskViewWithTask(Task currentTask, ArrayList<Player> player, int currentPlayerId) {
+    public void changeToTaskViewWithTask(Task currentTask, ArrayList<Player> player, Player currentPlayer) {
         Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
         intent.putExtra(IntentParameter.MainGame.CURRENT_TASK, currentTask);
         intent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
-        this.changeView(intent, player, currentPlayerId);
+        this.changeView(intent, player, currentPlayer);
     }
 
-    public void changeToTaskViewWithGame(MiniGame miniGame, ArrayList<Player> player, int currentPlayerId) {
+    public void changeToTaskViewWithGame(MiniGame miniGame, ArrayList<Player> player, Player currentPlayer) {
         Intent intent = new Intent(this.getApplicationContext(), TaskViewActivity.class);
         intent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
         intent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
-        this.changeView(intent, player, currentPlayerId);
+        this.changeView(intent, player, currentPlayer);
     }
 
-    private void changeView(Intent intent, ArrayList<Player> playerList, int currentPlayerId) {
+    private void changeView(Intent intent, ArrayList<Player> playerList, Player currentPlayer) {
         intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, playerList);
-        intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, currentPlayerId);
+        intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
         this.finish();
         this.startActivity(intent);
     }

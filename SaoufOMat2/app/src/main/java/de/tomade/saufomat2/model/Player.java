@@ -30,8 +30,8 @@ public class Player implements Parcelable {
     private int weight;
     private boolean isMan;
     private int drinks = 0;
-    private int nextPlayerId;
-    private int lastPlayerId;
+    private Player nextPlayer;
+    private Player lastPlayer;
     private boolean hasNextPlayer = false;
     private boolean hasLastPlayer = false;
 
@@ -40,14 +40,14 @@ public class Player implements Parcelable {
         nextId++;
     }
 
-    public Player(String name, int weight, boolean isMan, int drinks, int nextPlayerId, int lastPlayerId) {
+    public Player(String name, int weight, boolean isMan, int drinks, Player nextPlayer, Player lastPlayer) {
         this();
         this.name = name;
         this.weight = weight;
         this.isMan = isMan;
         this.drinks = drinks;
-        this.nextPlayerId = nextPlayerId;
-        this.lastPlayerId = lastPlayerId;
+        this.nextPlayer = nextPlayer;
+        this.lastPlayer = lastPlayer;
     }
 
     private Player(Parcel in) {
@@ -56,8 +56,14 @@ public class Player implements Parcelable {
         this.weight = in.readInt();
         this.isMan = in.readByte() != 0;
         this.drinks = in.readInt();
-        this.nextPlayerId = in.readInt();
-        this.lastPlayerId = in.readInt();
+        this.nextPlayer = (Player) in.readSerializable();
+        this.lastPlayer = (Player) in.readSerializable();
+        if (this.nextPlayer == null) {
+            this.nextPlayer = this;
+        }
+        if (this.lastPlayer == null) {
+            this.lastPlayer = this;
+        }
     }
 
     @Nullable
@@ -122,48 +128,57 @@ public class Player implements Parcelable {
         dest.writeInt(this.weight);
         dest.writeByte((byte) (this.isMan ? 1 : 0));
         dest.writeInt(this.drinks);
-        dest.writeInt(this.nextPlayerId);
-        dest.writeInt(this.lastPlayerId);
+        if (this.nextPlayer != this) {
+            dest.writeParcelable(this.nextPlayer, 0);
+        } else {
+            dest.writeParcelable(null, 0);
+        }
+        if (this.lastPlayer != this) {
+            dest.writeParcelable(this.lastPlayer, 0);
+        } else {
+            dest.writeParcelable(null, 0);
+        }
     }
 
-    public int getNextPlayerId() {
-        return nextPlayerId;
+    public Player getNextPlayer() {
+        return this.nextPlayer;
     }
 
-    public void setNextPlayerId(int nextPlayerId) {
-        setHasNextPlayer(true);
-        this.nextPlayerId = nextPlayerId;
+    public void setNextPlayer(Player nextPlayer) {
+        this.hasNextPlayer = true;
+        this.nextPlayer = nextPlayer;
     }
 
-    public int getLastPlayerId() {
-        return lastPlayerId;
+    public Player getLastPlayer() {
+        return this.lastPlayer;
     }
 
-    public void setLastPlayerId(int lastPlayerId) {
-        setHasLastPlayer(true);
-        this.lastPlayerId = lastPlayerId;
+    public void setLastPlayer(Player lastPlayer) {
+        this.hasLastPlayer = true;
+        this.lastPlayer = lastPlayer;
     }
 
-    public boolean getHasNextPlayer(){
+    public boolean getHasNextPlayer() {
         return this.hasNextPlayer;
     }
 
-    public void setHasNextPlayer(boolean hasNextPlayer){
+    public void setHasNextPlayer(boolean hasNextPlayer) {
         this.hasNextPlayer = hasNextPlayer;
     }
 
-    public boolean getHastLastPlayer(){
+    public boolean getHastLastPlayer() {
         return this.hasLastPlayer;
     }
 
-    public void setHasLastPlayer(boolean hasLastPlayer){
+    public void setHasLastPlayer(boolean hasLastPlayer) {
         this.hasLastPlayer = hasLastPlayer;
     }
 
     public String toString() {
         return "Name: " + this.getName() + " Gewicht: " + this.getWeight() + " Mann?: " +
-                this.getIsMan() + " ID: " + this.getId() + " LastPlayerID: " + this.getLastPlayerId() +
-                " NextPlayerID: " + this.getNextPlayerId() + "\n" + " HasLastPlayerBoolean: " + this.getHastLastPlayer() +
+                this.getIsMan() + " ID: " + this.getId() + " LastPlayer: " + this.lastPlayer +
+                " NextPlayer: " + this.nextPlayer + "\n" + " HasLastPlayerBoolean: " + this
+                .getHastLastPlayer() +
                 " HasNextPlayerBoolean: " + this.getHasNextPlayer();
     }
 }

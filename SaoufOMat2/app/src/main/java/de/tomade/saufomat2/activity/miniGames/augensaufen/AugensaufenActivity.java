@@ -75,9 +75,13 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
     }
 
     private void stopRolling() {
+        String playerName = "";
+        if (this.fromMainGame) {
+            playerName = this.currentPlayer.getName();
+        }
         this.gameState = AugensaufenState.RESULT;
-        this.bottomText.setText(this.getString(R.string.minigame_augensaufen_drink_amount, (this.currentDiceIndex +
-                1)));
+        this.bottomText.setText(playerName + this.getString(R.string.minigame_augensaufen_drink_amount, this
+                .currentDiceIndex + 1));
         if (this.fromMainGame) {
             if (this.currentPlayer == null) {
                 throw new IllegalStateException("currentPlayer cannot be Null");

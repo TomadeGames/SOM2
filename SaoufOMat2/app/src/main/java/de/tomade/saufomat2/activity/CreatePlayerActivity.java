@@ -59,9 +59,10 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.btnStartGame:
                 if (!this.players.isEmpty()) {
+                    this.setPlayerOrder();
                     Intent intent = new Intent(this, MainGameActivity.class);
                     intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
-                    intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.players.get(0).getId());
+                    intent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
                     this.finish();
                     this.startActivity(intent);
                 } else {
@@ -69,6 +70,22 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                             .show();
                 }
                 break;
+        }
+    }
+
+    private void setPlayerOrder() {
+        for (int i = 0; i < this.players.size(); i++) {
+            Player player = this.players.get(i);
+            if (this.players.size() > i + 1) {
+                player.setNextPlayer(this.players.get(i + 1));
+            } else {
+                player.setNextPlayer(this.players.get(0));
+            }
+            if (i == 0) {
+                player.setLastPlayer(this.players.get(this.players.size() - 1));
+            } else {
+                player.setLastPlayer(this.players.get(i - 1));
+            }
         }
     }
 
@@ -85,7 +102,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final EditText etxtName = (EditText) view.findViewById(R.id.etxtName);
         final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
         final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
-        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout
+                .simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGender.setAdapter(arrayAdapter);
 
@@ -138,17 +156,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             }
         }
         if (!duplicate) {
-            if (this.players != null && !this.players.isEmpty()) {
-                this.players.get(this.players.size() - 1).setNextPlayerId(player.getId());
-            }
             this.players.add(player);
-            if (this.players.size() > 1) {
-                this.players.get(this.players.size() - 1).setLastPlayerId(this.players.get(this.players.size() - 2)
-                        .getId());
-            }
-            for (Player tmp : this.players) {
-                System.out.println(tmp.toString());
-            }
             this.displayPlayer(player);
         } else {
             Toast.makeText(CreatePlayerActivity.this, R.string.create_player_name_already_taken, Toast.LENGTH_LONG)
@@ -202,7 +210,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final EditText etxtName = (EditText) view.findViewById(R.id.etxtName);
         final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
         final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
-        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout
+                .simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGender.setAdapter(arrayAdapter);
 
@@ -265,16 +274,6 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     private void removePlayer(Player player) {
-        int lastPlayerId = player.getLastPlayerId();
-        int nextPLayerId = player.getNextPlayerId();
-        System.out.println("LastplayerId: " + lastPlayerId + " NextPlayerID: " + nextPLayerId);
-        if (player.getHasNextPlayer() && player.getHastLastPlayer()) {
-            Player.getPlayerById(this.players, lastPlayerId).setNextPlayerId(nextPLayerId);
-            Player.getPlayerById(this.players, nextPLayerId).setLastPlayerId(lastPlayerId);
-        } else if (player.getHasNextPlayer() && !player.getHastLastPlayer()) {
-            Player.getPlayerById(this.players, nextPLayerId).setLastPlayerId(-1);
-            Player.getPlayerById(this.players, nextPLayerId).setHasLastPlayer(false);
-        }
         this.players.remove(player);
     }
 }

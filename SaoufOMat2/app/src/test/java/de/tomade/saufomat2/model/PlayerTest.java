@@ -19,24 +19,6 @@ public class PlayerTest {
     }
 
     @Test
-    public void constructorTest2() {
-        String name = "test";
-        int weight = 1;
-        boolean isMan = true;
-        int drinks = 0;
-        int nextPlayerId = 0;
-        int lastPlayerId = 0;
-        Player p = new Player(name, weight, isMan, drinks, nextPlayerId, lastPlayerId);
-
-        Assert.assertEquals("Construktorfehler", p.getName(), name);
-        Assert.assertEquals("Construktorfehler", p.getWeight(), weight);
-        Assert.assertEquals("Construktorfehler", p.getIsMan(), isMan);
-        Assert.assertEquals("Construktorfehler", p.getDrinks(), drinks);
-        Assert.assertEquals("Construktorfehler", p.getNextPlayerId(), nextPlayerId);
-        Assert.assertEquals("Construktorfehler", p.getLastPlayerId(), lastPlayerId);
-    }
-
-    @Test
     public void getPlayerByIdTest() {
         List<Player> playerList = new ArrayList<>();
         Player p = new Player();

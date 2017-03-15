@@ -31,7 +31,7 @@
     <string name="minigame.augensaufen.drink_amount">Trink %d</string>
     <string name="minigame.bierrutsche.game_over">Spiel vorbei</string>
     <string name="minigame.ich_hab_noch_nie.tutorial">Anleitung: Es werden Sätze generiert, die mit \"Ich hab noch nie\" beginnen. Jeder, der die verneinte Handlung doch schon mal gemacht hat, muss trinken. Danach wird das Handy weitergegeben.</string>
-    <string name="minigame.kings.tap_to_start">%s\nTippen um die Karte aufzudecken</string>
+    <string name="minigame.kings.tap_to_start">%s\n\nTippen um die Karte aufzudecken</string>
     <string name="minigame.kings.game_over">Spiel vorbei</string>
     <string name="minigame.kings.next_player">Nächster Spieler</string>
     <string name="minigame.kings.card_value.seven">7 Dein linker Nachbar muss einen Trinken!</string>

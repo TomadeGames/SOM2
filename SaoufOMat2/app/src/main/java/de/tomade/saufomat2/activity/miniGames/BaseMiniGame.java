@@ -3,7 +3,6 @@ package de.tomade.saufomat2.activity.miniGames;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -38,25 +37,23 @@ public abstract class BaseMiniGame extends Activity {
             this.fromMainGame = extras.getBoolean(IntentParameter.FROM_MAIN_GAME);
             if (this.fromMainGame) {
                 this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-                this.currentPlayer = Player.getPlayerById(this.playerList, extras.getInt(IntentParameter
-                        .CURRENT_PLAYER_ID));
+                this.currentPlayer = extras.getParcelable(IntentParameter.CURRENT_PLAYER);
             }
         }
-        Log.d(BaseMiniGame.class.getSimpleName(), "bla");
     }
 
     /**
      * Setzt den nächsten Spieler als aktuellen Spieler
      */
     protected void nextTurn() {
-        this.currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getNextPlayerId());
+        this.currentPlayer = this.currentPlayer.getNextPlayer();
     }
 
     /**
      * Setzt den vorherigen Spieler als aktuellen Spieler
      */
     protected void lastTurn() {
-        this.currentPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getLastPlayerId());
+        this.currentPlayer = this.currentPlayer.getLastPlayer();
     }
 
     /**
@@ -70,7 +67,7 @@ public abstract class BaseMiniGame extends Activity {
         } else {
             intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
             intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, this.playerList);
-            intent.putExtra(IntentParameter.CURRENT_PLAYER_ID, this.currentPlayer.getId());
+            intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         }
         this.startActivity(intent);
     }

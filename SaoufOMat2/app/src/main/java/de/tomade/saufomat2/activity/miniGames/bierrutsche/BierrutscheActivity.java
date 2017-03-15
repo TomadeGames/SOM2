@@ -80,11 +80,11 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             Player player2 = new Player();
             player2.setName(this.getString(R.string.default_player_player2));
 
-            player1.setNextPlayerId(player2.getId());
-            player1.setLastPlayerId(player2.getId());
+            player1.setNextPlayer(player2);
+            player1.setLastPlayer(player2);
 
-            player2.setNextPlayerId(player1.getId());
-            player2.setLastPlayerId(player1.getId());
+            player2.setNextPlayer(player1);
+            player2.setLastPlayer(player1);
 
             this.playerList = new ArrayList<>();
             this.playerList.add(player1);
@@ -118,7 +118,9 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         tutorialButton.setOnClickListener(this);
 
         if (this.fromMainGame) {
+            TextView backText = (TextView) this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
+            backText.setVisibility(View.GONE);
             this.maxTurnCount = SINGLE_TURN_LIMIT * this.playerList.size();
             this.nameText = (TextView) this.findViewById(R.id.nameText);
             this.nameText.setText(this.currentPlayer.getName());
@@ -282,7 +284,6 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
         this.turnCount++;
         if (this.turnCount % SINGLE_TURN_LIMIT == 0) {
-            boolean dafuq = this.turnCount >= this.maxTurnCount;
             if (this.turnCount >= this.maxTurnCount) {
                 this.endGame();
             }
@@ -388,8 +389,10 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             case MotionEvent.ACTION_UP:
                 if (this.tutorialPanel.getVisibility() == View.VISIBLE) {
                     this.tutorialPanel.setVisibility(View.GONE);
-                    if (this.gameState == BierrutscheState.NEXT_PLAYER) {
-                        this.startNextTurn();
+                    if (this.gameState != BierrutscheState.END_GAME) {
+                        if (this.gameState == BierrutscheState.NEXT_PLAYER) {
+                            this.startNextTurn();
+                        }
                     }
                 } else {
                     switch (this.gameState) {

@@ -27,6 +27,7 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
     private String currentTask;
     private int turnCount = 0;
     private int maxTurns;
+    private boolean gameOver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +87,17 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
     }
 
     private void nextQuestion() {
-        if (this.turnCount >= this.maxTurns) {
-            this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_game_over));
-        } else {
-            this.currentTask = this.getQuestion();
-            this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
-            this.turnCount++;
+        if (this.gameOver) {
+            this.leaveGame();
+        }
+        this.currentTask = this.getQuestion();
+        this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
+        this.turnCount++;
+        if (this.fromMainGame) {
+            if (this.turnCount >= this.maxTurns) {
+                this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_game_over));
+                this.gameOver = true;
+            }
         }
     }
 

@@ -89,7 +89,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int blinkCounter = 0;
     private boolean framesSet = false;
 
-    public MainGamePanel(Context context, int currentPlayerId, ArrayList<Player> players) {
+    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players) {
         super(context);
         this.getHolder().addCallback(this);
         random = new Random();
@@ -106,7 +106,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.taskFactory = new TaskFactory();
 
         this.player = players;
-        this.currentPlayer = Player.getPlayerById(this.player, currentPlayerId);
+        this.currentPlayer = currentPlayer;
 
         this.thread = new GameLoopThread(this.getHolder(), this);
         this.setFocusable(true);
@@ -296,9 +296,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.thread.setRunning(false);
         MainGameActivity currActivity = (MainGameActivity) this.getContext();
         if (!this.currentDifficult.equals(TaskDifficult.GAME)) {
-            currActivity.changeToTaskViewWithTask(this.currentTask, this.player, this.currentPlayer.getId());
+            currActivity.changeToTaskViewWithTask(this.currentTask, this.player, this.currentPlayer);
         } else {
-            currActivity.changeToTaskViewWithGame(this.currentMiniGame, this.player, this.currentPlayer.getId());
+            currActivity.changeToTaskViewWithGame(this.currentMiniGame, this.player, this.currentPlayer);
         }
     }
 
