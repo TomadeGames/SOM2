@@ -25,13 +25,8 @@ import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
 
-//TODO: Zurück-Button
-//TODO: fertig stellen
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     static int id = 0;
-    ImageButton btnNewPlayer = null;
-    ImageButton btnStartGame = null;
-    ImageButton btnBack = null;
     LinearLayout linearLayout = null;
     Map<Integer, View> playerelements = new HashMap<>();
     private ArrayList<Player> players = new ArrayList<>();
@@ -43,12 +38,13 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
         this.linearLayout = (LinearLayout) this.findViewById(R.id.llCreatePlayer);
 
-        this.btnNewPlayer = (ImageButton) this.findViewById(R.id.btnNewPlayer);
-        this.btnStartGame = (ImageButton) this.findViewById(R.id.btnStartGame);
-        this.btnBack = (ImageButton) this.findViewById(R.id.btnBack);
+        ImageButton btnNewPlayer = (ImageButton) this.findViewById(R.id.btnNewPlayer);
+        ImageButton btnStartGame = (ImageButton) this.findViewById(R.id.btnStartGame);
+        ImageButton btnBack = (ImageButton) this.findViewById(R.id.btnBack);
 
-        this.btnNewPlayer.setOnClickListener(this);
-        this.btnStartGame.setOnClickListener(this);
+        btnNewPlayer.setOnClickListener(this);
+        btnStartGame.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
     }
 
     @Override
@@ -64,11 +60,11 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             case R.id.btnStartGame:
                 if (!this.players.isEmpty()) {
                     this.setPlayerOrder();
-                    Intent intent = new Intent(this, MainGameActivity.class);
-                    intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
-                    intent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
+                    Intent mainGameIntent = new Intent(this, MainGameActivity.class);
+                    mainGameIntent.putExtra(IntentParameter.PLAYER_LIST, this.players);
+                    mainGameIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
                     this.finish();
-                    this.startActivity(intent);
+                    this.startActivity(mainGameIntent);
                 } else {
                     Toast.makeText(CreatePlayerActivity.this, R.string.create_player_no_player, Toast.LENGTH_LONG)
                             .show();
