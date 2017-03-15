@@ -18,7 +18,6 @@ import de.tomade.saufomat2.model.Player;
 public class MainGameActivity extends Activity {
 
     private static final String TAG = MainGameActivity.class.getSimpleName();
-    private MainGamePanel panel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +25,14 @@ public class MainGameActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams
                 .FLAG_FULLSCREEN);
+
+        MainGamePanel panel;
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             ArrayList<Player> players = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
             int currentPlayer = extras.getInt(IntentParameter.CURRENT_PLAYER_ID);
-            this.setPanel(new MainGamePanel(this, currentPlayer, players));
-            this.setContentView(this.getPanel());
+            panel = new MainGamePanel(this, currentPlayer, players);
+            this.setContentView(panel);
 
         } else {
             //Wenn kein Spieler im Spielermenü eingetragen wurde
@@ -56,8 +57,8 @@ public class MainGameActivity extends Activity {
             players.add(p0);
             players.add(p1);
             int currentPlayer = p0.getId();
-            this.setPanel(new MainGamePanel(this, currentPlayer, players));
-            this.setContentView(this.getPanel());
+            panel = new MainGamePanel(this, currentPlayer, players);
+            this.setContentView(panel);
 
         }
     }
@@ -93,13 +94,5 @@ public class MainGameActivity extends Activity {
     protected void onStop() {
         Log.d(TAG, "Stopping...");
         super.onStop();
-    }
-
-    public MainGamePanel getPanel() {
-        return this.panel;
-    }
-
-    public void setPanel(MainGamePanel panel) {
-        this.panel = panel;
     }
 }

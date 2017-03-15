@@ -26,6 +26,7 @@ import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.DynamicImageView;
 
 //TODO: Getränke zähler der trinkenden Spieler erhöhen
+//TODO: Spiel endet nicht, wenn es aus dem Hauptspiel gestartet wurde
 public class BierrutscheActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
     private static final int TARGET_ACCURACY = 5000;
@@ -281,6 +282,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
         this.turnCount++;
         if (this.turnCount % SINGLE_TURN_LIMIT == 0) {
+            boolean dafuq = this.turnCount >= this.maxTurnCount;
             if (this.turnCount >= this.maxTurnCount) {
                 this.endGame();
             }
