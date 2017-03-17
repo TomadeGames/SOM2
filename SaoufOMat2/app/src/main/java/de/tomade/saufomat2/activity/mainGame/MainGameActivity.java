@@ -29,8 +29,8 @@ public class MainGameActivity extends Activity {
         MainGamePanel panel;
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
-            ArrayList<Player> players = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-            Player currentPlayer = extras.getParcelable(IntentParameter.CURRENT_PLAYER);
+            ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
+            Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
             panel = new MainGamePanel(this, currentPlayer, players);
             this.setContentView(panel);
 
@@ -77,7 +77,8 @@ public class MainGameActivity extends Activity {
     }
 
     private void changeView(Intent intent, ArrayList<Player> playerList, Player currentPlayer) {
-        intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, playerList);
+
+        intent.putExtra(IntentParameter.PLAYER_LIST, playerList);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
         this.finish();
         this.startActivity(intent);

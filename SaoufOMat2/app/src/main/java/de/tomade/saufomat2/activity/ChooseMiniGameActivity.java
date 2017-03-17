@@ -15,7 +15,7 @@ import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
-    private MiniGame currentGame = MiniGame.BUSFAHREN;
+    private MiniGame currentGame = MiniGame.BIERRUTSCHE;
     private ImageButton currentGameButton;
     private TextView gameText;
     private MiniGame[] allGames;
@@ -37,16 +37,13 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         ImageButton leftButton = (ImageButton) this.findViewById(R.id.leftButton);
         ImageButton rightButton = (ImageButton) this.findViewById(R.id.rightButton);
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
-        this.currentGameButton = (ImageButton) this.findViewById(R.id.currentGameButton);
 
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             this.currentGame = (MiniGame) extras.getSerializable(IntentParameter.LAST_GAME);
-            if (this.currentGame == null) {
-                throw new NullPointerException("currentGame should not be null");
-            }
-            this.gameText.setText(this.currentGame.getNameId());
         }
+        this.currentGameButton = (ImageButton) this.findViewById(R.id.currentGameButton);
+        this.gameText.setText(this.currentGame.getNameId());
 
         for (int i = 0; i < this.allGames.length; i++) {
             if (this.allGames[i].equals(this.currentGame)) {

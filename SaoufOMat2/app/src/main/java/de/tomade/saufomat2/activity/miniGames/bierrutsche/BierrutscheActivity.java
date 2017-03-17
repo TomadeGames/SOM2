@@ -18,30 +18,34 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.DynamicImageView;
+import pl.droidsonroids.gif.GifTextView;
 
-//TODO: Getränke zähler der trinkenden Spieler erhöhen
-//TODO: Spiel endet nicht, wenn es aus dem Hauptspiel gestartet wurde
+//TODO: Tutorial-Button während des Wurfs ausblenden und erst vor dem nächsten einblenden
+//TODO: animation für den Wurfbereich
 public class BierrutscheActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
     private static final int TARGET_ACCURACY = 5000;
     private static final int ANIMATION_DURATION = 1500;
     private static final int FALLING_DELAY = 1500;
     private static final int SINGLE_TURN_LIMIT = 3;
+    private static final int DRINK_AMOUNT = 3;
 
     private float beerStartPositionX;
     private float beerStartPositionY;
 
 
     private DynamicImageView backgroundImage;
-    private ImageView startField;
+    private GifTextView startField;
     private ImageView targetImage;
     private ImageView beerImage;
+    private ImageButton tutorialButton;
 
     private RelativeLayout tutorialPanel;
 
@@ -53,7 +57,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     private int turnCount = 0;
     private int maxTurnCount;
 
-    private Map<Integer, Integer> distances = new HashMap<>();
+    private Map<Player, Integer> distances = new HashMap<>();
     private int lastDistance = -1;
     private int[] currentDistances = new int[3];
     private int currentDistance;
@@ -67,6 +71,8 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     private ObjectAnimator fallingGlassX;
     private ObjectAnimator fallingGlassY;
     private ObjectAnimator turningGlass;
+    private ImageButton backButton;
+    private TextView backText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,27 +106,27 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
         this.backgroundImage = (DynamicImageView) this.findViewById(R.id.backgroundImage);
         this.backgroundImage.setFullX(true);
-        this.startField = (ImageView) this.findViewById(R.id.startImage);
+        this.startField = (GifTextView) this.findViewById(R.id.startImage);
         this.targetImage = (ImageView) this.findViewById(R.id.targetImage);
         this.beerImage = (ImageView) this.findViewById(R.id.beerImage);
         this.tutorialPanel = (RelativeLayout) this.findViewById(R.id.tutorialPanel);
         this.tutorialText = (TextView) this.findViewById(R.id.tutorialText);
         this.statisticText = (TextView) this.findViewById(R.id.statisticText);
         this.scoreText = (TextView) this.findViewById(R.id.accuracyText);
+        this.tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.backgroundImage.getLayoutParams();
         this.backgroundImage.setLayoutParams(params);
 
-        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
-        ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
+        this.backButton = (ImageButton) this.findViewById(R.id.backButton);
 
-        backButton.setOnClickListener(this);
-        tutorialButton.setOnClickListener(this);
+        this.backButton.setOnClickListener(this);
+        this.tutorialButton.setOnClickListener(this);
+        this.backText = (TextView) this.findViewById(R.id.backText);
 
         if (this.fromMainGame) {
-            TextView backText = (TextView) this.findViewById(R.id.backText);
-            backButton.setVisibility(View.GONE);
-            backText.setVisibility(View.GONE);
+            this.backButton.setVisibility(View.GONE);
+            this.backText.setVisibility(View.GONE);
             this.maxTurnCount = SINGLE_TURN_LIMIT * this.playerList.size();
             this.nameText = (TextView) this.findViewById(R.id.nameText);
             this.nameText.setText(this.currentPlayer.getName());
@@ -284,11 +290,11 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
         this.turnCount++;
         if (this.turnCount % SINGLE_TURN_LIMIT == 0) {
-            if (this.turnCount >= this.maxTurnCount) {
+            int max = this.getMaximum(this.currentDistances);
+            this.distances.put(this.currentPlayer, max);
+            if (this.turnCount >= this.maxTurnCount && this.fromMainGame) {
                 this.endGame();
             }
-            int max = this.getMaximum(this.currentDistances);
-            this.distances.put(this.currentPlayer.getId(), max);
             this.nextPlayer(max);
         } else {
             this.gameState = BierrutscheState.END_SINGEL_TURN;
@@ -308,9 +314,33 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     }
 
     private void endGame() {
+        this.nextPlayer();
         this.tutorialPanel.setVisibility(View.VISIBLE);
-        this.tutorialText.setText(R.string.minigame_bierrutsche_game_over);
+        this.tutorialText.setText(this.getString(R.string.minigame_bierrutsche_game_over) + "\n" + this.getFullScore
+                () + "\n" + this
+                .getWorstPlayerText());
         this.gameState = BierrutscheState.END_GAME;
+    }
+
+    private String getWorstPlayerText() {
+        String worstScore = "";
+        List<Player> worstPlayer = new ArrayList<>();
+        int worst = 101;
+        for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
+            int score = entry.getValue();
+            if (score < worst) {
+                worstPlayer.clear();
+                worstPlayer.add(entry.getKey());
+                worst = score;
+            } else if (score == worst) {
+                worstPlayer.add(entry.getKey());
+            }
+        }
+        for (Player worstSinglePlayer : worstPlayer) {
+            worstSinglePlayer.increaseDrinks(DRINK_AMOUNT);
+            worstScore += worstSinglePlayer.getName() + " trink " + DRINK_AMOUNT + "\n";
+        }
+        return worstScore;
     }
 
     private void startNextTurn() {
@@ -323,6 +353,11 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         this.backgroundImage.setX(0);
         this.startField.setX(0);
         this.gameState = BierrutscheState.START;
+        this.tutorialButton.setVisibility(View.VISIBLE);
+        if (!this.fromMainGame) {
+            this.backButton.setVisibility(View.VISIBLE);
+            this.backText.setVisibility(View.VISIBLE);
+        }
     }
 
     private void nextPlayer(int score) {
@@ -330,19 +365,20 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         this.scoreText.setVisibility(View.INVISIBLE);
         if (this.fromMainGame) {
             int max = 0;
-            int id = -1;
-            for (Map.Entry<Integer, Integer> entry : this.distances.entrySet()) {
+            Player player = null;
+            for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
                 if (entry.getValue() > max) {
                     max = entry.getValue();
-                    id = entry.getKey();
+                    player = entry.getKey();
                 }
             }
-            this.statisticText.setText(Player.getPlayerById(this.playerList, id).getName() + ": " + max);
-            Player lastPlayer = Player.getPlayerById(this.playerList, this.currentPlayer.getId());
-            this.nextPlayer();
-            this.nameText.setText(this.currentPlayer.getName());
-            this.tutorialText.setText(lastPlayer.getName() + ": " + score + "\n\n" + this.currentPlayer.getName() + "" +
-                    " ist dran");
+            if (this.gameState != BierrutscheState.END_GAME) {
+                this.statisticText.setText(player.getName() + ": " + max);
+                this.nextPlayer();
+                this.nameText.setText(this.currentPlayer.getName());
+                this.tutorialText.setText(this.getFullScore() + "\n" + this.currentPlayer.getName() +
+                        " ist dran");
+            }
         } else {
             if (this.lastDistance > 0) {
                 this.tutorialText.setText("Deine Punkte: " + score + "\nLezter Spieler: " + this.lastDistance +
@@ -352,7 +388,17 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             }
             this.lastDistance = score;
         }
-        this.gameState = BierrutscheState.NEXT_PLAYER;
+        if (this.gameState != BierrutscheState.END_GAME) {
+            this.gameState = BierrutscheState.NEXT_PLAYER;
+        }
+    }
+
+    private String getFullScore() {
+        String fullScore = "";
+        for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
+            fullScore += entry.getKey().getName() + ": " + entry.getValue() + "\n";
+        }
+        return fullScore;
     }
 
     private void atStartOnTouch(MotionEvent event) {
@@ -364,6 +410,9 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             float deltaX = x - this.downPositionX;
             if (deltaX > 0) {
                 this.gameState = BierrutscheState.ANIMATION;
+                this.tutorialButton.setVisibility(View.GONE);
+                this.backButton.setVisibility(View.GONE);
+                this.backText.setVisibility(View.GONE);
                 long eventDuration = event.getEventTime() - event.getDownTime();
 
                 long accuracy = (long) (deltaX / eventDuration * 1000);
@@ -393,6 +442,8 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
                         if (this.gameState == BierrutscheState.NEXT_PLAYER) {
                             this.startNextTurn();
                         }
+                    } else {
+                        this.leaveGame();
                     }
                 } else {
                     switch (this.gameState) {
@@ -401,9 +452,6 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
                             break;
                         case END_SINGEL_TURN:
                             this.startNextTurn();
-                            break;
-                        case END_GAME:
-                            this.leaveGame();
                             break;
                         default:
                             break;

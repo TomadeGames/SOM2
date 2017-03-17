@@ -12,7 +12,7 @@
         android:layout_height="fill_parent"
         android:src="@drawable/bierrutsche_background"/>
 
-    <ImageView
+    <!--ImageView
         android:id="@+id/startImage"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -21,7 +21,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/beerImage"
         android:scaleType="fitXY"
-        android:src="@drawable/bierrutsche_startfeld"/>
+        android:src="@drawable/bierrutsche_startfeld"/-->
+
+    <pl.droidsonroids.gif.GifTextView
+        android:id="@+id/startImage"
+        android:layout_width="200dp"
+        android:layout_height="fill_parent"
+        android:scaleType="fitXY"
+        android:background="@drawable/bierrutschen_startfield"/>
 
     <ImageView
         android:id="@+id/targetImage"
@@ -82,30 +89,17 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#ffffff"/>
 
-    <RelativeLayout
-        android:id="@+id/tutorialPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/tutorialPopup"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/popup"/>
-
-        <TextView
-            android:id="@+id/tutorialText"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="@string/minigame.bierrutsche.tutorial"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000000"/>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/statisticText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:id="@+id/namePanel"
@@ -139,17 +133,30 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/statisticText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="visible"/>
+    <RelativeLayout
+        android:id="@+id/tutorialPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/tutorialPopup"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/popup"/>
+
+        <TextView
+            android:id="@+id/tutorialText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@string/minigame.bierrutsche.tutorial"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/accuracyText"
@@ -162,9 +169,4 @@
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="invisible"/>
-    <![CDATA[
-
-    />
-
-]]>
 </RelativeLayout>

@@ -25,7 +25,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Zieh eine Grimasse", TaskDifficult.EASY, 0, 1, TaskTarget.SELF));
         taskList.add(new Task("Alle die nicht mehr weiterspielen wollen trinken 3", TaskDifficult.HARD, 3, 0,
                 TaskTarget.CHOOSE_ALL));
-        taskList.add(new Task("Strecke deine Zunge eine Runde lang aus", TaskDifficult.HARD, 3, 0, TaskTarget.SELF));
+        taskList.add(new Task("Strecke deine Zunge eine Runde lang aus", TaskDifficult.HARD, 0, 3, TaskTarget.SELF));
         taskList.add(new Task("Trinke einen ohne Hände zu benutzen", TaskDifficult.MEDIUM, 1, 0, TaskTarget.SELF));
         taskList.add(new Task("Lege deinen Finger auf den Boden und renne drei mal drum herum", TaskDifficult.MEDIUM,
                 0, 2, TaskTarget.SELF));
@@ -309,6 +309,10 @@ public class TaskDefinitions {
                 .HARD_WIN, 1, 0, TaskTarget.CHOOSE_THREE));
         taskList.add(new Task("Suche dir ein Opfer aus. Dieses Opfer trinkt 2 Runden lang deine Schlucke",
                 TaskDifficult.HARD_WIN, 1, 0, TaskTarget.VICTOM));
+        taskList.add(new Task("\"Wer würde am ehesten einen fremden Menschen auf der Straße küssen?\" Denke dir eine " +
+                "solche Frage aus. Anschließend zeigen alle auf die Person, die dies am ehesten tun würde. Jede " +
+                "Person trinkt so oft, wie auf sie gezeigt wurde.",
+                TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ONE));
 
         return taskList;
     }

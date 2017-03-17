@@ -36,8 +36,8 @@ public abstract class BaseMiniGame extends Activity {
         if (extras != null) {
             this.fromMainGame = extras.getBoolean(IntentParameter.FROM_MAIN_GAME);
             if (this.fromMainGame) {
-                this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-                this.currentPlayer = extras.getParcelable(IntentParameter.CURRENT_PLAYER);
+                this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
+                this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
             }
         }
     }
@@ -66,7 +66,7 @@ public abstract class BaseMiniGame extends Activity {
             intent.putExtra(IntentParameter.LAST_GAME, this.getThisGame());
         } else {
             intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
-            intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, this.playerList);
+            intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         }
         this.startActivity(intent);

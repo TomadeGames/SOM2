@@ -21,6 +21,8 @@ import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
+//TODO: Schön machen
+//TODO: Optionen-Knopf hat keine Funktion
 public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
     private ArrayList<Player> playerList;
@@ -38,8 +40,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
         Bundle extras = this.getIntent().getExtras();
 
-        this.playerList = extras.getParcelableArrayList(IntentParameter.PLAYER_LIST);
-        this.currentPlayer = extras.getParcelable(IntentParameter.CURRENT_PLAYER);
+        this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
+        this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
 
         if (!extras.getBoolean(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME)) {
             this.currentTask = (Task) extras.getSerializable(IntentParameter.MainGame.CURRENT_TASK);
@@ -135,7 +137,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         if (this.isGame) {
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
-            intent.putParcelableArrayListExtra(IntentParameter.PLAYER_LIST, this.playerList);
+            intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             this.currentPlayer = this.currentPlayer.getNextPlayer();
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             this.startActivity(intent);

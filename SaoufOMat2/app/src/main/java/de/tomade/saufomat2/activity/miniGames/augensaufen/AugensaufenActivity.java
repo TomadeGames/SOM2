@@ -1,6 +1,5 @@
 package de.tomade.saufomat2.activity.miniGames.augensaufen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,10 +12,7 @@ import android.widget.TextView;
 import java.util.Random;
 
 import de.tomade.saufomat2.R;
-import de.tomade.saufomat2.activity.ChooseMiniGameActivity;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
-import de.tomade.saufomat2.constant.IntentParameter;
-import de.tomade.saufomat2.constant.MiniGame;
 
 //TODO: Rundenzähler fehlt noch
 public class AugensaufenActivity extends BaseMiniGame implements View.OnClickListener {
@@ -36,7 +32,6 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         this.setContentView(R.layout.activity_augensaufen);
         random = new Random();
 
-
         this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
         this.bottomText = (TextView) this.findViewById(R.id.bottemLargeText);
         this.playerText = (TextView) this.findViewById(R.id.playerText);
@@ -46,6 +41,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
             backButton.setVisibility(View.GONE);
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backText.setVisibility(View.GONE);
+            this.playerText.setText(this.currentPlayer.getName());
         }
         backButton.setOnClickListener(this);
     }
@@ -146,9 +142,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.backButton) {
-            Intent intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
-            intent.putExtra(IntentParameter.LAST_GAME, MiniGame.AUGENSAUFEN);
-            this.startActivity(intent);
+            this.leaveGame();
         }
     }
 }
