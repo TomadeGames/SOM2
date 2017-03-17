@@ -14,7 +14,6 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
-//TODO: Rundenzähler fehlt noch
 public class AugensaufenActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = AugensaufenActivity.class.getSimpleName();
     private static final int DICE_ROLL_DELAY = 100;
@@ -23,6 +22,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
     private ImageView diceImage;
     private TextView bottomText;
     private TextView playerText;
+    private TextView turnCounterView;
     private int currentDiceIndex = 0;
     private int turnCount = 0;
 
@@ -35,6 +35,9 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
         this.bottomText = (TextView) this.findViewById(R.id.bottemLargeText);
         this.playerText = (TextView) this.findViewById(R.id.playerText);
+        this.turnCounterView = (TextView) this.findViewById(R.id.turnCounter);
+
+        this.turnCounterView.setText((this.turnCount + 1) + "/" + this.playerList.size());
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
         if (this.fromMainGame) {
@@ -52,17 +55,16 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         if (event.getAction() == 0) {
             switch (this.gameState) {
                 case START:
-                    if (this.fromMainGame && this.turnCount >= this.playerList.size()) {
-                        this.leaveGame();
-                    } else {
-                        this.startRolling();
-                    }
+                    this.startRolling();
                     break;
                 case ROLLING:
                     this.stopRolling();
                     break;
                 case RESULT:
                     this.restart();
+                    break;
+                case END:
+                    this.leaveGame();
                     break;
             }
             return true;
@@ -90,17 +92,21 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         this.bottomText.setText(R.string.minigame_augensaufen_tap_to_start);
         if (!this.fromMainGame) {
             this.playerText.setText(R.string.minigame_augensaufen_next_player);
+            this.gameState = AugensaufenState.START;
         } else {
             this.nextPlayer();
             this.turnCount++;
 
-            if (this.turnCount == this.playerList.size()) {
-                this.playerText.setText(R.string.minigame_augensaufen_game_over);
+            if (this.turnCount >= this.playerList.size()) {
+                this.bottomText.setText(R.string.minigame_augensaufen_game_over);
+                this.playerText.setVisibility(View.GONE);
+                this.gameState = AugensaufenState.END;
             } else {
+                this.turnCounterView.setText((this.turnCount + 1) + "/" + this.playerList.size());
                 this.playerText.setText(this.currentPlayer.getName());
+                this.gameState = AugensaufenState.START;
             }
         }
-        this.gameState = AugensaufenState.START;
     }
 
     private void startRolling() {

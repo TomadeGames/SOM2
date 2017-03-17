@@ -6,5 +6,5 @@ package de.tomade.saufomat2.activity.miniGames.augensaufen;
 public enum AugensaufenState {
     START,
     ROLLING,
-    RESULT
+    END, RESULT
 }

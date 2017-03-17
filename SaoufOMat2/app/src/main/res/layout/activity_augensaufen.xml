@@ -5,33 +5,6 @@
                 android:layout_height="fill_parent"
                 tools:context=".activity.miniGames.augensaufen.AugensaufenActivity">
 
-    <TextView
-        android:id="@+id/turnCounter"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="45dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="0"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ffffff"/>
-
-    <TextView
-        android:id="@+id/turnCounterPlusText"
-        android:layout_width="40dp"
-        android:layout_height="fill_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="40dp"
-        android:gravity="left|center_vertical"
-        android:text="+1"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#ffffff"
-        android:textSize="30sp"
-        android:visibility="gone"/>
-
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="fill_parent"
@@ -119,10 +92,15 @@
         android:text="@string/button.back"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-    <de.tomade.saufomat2.model.drawable.TurnCounter
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/turnCounterPlusText"
-        android:layout_alignRight="@+id/textfieldLayout"
-        android:layout_alignEnd="@+id/textfieldLayout"/>
+    <TextView
+        android:id="@+id/turnCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="15dp"
+        android:text="TextView"
+        android:textColor="#ffffff"/>
 </RelativeLayout>

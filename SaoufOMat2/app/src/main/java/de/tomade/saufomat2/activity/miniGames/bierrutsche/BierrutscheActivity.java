@@ -27,8 +27,6 @@ import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.DynamicImageView;
 import pl.droidsonroids.gif.GifTextView;
 
-//TODO: Tutorial-Button während des Wurfs ausblenden und erst vor dem nächsten einblenden
-//TODO: animation für den Wurfbereich
 public class BierrutscheActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
     private static final int TARGET_ACCURACY = 5000;

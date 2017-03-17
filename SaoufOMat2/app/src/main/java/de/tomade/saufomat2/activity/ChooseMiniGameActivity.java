@@ -15,7 +15,7 @@ import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
-    private MiniGame currentGame = MiniGame.BIERRUTSCHE;
+    private MiniGame currentGame;
     private ImageButton currentGameButton;
     private TextView gameText;
     private MiniGame[] allGames;
@@ -32,6 +32,7 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
             this.allGames[i] = (MiniGame) allGamesAsObjects[i];
         }
 
+        this.currentGame = this.allGames[0];
 
         this.gameText = (TextView) this.findViewById(R.id.gameText);
         ImageButton leftButton = (ImageButton) this.findViewById(R.id.leftButton);
