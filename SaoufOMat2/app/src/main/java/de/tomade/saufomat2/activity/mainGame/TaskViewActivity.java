@@ -23,6 +23,7 @@ import de.tomade.saufomat2.model.Player;
 
 //TODO: Schön machen
 //TODO: Optionen-Knopf hat keine Funktion
+//TODO: Die aktuelle Spielerliste aktuell halten und so...
 public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
     private ArrayList<Player> playerList;
@@ -87,12 +88,15 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         }
 
         LinearLayout playerLayout = (LinearLayout) this.findViewById(R.id.playerLayout);
-        for (Player p : this.playerList) {
+        Player player = this.currentPlayer;
+        do {
+            //TODO: nicht einzelne TextViews sondern ein langes
             TextView textView = new TextView(this);
-            textView.setText(p.getName() + ": " + p.getDrinks());
+            textView.setText(player.getName() + ": " + player.getDrinks());
             playerLayout.addView(textView);
-            this.playerTexts.put(p.getId(), textView);
-        }
+            this.playerTexts.put(player.getId(), textView);
+            player = player.getNextPlayer();
+        } while (player != this.currentPlayer);
 
         ImageButton yesButton = (ImageButton) this.findViewById(R.id.acceptButton);
         ImageButton optionsButton = (ImageButton) this.findViewById(R.id.optionsButton);

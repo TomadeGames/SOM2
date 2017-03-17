@@ -81,10 +81,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         this.gameState = AugensaufenState.RESULT;
         this.bottomText.setText(this.getString(R.string.minigame_augensaufen_drink_amount, this.currentDiceIndex + 1));
         if (this.fromMainGame) {
-            if (this.currentPlayer == null) {
-                throw new IllegalStateException("currentPlayer cannot be Null");
-            }
-            this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentDiceIndex + 1);
+            this.currentPlayer.increaseDrinks(this.currentDiceIndex + 1);
         }
     }
 

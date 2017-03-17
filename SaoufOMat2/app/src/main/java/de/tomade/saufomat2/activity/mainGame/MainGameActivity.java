@@ -28,38 +28,10 @@ public class MainGameActivity extends Activity {
 
         MainGamePanel panel;
         Bundle extras = this.getIntent().getExtras();
-        if (extras != null) {
-            ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
-            Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
-            panel = new MainGamePanel(this, currentPlayer, players);
-            this.setContentView(panel);
-
-        } else {
-            //Wenn kein Spieler im Spielermenü eingetragen wurde
-            Player p0 = new Player();
-            Player p1 = new Player();
-
-            p0.setName("p0");
-            p0.setLastPlayer(p1);
-            p0.setWeight(80);
-            p0.setNextPlayer(p1);
-            p0.setIsMan(true);
-            p0.setDrinks(0);
-
-            p1.setName("p1");
-            p1.setLastPlayer(p0);
-            p1.setWeight(85);
-            p1.setNextPlayer(p0);
-            p1.setIsMan(false);
-            p1.setDrinks(0);
-
-            ArrayList<Player> players = new ArrayList<>();
-            players.add(p0);
-            players.add(p1);
-            panel = new MainGamePanel(this, p0, players);
-            this.setContentView(panel);
-
-        }
+        ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
+        Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
+        panel = new MainGamePanel(this, currentPlayer, players);
+        this.setContentView(panel);
     }
 
     public void changeToTaskViewWithTask(Task currentTask, ArrayList<Player> player, Player currentPlayer) {
@@ -77,7 +49,6 @@ public class MainGameActivity extends Activity {
     }
 
     private void changeView(Intent intent, ArrayList<Player> playerList, Player currentPlayer) {
-
         intent.putExtra(IntentParameter.PLAYER_LIST, playerList);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
         this.finish();
