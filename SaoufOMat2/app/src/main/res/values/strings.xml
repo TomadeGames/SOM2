@@ -23,8 +23,8 @@
     <string name="minigame.kings.tutorial">Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.</string>
     <string name="maingame.task_view.button.accept.description">Bestätitgt die Aufgabe</string>
     <string name="choose_mini_game.button.start_mini_game.description">Startet das ausgewählte Minispiel</string>
-    <string name="choose_mini_game.button.left"/>
-    <string name="choose_mini_game.button.right"/>
+    <string name="choose_mini_game.button.left" />
+    <string name="choose_mini_game.button.right" />
     <string name="background_image.description">Hintergrundbild</string>
     <string name="minigame.augensaufen.tap_to_start">Tippen zum Würfeln</string>
     <string name="minigame.augensaufen.next_player">Nächster Spieler</string>
@@ -69,6 +69,7 @@
     <string name="enum.gender.woman">Frau</string>
     <string name="create_player.name_already_taken">Der Name ist schon vorhanden!</string>
     <string name="create_player.edit_player">Spieler Bearbeiten</string>
+    <string name="create_player.start_game">Spiel starten</string>
     <string name="button.ok">OK</string>
     <string name="button.abort">Abbrechen</string>
     <string name="button.back">Zurück</string>

@@ -9,7 +9,6 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -26,12 +25,10 @@ import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
 
-//TODO: Zurück-Button
-//TODO: fertig stellen
+// TODO: Drag and Drop zum sotieren der Spieler
+
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     static int id = 0;
-    Button btnNewPlayer = null;
-    Button btnStartGame = null;
     LinearLayout linearLayout = null;
     Map<Integer, View> playerelements = new HashMap<>();
     private ArrayList<Player> players = new ArrayList<>();
@@ -43,16 +40,21 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
         this.linearLayout = (LinearLayout) this.findViewById(R.id.llCreatePlayer);
 
-        this.btnNewPlayer = (Button) this.findViewById(R.id.btnNewPlayer);
-        this.btnStartGame = (Button) this.findViewById(R.id.btnStartGame);
+        ImageButton btnNewPlayer = (ImageButton) this.findViewById(R.id.btnNewPlayer);
+        ImageButton btnStartGame = (ImageButton) this.findViewById(R.id.btnStartGame);
+        ImageButton btnBack = (ImageButton) this.findViewById(R.id.btnBack);
 
-        this.btnNewPlayer.setOnClickListener(this);
-        this.btnStartGame.setOnClickListener(this);
+        btnNewPlayer.setOnClickListener(this);
+        btnStartGame.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btnBack:
+                this.finish();
+                break;
             case R.id.btnNewPlayer:
                 Player newPlayer = new Player();
                 this.showDialog(newPlayer);
@@ -60,11 +62,11 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             case R.id.btnStartGame:
                 if (!this.players.isEmpty()) {
                     this.setPlayerOrder();
-                    Intent intent = new Intent(this, MainGameActivity.class);
-                    intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
-                    intent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
+                    Intent mainGameIntent = new Intent(this, MainGameActivity.class);
+                    mainGameIntent.putExtra(IntentParameter.PLAYER_LIST, this.players);
+                    mainGameIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
                     this.finish();
-                    this.startActivity(intent);
+                    this.startActivity(mainGameIntent);
                 } else {
                     Toast.makeText(CreatePlayerActivity.this, R.string.create_player_no_player, Toast.LENGTH_LONG)
                             .show();
@@ -109,11 +111,6 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
         etxtName.setText("");
         etxtWeight.setText("70");
-
-       /* final NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
-        np.setMinValue(0);
-        np.setMaxValue(999);
-        np.setValue(70);*/
 
         builder.setMessage(R.string.create_player_new_player)
                 .setView(view)

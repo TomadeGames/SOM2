@@ -3,47 +3,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.CreatePlayerActivity"
-    android:background="#ffe6b3">
+    android:background="#ffe6b3"
+    tools:context=".activity.CreatePlayerActivity">
 
     <ScrollView
+        android:id="@+id/svCreatePlayer"
         android:layout_width="fill_parent"
         android:layout_height="270dp"
-        android:id="@+id/svCreatePlayer"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignLeft="@+id/btnBack"
+        android:layout_alignStart="@+id/btnBack"
+        android:layout_alignRight="@+id/btnStartGame"
+        android:layout_alignEnd="@+id/btnStartGame">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/llCreatePlayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/llCreatePlayer"></LinearLayout>
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnStartGame"
-        android:background="@drawable/btn_start_game"
-        android:layout_marginRight="22dp"
-        android:layout_marginEnd="22dp"
-        android:layout_alignBaseline="@+id/btnNewPlayer"
-        android:layout_alignBottom="@+id/btnNewPlayer"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnNewPlayer"
-        android:background="@drawable/btn_new_player"
-        android:elevation="0dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginStart="18dp"
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_marginTop="11dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginLeft="40dp"
+        android:scaleType="center"
+        android:src="@drawable/no_button" />
+
+    <ImageButton
+        android:id="@+id/btnStartGame"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="11dp"
+        android:scaleType="center"
+        android:src="@drawable/bussfahren_between_button" />
+
+    <ImageButton
+        android:id="@+id/btnNewPlayer"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="11dp"
+        android:scaleType="center"
+        android:src="@drawable/busfahren_higher_button" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnNewPlayer"
+        android:layout_alignStart="@+id/btnNewPlayer"
+        android:layout_alignTop="@+id/btnNewPlayer"
+        android:text="@string/create_player.new_player"
+        android:layout_alignBottom="@+id/btnNewPlayer"
+        android:layout_alignRight="@+id/btnNewPlayer"
+        android:layout_alignEnd="@+id/btnNewPlayer"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnStartGame"
+        android:layout_alignStart="@+id/btnStartGame"
+        android:layout_alignTop="@+id/btnStartGame"
+        android:text="@string/create_player.start_game"
+        android:layout_alignBottom="@+id/btnStartGame"
+        android:layout_alignRight="@+id/btnStartGame"
+        android:layout_alignEnd="@+id/btnStartGame"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnBack"
+        android:layout_alignStart="@+id/btnBack"
+        android:layout_alignTop="@+id/btnBack"
+        android:text="@string/button.back"
+        android:layout_alignBottom="@+id/btnBack"
+        android:layout_alignRight="@+id/btnBack"
+        android:layout_alignEnd="@+id/btnBack"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
 </RelativeLayout>
