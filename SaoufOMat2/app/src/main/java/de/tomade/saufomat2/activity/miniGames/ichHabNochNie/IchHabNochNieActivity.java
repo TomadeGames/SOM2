@@ -21,6 +21,7 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
     private List<String> currentQuestions;
     private List<String> allQuestions;
 
+    private TextView turnCounter;
     private TextView taskView;
 
     private boolean tutorialShown = false;
@@ -42,6 +43,7 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
         this.initLists();
 
         this.taskView = (TextView) this.findViewById(R.id.taskText);
+        this.turnCounter = (TextView) this.findViewById(R.id.turnCounter);
         this.currentTask = this.getQuestion();
         this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
 
@@ -57,6 +59,9 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
             if (this.maxTurns > 30) {
                 this.maxTurns = 30;
             }
+            this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+        } else {
+            this.turnCounter.setVisibility(View.GONE);
         }
 
         popup.setOnClickListener(this);
@@ -97,6 +102,8 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
             if (this.turnCount >= this.maxTurns) {
                 this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_game_over));
                 this.gameOver = true;
+            } else {
+                this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
             }
         }
     }

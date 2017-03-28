@@ -13,7 +13,7 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
-//TODO: ZurückButton darf nicht sichtbar sein, wenn man vom Hauptspiel kommt
+//TODO: spiel endet nicht aus dem Hauptspiel herraus
 public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickListener {
     public static final String TAG = WerfDichDichtActivity.class.getSimpleName();
     private static Random random;
@@ -21,12 +21,16 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
     private static final int ANIMATION_DELAY = 100;
 
     private TextView popupText;
+    private TextView playerText;
+    private TextView turnCounter;
     private ImageView popupImage;
     private ImageView diceImage;
     private ImageView[] glasses = new ImageView[6];
     private View tutorial;
 
     private int animationCounter = 0;
+    private int turnCount = 0;
+    private int maxTurns;
 
     private boolean[] isFull = new boolean[6];
     private WerfDichDichtState gameState = WerfDichDichtState.START;
@@ -39,8 +43,8 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
 
         random = new Random();
 
-        TextView playerText = (TextView) this.findViewById(R.id.nameText);
-
+        this.playerText = (TextView) this.findViewById(R.id.nameText);
+        this.turnCounter = (TextView) this.findViewById(R.id.turnCounter);
 
         this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
         this.popupImage = (ImageView) this.findViewById(R.id.popupImage);
@@ -58,17 +62,25 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         tutorialButton.setOnClickListener(this);
 
         if (this.fromMainGame) {
-            playerText.setText(this.currentPlayer.getName());
+            this.playerText.setText(this.currentPlayer.getName());
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
             backText.setVisibility(View.GONE);
+            this.maxTurns = this.playerList.size() * 3;
+            if (this.maxTurns > 30) {
+                this.maxTurns = this.playerList.size() * 2;
+                if (this.maxTurns > 30) {
+                    this.maxTurns = this.playerList.size();
+                }
+            }
+            this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
 
         } else {
-            playerText.setVisibility(View.GONE);
+            this.playerText.setVisibility(View.GONE);
+            this.turnCounter.setVisibility(View.GONE);
             ImageView playerPopup = (ImageView) this.findViewById(R.id.nameBackground);
             playerPopup.setVisibility(View.GONE);
         }
-
 
         this.tutorial = this.findViewById(R.id.tutorialPanel);
     }
@@ -83,6 +95,9 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
                         break;
                     case ROLLING:
                         this.stopRolling();
+                        break;
+                    case END:
+                        this.leaveGame();
                         break;
                     default:
                         break;
@@ -158,14 +173,25 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
             if (!this.fromMainGame) {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_next_player);
             } else {
-                this.nextPlayer();
-                this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this.currentPlayer
-                        .getName()));
+                this.turnCount++;
+                if (this.turnCount >= this.maxTurns) {
+                    this.gameState = WerfDichDichtState.END;
+                    this.popupText.setText("Spiel vorbei");
+                } else {
+                    this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this
+                            .currentPlayer
+                            .getName()));
+                    this.nextPlayer();
+                    this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+                    this.playerText.setText(this.currentPlayer.getName());
+                }
             }
         }
         this.isFull[this.currentDiceIndex] = !this.isFull[this.currentDiceIndex];
 
-        this.gameState = WerfDichDichtState.START;
+        if (this.gameState != WerfDichDichtState.END) {
+            this.gameState = WerfDichDichtState.START;
+        }
     }
 
     private void stopRolling() {

@@ -57,7 +57,8 @@ public abstract class BaseMiniGame extends Activity {
     }
 
     /**
-     * Verlässt das Spiel und wechselt zum Minispiel-Menü oder Hauptspiel zurück
+     * Verlässt das Spiel und wechselt zum Minispiel-Menü oder Hauptspiel zurück. Dadurch ist auch der nächste
+     * Spieler an der Reihe
      */
     protected void leaveGame() {
         Intent intent;
@@ -65,6 +66,7 @@ public abstract class BaseMiniGame extends Activity {
             intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
             intent.putExtra(IntentParameter.LAST_GAME, this.getThisGame());
         } else {
+            this.nextPlayer();
             intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);

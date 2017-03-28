@@ -7,5 +7,5 @@ public enum WerfDichDichtState {
     START,
     ROLLING,
     GLASS_ANIMATION,
-    STOP
+    END, STOP
 }

@@ -77,9 +77,8 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
         if (this.fromMainGame) {
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
-            backText.setText(View.GONE);
+            backText.setVisibility(View.GONE);
         }
-
     }
 
     @Override
