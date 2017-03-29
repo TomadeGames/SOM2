@@ -475,7 +475,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
             canvas.drawBitmap(this.slotMachine, 0, 0, null);
 
-            canvas.drawText(this.currentPlayer.getName(), canvas.getWidth() / 2, this.screenHeight / 15, this
+            canvas.drawText(this.currentPlayer.getName(), canvas.getWidth() / 2, this.screenHeight / 10, this
                     .currentPlayerTextPaint);
 
             this.saufOMeter.draw(canvas);

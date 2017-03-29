@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -23,11 +22,15 @@ import de.tomade.saufomat2.model.Player;
 
 //TODO: Schön machen
 //TODO: Optionen-Knopf hat keine Funktion
+//TODO: Wenn kein Nein zur Verfügung steht: Anstatt einen ausgegrauten Button einen großen Grünen Button anzeigen
 //TODO: Die aktuelle Spielerliste aktuell halten und so...
 public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
+
+    private TextView statisticsText;
+
     private ArrayList<Player> playerList;
-    private Map<Integer, TextView> playerTexts = new HashMap<>();
+    private Map<Player, String[]> playerTexts = new HashMap<>();
     private Task currentTask;
     private MiniGame miniGame = null;
     private Player currentPlayer;
@@ -87,16 +90,18 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             noButton.setOnClickListener(this);
         }
 
-        LinearLayout playerLayout = (LinearLayout) this.findViewById(R.id.playerLayout);
         Player player = this.currentPlayer;
+        this.statisticsText = (TextView) this.findViewById(R.id.statisticText);
         do {
-            //TODO: nicht einzelne TextViews sondern ein langes
-            TextView textView = new TextView(this);
-            textView.setText(player.getName() + ": " + player.getDrinks());
-            playerLayout.addView(textView);
-            this.playerTexts.put(player.getId(), textView);
+            String playerDrinks = player.getName() + ": " + player.getDrinks();
+            float alc = this.calculateAlkohol(player.getDrinks(), player.getWeight(), player.getIsMan());
+            String playerAlcohol = player.getName() + ": " + new DecimalFormat("#.##").format(alc) + "%";
+            String[] bothTexts = {playerDrinks, playerAlcohol};
+            this.playerTexts.put(player, bothTexts);
             player = player.getNextPlayer();
         } while (player != this.currentPlayer);
+
+        this.switchStatistics(0);
 
         ImageButton yesButton = (ImageButton) this.findViewById(R.id.acceptButton);
         ImageButton optionsButton = (ImageButton) this.findViewById(R.id.optionsButton);
@@ -193,19 +198,22 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
     private void alcoholButtonPressed() {
         if (this.drinkCountShown) {
-            for (Map.Entry<Integer, TextView> e : this.playerTexts.entrySet()) {
-                Player p = Player.getPlayerById(this.playerList, e.getKey());
-                e.getValue().setText(p.getName() + ": " + p.getDrinks());
-            }
+            this.switchStatistics(0);
         } else {
-            for (Map.Entry<Integer, TextView> e : this.playerTexts.entrySet()) {
-                Player p = Player.getPlayerById(this.playerList, e.getKey());
-                float alc = this.calculateAlkohol(p.getDrinks(), p.getWeight(), p.getIsMan());
-                String text = p.getName() + ": " + new DecimalFormat("#.##").format(alc);
-                e.getValue().setText(text + "%");
-            }
+            this.switchStatistics(1);
         }
         this.drinkCountShown = !this.drinkCountShown;
+    }
+
+    private void switchStatistics(int textIndex) {
+        if (textIndex != 1 && textIndex != 0) {
+            throw new IllegalArgumentException("textIndex must be 0 or 1");
+        }
+        String statisticValue = "";
+        for (Map.Entry<Player, String[]> entry : this.playerTexts.entrySet()) {
+            statisticValue += entry.getValue()[textIndex] + "\n";
+        }
+        this.statisticsText.setText(statisticValue);
     }
 
     private float calculateAlkohol(int drinks, int weight, boolean isMan) {

@@ -26,7 +26,7 @@ import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
 
 // TODO: Drag and Drop zum sotieren der Spieler
-
+//TODO: Zu lange Spielernamen liegen unter den Buttons
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     static int id = 0;
     LinearLayout linearLayout = null;
@@ -62,6 +62,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             case R.id.btnStartGame:
                 if (!this.players.isEmpty()) {
                     this.setPlayerOrder();
+                    this.trimPlayerNames();
                     Intent mainGameIntent = new Intent(this, MainGameActivity.class);
                     mainGameIntent.putExtra(IntentParameter.PLAYER_LIST, this.players);
                     mainGameIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
@@ -88,6 +89,12 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
             } else {
                 player.setLastPlayer(this.players.get(i - 1));
             }
+        }
+    }
+
+    private void trimPlayerNames() {
+        for (Player player : this.players) {
+            player.setName(player.getName().trim());
         }
     }
 
