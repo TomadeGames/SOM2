@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -40,7 +41,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
     private static final int HARD_CHANCE = 3;
-    private static final int GAME_CHANCE = 100000;
+    private static final int GAME_CHANCE = 1;
 
     private static final int SAUFOMETER_BLINK_TIME = 300;
     private static final int SAUFOMETER_ROTATE_TIME = 100;
@@ -88,6 +89,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private float saufometerBlinkingCounter = SAUFOMETER_BLINK_TIME;
     private int blinkCounter = 0;
     private boolean framesSet = false;
+
+    public MainGamePanel(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+    }
+
+    public MainGamePanel(Context context, AttributeSet attributeSet, int defStyleAttr) {
+        super(context, attributeSet, defStyleAttr);
+    }
 
     public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players) {
         super(context);
