@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/etxtName"
-        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="4dp"
-        android:hint="Name" />
+        android:layout_marginTop="16dp"
+        android:hint="Name"
+        android:inputType="textEmailAddress"/>
 
     <TextView
+        android:id="@+id/txtvWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gewicht (in kg)"
-        android:id="@+id/txtvWeight"
-        android:textSize="20dp"
         android:layout_alignBaseline="@+id/spGender"
         android:layout_alignBottom="@+id/spGender"
         android:layout_alignLeft="@+id/etxtName"
-        android:layout_alignStart="@+id/etxtName" />
+        android:layout_alignStart="@+id/etxtName"
+        android:text="Gewicht (in kg)"
+        android:textSize="20sp"/>
 
 
     <EditText
+        android:id="@+id/etxtWeight"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="3"
-        android:id="@+id/etxtWeight"
         android:layout_below="@+id/etxtName"
-        android:layout_toRightOf="@+id/txtvWeight"
         android:layout_toEndOf="@+id/txtvWeight"
-        android:text="70"
-        android:textIsSelectable="false"
-        android:paddingLeft="6dp"
+        android:layout_toRightOf="@+id/txtvWeight"
+        android:ems="3"
         android:gravity="center_horizontal"
-        android:maxLines="1" />
+        android:inputType="numberDecimal"
+        android:maxLines="1"
+        android:paddingLeft="6dp"
+        android:text="70"
+        android:textIsSelectable="false"/>
 
 
     <Spinner
+        android:id="@+id/spGender"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:id="@+id/spGender"
-        android:layout_alignTop="@+id/etxtWeight"
+        android:layout_alignEnd="@+id/etxtName"
         android:layout_alignRight="@+id/etxtName"
-        android:layout_alignEnd="@+id/etxtName" />
+        android:layout_alignTop="@+id/etxtWeight"/>
 </RelativeLayout>

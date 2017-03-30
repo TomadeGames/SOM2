@@ -152,7 +152,7 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
             case BETWEEN_NOT_BETWEEN:
                 this.gameState = BusfahrenState.SAME_NOT_SAME;
                 this.taskText.setText(R.string.minigame_busfahren_question_fourth);
-                this.leftButton.setImageResource(R.drawable.busfahren_again);
+                this.leftButton.setImageResource(R.drawable.busfahren_again_button);
                 this.rightButton.setImageResource(R.drawable.busfahren_not_again_button);
                 this.leftText.setText(R.string.minigame_busfahren_question_fourth_answer_left);
                 this.rightText.setText(R.string.minigame_busfahren_question_fourth_answer_right);

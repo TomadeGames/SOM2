@@ -16,4 +16,8 @@ public interface IntentParameter {
         String CURRENT_MINI_GAME = "currentMiniGame";
         String CURRENT_TASK_IS_MINI_GAME = "currentTaskIsMiniGame";
     }
+
+    interface ChoosePlayersActivity {
+        String SELECTION_AMOUNT = "selectionAmount";
+    }
 }

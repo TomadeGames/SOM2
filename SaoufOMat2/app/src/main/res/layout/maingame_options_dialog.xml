@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/playerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:id="@+id/addPlayerLayout"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_alignBottom="@+id/removePlayerLayout"
+            android:layout_alignTop="@id/removePlayerLayout"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_toLeftOf="@+id/removePlayerLayout"
+            android:layout_toStartOf="@+id/removePlayerLayout">
+
+            <ImageButton
+                android:id="@+id/addPlayerButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:cropToPadding="false"
+                android:scaleType="fitXY"
+                android:src="@drawable/busfahren_again_button"/>
+
+            <TextView
+                android:id="@+id/addPlayerText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Spieler hinzufügen"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/removePlayerLayout"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
+
+            <ImageButton
+                android:id="@+id/removePlayerButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="#00ffffff"
+                android:cropToPadding="false"
+                android:scaleType="fitXY"
+                android:src="@drawable/busfahren_no_ace_button"/>
+
+            <TextView
+                android:id="@+id/removePlayerText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Spieler entfernen"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="18sp"/>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/closeButtonLayout"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="#00ffffff"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/no_button"/>
+
+        <TextView
+            android:id="@+id/closeText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/maingame.options.button.close"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/acceptLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/abortLayout"
+        android:layout_toLeftOf="@id/closeButtonLayout"
+        android:layout_toRightOf="@+id/abortLayout"
+        android:layout_toStartOf="@id/closeButtonLayout"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/acceptButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="#00ffffff"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/check_button"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/abortLayout"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageButton
+            android:id="@+id/abortButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="#00ffffff"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/no_button"/>
+
+        <TextView
+            android:id="@+id/abortText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/maingame.options.button.abort"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

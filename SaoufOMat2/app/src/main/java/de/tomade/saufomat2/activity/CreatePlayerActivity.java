@@ -173,7 +173,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         id++;
         final int playerId = player.getId();
         LayoutInflater inflater = this.getLayoutInflater();
-        final View playerView = inflater.inflate(R.layout.player_element, null);
+        final View playerView = inflater.inflate(R.layout.create_player_element, null);
         this.playerelements.put(playerViewId, playerView);
 
         TextView playername = (TextView) playerView.findViewById(R.id.txtvPlayerName);

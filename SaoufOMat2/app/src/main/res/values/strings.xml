@@ -23,8 +23,8 @@
     <string name="minigame.kings.tutorial">Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.</string>
     <string name="maingame.task_view.button.accept.description">Bestätitgt die Aufgabe</string>
     <string name="choose_mini_game.button.start_mini_game.description">Startet das ausgewählte Minispiel</string>
-    <string name="choose_mini_game.button.left" />
-    <string name="choose_mini_game.button.right" />
+    <string name="choose_mini_game.button.left"/>
+    <string name="choose_mini_game.button.right"/>
     <string name="background_image.description">Hintergrundbild</string>
     <string name="minigame.augensaufen.tap_to_start">Tippen zum Würfeln</string>
     <string name="minigame.augensaufen.next_player">Nächster Spieler</string>
@@ -85,4 +85,8 @@
     <string name="minigame.kisten_stapeln.crate_count">Kisten: %d</string>
     <string name="minigame.kisten_stapeln.drink">Trink %d</string>
     <string name="minigame_augensaufen_tap_to_stop">Tippen zum Stoppen</string>
+    <string name="maingame.options.button.close">Beenden</string>
+    <string name="maingame.options.button.abort">Abbrechen</string>
+    <string name="title_activity_choose_players">choosePlayersActivity</string>
+    <string name="maingame.options.remove_player.error.to_many_to_remove">Du kannst nicht alle Spieler löschen</string>
 </resources>

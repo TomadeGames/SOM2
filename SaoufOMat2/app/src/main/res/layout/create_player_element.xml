@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="55dp"
-    android:gravity="center">
+              android:layout_width="fill_parent"
+              android:layout_height="55dp"
+              android:gravity="center">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/customborder">
+        android:layout_marginTop="2dp"
+        android:background="@android:color/background_light">
 
         <TextView
             android:id="@+id/txtvPlayerName"
@@ -17,18 +17,19 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             android:text="Spielername"
-            android:textColor="@color/bright_foreground_material_light"
-            android:textSize="18sp" />
+            android:textColor="#000"
+            android:textSize="18sp"/>
 
         <ImageButton
             android:id="@+id/ibDelete"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom|right"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/ibEdit"
             android:background="@color/common_google_signin_btn_text_light_disabled"
-            android:src="@drawable/ic_delete_black_24dp" />
+            android:src="@drawable/ic_delete_black_24dp"/>
 
         <ImageButton
             android:id="@+id/ibEdit"
@@ -36,10 +37,12 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="top|right"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:background="@color/common_google_signin_btn_text_light_disabled"
-            android:src="@drawable/ic_mode_edit_black_24dp" />
+            android:src="@drawable/ic_mode_edit_black_24dp"/>
 
     </RelativeLayout>
 </LinearLayout>

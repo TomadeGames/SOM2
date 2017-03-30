@@ -1,19 +1,22 @@
 package de.tomade.saufomat2.activity.mainGame;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.tomade.saufomat2.R;
+import de.tomade.saufomat2.activity.MainMenuActivity;
 import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
 import de.tomade.saufomat2.constant.IntentParameter;
@@ -31,17 +34,25 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     private TextView statisticsText;
 
     private ArrayList<Player> playerList;
-    private Map<Player, String[]> playerTexts = new HashMap<>();
     private Task currentTask;
     private MiniGame miniGame = null;
     private Player currentPlayer;
     private boolean drinkCountShown = false;
     private boolean isGame;
+    private int width;
+    private int height;
+
+    private boolean currentPlayerIsAvaible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_task_view);
+
+        Point size = new Point();
+        this.getWindowManager().getDefaultDisplay().getSize(size);
+        this.width = size.x;
+        this.height = size.y;
 
         Bundle extras = this.getIntent().getExtras();
 
@@ -56,7 +67,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             this.isGame = true;
         }
 
-
+        this.statisticsText = (TextView) this.findViewById(R.id.statisticText);
         TextView currentPlayerNameText = (TextView) this.findViewById(R.id.currentPlayerNameText);
         currentPlayerNameText.setText(this.currentPlayer.getName());
         TextView taskText = (TextView) this.findViewById(R.id.taskText);
@@ -91,18 +102,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             noButton.setOnClickListener(this);
         }
 
-        Player player = this.currentPlayer;
-        this.statisticsText = (TextView) this.findViewById(R.id.statisticText);
-        do {
-            String playerDrinks = player.getName() + ": " + player.getDrinks();
-            float alc = this.calculateAlkohol(player.getDrinks(), player.getWeight(), player.getIsMan());
-            String playerAlcohol = player.getName() + ": " + new DecimalFormat("#.##").format(alc) + "%";
-            String[] bothTexts = {playerDrinks, playerAlcohol};
-            this.playerTexts.put(player, bothTexts);
-            player = player.getNextPlayer();
-        } while (player != this.currentPlayer);
-
-        this.switchStatistics(0);
+        this.alcoholButtonPressed();
 
         ImageButton yesButton = (ImageButton) this.findViewById(R.id.acceptButton);
         ImageButton optionsButton = (ImageButton) this.findViewById(R.id.optionsButton);
@@ -131,7 +131,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void chanceToMainView() {
+    private void openMainView() {
         Log.d(TAG, "curr: " + this.currentPlayer.getName() + " next: " + this.currentPlayer.getNextPlayer().getName());
         this.currentPlayer = this.currentPlayer.getNextPlayer();
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
@@ -152,72 +152,97 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             this.startActivity(intent);
         } else {
-            switch (this.currentTask.getTarget()) {
-                case SELF:
-                    this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
-                    break;
-                case NEIGHBOUR:
-                    this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
-                    this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
-                    break;
-                case CHOOSE_ONE:
-                    break;
-                case CHOOSE_TWO:
-                    break;
-                case CHOOSE_THREE:
-                    break;
-                case ALL:
-                    for (Player player : this.playerList) {
-                        player.increaseDrinks(TaskViewActivity.this.currentTask.getDrinkCount());
-                    }
-                    break;
-                case ALL_BUT_SELF:
-                    for (Player player : this.playerList) {
-                        if (player.getId() != this.currentPlayer.getId()) {
-                            player.increaseDrinks(this.currentTask.getDrinkCount());
+            if (this.currentPlayerIsAvaible) {
+                switch (this.currentTask.getTarget()) {
+                    case SELF:
+                        this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
+                        break;
+                    case NEIGHBOUR:
+                        this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        break;
+                    case CHOOSE_ONE:
+                        break;
+                    case CHOOSE_TWO:
+                        break;
+                    case CHOOSE_THREE:
+                        break;
+                    case ALL:
+                        for (Player player : this.playerList) {
+                            player.increaseDrinks(TaskViewActivity.this.currentTask.getDrinkCount());
                         }
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    case ALL_BUT_SELF:
+                        for (Player player : this.playerList) {
+                            if (player.getId() != this.currentPlayer.getId()) {
+                                player.increaseDrinks(this.currentTask.getDrinkCount());
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-            this.chanceToMainView();
+            this.openMainView();
         }
     }
 
     private void noButtonPressed() {
-        this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
-        Log.d(TAG, "player: " + this.currentPlayer.getDrinks() + " cost: " + this.currentTask.getCost());
-        this.chanceToMainView();
+        if (this.currentPlayerIsAvaible) {
+            this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
+        }
+        this.openMainView();
     }
 
 
     //TODO
     private void optionsButtonPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault)
+        );
+        final LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.maingame_options_dialog, null);
 
+        builder.setView(view);
+        ImageButton abortButton = (ImageButton) view.findViewById(R.id.abortButton);
+        ImageButton acceptButton = (ImageButton) view.findViewById(R.id.acceptButton);
+        ImageButton closeButton = (ImageButton) view.findViewById(R.id.closeButton);
+        ImageButton addPlayerButton = (ImageButton) view.findViewById(R.id.addPlayerButton);
+        ImageButton removePlayerButton = (ImageButton) view.findViewById(R.id.removePlayerButton);
+
+
+        AlertDialog dialog = builder.create();
+        OptionsHandler optionsHandler = new OptionsHandler(this, dialog);
+        abortButton.setOnClickListener(optionsHandler);
+        acceptButton.setOnClickListener(optionsHandler);
+        closeButton.setOnClickListener(optionsHandler);
+        addPlayerButton.setOnClickListener(optionsHandler);
+        removePlayerButton.setOnClickListener(optionsHandler);
+        dialog.show();
+        dialog.getWindow().setLayout(this.width, this.height);
     }
 
     private void alcoholButtonPressed() {
-        if (this.drinkCountShown) {
-            this.switchStatistics(0);
-        } else {
-            this.switchStatistics(1);
-        }
         this.drinkCountShown = !this.drinkCountShown;
-    }
-
-    private void switchStatistics(int textIndex) {
-        if (textIndex != 1 && textIndex != 0) {
-            throw new IllegalArgumentException("textIndex must be 0 or 1");
-        }
+        Player player = this.currentPlayer;
         String statisticValue = "";
-        for (Map.Entry<Player, String[]> entry : this.playerTexts.entrySet()) {
-            statisticValue += entry.getValue()[textIndex] + "\n";
-        }
+        do {
+            String playerText;
+            if (this.drinkCountShown) {
+                playerText = player.getName() + ": " + player.getDrinks();
+            } else {
+                float alc = this.calculateAlcohol(player.getDrinks(), player.getWeight(), player.getIsMan());
+                playerText = player.getName() + ": " + new DecimalFormat("#.##").format(alc) + "%";
+            }
+            statisticValue += playerText + "\n";
+            player = player.getNextPlayer();
+
+        } while (player != this.currentPlayer);
+
         this.statisticsText.setText(statisticValue);
     }
 
-    private float calculateAlkohol(int drinks, int weight, boolean isMan) {
+    private float calculateAlcohol(int drinks, int weight, boolean isMan) {
         float alcPercent = 0.18f;
         int amount = 20;
         float alc = amount * alcPercent * drinks * 0.81f;
@@ -231,5 +256,35 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         float erg = alc / reducedWight;
         erg -= erg * 0.2f;
         return erg;
+    }
+
+    public void closeGame() {
+        Intent intent = new Intent(this.getApplicationContext(), MainMenuActivity.class);
+        this.startActivity(intent);
+    }
+
+    public void setPlayerList(Player player) {
+        this.playerList.clear();
+        Player firstPlayer = player;
+        do {
+            this.playerList.add(player);
+            player = player.getNextPlayer();
+        } while (player != firstPlayer);
+
+        this.drinkCountShown = !this.drinkCountShown;
+        this.alcoholButtonPressed();
+    }
+
+    public ArrayList<Player> getPlayerList() {
+        return this.playerList;
+    }
+
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
+    }
+
+    public void nextPlayerFromOptions() {
+        this.currentPlayer = this.currentPlayer.getNextPlayer();
+        this.currentPlayerIsAvaible = false;
     }
 }

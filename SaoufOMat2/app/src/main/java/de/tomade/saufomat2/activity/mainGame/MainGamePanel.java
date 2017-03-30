@@ -146,10 +146,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 - this.screenWith / 30), (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight,
                 IconState.EASY);
         this.icons[1] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, this.screenWith / 2 - this
-                .screenWith / 30, (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight, IconState.EASY);
+                .screenWith / 30, (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight, IconState
+                .MEDIUM);
         this.icons[2] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int) (this.screenWith / 2.9
                 * 2 - this.screenWith / 30), (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight,
-                IconState.EASY);
+                IconState.HARD);
 
         Bitmap[] saufOMeterFrames = new Bitmap[13];
         saufOMeterFrames[0] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer0);
