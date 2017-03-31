@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffe6b3"
-    tools:context=".activity.CreatePlayerActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffe6b3"
+                tools:context=".activity.CreatePlayerActivity">
 
     <ScrollView
         android:id="@+id/svCreatePlayer"
@@ -30,7 +30,7 @@
         android:layout_marginTop="11dp"
         android:layout_marginLeft="40dp"
         android:scaleType="center"
-        android:src="@drawable/no_button" />
+        android:src="@drawable/no_button"/>
 
     <ImageButton
         android:id="@+id/btnStartGame"
@@ -40,16 +40,16 @@
         android:layout_marginEnd="40dp"
         android:layout_marginTop="11dp"
         android:scaleType="center"
-        android:src="@drawable/bussfahren_between_button" />
+        android:src="@drawable/bussfahren_between_button"/>
 
     <ImageButton
         android:id="@+id/btnNewPlayer"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="11dp"
         android:scaleType="center"
-        android:src="@drawable/busfahren_higher_button" />
+        android:src="@drawable/busfahren_higher_button"
+        android:layout_alignTop="@+id/btnBack"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/textView"
@@ -64,7 +64,7 @@
         android:layout_alignEnd="@+id/btnNewPlayer"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -79,7 +79,7 @@
         android:layout_alignEnd="@+id/btnStartGame"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -94,6 +94,6 @@
         android:layout_alignEnd="@+id/btnBack"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
 </RelativeLayout>

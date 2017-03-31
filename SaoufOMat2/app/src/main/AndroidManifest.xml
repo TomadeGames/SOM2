@@ -79,11 +79,6 @@
             android:name=".activity.miniGames.biergeballer.BiergeballerActivity"
             android:label="@string/minigame.biergeballer.caption"
             android:screenOrientation="landscape"/>
-        <activity
-            android:name=".activity.mainGame.ChoosePlayersActivity"
-            android:label="@string/title_activity_choose_players"
-            android:theme="@android:style/Theme.Dialog">
-        </activity>
     </application>
 
 </manifest>

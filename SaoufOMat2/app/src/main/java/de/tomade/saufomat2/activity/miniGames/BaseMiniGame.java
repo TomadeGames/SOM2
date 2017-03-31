@@ -84,4 +84,8 @@ public abstract class BaseMiniGame extends Activity {
         throw new IllegalStateException("Activity [" + this.getClass() + "] is not defined in Enum " + MiniGame.class
                 .getName());
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

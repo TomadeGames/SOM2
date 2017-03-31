@@ -66,4 +66,9 @@ public class MainGameActivity extends Activity {
         Log.d(TAG, "Stopping...");
         super.onStop();
     }
+
+
+    @Override
+    public void onBackPressed() {
+    }
 }

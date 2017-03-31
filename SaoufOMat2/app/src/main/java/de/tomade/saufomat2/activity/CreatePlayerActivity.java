@@ -280,4 +280,9 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     private void removePlayer(Player player) {
         this.players.remove(player);
     }
+
+
+    @Override
+    public void onBackPressed() {
+    }
 }

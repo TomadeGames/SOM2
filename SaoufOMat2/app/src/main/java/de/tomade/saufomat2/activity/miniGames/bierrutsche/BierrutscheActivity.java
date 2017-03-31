@@ -27,6 +27,7 @@ import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.drawable.DynamicImageView;
 import pl.droidsonroids.gif.GifTextView;
 
+//TODO: aktuelle Punktzahl anzeigen
 public class BierrutscheActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
     private static final int TARGET_ACCURACY = 5000;

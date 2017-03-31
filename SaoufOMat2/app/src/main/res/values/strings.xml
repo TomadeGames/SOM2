@@ -85,8 +85,8 @@
     <string name="minigame.kisten_stapeln.crate_count">Kisten: %d</string>
     <string name="minigame.kisten_stapeln.drink">Trink %d</string>
     <string name="minigame_augensaufen_tap_to_stop">Tippen zum Stoppen</string>
-    <string name="maingame.options.button.close">Beenden</string>
-    <string name="maingame.options.button.abort">Abbrechen</string>
+    <string name="maingame.options.button.close">Spiel Beenden</string>
+    <string name="maingame.options.button.abort">Schließen</string>
     <string name="title_activity_choose_players">choosePlayersActivity</string>
     <string name="maingame.options.remove_player.error.to_many_to_remove">Du kannst nicht alle Spieler löschen</string>
 </resources>

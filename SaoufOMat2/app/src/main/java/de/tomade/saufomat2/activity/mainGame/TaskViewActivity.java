@@ -287,4 +287,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         this.currentPlayer = this.currentPlayer.getNextPlayer();
         this.currentPlayerIsAvaible = false;
     }
+
+
+    @Override
+    public void onBackPressed() {
+    }
 }

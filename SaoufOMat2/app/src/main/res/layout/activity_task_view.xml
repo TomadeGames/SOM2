@@ -16,12 +16,12 @@
 
     <RelativeLayout
         android:id="@+id/taskTextLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentEnd="false"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/playerRelativeLayout"
-        android:layout_alignParentStart="false">
+        android:layout_alignParentStart="false"
+        android:layout_toRightOf="@+id/playerRelativeLayout">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,15 +30,15 @@
 
             <ImageView
                 android:id="@+id/playerBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="-2dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/popup"/>
 
             <TextView
                 android:id="@+id/currentPlayerNameText"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -61,25 +61,25 @@
             android:textColor="#000000"/>
 
         <RelativeLayout
+            android:id="@+id/acceptLayout"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/acceptLayout"
             android:layout_alignParentBottom="true"
-            android:layout_alignTop="@+id/acceptButton">
+            android:layout_alignTop="@+id/acceptButton"
+            android:gravity="center">
 
             <ImageButton
                 android:id="@+id/declineButton"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentLeft="true"
                 android:adjustViewBounds="true"
                 android:background="#00ffffff"
                 android:cropToPadding="false"
                 android:scaleType="fitXY"
-                android:src="@drawable/no_button"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentEnd="false"/>
+                android:src="@drawable/no_button"/>
 
             <TextView
                 android:id="@+id/costText"
@@ -96,16 +96,16 @@
             android:id="@+id/acceptButton"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:adjustViewBounds="true"
-            android:background="#00ffffff"
-            android:cropToPadding="false"
-            android:scaleType="fitXY"
-            android:src="@drawable/check_button"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/acceptLayout"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/maingame.task_view.button.accept.description"/>
+            android:adjustViewBounds="true"
+            android:background="#00ffffff"
+            android:contentDescription="@string/maingame.task_view.button.accept.description"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/check_button"/>
 
     </RelativeLayout>
 

@@ -68,9 +68,7 @@ public class OptionsHandler implements View.OnClickListener {
     }
 
     private void acceptOptions() {
-        //TODO
         this.closeOptions();
-
     }
 
     private void addPlayer() {
@@ -112,8 +110,7 @@ public class OptionsHandler implements View.OnClickListener {
                             addPlayer(newPlayer);
                         } else {
                             Toast.makeText(OptionsHandler.this.taskViewActivity, R.string.create_player_check_data,
-                                    Toast
-                                            .LENGTH_SHORT).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -192,10 +189,9 @@ public class OptionsHandler implements View.OnClickListener {
                 player = player.getNextPlayer();
             } while (player != firstPlayer);
         }
-        
+
         OptionsHandler.this.taskViewActivity.setPlayerList(player);
         dialog.cancel();
-        this.closeOptions();
     }
 
     private void initRemovePlayerPlayerContainer(LinearLayout playerContainer, final List<Player> selectedPlayers) {
@@ -240,7 +236,6 @@ public class OptionsHandler implements View.OnClickListener {
             currentPlayer.setLastPlayer(player);
             lastPlayer.setNextPlayer(player);
             this.taskViewActivity.setPlayerList(player);
-            this.closeOptions();
         } else {
             Toast.makeText(this.taskViewActivity, R.string.create_player_name_already_taken, Toast.LENGTH_LONG).show();
         }
