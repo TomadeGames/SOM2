@@ -53,7 +53,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnBack:
-                this.finish();
+                Intent intent = new Intent(this.getApplicationContext(), MainMenuActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.btnNewPlayer:
                 Player newPlayer = new Player();
@@ -279,10 +280,5 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
 
     private void removePlayer(Player player) {
         this.players.remove(player);
-    }
-
-
-    @Override
-    public void onBackPressed() {
     }
 }

@@ -24,7 +24,6 @@ import de.tomade.saufomat2.model.Player;
  * Created by woors on 30.03.2017.
  */
 
-//TODO: Mehrere Löschen testen. Besonders, wenn auch der momentane Spieler mitgelöscht wird
 public class OptionsHandler implements View.OnClickListener {
 
     private AlertDialog optionsDialog;

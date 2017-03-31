@@ -173,7 +173,6 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         ObjectAnimator startFieldX = ObjectAnimator.ofFloat(this.startField, View.TRANSLATION_X, 0, -scrollWidth);
         startFieldX.setDuration(ANIMATION_DURATION);
 
-        //TODO: Linear Interpolieren
         ObjectAnimator targetX = ObjectAnimator.ofFloat(this.targetImage, View.TRANSLATION_X, 0, -tableScrollDistance);
         targetX.setDuration(ANIMATION_DURATION - tableScrollDelay);
         targetX.setStartDelay(tableScrollDelay);

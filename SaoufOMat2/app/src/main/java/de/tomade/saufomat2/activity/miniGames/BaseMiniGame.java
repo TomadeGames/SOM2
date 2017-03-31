@@ -3,6 +3,7 @@ package de.tomade.saufomat2.activity.miniGames;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -31,6 +32,7 @@ public abstract class BaseMiniGame extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {

@@ -1,11 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style nameId="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item nameId="colorPrimary">@color/colorPrimary</item>
-        <item nameId="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item nameId="colorAccent">@color/colorAccent</item>
+    <style name="noAnimTheme" parent="android:Theme.DeviceDefault.NoActionBar.Fullscreen">
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
-
 </resources>

@@ -298,7 +298,6 @@ public class TaskDefinitions {
         taskList.add(new Task("Dein linker Nachbar darf den Namen von einen deiner Kontakte ändern", TaskDifficult
                 .HARD, 0, 5, TaskTarget.SELF));
 
-        //TODO bei hauptgewinn "Hauptgewinn:" schreiben
         //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
         taskList.add(new Task("Such dir einen Sklaven aus. Er übernimmt eine Runde lang alle deine Aufgaben",

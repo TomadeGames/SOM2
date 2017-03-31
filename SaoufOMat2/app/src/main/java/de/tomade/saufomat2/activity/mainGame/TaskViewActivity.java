@@ -5,10 +5,10 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -23,8 +23,6 @@ import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
-//TODO: Schön machen
-//TODO: Optionen-Knopf hat keine Funktion
 //TODO: Wenn kein Nein zur Verfügung steht: Anstatt einen ausgegrauten Button einen großen Grünen Button anzeigen
 //TODO: Die aktuelle Spielerliste aktuell halten und so...
 //TODO: Tasks nach dem Builder-Pattern
@@ -48,6 +46,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_task_view);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Point size = new Point();
         this.getWindowManager().getDefaultDisplay().getSize(size);
@@ -132,14 +131,11 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void openMainView() {
-        Log.d(TAG, "curr: " + this.currentPlayer.getName() + " next: " + this.currentPlayer.getNextPlayer().getName());
         this.currentPlayer = this.currentPlayer.getNextPlayer();
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-        for (Player p : this.playerList) {
-            Log.d(TAG, p.getName() + " drinks: " + p.getDrinks());
-        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         this.startActivity(intent);
     }
 
@@ -150,6 +146,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             this.currentPlayer = this.currentPlayer.getNextPlayer();
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             this.startActivity(intent);
         } else {
             if (this.currentPlayerIsAvaible) {

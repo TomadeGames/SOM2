@@ -257,7 +257,6 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
     }
 
     private void endTurn() {
-        //TODO:Spielerlogik einbauen
         this.towerHeight = this.towerImageList.get(this.towerImageList.size() - 1).getY();
         if (this.towerHeight > this.screenHeight / 2) {
             this.towerHeight = 0;

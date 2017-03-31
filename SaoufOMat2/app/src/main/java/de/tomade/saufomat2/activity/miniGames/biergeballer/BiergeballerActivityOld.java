@@ -22,13 +22,6 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
-//TODO: am start werden direkt beim rechten spieler 2 leben abgezogen
-//TODO: getränkezähler setzten
-//TODO: Spielernamen beim Start einblenden
-//TODO: Das Spiel ist nicht im Hochformat
-//TODO: Das schießen sieht nicht sauber aus (Biere starten nicht aus der Kiste herraus, sondern dahinter)
-//TODO: Es verliert keiner
-//TODO: Die Biere verschwinden nach dem Fangen nicht
 public class BiergeballerActivityOld extends BaseMiniGame implements View.OnTouchListener, View.OnClickListener {
     private static final int BEER_WIDTH = 40;
     private static final int BEER_HEIGHT = 80;

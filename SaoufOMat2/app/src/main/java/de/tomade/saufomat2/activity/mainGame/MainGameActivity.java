@@ -25,6 +25,8 @@ public class MainGameActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams
                 .FLAG_FULLSCREEN);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
         MainGamePanel panel;
         Bundle extras = this.getIntent().getExtras();
@@ -51,6 +53,7 @@ public class MainGameActivity extends Activity {
     private void changeView(Intent intent, ArrayList<Player> playerList, Player currentPlayer) {
         intent.putExtra(IntentParameter.PLAYER_LIST, playerList);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         this.finish();
         this.startActivity(intent);
     }

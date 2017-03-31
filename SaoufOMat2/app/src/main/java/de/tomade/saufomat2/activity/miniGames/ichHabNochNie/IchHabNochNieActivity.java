@@ -13,8 +13,6 @@ import java.util.Random;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 
-//TODO: Rundenzähler fehlt noch
-//TODO: Dieses Spiel endet nicht
 public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickListener {
     private static Random random;
 
