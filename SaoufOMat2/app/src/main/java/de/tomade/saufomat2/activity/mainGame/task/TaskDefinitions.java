@@ -293,8 +293,13 @@ public class TaskDefinitions {
         taskList.add(new Task("Jeder, der keinen SWAG hat trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Dein linker Nachbar darf den Namen eines Kontaktes in deinem Handy ändern",
                 TaskDifficult.HARD, 0, 3, TaskTarget.SELF));
+        taskList.add(new Task("Du darfst für zwei Runden deine Mitspieler nurnoch mit den Namen ihrer Rechten " +
+                "Nachbarn ansprechen", TaskDifficult.MEDIUM, 0, 0, TaskTarget.UNDEFINED));
+        taskList.add(new Task("Dein linker Nachbar darf den Namen von einen deiner Kontakte ändern", TaskDifficult
+                .HARD, 0, 5, TaskTarget.SELF));
 
         //TODO bei hauptgewinn "Hauptgewinn:" schreiben
+        //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
         taskList.add(new Task("Such dir einen Sklaven aus. Er übernimmt eine Runde lang alle deine Aufgaben",
                 TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));

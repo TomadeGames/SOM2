@@ -54,7 +54,7 @@ public class OptionsHandler implements View.OnClickListener {
                 this.addPlayer();
                 break;
             case R.id.removePlayerButton:
-                this.removePlayer();
+                this.removePlayerClicked();
                 break;
         }
     }
@@ -127,9 +127,7 @@ public class OptionsHandler implements View.OnClickListener {
         builder.show();
     }
 
-    private void removePlayer() {
-        //TODO: auch mit toast bestätigen
-
+    private void removePlayerClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(this.taskViewActivity, android.R.style.Theme_DeviceDefault)
         );
@@ -154,41 +152,50 @@ public class OptionsHandler implements View.OnClickListener {
                                     .maingame_options_remove_player_error_to_many_to_remove,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Player firstPlayer = OptionsHandler.this.taskViewActivity.getCurrentPlayer();
-                    Player player = firstPlayer;
-                    Player playerFound = null;
-
-                    do {
-                        for (Player playerToRemove : selectedPlayers) {
-                            if (playerToRemove.getId() == player.getId()) {
-                                playerFound = player;
-                            }
-                        }
-                        if (playerFound != null) {
-                            Player playerToRemove = null;
-                            for (Player playerInList : OptionsHandler.this.playerList) {
-                                if (playerInList.getId() == playerFound.getId()) {
-                                    playerToRemove = playerInList;
-                                }
-                            }
-                            if (player.equals(firstPlayer)) {
-                                OptionsHandler.this.taskViewActivity.nextPlayerFromOptions();
-                                firstPlayer = player.getNextPlayer();
-                            }
-                            Player lastPlayer = player.getLastPlayer();
-                            Player nextPlayer = player.getNextPlayer();
-                            lastPlayer.setNextPlayer(nextPlayer);
-                            nextPlayer.setLastPlayer(lastPlayer);
-                            OptionsHandler.this.playerList.remove(playerToRemove);
-                            playerFound = null;
-                        }
-                        player = player.getNextPlayer();
-                    } while (player != firstPlayer);
-                    OptionsHandler.this.taskViewActivity.setPlayerList(player);
-                    dialog.cancel();
+                    removePlayer(selectedPlayers, dialog);
                 }
             }
         });
+    }
+
+    private void removePlayer(List<Player> selectedPlayers, AlertDialog dialog) {
+        Player firstPlayer = OptionsHandler.this.taskViewActivity.getCurrentPlayer();
+        Player player = firstPlayer;
+        Player playerFound = null;
+
+        for (int i = 0; i < selectedPlayers.size(); i++) {
+            do {
+                for (Player playerToRemove : selectedPlayers) {
+                    if (playerToRemove.getId() == player.getId()) {
+                        playerFound = player;
+                    }
+                }
+                if (playerFound != null) {
+                    selectedPlayers.remove(playerFound);
+                    Player playerToRemove = null;
+                    for (Player playerInList : OptionsHandler.this.playerList) {
+                        if (playerInList.getId() == playerFound.getId()) {
+                            playerToRemove = playerInList;
+                        }
+                    }
+                    if (player.equals(firstPlayer)) {
+                        OptionsHandler.this.taskViewActivity.nextPlayerFromOptions();
+                        firstPlayer = player.getNextPlayer();
+                    }
+                    Player lastPlayer = player.getLastPlayer();
+                    Player nextPlayer = player.getNextPlayer();
+                    lastPlayer.setNextPlayer(nextPlayer);
+                    nextPlayer.setLastPlayer(lastPlayer);
+                    OptionsHandler.this.playerList.remove(playerToRemove);
+                    playerFound = null;
+                }
+                player = player.getNextPlayer();
+            } while (player != firstPlayer);
+        }
+        
+        OptionsHandler.this.taskViewActivity.setPlayerList(player);
+        dialog.cancel();
+        this.closeOptions();
     }
 
     private void initRemovePlayerPlayerContainer(LinearLayout playerContainer, final List<Player> selectedPlayers) {
