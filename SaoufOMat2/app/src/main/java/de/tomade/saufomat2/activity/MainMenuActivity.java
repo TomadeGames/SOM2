@@ -1,7 +1,9 @@
 package de.tomade.saufomat2.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,6 +72,11 @@ public class MainMenuActivity extends Activity {
         });
     }
 
+    private void loadGame() {
+        Context context = this.getApplicationContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(this.getString(R.string
+                .preference_file_key), Context.MODE_PRIVATE);
+    }
 
     @Override
     public void onBackPressed() {

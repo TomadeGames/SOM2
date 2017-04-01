@@ -495,6 +495,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    private void saveGame() {
+
+    }
 
     public long getElapsedTime() {
         return this.elapsedTime;
