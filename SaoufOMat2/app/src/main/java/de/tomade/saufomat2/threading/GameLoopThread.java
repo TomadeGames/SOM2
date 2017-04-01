@@ -1,13 +1,14 @@
 package de.tomade.saufomat2.threading;
 
 import android.graphics.Canvas;
+import android.os.AsyncTask;
 import android.view.SurfaceHolder;
 
 /**
  * Thread für die GameLoop
  * Created by woors on 30.03.2016.
  */
-public class GameLoopThread extends Thread {
+public class GameLoopThread extends AsyncTask<Void, Void, Void> {
     private ThreadedView view;
     private boolean running = false;
     private long fps;
@@ -29,7 +30,7 @@ public class GameLoopThread extends Thread {
     }
 
     @Override
-    public void run() {
+    protected Void doInBackground(Void... voids) {
         while (this.running) {
 
             // Capture the current time in milliseconds in startFrameTime
@@ -62,5 +63,6 @@ public class GameLoopThread extends Thread {
 
             this.view.setAvgFps("fps: " + this.fps);
         }
+        return null;
     }
 }

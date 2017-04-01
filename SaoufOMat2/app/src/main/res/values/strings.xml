@@ -1,4 +1,5 @@
 <resources>
+    <string name="maingame_ad_id">ca-app-pub-7859376354700900/8907178470</string>
     <string name="title_activity_main_game">MainGameActivity</string>
     <string name="app_name">SaufOMat 2</string>
     <string-array name="gender">
