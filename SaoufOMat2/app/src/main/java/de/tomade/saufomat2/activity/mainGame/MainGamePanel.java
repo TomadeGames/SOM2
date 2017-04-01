@@ -193,7 +193,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        //this.thread.setRunning(false);
     }
 
     @Override
@@ -296,12 +295,19 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private void changeToTaskView() {
         this.thread.setRunning(false);
-        MainGameActivity currActivity = (MainGameActivity) this.getContext();
-        if (!this.currentDifficult.equals(TaskDifficult.GAME)) {
-            currActivity.changeToTaskViewWithTask(this.currentTask, this.player, this.currentPlayer);
-        } else {
-            currActivity.changeToTaskViewWithGame(this.currentMiniGame, this.player, this.currentPlayer);
-        }
+        final MainGameActivity currActivity = (MainGameActivity) this.getContext();
+        currActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!MainGamePanel.this.currentDifficult.equals(TaskDifficult.GAME)) {
+                    currActivity.changeToTaskViewWithTask(MainGamePanel.this.currentTask, MainGamePanel.this.player,
+                            MainGamePanel.this.currentPlayer);
+                } else {
+                    currActivity.changeToTaskViewWithGame(MainGamePanel.this.currentMiniGame, MainGamePanel.this
+                            .player, MainGamePanel.this.currentPlayer);
+                }
+            }
+        });
     }
 
     private void getCurrentDifficult() {
