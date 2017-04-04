@@ -29,6 +29,8 @@ import de.tomade.saufomat2.model.button.ButtonListener;
 import de.tomade.saufomat2.model.button.DrawableButton;
 import de.tomade.saufomat2.model.drawable.SaufOMeter;
 import de.tomade.saufomat2.model.drawable.SlotMachineIcon;
+import de.tomade.saufomat2.persistance.GameValueHelper;
+import de.tomade.saufomat2.persistance.sql.DatabaseHelper;
 import de.tomade.saufomat2.threading.GameLoopThread;
 import de.tomade.saufomat2.threading.ThreadedView;
 
@@ -90,6 +92,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int blinkCounter = 0;
     private boolean framesSet = false;
 
+    private MainGamePanel(Context context) {
+        super(context);
+    }
+
     public MainGamePanel(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
     }
@@ -113,6 +119,30 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         this.initContent();
         this.taskFactory = new TaskFactory();
+
+        this.player = players;
+        this.currentPlayer = currentPlayer;
+
+        this.thread = new GameLoopThread(this.getHolder(), this);
+        this.setFocusable(true);
+    }
+
+    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players,
+                         ArrayList<Task> tasks) {
+        super(context);
+        this.getHolder().addCallback(this);
+        random = new Random();
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Point size = new Point();
+        wm.getDefaultDisplay().getSize(size);
+        this.screenWith = size.x;
+        this.screenHeight = size.y;
+
+        this.miniGameProvider = new MiniGameProvider();
+
+        this.initContent();
+        this.taskFactory = new TaskFactory(tasks);
 
         this.player = players;
         this.currentPlayer = currentPlayer;
@@ -294,6 +324,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void changeToTaskView() {
+        this.saveGame();
         this.thread.setRunning(false);
         final MainGameActivity currActivity = (MainGameActivity) this.getContext();
         currActivity.runOnUiThread(new Runnable() {
@@ -496,7 +527,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void saveGame() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this.getContext());
+        if (this.currentTask != null) {
+            databaseHelper.updateTask(this.currentTask);
+        }
+        Player player = this.currentPlayer;
+        do {
+            databaseHelper.updatePlayer(player);
+            player = player.getNextPlayer();
+        } while (player != this.currentPlayer);
 
+        GameValueHelper gameValueHelper = new GameValueHelper(this.getContext());
+        gameValueHelper.saveCurrentPlayer(this.currentPlayer);
+        gameValueHelper.saveAdCounter(((MainGameActivity) this.getContext()).getAdCounter());
+        gameValueHelper.saveGameSaved(true);
     }
 
     public long getElapsedTime() {

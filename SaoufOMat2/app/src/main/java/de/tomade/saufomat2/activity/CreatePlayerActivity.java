@@ -24,6 +24,8 @@ import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
+import de.tomade.saufomat2.persistance.GameValueHelper;
+import de.tomade.saufomat2.persistance.sql.DatabaseHelper;
 
 // TODO: Drag and Drop zum sotieren der Spieler
 //TODO: Zu lange Spielernamen liegen unter den Buttons
@@ -67,6 +69,15 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                     Intent mainGameIntent = new Intent(this, MainGameActivity.class);
                     mainGameIntent.putExtra(IntentParameter.PLAYER_LIST, this.players);
                     mainGameIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
+
+                    DatabaseHelper databaseHelper = new DatabaseHelper(this);
+                    databaseHelper.startNewGame();
+                    for (Player player : this.players) {
+                        databaseHelper.insertPlayer(player);
+                    }
+                    GameValueHelper gameValueHelper = new GameValueHelper(this);
+                    gameValueHelper.saveGameSaved(false);
+
                     this.finish();
                     this.startActivity(mainGameIntent);
                 } else {

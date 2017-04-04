@@ -302,7 +302,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
         taskList.add(new Task("Such dir einen Sklaven aus. Er übernimmt eine Runde lang alle deine Aufgaben",
                 TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));
-        taskList.add(new Task("Wähle eine Person, die diene nächste Aufgabe machen muss. Wenn sie es trinken muss, " +
+        taskList.add(new Task("Wähle eine Person, die diene nächste Aufgabe machen muss. Wenn sie trinken muss, " +
                 "trinkt sie die doppelte Menge", TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));
         taskList.add(new Task("Alle ausser dir trinken drei", TaskDifficult.MEDIUM_WIN, 3, 0, TaskTarget.ALL_BUT_SELF));
         taskList.add(new Task("Vorarbeiter:\nFür die nächsten zwei Runden müssen alle trinken, wenn du trinken " +

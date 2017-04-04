@@ -40,7 +40,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     private int width;
     private int height;
 
-    private boolean currentPlayerIsAvaible = true;
+    private boolean currentPlayerIsAviable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             this.startActivity(intent);
         } else {
-            if (this.currentPlayerIsAvaible) {
+            if (this.currentPlayerIsAviable) {
                 switch (this.currentTask.getTarget()) {
                     case SELF:
                         this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
@@ -185,7 +185,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void noButtonPressed() {
-        if (this.currentPlayerIsAvaible) {
+        if (this.currentPlayerIsAviable) {
             this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
         }
         this.openMainView();
@@ -282,7 +282,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
     public void nextPlayerFromOptions() {
         this.currentPlayer = this.currentPlayer.getNextPlayer();
-        this.currentPlayerIsAvaible = false;
+        this.currentPlayerIsAviable = false;
     }
 
 

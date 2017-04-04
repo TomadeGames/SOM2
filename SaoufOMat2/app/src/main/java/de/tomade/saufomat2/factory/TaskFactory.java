@@ -38,8 +38,48 @@ public class TaskFactory {
         this.refreshList(TaskDifficult.HARD_WIN);
     }
 
+    public TaskFactory(List<Task> loadedTasks) {
+        this.allTasks = TaskDefinitions.getTasks();
+        this.easyTasks = new ArrayList<>();
+        this.mediumTasks = new ArrayList<>();
+        this.hardTasks = new ArrayList<>();
+        this.easyWinTasks = new ArrayList<>();
+        this.mediumWinTasks = new ArrayList<>();
+        this.hardWinTasks = new ArrayList<>();
+
+        this.readSavedList(loadedTasks);
+    }
+
+    private void readSavedList(List<Task> loadedTasks) {
+        for (Task task : loadedTasks) {
+            if (!task.isAlreadyUsed()) {
+                switch (task.getDifficult()) {
+                    case EASY:
+                        this.easyTasks.add(task);
+                        break;
+                    case MEDIUM:
+                        this.mediumTasks.add(task);
+                        break;
+                    case HARD:
+                        this.hardTasks.add(task);
+                        break;
+                    case EASY_WIN:
+                        this.easyWinTasks.add(task);
+                        break;
+                    case MEDIUM_WIN:
+                        this.mediumWinTasks.add(task);
+                        break;
+                    case HARD_WIN:
+                        this.hardWinTasks.add(task);
+                        break;
+                }
+            }
+        }
+    }
+
     private void refreshList(TaskDifficult difficult) {
         for (Task t : this.allTasks) {
+            t.setAlreadyUsed(false);
             switch (t.getDifficult()) {
                 case EASY:
                     if (difficult == TaskDifficult.EASY) {
@@ -80,28 +120,40 @@ public class TaskFactory {
     public Task getTask(TaskDifficult difficult) {
         Random rnd = new Random();
         int index;
+        Task task;
         switch (difficult) {
             case EASY:
                 index = rnd.nextInt(this.easyTasks.size());
-                return this.easyTasks.get(index);
+                task = this.easyTasks.get(index);
+                break;
             case MEDIUM:
                 index = rnd.nextInt(this.mediumTasks.size());
-                return this.mediumTasks.get(index);
+                task = this.mediumTasks.get(index);
+                break;
             case HARD:
                 index = rnd.nextInt(this.hardTasks.size());
-                return this.hardTasks.get(index);
+                task = this.hardTasks.get(index);
+                break;
             case EASY_WIN:
                 index = rnd.nextInt(this.easyWinTasks.size());
-                return this.easyWinTasks.get(index);
+                task = this.easyWinTasks.get(index);
+                break;
             case MEDIUM_WIN:
                 index = rnd.nextInt(this.mediumWinTasks.size());
-                return this.mediumWinTasks.get(index);
+                task = this.mediumWinTasks.get(index);
+                break;
             case HARD_WIN:
                 index = rnd.nextInt(this.hardWinTasks.size());
-                return this.hardWinTasks.get(index);
-            default:
+                task = this.hardWinTasks.get(index);
                 break;
+            default:
+                throw new IllegalStateException("Difficult [" + difficult + "] does not exist");
         }
-        return null;
+        task.setAlreadyUsed(true);
+        return task;
+    }
+
+    public List<Task> getAllTasks() {
+        return this.allTasks;
     }
 }

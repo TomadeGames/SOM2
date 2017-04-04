@@ -54,7 +54,13 @@ public class MainGameActivity extends Activity {
         Bundle extras = this.getIntent().getExtras();
         ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
         Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
-        panel = new MainGamePanel(this, currentPlayer, players);
+        adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
+        ArrayList<Task> tasks = (ArrayList<Task>) extras.getSerializable(IntentParameter.MainGame.ALL_TASKS);
+        if (tasks == null) {
+            panel = new MainGamePanel(this, currentPlayer, players);
+        } else {
+            panel = new MainGamePanel(this, currentPlayer, players, tasks);
+        }
         this.setContentView(panel);
     }
 
@@ -96,6 +102,10 @@ public class MainGameActivity extends Activity {
         this.taskViewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         this.finish();
         this.startActivity(this.taskViewIntent);
+    }
+
+    public int getAdCounter() {
+        return adCounter;
     }
 
     @Override
