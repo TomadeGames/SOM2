@@ -23,7 +23,7 @@ import de.tomade.saufomat2.activity.miniGames.BaseMiniGame;
 //TODO: Wenn man aus dem Hauptspiel kommt, müssen die Spielernamen und nicht "Nächster Spieler angezeigt werden"
 public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = KistenStapelnActivity.class.getSimpleName();
-    private static final int BALANCE_TOLERANCE = 150;
+    private static final int BALANCE_TOLERANCE = 130;
     private float crateStartX;
     private float crateSTartY;
     private int createWidth;

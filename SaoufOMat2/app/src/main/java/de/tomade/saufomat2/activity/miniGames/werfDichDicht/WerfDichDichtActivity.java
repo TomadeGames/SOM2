@@ -178,10 +178,10 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
                     this.gameState = WerfDichDichtState.END;
                     this.popupText.setText("Spiel vorbei");
                 } else {
+                    this.nextPlayer();
                     this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this
                             .currentPlayer
                             .getName()));
-                    this.nextPlayer();
                     this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
                     this.playerText.setText(this.currentPlayer.getName());
                 }
