@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.MainGameActivity;
-import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.persistance.GameValueHelper;
@@ -100,13 +99,12 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         GameValueHelper gameValueHelper = new GameValueHelper(this);
 
         ArrayList<Player> allPlayer = databaseHelper.getAllPlayer();
-        ArrayList<Task> allTask = databaseHelper.getAllTasks();
         Player currentPlayer = gameValueHelper.getCurrentPlayer();
         int adCounter = gameValueHelper.getAdCounter();
 
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.PLAYER_LIST, allPlayer);
-        intent.putExtra(IntentParameter.MainGame.ALL_TASKS, allTask);
+        intent.putExtra(IntentParameter.MainGame.NEW_GAME, false);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
         intent.putExtra(IntentParameter.MainGame.AD_COUNTER, adCounter);
         this.startActivity(intent);
@@ -119,6 +117,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     private void startNewGame() {
         Intent intent = new Intent(MainMenuActivity.this.getApplicationContext(),
                 CreatePlayerActivity.class);
+        intent.putExtra(IntentParameter.MainGame.NEW_GAME, true);
         MainMenuActivity.this.startActivity(intent);
     }
 

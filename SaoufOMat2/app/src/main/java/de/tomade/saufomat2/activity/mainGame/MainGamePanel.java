@@ -21,8 +21,8 @@ import de.tomade.saufomat2.MiniGameProvider;
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
+import de.tomade.saufomat2.activity.mainGame.task.TaskHelper;
 import de.tomade.saufomat2.constant.MiniGame;
-import de.tomade.saufomat2.factory.TaskFactory;
 import de.tomade.saufomat2.model.Player;
 import de.tomade.saufomat2.model.button.ButtonEvent;
 import de.tomade.saufomat2.model.button.ButtonListener;
@@ -76,7 +76,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Paint currentPlayerTextPaint;
 
     //Task
-    private TaskFactory taskFactory;
+    private TaskHelper taskHelper;
     private Task currentTask;
     private TaskDifficult currentDifficult = TaskDifficult.UNDEFINED;
 
@@ -118,31 +118,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.miniGameProvider = new MiniGameProvider();
 
         this.initContent();
-        this.taskFactory = new TaskFactory();
-
-        this.player = players;
-        this.currentPlayer = currentPlayer;
-
-        this.thread = new GameLoopThread(this.getHolder(), this);
-        this.setFocusable(true);
-    }
-
-    public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players,
-                         ArrayList<Task> tasks) {
-        super(context);
-        this.getHolder().addCallback(this);
-        random = new Random();
-
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Point size = new Point();
-        wm.getDefaultDisplay().getSize(size);
-        this.screenWith = size.x;
-        this.screenHeight = size.y;
-
-        this.miniGameProvider = new MiniGameProvider();
-
-        this.initContent();
-        this.taskFactory = new TaskFactory(tasks);
+        this.taskHelper = new TaskHelper(this.getContext());
 
         this.player = players;
         this.currentPlayer = currentPlayer;
@@ -244,7 +220,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         } else if (this.gameState == MainGameState.All_IN_POSITION) {
             this.getCurrentDifficult();
             if (this.currentDifficult != TaskDifficult.GAME) {
-                this.currentTask = this.taskFactory.getTask(this.currentDifficult);
+                this.currentTask = this.taskHelper.getNextTask(this.currentDifficult);
                 this.currentMiniGame = null;
                 this.gameState = MainGameState.MOVE_SAUFOMETER;
             } else {
@@ -537,10 +513,15 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             player = player.getNextPlayer();
         } while (player != this.currentPlayer);
 
-        GameValueHelper gameValueHelper = new GameValueHelper(this.getContext());
-        gameValueHelper.saveCurrentPlayer(this.currentPlayer);
-        gameValueHelper.saveAdCounter(((MainGameActivity) this.getContext()).getAdCounter());
-        gameValueHelper.saveGameSaved(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GameValueHelper gameValueHelper = new GameValueHelper(getContext());
+                gameValueHelper.saveCurrentPlayer(MainGamePanel.this.currentPlayer);
+                gameValueHelper.saveAdCounter(((MainGameActivity) getContext()).getAdCounter());
+                gameValueHelper.saveGameSaved(true);
+            }
+        });
     }
 
     public long getElapsedTime() {

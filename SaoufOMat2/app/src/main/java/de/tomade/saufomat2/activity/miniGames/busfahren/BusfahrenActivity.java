@@ -1,5 +1,6 @@
 package de.tomade.saufomat2.activity.miniGames.busfahren;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -162,6 +163,7 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                 this.leftButton.setImageResource(R.drawable.busfahren_ace_button);
                 this.rightButton.setImageResource(R.drawable.busfahren_no_ace_button);
                 this.leftText.setText(R.string.minigame_busfahren_question_last_answer_left);
+                this.leftText.setTextColor(Color.BLACK);
                 this.rightText.setText(R.string.minigame_busfahren_question_last_answer_right);
                 break;
             case ACE_NO_ACE:

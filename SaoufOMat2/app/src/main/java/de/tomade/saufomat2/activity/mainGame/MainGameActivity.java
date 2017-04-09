@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import de.tomade.saufomat2.R;
 import de.tomade.saufomat2.activity.mainGame.task.Task;
+import de.tomade.saufomat2.activity.mainGame.task.TaskHelper;
 import de.tomade.saufomat2.constant.IntentParameter;
 import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
@@ -55,11 +56,13 @@ public class MainGameActivity extends Activity {
         ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
         Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
         adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
-        ArrayList<Task> tasks = (ArrayList<Task>) extras.getSerializable(IntentParameter.MainGame.ALL_TASKS);
-        if (tasks == null) {
+        boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
+        if (newGame) {
+            TaskHelper taskHelper = new TaskHelper(this);
+            taskHelper.resetTasks();
             panel = new MainGamePanel(this, currentPlayer, players);
         } else {
-            panel = new MainGamePanel(this, currentPlayer, players, tasks);
+            panel = new MainGamePanel(this, currentPlayer, players);
         }
         this.setContentView(panel);
     }

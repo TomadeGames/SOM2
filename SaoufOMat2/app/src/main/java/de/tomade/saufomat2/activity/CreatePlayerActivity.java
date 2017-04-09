@@ -34,6 +34,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     LinearLayout linearLayout = null;
     Map<Integer, View> playerelements = new HashMap<>();
     private ArrayList<Player> players = new ArrayList<>();
+    private boolean gameStarting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                 this.showDialog(newPlayer);
                 break;
             case R.id.btnStartGame:
-                if (!this.players.isEmpty()) {
+                if (!this.players.isEmpty() && !this.gameStarting) {
+                    this.gameStarting = true;
                     this.setPlayerOrder();
                     this.trimPlayerNames();
                     Intent mainGameIntent = new Intent(this, MainGameActivity.class);

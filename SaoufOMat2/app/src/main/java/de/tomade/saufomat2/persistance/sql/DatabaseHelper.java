@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.tomade.saufomat2.activity.mainGame.task.Task;
+import de.tomade.saufomat2.activity.mainGame.task.TaskDefinitions;
 import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
 import de.tomade.saufomat2.activity.mainGame.task.TaskTarget;
-import de.tomade.saufomat2.factory.TaskFactory;
 import de.tomade.saufomat2.model.Player;
 
 /**
@@ -50,14 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TaskContract.Task.COLUMN_NAME_TARGET + " TEXT, " +
                 TaskContract.Task.COLUMN_NAME_ALREADY_USED + " INTEGER)";
 
-
         sqLiteDatabase.execSQL(taskStatement);
-
-        TaskFactory taskFactory = new TaskFactory();
-
-        for (Task task : taskFactory.getAllTasks()) {
-            this.insertTask(task, sqLiteDatabase);
-        }
     }
 
     @Override
@@ -179,6 +172,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return playerList;
     }
 
+    public ArrayList<Task> getAllTasks(TaskDifficult difficult) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor result = database.rawQuery("SELECT * FROM " + TaskContract.Task.TABLE_NAME + " WHERE " + TaskContract
+                .Task.COLUMN_NAME_DIFFICULT + " =?", new String[]{difficult.toString()});
+
+        ArrayList<Task> taskList = new ArrayList<>();
+
+        if (result.moveToFirst()) {
+            do {
+                Task task = this.parseTask(result);
+                taskList.add(task);
+            } while (result.moveToNext());
+        }
+        result.close();
+        return taskList;
+    }
+
     public ArrayList<Task> getAllTasks() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor result = database.rawQuery("SELECT * FROM " + TaskContract.Task.TABLE_NAME, null);
@@ -187,17 +197,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (result.moveToFirst()) {
             do {
-                Task task = new Task();
-                task.setId(result.getInt(result.getColumnIndex(TaskContract.Task.COLUMN_NAME_ID)));
-                task.setText(result.getString(result.getColumnIndex(TaskContract.Task.COLUMN_NAME_TEXT)));
-                task.setDrinkCount(result.getInt(result.getColumnIndex(TaskContract.Task.COLUMN_NAME_DRINK_COUNT)));
-                task.setCost(result.getInt(result.getColumnIndex(TaskContract.Task.COLUMN_NAME_COST)));
-                task.setDifficult(TaskDifficult.valueOf(result.getString(result.getColumnIndex(TaskContract.Task
-                        .COLUMN_NAME_DIFFICULT))));
-                task.setTarget(TaskTarget.valueOf(result.getString(result.getColumnIndex(TaskContract.Task
-                        .COLUMN_NAME_TARGET))));
-                task.setAlreadyUsed(result.getInt(result.getColumnIndex(TaskContract.Task.COLUMN_NAME_ALREADY_USED))
-                        != 0);
+                Task task = this.parseTask(result);
                 taskList.add(task);
             } while (result.moveToNext());
         }
@@ -205,7 +205,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return taskList;
     }
 
+    public ArrayList<Task> getUnusedTasks(TaskDifficult difficult) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        String query = "Select * FROM " + TaskContract.Task.TABLE_NAME + " WHERE " + TaskContract
+                .Task.COLUMN_NAME_ALREADY_USED + " =? AND " + TaskContract.Task.COLUMN_NAME_DIFFICULT + " =?";
+        Cursor result = database.rawQuery(query, new String[]{Integer.toString(0), difficult.toString()});
+        ArrayList<Task> unusedTasks = new ArrayList<>();
+
+        if (result.moveToFirst()) {
+            do {
+                unusedTasks.add((this.parseTask(result)));
+            } while (result.moveToNext());
+        }
+        result.close();
+        return unusedTasks;
+    }
+
+    private Task parseTask(Cursor cursor) {
+        Task task = new Task();
+        task.setId(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_ID)));
+        task.setText(cursor.getString(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_TEXT)));
+        task.setDrinkCount(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_DRINK_COUNT)));
+        task.setCost(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_COST)));
+        task.setDifficult(TaskDifficult.valueOf(cursor.getString(cursor.getColumnIndex(TaskContract.Task
+                .COLUMN_NAME_DIFFICULT))));
+        task.setTarget(TaskTarget.valueOf(cursor.getString(cursor.getColumnIndex(TaskContract.Task
+                .COLUMN_NAME_TARGET))));
+        task.setAlreadyUsed(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_ALREADY_USED))
+                != 0);
+
+        return task;
+    }
+
     public void startNewGame() {
-        this.onUpgrade(this.getWritableDatabase(), 0, 0);
+        SQLiteDatabase database = this.getWritableDatabase();
+        this.onUpgrade(database, 0, 0);
+        for (Task task : TaskDefinitions.getTasks()) {
+            this.insertTask(task, database);
+        }
     }
 }
