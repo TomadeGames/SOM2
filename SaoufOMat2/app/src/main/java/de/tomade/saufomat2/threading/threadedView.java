@@ -11,6 +11,4 @@ public interface ThreadedView {
     void render(Canvas canvas);
 
     void setElapsedTime(long elapsedTime);
-
-    void setAvgFps(String avgFps);
 }

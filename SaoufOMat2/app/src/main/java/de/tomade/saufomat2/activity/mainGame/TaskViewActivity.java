@@ -75,7 +75,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         int cost = 0;
 
         if (this.isGame) {
-            taskText.setText(this.getString(this.miniGame.getNameId()));
+            taskText.setText("Minispiel:\n" + this.getString(this.miniGame.getNameId()));
         } else {
             TaskDifficult difficult = this.currentTask.getDifficult();
             String taskTextValue = "";
