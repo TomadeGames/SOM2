@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import de.tomade.saufomat2.activity.mainGame.task.Task;
 import de.tomade.saufomat2.activity.mainGame.task.TaskDefinitions;
 import de.tomade.saufomat2.activity.mainGame.task.TaskDifficult;
 import de.tomade.saufomat2.activity.mainGame.task.TaskTarget;
+import de.tomade.saufomat2.constant.MiniGame;
 import de.tomade.saufomat2.model.Player;
 
 /**
@@ -50,15 +52,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TaskContract.Task.COLUMN_NAME_TARGET + " TEXT, " +
                 TaskContract.Task.COLUMN_NAME_ALREADY_USED + " INTEGER)";
 
+        String miniGameStatement = "CREATE TABLE " + MiniGameContract.MiniGame.TABLE_NAME + "(" +
+                MiniGameContract.MiniGame.COLUMN_NAME_NAME + " TEXT PRIMARY KEY, " +
+                MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED + " INTEGER) ";
+
         sqLiteDatabase.execSQL(taskStatement);
+        sqLiteDatabase.execSQL(miniGameStatement);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PlayerContract.Player.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TaskContract.Task.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MiniGameContract.MiniGame.TABLE_NAME);
 
         this.onCreate(sqLiteDatabase);
+    }
+
+    public boolean insertMiniGame(MiniGame miniGame) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_NAME, miniGame.toString());
+        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED, 0);
+
+        database.insert(MiniGameContract.MiniGame.TABLE_NAME, null, contentValues);
+        return true;
     }
 
     public boolean insertPlayer(Player player) {
@@ -93,6 +111,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(TaskContract.Task.COLUMN_NAME_ALREADY_USED, 0);
         }
         database.insert(TaskContract.Task.TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    public boolean miniGameUsed(MiniGame miniGame) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_NAME, miniGame.toString());
+        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED, 1);
+
+        database.update(MiniGameContract.MiniGame.TABLE_NAME, contentValues, MiniGameContract.MiniGame
+                .COLUMN_NAME_NAME + " =? ", new String[]{miniGame.toString()});
+        return true;
+    }
+
+    public boolean resetMiniGame(MiniGame miniGame) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_NAME, miniGame.toString());
+        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED, 0);
+
+        database.update(MiniGameContract.MiniGame.TABLE_NAME, contentValues, MiniGameContract.MiniGame
+                .COLUMN_NAME_NAME + "=? ", new String[]{miniGame.toString()});
         return true;
     }
 
@@ -133,10 +173,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getTask(int id) {
+    public ArrayList<MiniGame> getUnusedMiniGames() {
         SQLiteDatabase database = this.getReadableDatabase();
-        return database.rawQuery("SELECT * FROM " + TaskContract.Task.TABLE_NAME + " WHERE " + TaskContract.Task
-                .COLUMN_NAME_ID + "=?", new String[]{Integer.toString(id)});
+        Cursor result = database.rawQuery("SELECT * FROM " + MiniGameContract.MiniGame.TABLE_NAME + " WHERE " +
+                MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED + " =? ", new String[]{Integer.toString(0)});
+        ArrayList<MiniGame> unusedMiniGames = new ArrayList<>();
+        if (result.moveToFirst()) {
+            do {
+                unusedMiniGames.add(MiniGame.valueOf(result.getString(result.getColumnIndex(MiniGameContract.MiniGame
+                        .COLUMN_NAME_NAME))));
+            } while (result.moveToNext());
+        }
+        result.close();
+        return unusedMiniGames;
     }
 
     public ArrayList<Player> getAllPlayer() {
@@ -242,6 +291,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.onUpgrade(database, 0, 0);
         for (Task task : TaskDefinitions.getTasks()) {
             this.insertTask(task, database);
+        }
+        for (MiniGame miniGame : EnumSet.allOf(MiniGame.class)) {
+            this.insertMiniGame(miniGame);
         }
     }
 }

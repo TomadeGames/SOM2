@@ -49,7 +49,9 @@ public class MainGameActivity extends Activity {
                 changeView();
             }
         });
-        this.requestInterstitialAd();
+        if (adCounter == AD_LIMIT) {
+            this.requestInterstitialAd();
+        }
 
         MainGamePanel panel;
         Bundle extras = this.getIntent().getExtras();

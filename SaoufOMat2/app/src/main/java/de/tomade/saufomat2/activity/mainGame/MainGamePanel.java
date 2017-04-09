@@ -39,6 +39,7 @@ import de.tomade.saufomat2.threading.ThreadedView;
  * <p>
  * Created by woors on 09.03.2016.
  */
+//TODO: Start-Button sollte nach klick Stopp heißen und klick-Animation fehlt
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback, ThreadedView {
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
@@ -115,7 +116,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.screenWith = size.x;
         this.screenHeight = size.y;
 
-        this.miniGameProvider = new MiniGameProvider();
+        this.miniGameProvider = new MiniGameProvider(this.getContext());
 
         this.initContent();
         this.taskHelper = new TaskHelper(this.getContext());
@@ -224,7 +225,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 this.currentMiniGame = null;
                 this.gameState = MainGameState.MOVE_SAUFOMETER;
             } else {
-                this.currentMiniGame = this.miniGameProvider.getRandomMiniGameAndRemoveFromList();
+                this.currentMiniGame = this.miniGameProvider.getRandomMiniGame();
                 this.gameState = MainGameState.MOVE_SAUFOMETER;
                 this.currentTask = null;
 
@@ -506,6 +507,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         DatabaseHelper databaseHelper = new DatabaseHelper(this.getContext());
         if (this.currentTask != null) {
             databaseHelper.updateTask(this.currentTask);
+        } else {
+            databaseHelper.miniGameUsed(this.currentMiniGame);
         }
         Player player = this.currentPlayer;
         do {
@@ -521,7 +524,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 gameValueHelper.saveAdCounter(((MainGameActivity) getContext()).getAdCounter());
                 gameValueHelper.saveGameSaved(true);
             }
-        });
+        }).start();
     }
 
     public long getElapsedTime() {
