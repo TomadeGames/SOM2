@@ -92,7 +92,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Trinke und dein linker Nachbar darf einen verteilen", TaskDifficult.EASY, 0, 1,
                 TaskTarget.SELF_AND_CHOOSE_ONE));
         taskList.add(new Task("Alle unter 21 trinken 2", TaskDifficult.MEDIUM, 2, 0, TaskTarget.CHOOSE_ALL));
-        taskList.add(new Task("Jeder mit ungeraden Alter trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
+        taskList.add(new Task("Jeder mit ungeradem Alter trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Jeder der eine Schwester hat trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Erzähle einen Witz. Wer lacht trinkt. Lacht keiner, trinkst du 3", TaskDifficult
                 .MEDIUM, 1, 3, TaskTarget.CHOOSE_ALL));
@@ -302,7 +302,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
         taskList.add(new Task("Such dir einen Sklaven aus. Er übernimmt eine Runde lang alle deine Aufgaben",
                 TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));
-        taskList.add(new Task("Wähle eine Person, die diene nächste Aufgabe machen muss. Wenn sie trinken muss, " +
+        taskList.add(new Task("Wähle eine Person, die deine nächste Aufgabe machen muss. Wenn sie trinken muss, " +
                 "trinkt sie die doppelte Menge", TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));
         taskList.add(new Task("Alle ausser dir trinken drei", TaskDifficult.MEDIUM_WIN, 3, 0, TaskTarget.ALL_BUT_SELF));
         taskList.add(new Task("Vorarbeiter:\nFür die nächsten zwei Runden müssen alle trinken, wenn du trinken " +

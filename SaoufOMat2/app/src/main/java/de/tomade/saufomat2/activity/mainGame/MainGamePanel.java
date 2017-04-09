@@ -54,7 +54,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     //Thread
     private GameLoopThread thread;
-    private String avgFps;
     private long elapsedTime;
 
     //Player
@@ -478,10 +477,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
-    public void setAvgFps(String avgFps) {
-        this.avgFps = avgFps;
-    }
-
     public void render(Canvas canvas) {
         if (canvas != null) {
             canvas.drawBitmap(this.background, 0, 0, null);
@@ -497,9 +492,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
             this.saufOMeter.draw(canvas);
 
             this.getButton().draw(canvas);
-            if (this.avgFps != null) {
-                canvas.drawText(this.avgFps, this.getWidth() - 200, 250, this.currentPlayerTextPaint);
-            }
         }
     }
 
@@ -525,10 +517,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
                 gameValueHelper.saveGameSaved(true);
             }
         }).start();
-    }
-
-    public long getElapsedTime() {
-        return this.elapsedTime;
     }
 
     public void setElapsedTime(long elapsedTime) {
