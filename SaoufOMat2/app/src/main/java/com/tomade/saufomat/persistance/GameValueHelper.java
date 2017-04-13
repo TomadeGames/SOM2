@@ -18,6 +18,10 @@ public class GameValueHelper {
     private static final String AD_COUNTER_KEY = "ad_counter";
     private static final String CURRENT_PLAYER_KEY = "current_player";
     private static final String IS_GAME_SAVED_KEY = "is_game_saved";
+    private static final String GAME_VERSION_KEY = "game_version";
+
+    //TODO: wenn etwas an den gespeicherten Spielen geändert wird, muss dieser Wert erhöht werden
+    private static final int GAME_VERSION = 1;
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -61,6 +65,9 @@ public class GameValueHelper {
     }
 
     public boolean isGameSaved() {
+        if (this.sharedPreferences.getInt(GAME_VERSION_KEY, -1) < GAME_VERSION) {
+            return false;
+        }
         return this.sharedPreferences.getBoolean(IS_GAME_SAVED_KEY, false);
     }
 }
