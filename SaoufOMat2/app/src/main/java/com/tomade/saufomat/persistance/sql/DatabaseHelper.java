@@ -289,7 +289,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void startNewGame() {
         SQLiteDatabase database = this.getWritableDatabase();
         this.onUpgrade(database, 0, 0);
-        for (Task task : TaskDefinitions.getTasks()) {
+        for (Task task : TaskDefinitions.getDebugTasks()) {
             this.insertTask(task, database);
         }
         for (MiniGame miniGame : EnumSet.allOf(MiniGame.class)) {

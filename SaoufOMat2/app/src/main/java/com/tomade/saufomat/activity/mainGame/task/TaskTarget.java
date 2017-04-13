@@ -24,5 +24,6 @@ public enum TaskTarget {
     WOMEN,
     VICTOM,
     ONCE,
-    AD, UNDEFINED
+    AD,
+    UNDEFINED
 }

@@ -9,6 +9,11 @@ import java.util.List;
  */
 
 public class TaskDefinitions {
+    public static List<Task> getDebugTasks() {
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(new Task("DEBUG_TASK", TaskDifficult.EASY, 1, 1, TaskTarget.AD));
+        return taskList;
+    }
 
     public static List<Task> getTasks() {
         List<Task> taskList = new ArrayList<>();

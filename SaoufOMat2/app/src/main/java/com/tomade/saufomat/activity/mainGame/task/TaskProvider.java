@@ -12,6 +12,8 @@ import java.util.Random;
  */
 
 public class TaskProvider {
+    private static final TaskDifficult DEBUG_DIFFICULT = TaskDifficult.EASY;
+
     private final Context context;
     private final Random random = new Random(System.currentTimeMillis());
 
@@ -21,10 +23,20 @@ public class TaskProvider {
 
     public Task getNextTask(TaskDifficult difficult) {
         DatabaseHelper databaseHelper = new DatabaseHelper(this.context);
-        ArrayList<Task> tasks = databaseHelper.getUnusedTasks(difficult);
-        if (tasks.isEmpty()) {
-            this.resetTasks(difficult);
+        ArrayList<Task> tasks;
+        if (DEBUG_DIFFICULT == null) {
             tasks = databaseHelper.getUnusedTasks(difficult);
+        } else {
+            tasks = databaseHelper.getUnusedTasks(DEBUG_DIFFICULT);
+        }
+        if (tasks.isEmpty()) {
+            if (DEBUG_DIFFICULT == null) {
+                this.resetTasks(difficult);
+                tasks = databaseHelper.getUnusedTasks(difficult);
+            } else {
+                this.resetTasks(DEBUG_DIFFICULT);
+                tasks = databaseHelper.getUnusedTasks(DEBUG_DIFFICULT);
+            }
         }
 
         Task currentTask = tasks.get(this.random.nextInt(tasks.size()));

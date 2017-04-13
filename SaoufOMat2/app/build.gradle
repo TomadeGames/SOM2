@@ -7,8 +7,8 @@ android {
         applicationId 'com.tomade.saufomat'
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 102019
-        versionName "2.0.0.0"
+        versionCode 102020
+        versionName "2.0.0.1"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         jackOptions {
             enabled false

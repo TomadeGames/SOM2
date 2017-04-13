@@ -167,6 +167,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             this.startActivity(intent);
         } else {
+            boolean switchToMainView = true;
             if (this.currentPlayerIsAviable) {
                 Player nextPlayer;
                 switch (this.currentTask.getTarget()) {
@@ -208,18 +209,29 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                         this.switchPlayers(this.currentPlayer, this.currentPlayer.getLastPlayer());
                         break;
                     case ALL:
-                        for (Player player : this.playerList) {
-                            player.increaseDrinks(TaskViewActivity.this.currentTask.getDrinkCount());
-                        }
+                        nextPlayer = this.currentPlayer;
+                        do {
+                            nextPlayer.increaseDrinks(this.currentTask.getDrinkCount());
+                            nextPlayer = nextPlayer.getNextPlayer();
+                        } while (nextPlayer != this.currentPlayer);
                         break;
                     case ALL_BUT_SELF:
-                        for (Player player : this.playerList) {
-                            if (player.getId() != this.currentPlayer.getId()) {
-                                player.increaseDrinks(this.currentTask.getDrinkCount());
-                            }
+                        nextPlayer = this.currentPlayer.getNextPlayer();
+                        while (nextPlayer != this.currentPlayer) {
+                            nextPlayer.increaseDrinks(this.currentTask.getDrinkCount());
+                            nextPlayer = nextPlayer.getNextPlayer();
                         }
                         break;
+                    case SELF_AND_NEIGHBOURS:
+                        this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
+                        break;
+                    case SELF_AND_CHOOSE_ONE:
+                        this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
+                        break;
                     case AD:
+                        switchToMainView = false;
                         if (this.interstitialAd.isLoaded()) {
                             this.interstitialAd.show();
                         } else {
@@ -230,7 +242,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                         break;
                 }
             }
-            this.openMainView();
+            if (switchToMainView) {
+                this.openMainView();
+            }
         }
     }
 
@@ -240,14 +254,39 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         Player p2Next = player2.getNextPlayer();
         Player p2Last = player2.getLastPlayer();
 
-        player1.setNextPlayer(p2Next);
-        p2Next.setLastPlayer(player1);
-        player1.setLastPlayer(p2Last);
-        p2Last.setNextPlayer(player1);
-        player2.setNextPlayer(p1Next);
-        p1Next.setLastPlayer(player2);
-        player2.setLastPlayer(p1Last);
-        p1Last.setNextPlayer(player2);
+        if (p2Next != player1) {
+            player1.setNextPlayer(p2Next);
+            p2Next.setLastPlayer(player1);
+        } else {
+            player1.setNextPlayer(player2);
+            player2.setLastPlayer(player1);
+        }
+
+        if (p2Last != player1) {
+            player1.setLastPlayer(p2Last);
+            p2Last.setNextPlayer(player1);
+        } else {
+            player1.setLastPlayer(player2);
+            player2.setNextPlayer(player1);
+        }
+
+        if (p1Next != player2) {
+            player2.setNextPlayer(p1Next);
+            p1Next.setLastPlayer(player2);
+        } else {
+            player2.setNextPlayer(player1);
+            player1.setLastPlayer(player2);
+        }
+
+        if (p1Last != player2) {
+            player2.setLastPlayer(p1Last);
+            p1Last.setNextPlayer(player2);
+        } else {
+            player2.setLastPlayer(player1);
+            player1.setNextPlayer(player2);
+        }
+
+        System.out.print("");
     }
 
     private void noButtonPressed() {
