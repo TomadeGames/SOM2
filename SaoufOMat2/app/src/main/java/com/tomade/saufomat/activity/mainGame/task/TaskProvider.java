@@ -12,7 +12,7 @@ import java.util.Random;
  */
 
 public class TaskProvider {
-    private static final TaskDifficult DEBUG_DIFFICULT = TaskDifficult.EASY;
+    private static final TaskDifficult DEBUG_DIFFICULT = null;
 
     private final Context context;
     private final Random random = new Random(System.currentTimeMillis());
