@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="de.tomade.saufomat2">
+          package="com.tomade.saufomat">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
+        android:resizeableActivity="false"
         android:screenOrientation="landscape"
         android:supportsRtl="true"
-        android:resizeableActivity="false"
         android:theme="@style/noAnimTheme">
         <activity
             android:name=".activity.StartActivity"
