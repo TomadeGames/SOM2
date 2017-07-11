@@ -24,7 +24,6 @@ import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.Player;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 //TODO: Wenn kein Nein zur Verfügung steht: Anstatt einen ausgegrauten Button einen großen Grünen Button anzeigen
@@ -82,7 +81,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         int cost = 0;
 
         if (this.isGame) {
-            taskText.setText("Minispiel:\n" + this.getString(this.miniGame.getNameId()));
+            taskText.setText(String.format("Minispiel:\n%s", this.getString(this.miniGame.getNameId())));
         } else {
             TaskDifficult difficult = this.currentTask.getDifficult();
             String taskTextValue = "";
@@ -285,8 +284,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             player2.setLastPlayer(player1);
             player1.setNextPlayer(player2);
         }
-
-        System.out.print("");
     }
 
     private void noButtonPressed() {
@@ -331,10 +328,10 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         do {
             String playerText;
             if (this.drinkCountShown) {
-                playerText = player.getName() + ": " + player.getDrinks();
+                playerText = String.format("%s: %d", player.getName(), player.getDrinks());
             } else {
                 float alc = this.calculateAlcohol(player.getDrinks(), player.getWeight(), player.getIsMan());
-                playerText = player.getName() + ": " + new DecimalFormat("#.##").format(alc) + "%";
+                playerText = String.format("%s: %1$.2d%", player.getName(), alc);
             }
             statisticValue += playerText + "\n";
             player = player.getNextPlayer();
@@ -362,6 +359,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
     public void closeGame() {
         Intent intent = new Intent(this.getApplicationContext(), MainMenuActivity.class);
+        this.finish();
         this.startActivity(intent);
     }
 

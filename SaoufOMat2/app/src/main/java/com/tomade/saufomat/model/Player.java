@@ -96,10 +96,4 @@ public class Player implements Serializable {
             nextId = id + 1;
         }
     }
-
-    public String toString() {
-        return "Name: " + this.getName() + " Gewicht: " + this.getWeight() + " Mann?: " +
-                this.getIsMan() + " ID: " + this.getId() + " LastPlayer: " + this.lastPlayer +
-                " NextPlayer: " + this.nextPlayer + "\n";
-    }
 }

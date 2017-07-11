@@ -1,6 +1,6 @@
 package com.tomade.saufomat.model.button;
 
-import android.graphics.Bitmap;
+import android.content.res.Resources;
 
 import com.tomade.saufomat.model.drawable.DrawableImage;
 
@@ -14,8 +14,8 @@ public class DrawableButton extends DrawableImage {
 
     protected List<ButtonListener> listenerList = new ArrayList<>();
 
-    public DrawableButton(Bitmap bitmap, int x, int y, int with, int height) {
-        super(bitmap, x, y, with, height);
+    public DrawableButton(Resources resources, int imageId, int x, int y, int with, int height) {
+        super(resources, imageId, x, y, with, height);
     }
 
     public void addListener(ButtonListener listener) {

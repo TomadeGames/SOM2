@@ -1,8 +1,10 @@
 package com.tomade.saufomat.model.drawable;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.tomade.saufomat.ContentLoader;
 import com.tomade.saufomat.activity.mainGame.IconState;
 
 /**
@@ -18,14 +20,16 @@ public class SlotMachineIcon extends DrawableImage {
 
     private IconState state;
 
-    public SlotMachineIcon(Bitmap imageEasy, Bitmap imageMedium, Bitmap imageHard, Bitmap imageGame, int x, int y,
+    public SlotMachineIcon(Resources resources, int imageEasyId, int imageMediumId, int imageHardId, int imageGameId,
+                           int x, int y,
                            int width, int height, IconState state) {
-        super(imageGame, x, y, width / 6, height / 3);
+        super(resources, imageGameId, x, y, width / 6, height / 3);
         this.screenHeight = height;
         this.screenWith = width;
-        this.imageMedium = Bitmap.createScaledBitmap(imageMedium, getCocktailWith(), getCocktailHeight(), true);
-        this.imageHard = Bitmap.createScaledBitmap(imageHard, getShotWith(), getShotHeight(), true);
-        this.imageEasy = Bitmap.createScaledBitmap(imageEasy, getBeerWith(), getBeerHeight(), true);
+        this.imageMedium = ContentLoader.getImage(resources, imageMediumId, this.getCocktailWith(), this
+                .getCocktailHeight());
+        this.imageHard = ContentLoader.getImage(resources, imageHardId, this.getShotWith(), this.getShotHeight());
+        this.imageEasy = ContentLoader.getImage(resources, imageEasyId, this.getBeerWith(), this.getBeerHeight());
         this.setState(state);
     }
 
@@ -68,7 +72,7 @@ public class SlotMachineIcon extends DrawableImage {
                     image = this.imageHard;
                     break;
                 case GAME:
-                    image = this.bitmap;
+                    image = this.image;
                     break;
             }
             canvas.drawBitmap(image, this.x - (image.getWidth() / 2), this.y - (image.getHeight() / 2), null);

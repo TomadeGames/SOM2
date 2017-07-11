@@ -2,18 +2,17 @@ package com.tomade.saufomat.activity.mainGame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import com.tomade.saufomat.ContentLoader;
 import com.tomade.saufomat.MiniGameProvider;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.task.Task;
@@ -39,7 +38,6 @@ import java.util.Random;
  * <p>
  * Created by woors on 09.03.2016.
  */
-//TODO: Start-Button sollte nach klick Stopp heißen und klick-Animation fehlt
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback, ThreadedView {
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
@@ -132,50 +130,49 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void initContent() {
-        this.background = BitmapFactory.decodeResource(this.getResources(), R.drawable.slot_machine_background);
-        this.background = Bitmap.createScaledBitmap(this.background, this.screenWith, this.screenHeight, true);
+        this.background = ContentLoader.getImage(this.getResources(), R.drawable.slot_machine_background, this
+                .screenWith, this.screenHeight);
 
-        this.slotMachine = BitmapFactory.decodeResource(this.getResources(), R.drawable.slot_machine);
-        this.slotMachine = Bitmap.createScaledBitmap(this.slotMachine, this.screenWith, this.screenHeight, true);
+        this.slotMachine = ContentLoader.getImage(this.getResources(), R.drawable.slot_machine, this.screenWith, this
+                .screenHeight);
 
         this.currentPlayerTextPaint = new Paint();
-        this.currentPlayerTextPaint.setTextSize(100);
+        this.currentPlayerTextPaint.setTextSize(80);
         this.currentPlayerTextPaint.setTextAlign(Paint.Align.CENTER);
 
-        Bitmap beerIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.beer_icon);
-        Bitmap cocktailIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.cocktail_icon);
-        Bitmap shotIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.shot_icon);
-        Bitmap startButton = BitmapFactory.decodeResource(this.getResources(), R.drawable.start_button);
-        Bitmap gameIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.dice_icon);
         this.icons = new SlotMachineIcon[3];
-        this.icons[0] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int) (this.screenWith / 3.3
+        this.icons[0] = new SlotMachineIcon(this.getResources(), R.drawable.beer_icon, R.drawable.cocktail_icon, R
+                .drawable.shot_icon, R.drawable.dice_icon, (int) (this.screenWith / 3.3
                 - this.screenWith / 30), (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight,
                 IconState.EASY);
-        this.icons[1] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, this.screenWith / 2 - this
+        this.icons[1] = new SlotMachineIcon(this.getResources(), R.drawable.beer_icon, R.drawable.cocktail_icon, R
+                .drawable.shot_icon, R.drawable.dice_icon, this.screenWith / 2 - this
                 .screenWith / 30, (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight, IconState
                 .MEDIUM);
-        this.icons[2] = new SlotMachineIcon(beerIcon, cocktailIcon, shotIcon, gameIcon, (int) (this.screenWith / 2.9
+        this.icons[2] = new SlotMachineIcon(this.getResources(), R.drawable.beer_icon, R.drawable.cocktail_icon, R
+                .drawable.shot_icon, R.drawable.dice_icon, (int) (this.screenWith / 2.9
                 * 2 - this.screenWith / 30), (int) (this.screenHeight / 2.68), this.screenWith, this.screenHeight,
                 IconState.HARD);
 
         Bitmap[] saufOMeterFrames = new Bitmap[13];
-        saufOMeterFrames[0] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer0);
-        saufOMeterFrames[1] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer1);
-        saufOMeterFrames[2] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer2);
-        saufOMeterFrames[3] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer3);
-        saufOMeterFrames[4] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer4);
-        saufOMeterFrames[5] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer5);
-        saufOMeterFrames[6] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer6);
-        saufOMeterFrames[7] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer7);
-        saufOMeterFrames[8] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer8);
-        saufOMeterFrames[9] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer9);
-        saufOMeterFrames[10] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer10);
-        saufOMeterFrames[11] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer11);
-        saufOMeterFrames[12] = BitmapFactory.decodeResource(this.getResources(), R.drawable.saufometer12);
+        saufOMeterFrames[0] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer0);
+        saufOMeterFrames[1] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer1);
+        saufOMeterFrames[2] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer2);
+        saufOMeterFrames[3] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer3);
+        saufOMeterFrames[4] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer4);
+        saufOMeterFrames[5] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer5);
+        saufOMeterFrames[6] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer6);
+        saufOMeterFrames[7] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer7);
+        saufOMeterFrames[8] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer8);
+        saufOMeterFrames[9] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer9);
+        saufOMeterFrames[10] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer10);
+        saufOMeterFrames[11] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer11);
+        saufOMeterFrames[12] = ContentLoader.getImage(this.getResources(), R.drawable.saufometer12);
         this.saufOMeter = new SaufOMeter(saufOMeterFrames, (int) (this.screenWith - this.screenWith / 1.19), (int)
                 (this.screenHeight / 1.15), this.screenHeight / 4, this.screenHeight / 4);
 
-        this.setButton(new DrawableButton(startButton, (int) (this.screenWith / 1.35), (int) (this.screenHeight /
+        this.setButton(new DrawableButton(this.getResources(), R.drawable.start_button, (int) (this.screenWith /
+                1.35), (int) (this.screenHeight /
                 1.4), this.screenWith / 5, this.screenHeight / 5));
         this.getButton().addListener(new ButtonListener() {
             @Override
@@ -248,7 +245,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         if (this.saufometerUpdateCounter <= 0) {
             this.saufometerUpdateCounter = SAUFOMETER_ROTATE_TIME;
             this.saufOMeter.setCurrentFrame(this.saufOMeter.getCurrentFrame() + 1);
-            Log.d(TAG, "endFrame: " + this.saufOMeterEndFrame + ", currFrame: " + this.saufOMeter.getCurrentFrame());
             if (this.saufOMeter.getCurrentFrame() >= this.saufOMeterEndFrame) {
                 this.saufOMeterEndFrame = 1;
                 if (this.currentDifficult == TaskDifficult.EASY_WIN
@@ -497,9 +493,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     private void saveGame() {
         DatabaseHelper databaseHelper = new DatabaseHelper(this.getContext());
-        if (this.currentTask != null) {
-            databaseHelper.updateTask(this.currentTask);
-        } else {
+        if (this.currentTask == null) {
             databaseHelper.miniGameUsed(this.currentMiniGame);
         }
         Player player = this.currentPlayer;

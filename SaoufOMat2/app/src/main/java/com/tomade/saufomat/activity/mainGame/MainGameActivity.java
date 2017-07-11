@@ -3,14 +3,11 @@ package com.tomade.saufomat.activity.mainGame;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.tomade.saufomat.R;
+import com.tomade.saufomat.AdService;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskProvider;
 import com.tomade.saufomat.constant.IntentParameter;
@@ -27,7 +24,6 @@ public class MainGameActivity extends Activity {
     private static int adCounter = 0;
 
     private final Intent taskViewIntent = new Intent();
-    private InterstitialAd interstitialAd;
 
 
     @Override
@@ -39,25 +35,23 @@ public class MainGameActivity extends Activity {
                 .FLAG_FULLSCREEN);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        this.interstitialAd = new InterstitialAd(this);
-        this.interstitialAd.setAdUnitId(this.getString(R.string.maingame_ad_id));
-        this.interstitialAd.setAdListener(new AdListener() {
+        AdService.initializeInterstitialAd(this);
+        AdService.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 adCounter = 0;
                 changeView();
             }
         });
-        if (adCounter == AD_LIMIT) {
-            this.requestInterstitialAd();
-        }
 
         MainGamePanel panel;
+        
         Bundle extras = this.getIntent().getExtras();
         ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
         Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
         adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
         boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
+
         if (newGame) {
             TaskProvider taskProvider = new TaskProvider(this);
             taskProvider.resetTasks();
@@ -68,18 +62,15 @@ public class MainGameActivity extends Activity {
         this.setContentView(panel);
     }
 
-    private void requestInterstitialAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        this.interstitialAd.loadAd(adRequest);
-    }
-
     public void changeToTaskViewWithTask(Task currentTask, ArrayList<Player> playerList, Player currentPlayer) {
         this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, currentTask);
         this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
         this.taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, playerList);
         this.taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
         if (adCounter >= AD_LIMIT) {
-            this.showAd();
+            if (!AdService.showAd()) {
+                this.changeView();
+            }
         } else {
             adCounter++;
             this.changeView();
@@ -91,16 +82,16 @@ public class MainGameActivity extends Activity {
         this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
         this.taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, playerList);
         this.taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
-        this.showAd();
-    }
-
-    private void showAd() {
-        if (this.interstitialAd.isLoaded()) {
-            this.interstitialAd.show();
+        if (adCounter >= AD_LIMIT) {
+            if (!AdService.showAd()) {
+                this.changeView();
+            }
         } else {
+            adCounter++;
             this.changeView();
         }
     }
+
 
     private void changeView() {
         this.taskViewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -114,13 +105,11 @@ public class MainGameActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "Destroying...");
         super.onDestroy();
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "Stopping...");
         super.onStop();
     }
 

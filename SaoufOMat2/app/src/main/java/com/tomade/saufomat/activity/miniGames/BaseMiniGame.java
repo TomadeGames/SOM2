@@ -73,6 +73,7 @@ public abstract class BaseMiniGame extends Activity {
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         }
+        this.finish();
         this.startActivity(intent);
     }
 

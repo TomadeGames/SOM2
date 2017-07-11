@@ -2,6 +2,7 @@ package com.tomade.saufomat.persistance;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.persistance.sql.DatabaseHelper;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 
 public class GameValueHelper {
+    private static final String TAG = GameValueHelper.class.getSimpleName();
     private static final String FILE_KEY = "de.tomade.saufomat.PREFERENCE_FILE_KEY";
     private static final String AD_COUNTER_KEY = "ad_counter";
     private static final String CURRENT_PLAYER_KEY = "current_player";
@@ -35,18 +37,21 @@ public class GameValueHelper {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putInt(AD_COUNTER_KEY, adCounter);
         editor.apply();
+        Log.d(TAG, "AdCounter [" + adCounter + "] saved");
     }
 
     public void saveCurrentPlayer(Player currentPlayer) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putInt(CURRENT_PLAYER_KEY, currentPlayer.getId());
         editor.apply();
+        Log.d(TAG, "CurrentPlayer [" + currentPlayer + "] saved");
     }
 
     public void saveGameSaved(boolean gameSaved) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putBoolean(IS_GAME_SAVED_KEY, gameSaved);
         editor.apply();
+        Log.d(TAG, "GameSaved [" + gameSaved + "] saved");
     }
 
     public int getAdCounter() {

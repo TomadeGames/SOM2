@@ -1,34 +1,37 @@
 package com.tomade.saufomat.model.drawable;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
+import com.tomade.saufomat.ContentLoader;
 
 
 /**
  * Created by woors on 09.03.2016.
  */
 public class DrawableImage {
-    protected Bitmap bitmap;
+    protected Bitmap image;
     protected int x;
     protected int y;
     protected int with;
     protected int height;
     protected boolean visible = true;
 
-    public DrawableImage(Bitmap bitmap, int x, int y, int width, int height) {
+    public DrawableImage(Resources resources, int imageId, int x, int y, int width, int height) {
         this.setX(x);
         this.setY(y);
         this.setWith(width);
         this.setHeight(height);
-        this.setBitmap(bitmap);
+        this.setImage(ContentLoader.getImage(resources, imageId));
     }
 
-    public Bitmap getBitmap() {
-        return this.bitmap;
+    public Bitmap getImage() {
+        return this.image;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = Bitmap.createScaledBitmap(bitmap, this.getWith(), this.getHeight(), true);
+    public void setImage(Bitmap image) {
+        this.image = Bitmap.createScaledBitmap(image, this.getWith(), this.getHeight(), true);
     }
 
     public int getX() {
@@ -49,7 +52,7 @@ public class DrawableImage {
 
     public void draw(Canvas canvas) {
         if (this.isVisible()) {
-            canvas.drawBitmap(this.bitmap, this.x - (this.bitmap.getWidth() / 2), this.y - (this.bitmap.getHeight() /
+            canvas.drawBitmap(this.image, this.x - (this.image.getWidth() / 2), this.y - (this.image.getHeight() /
                     2), null);
         }
     }
