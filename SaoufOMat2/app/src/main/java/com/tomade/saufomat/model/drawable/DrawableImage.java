@@ -23,15 +23,15 @@ public class DrawableImage {
         this.setY(y);
         this.setWith(width);
         this.setHeight(height);
-        this.setImage(ContentLoader.getImage(resources, imageId));
+        this.setImage(resources, imageId);
     }
 
     public Bitmap getImage() {
         return this.image;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = Bitmap.createScaledBitmap(image, this.getWith(), this.getHeight(), true);
+    public void setImage(Resources resources, int imageId) {
+        this.image = ContentLoader.getImage(resources, imageId, this.getWith(), this.getHeight());
     }
 
     public int getX() {

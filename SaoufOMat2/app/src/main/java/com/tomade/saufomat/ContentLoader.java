@@ -3,6 +3,7 @@ package com.tomade.saufomat;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.util.SparseArray;
 
 /**
@@ -11,6 +12,7 @@ import android.util.SparseArray;
  */
 
 public class ContentLoader {
+    private static final String TAG = ContentLoader.class.getSimpleName();
     /**
      * Liste für alle bereits geladenen Bilder
      */
@@ -31,6 +33,7 @@ public class ContentLoader {
             image = BitmapFactory.decodeResource(resources, id);
             image = Bitmap.createScaledBitmap(image, width, height, true);
             cachedImages.put(id, image);
+            Log.i(TAG, "new Image [" + id + "] loaded. Total Images loaded: " + cachedImages.size());
         }
         return image;
     }
@@ -47,6 +50,7 @@ public class ContentLoader {
         if (image == null) {
             image = BitmapFactory.decodeResource(resources, id);
             cachedImages.put(id, image);
+            Log.i(TAG, "new Image [" + id + "] loaded. Total Images loaded: " + cachedImages.size());
         }
         return image;
     }
