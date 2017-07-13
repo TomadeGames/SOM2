@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,15 +149,18 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void openMainView() {
+        Log.i(TAG, "Switching to MainView");
         this.currentPlayer = this.currentPlayer.getNextPlayer();
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        this.finish();
         this.startActivity(intent);
     }
 
     private void yesButtonPressed() {
+        Log.d(TAG, "Yes Button Pressed");
         if (this.isGame) {
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
@@ -164,11 +168,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             this.currentPlayer = this.currentPlayer.getNextPlayer();
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            this.finish();
+            Log.i(TAG, "Starting Minigame " + this.miniGame);
             this.startActivity(intent);
         } else {
             boolean switchToMainView = true;
             if (this.currentPlayerIsAviable) {
                 Player nextPlayer;
+                Log.i(TAG, "Tasktarget is " + this.currentTask.getTarget());
                 switch (this.currentTask.getTarget()) {
                     case SELF:
                         this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
@@ -287,12 +294,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     private void noButtonPressed() {
+        Log.i(TAG, "NoButton pressed");
         if (this.currentPlayerIsAviable) {
             this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
+            Log.d(TAG, this.currentPlayer.getName() + "s drinks increased with " + this.currentTask.getCost() + " " +
+                    "drinkcount is now " + this.currentPlayer.getDrinks());
         }
         this.openMainView();
     }
-
 
     //TODO
     private void optionsButtonPressed() {
@@ -358,6 +367,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     }
 
     public void closeGame() {
+        Log.i(TAG, "Closing Game");
         Intent intent = new Intent(this.getApplicationContext(), MainMenuActivity.class);
         this.finish();
         this.startActivity(intent);

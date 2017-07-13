@@ -3,6 +3,7 @@ package com.tomade.saufomat.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 import java.util.ArrayList;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
+    private static final String TAG = MainMenuActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,10 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                         case MotionEvent.ACTION_UP:
                             GameValueHelper gameValueHelper = new GameValueHelper(MainMenuActivity.this);
                             if (gameValueHelper.isGameSaved()) {
+                                Log.i(TAG, "Saved Game found");
                                 loadGameField.setVisibility(View.VISIBLE);
                             } else {
+                                Log.i(TAG, "No saved Game found");
                                 startNewGame();
                             }
                         case MotionEvent.ACTION_CANCEL: {

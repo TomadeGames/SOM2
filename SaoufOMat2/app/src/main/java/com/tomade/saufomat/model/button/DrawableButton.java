@@ -1,6 +1,7 @@
 package com.tomade.saufomat.model.button;
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.tomade.saufomat.model.drawable.DrawableImage;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * Created by woors on 09.03.2016.
  */
 public class DrawableButton extends DrawableImage {
+    private static final String TAG = DrawableButton.class.getSimpleName();
 
     protected List<ButtonListener> listenerList = new ArrayList<>();
 
@@ -31,6 +33,7 @@ public class DrawableButton extends DrawableImage {
         int posTopRightY = this.getY() - this.getHeight() / 2;
         if (xPressed >= posTopRightX && xPressed <= posTopRightX + this.getWith()
                 && yPressed >= posTopRightY && yPressed <= posTopRightY + this.getHeight()) {
+            Log.d(TAG, "button clicked");
             this.fireEvent(new ButtonEvent(this));
             return true;
         }

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,6 +40,7 @@ import java.util.Random;
  * Created by woors on 09.03.2016.
  */
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback, ThreadedView {
+    private static final String TAG = MainGamePanel.class.getSimpleName();
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
     private static final int HARD_CHANCE = 3;
@@ -47,7 +49,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private static final int SAUFOMETER_BLINK_TIME = 300;
     private static final int SAUFOMETER_ROTATE_TIME = 100;
     private static final int MAIN_VIEW_WAIT_TIME = 1000;
-    private static final String TAG = MainGamePanel.class.getSimpleName();
     private static Random random;
 
     //Thread
@@ -89,10 +90,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     private float saufometerBlinkingCounter = SAUFOMETER_BLINK_TIME;
     private int blinkCounter = 0;
     private boolean framesSet = false;
-
-    private MainGamePanel(Context context) {
-        super(context);
-    }
+    private boolean firstTimeRendering = true;
 
     public MainGamePanel(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -104,6 +102,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public MainGamePanel(Context context, Player currentPlayer, ArrayList<Player> players) {
         super(context);
+        Log.i(TAG, "MainGamePanel construction started");
         this.getHolder().addCallback(this);
         random = new Random();
 
@@ -123,6 +122,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         this.thread = new GameLoopThread(this.getHolder(), this);
         this.setFocusable(true);
+        Log.i(TAG, "finished constructing MainGamePanel");
     }
 
     private int getIconStopY() {
@@ -130,6 +130,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     private void initContent() {
+        Log.i(TAG, "starting Initialising Content");
         this.background = ContentLoader.getImage(this.getResources(), R.drawable.slot_machine_background, this
                 .screenWith, this.screenHeight);
 
@@ -171,15 +172,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         this.saufOMeter = new SaufOMeter(saufOMeterFrames, (int) (this.screenWith - this.screenWith / 1.19), (int)
                 (this.screenHeight / 1.15), this.screenHeight / 4, this.screenHeight / 4);
 
-        this.setButton(new DrawableButton(this.getResources(), R.drawable.start_button, (int) (this.screenWith /
+        this.button = new DrawableButton(this.getResources(), R.drawable.start_button, (int) (this.screenWith /
                 1.35), (int) (this.screenHeight /
-                1.4), this.screenWith / 5, this.screenHeight / 5));
-        this.getButton().addListener(new ButtonListener() {
+                1.4), this.screenWith / 5, this.screenHeight / 5);
+        this.button.addListener(new ButtonListener() {
             @Override
             public void onInput(ButtonEvent event) {
                 MainGamePanel.this.startButtonPressed();
             }
         });
+        Log.i(TAG, "finished Initialising");
     }
 
     @Override
@@ -191,52 +193,61 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG, "Touch event: " + event);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                this.getButton().checkClick(event.getX(), event.getY());
+                Log.d(TAG, "Event is ACTION_DOWN");
+                this.button.checkClick(event.getX(), event.getY());
                 break;
         }
         return super.onTouchEvent(event);
     }
 
     public void update() {
-        if (this.gameState == MainGameState.ROLLING_ALL
-                || this.gameState == MainGameState.STOP1
-                || this.gameState == MainGameState.STOP2
-                || this.gameState == MainGameState.STOP_ALL) {
-            this.moveIcons();
-        } else if (this.gameState == MainGameState.All_IN_POSITION) {
-            this.getCurrentDifficult();
-            if (this.currentDifficult != TaskDifficult.GAME) {
-                this.currentTask = this.taskProvider.getNextTask(this.currentDifficult);
-                this.currentMiniGame = null;
-                this.gameState = MainGameState.MOVE_SAUFOMETER;
-            } else {
-                this.currentMiniGame = this.miniGameProvider.getRandomMiniGame();
-                this.gameState = MainGameState.MOVE_SAUFOMETER;
-                this.currentTask = null;
-
-            }
-        } else if (this.gameState == MainGameState.MOVE_SAUFOMETER) {
-            this.moveSaufometer();
-        } else if (this.gameState == MainGameState.SAUFOMETER_BLINKING) {
-            this.blinkSaufometer();
-        } else if (this.gameState == MainGameState.WAITING) {
-            this.waitCounter -= this.elapsedTime;
-            if (this.waitCounter <= 0) {
-                this.waitCounter = MAIN_VIEW_WAIT_TIME;
-                this.gameState = MainGameState.SHOW_MAIN_VIEW;
-                this.changeToTaskView();
-            }
+        switch (this.gameState) {
+            case ROLLING_ALL:
+            case STOP1:
+            case STOP2:
+            case STOP_ALL:
+                this.moveIcons();
+                break;
+            case All_IN_POSITION:
+                this.getCurrentDifficult();
+                if (this.currentDifficult != TaskDifficult.GAME) {
+                    this.currentTask = this.taskProvider.getNextTask(this.currentDifficult);
+                    this.currentMiniGame = null;
+                    this.gameState = MainGameState.MOVE_SAUFOMETER;
+                } else {
+                    this.currentMiniGame = this.miniGameProvider.getRandomMiniGame();
+                    this.gameState = MainGameState.MOVE_SAUFOMETER;
+                    this.currentTask = null;
+                }
+                break;
+            case MOVE_SAUFOMETER:
+                this.moveSaufometer();
+                break;
+            case SAUFOMETER_BLINKING:
+                this.blinkSaufometer();
+                break;
+            case WAITING:
+                this.waitCounter -= this.elapsedTime;
+                if (this.waitCounter <= 0) {
+                    this.waitCounter = MAIN_VIEW_WAIT_TIME;
+                    this.gameState = MainGameState.SHOW_MAIN_VIEW;
+                    this.changeToTaskView();
+                }
+                break;
         }
     }
 
@@ -468,13 +479,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-
-    }
-
     public void render(Canvas canvas) {
         if (canvas != null) {
+            if (this.firstTimeRendering) {
+                this.firstTimeRendering = false;
+                Log.i(TAG, "firstTimeRendering");
+            }
             canvas.drawBitmap(this.background, 0, 0, null);
 
             for (SlotMachineIcon icon : this.icons) {
@@ -487,7 +497,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             this.saufOMeter.draw(canvas);
 
-            this.getButton().draw(canvas);
+            this.button.draw(canvas);
         }
     }
 
@@ -515,13 +525,5 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void setElapsedTime(long elapsedTime) {
         this.elapsedTime = elapsedTime;
-    }
-
-    public DrawableButton getButton() {
-        return this.button;
-    }
-
-    public void setButton(DrawableButton button) {
-        this.button = button;
     }
 }

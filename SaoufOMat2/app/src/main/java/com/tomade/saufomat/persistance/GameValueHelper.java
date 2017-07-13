@@ -50,6 +50,7 @@ public class GameValueHelper {
     public void saveGameSaved(boolean gameSaved) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putBoolean(IS_GAME_SAVED_KEY, gameSaved);
+        editor.putInt(GAME_VERSION_KEY, GAME_VERSION);
         editor.apply();
         Log.d(TAG, "GameSaved [" + gameSaved + "] saved");
     }
@@ -70,7 +71,10 @@ public class GameValueHelper {
     }
 
     public boolean isGameSaved() {
-        if (this.sharedPreferences.getInt(GAME_VERSION_KEY, -1) < GAME_VERSION) {
+        int loadedGameVersion = this.sharedPreferences.getInt(GAME_VERSION_KEY, -1);
+        if (loadedGameVersion < GAME_VERSION) {
+            Log.i(TAG, "Loaded Game version is to low (Loaded Version: " + loadedGameVersion + ", current Version: "
+                    + GAME_VERSION + ")");
             return false;
         }
         return this.sharedPreferences.getBoolean(IS_GAME_SAVED_KEY, false);
