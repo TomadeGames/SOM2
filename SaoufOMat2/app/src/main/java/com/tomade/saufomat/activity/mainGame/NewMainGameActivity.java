@@ -11,14 +11,18 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import com.tomade.saufomat.R;
+import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NewMainGameActivity extends Activity implements View.OnClickListener {
     private static final String TAG = NewMainGameActivity.class.getSimpleName();
     private static final long LEFT_ICON_ANIMATION_DURATION = 500;
     private static final long MIDDLE_ICON_ANIMATION_DURATION = 350;
     private static final long RIGHT_ICON_ANIMATION_DURATION = 400;
+    private static final long ICONS_ANIMATION_DISTANCE = 1000;
     private static final long ICON_STOP_POSITION = 180;
     private static final long ICON_STOP_DURATION = 500;
     private static final int EASY_CHANCE = 4;
@@ -30,6 +34,9 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private ImageView leftIcon;
     private ImageView middleIcon;
     private ImageView rightIcon;
+    private ImageView[] icons = new ImageView[3];
+
+    private TaskDifficult[] difficults = {TaskDifficult.EASY, TaskDifficult.MEDIUM, TaskDifficult.HARD};
 
     private Animation leftRollingAnimation;
     private Animation middleRollingAnimation;
@@ -38,6 +45,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private boolean leftRolling = false;
     private boolean middleRolling = false;
     private boolean rightRolling = false;
+    private ImageView saufOMeter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,10 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         this.leftIcon = (ImageView) this.findViewById(R.id.GameIconLeft);
         this.middleIcon = (ImageView) this.findViewById(R.id.GameIconMiddle);
         this.rightIcon = (ImageView) this.findViewById(R.id.GameIconRight);
+        this.saufOMeter = (ImageView) this.findViewById(R.id.SaufOMeter);
+        this.icons[0] = this.leftIcon;
+        this.icons[1] = this.middleIcon;
+        this.icons[2] = this.rightIcon;
         View startButton = this.findViewById(R.id.startButton);
 
         this.initAnimations();
@@ -114,7 +126,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
     private void startRightAnimation() {
         Log.d(TAG, "startRightAnimation");
-        this.rightIcon.animate().y(1000).setDuration(500).setListener(new Animator.AnimatorListener() {
+        this.rightIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new Animator
+                .AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
             }
@@ -163,7 +176,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     }
 
     private void startMiddleAnimation() {
-        this.middleIcon.animate().y(1000).setDuration(500).setListener(new Animator.AnimatorListener() {
+        this.middleIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new Animator
+                .AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
             }
@@ -211,7 +225,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     }
 
     private void startLeftAnimation() {
-        this.leftIcon.animate().y(1000).setDuration(500).setListener(new Animator.AnimatorListener() {
+        this.leftIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new Animator
+                .AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
             }
@@ -258,7 +273,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         }).start();
     }
 
-    private void changeIcon(ImageView view) {
+    private void changeIcon(int viewIndex) {
         final int easyImage = R.drawable.beer_icon;
         final int mediumImage = R.drawable.cocktail_icon;
         final int hardImage = R.drawable.shot_icon;
@@ -266,17 +281,68 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
         int fullChance = EASY_CHANCE + MEDIUM_CHANCE + HARD_CHANCE + GAME_CHANCE;
         Random random = new Random(System.currentTimeMillis());
+        ImageView view = this.icons[viewIndex];
+        Log.d(TAG, "viewIndex: " + viewIndex + ", icons.length: " + this.icons.length + ", View: " + view);
 
         int value = random.nextInt(fullChance);
         if (value < EASY_CHANCE) {
             view.setImageResource(easyImage);
+            this.difficults[viewIndex] = TaskDifficult.EASY;
         } else if (value < EASY_CHANCE + MEDIUM_CHANCE) {
             view.setImageResource(mediumImage);
+            this.difficults[viewIndex] = TaskDifficult.MEDIUM;
         } else if (value < EASY_CHANCE + MEDIUM_CHANCE + HARD_CHANCE) {
             view.setImageResource(hardImage);
+            this.difficults[viewIndex] = TaskDifficult.HARD;
         } else {
             view.setImageResource(gameImage);
+            this.difficults[viewIndex] = TaskDifficult.GAME;
         }
+    }
+
+    private void moveSaufOMeter() {
+        DifficultWithSaufOMeterEndFrame difficultWithSaufOMeterEndFrame = MainGameUtils.getCurrentDifficult(
+                this.difficults[0], this.difficults[1], this.difficults[2]);
+
+        final int lastFrame = difficultWithSaufOMeterEndFrame.getSaufOMeterEndFrame();
+        final TaskDifficult difficult = difficultWithSaufOMeterEndFrame.getDifficult();
+
+        final int[] imageIds = {R.drawable.saufometer1,
+                R.drawable.saufometer2,
+                R.drawable.saufometer3,
+                R.drawable.saufometer4,
+                R.drawable.saufometer5,
+                R.drawable.saufometer6,
+                R.drawable.saufometer7,
+                R.drawable.saufometer8,
+                R.drawable.saufometer9,
+                R.drawable.saufometer10,
+                R.drawable.saufometer11,
+                R.drawable.saufometer11
+        };
+
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            int animationCounter = 0;
+
+            @Override
+            public void run() {
+                if (this.animationCounter > lastFrame) {
+                    timer.cancel();
+                }
+                NewMainGameActivity.this.saufOMeter.post(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (animationCounter < imageIds.length) {
+                                    NewMainGameActivity.this.saufOMeter.setImageResource(imageIds[animationCounter]);
+                                }
+                            }
+                        });
+                Log.d(TAG, "animationCounter: " + this.animationCounter);
+                this.animationCounter++;
+            }
+        }, 0, 500);
     }
 
     private void initAnimations() {
@@ -290,7 +356,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         this.leftRollingAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                changeIcon(NewMainGameActivity.this.leftIcon);
+                changeIcon(0);
             }
 
             @Override
@@ -298,11 +364,12 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                 Log.d(TAG, "moving leftIcon to endPosition");
                 NewMainGameActivity.this.leftIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
                         .start();
+                moveSaufOMeter();
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                changeIcon(NewMainGameActivity.this.leftIcon);
+                changeIcon(0);
             }
         });
 
@@ -316,7 +383,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         this.middleRollingAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                changeIcon(NewMainGameActivity.this.middleIcon);
+                changeIcon(1);
             }
 
             @Override
@@ -328,7 +395,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                changeIcon(NewMainGameActivity.this.middleIcon);
+                changeIcon(1);
             }
         });
 
@@ -342,7 +409,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         this.rightRollingAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                changeIcon(NewMainGameActivity.this.rightIcon);
+                changeIcon(2);
             }
 
             @Override
@@ -356,7 +423,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             @Override
             public void onAnimationRepeat(Animation animation) {
                 Log.d(TAG, "right repeated");
-                changeIcon(NewMainGameActivity.this.rightIcon);
+                changeIcon(2);
             }
         });
     }
