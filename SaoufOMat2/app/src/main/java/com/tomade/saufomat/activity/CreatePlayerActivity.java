@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.mainGame.MainGameActivity;
+import com.tomade.saufomat.activity.mainGame.NewMainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.persistance.GameValueHelper;
@@ -68,26 +68,32 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                     this.gameStarting = true;
                     this.setPlayerOrder();
                     this.trimPlayerNames();
-                    Intent mainGameIntent = new Intent(this, MainGameActivity.class);
-                    mainGameIntent.putExtra(IntentParameter.PLAYER_LIST, this.players);
-                    mainGameIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
 
                     DatabaseHelper databaseHelper = new DatabaseHelper(this);
                     databaseHelper.startNewGame();
+
                     for (Player player : this.players) {
                         databaseHelper.insertPlayer(player);
                     }
                     GameValueHelper gameValueHelper = new GameValueHelper(this);
                     gameValueHelper.saveGameSaved(false);
 
-                    this.finish();
-                    this.startActivity(mainGameIntent);
+                    this.changeToMainGame();
                 } else {
                     Toast.makeText(CreatePlayerActivity.this, R.string.create_player_no_player, Toast.LENGTH_LONG)
                             .show();
                 }
                 break;
         }
+    }
+
+    private void changeToMainGame() {
+        Intent intent = new Intent(this, NewMainGameActivity.class);
+        intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
+        intent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
+
+        this.finish();
+        this.startActivity(intent);
     }
 
     private void setPlayerOrder() {
