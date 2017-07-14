@@ -19,6 +19,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private static final long LEFT_ICON_ANIMATION_DURATION = 500;
     private static final long MIDDLE_ICON_ANIMATION_DURATION = 350;
     private static final long RIGHT_ICON_ANIMATION_DURATION = 400;
+    private static final long ICON_STOP_POSITION = 180;
+    private static final long ICON_STOP_DURATION = 500;
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
     private static final int HARD_CHANCE = 3;
@@ -32,6 +34,10 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private Animation leftRollingAnimation;
     private Animation middleRollingAnimation;
     private Animation rightRollingAnimation;
+
+    private boolean leftRolling = false;
+    private boolean middleRolling = false;
+    private boolean rightRolling = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +65,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                         this.startLeftAnimation();
                         this.startMiddleAnimation();
                         this.startRightAnimation();
-                        this.gameState = MainGameState.ROLLING_ALL;
                         break;
                     case ROLLING_ALL:
                         this.stopRightAnimation();
@@ -81,18 +86,34 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     }
 
     private void stopLeftAnimation() {
-        //TODO
+        Log.d(TAG, "left canceled");
+        this.leftIcon.clearAnimation();
+        this.leftIcon.setAnimation(null);
+        this.leftRolling = false;
     }
 
     private void stopMiddleAnimation() {
-//TODO
+        Log.d(TAG, "middle canceled");
+        this.middleRollingAnimation.cancel();
+        this.middleRollingAnimation.reset();
+        this.middleRolling = false;
     }
 
     private void stopRightAnimation() {
-//TODO
+        Log.d(TAG, "right canceled");
+        this.rightRollingAnimation.cancel();
+        this.rightRollingAnimation.reset();
+        this.rightRolling = false;
+    }
+
+    private void checkIfAllRolling() {
+        if (this.leftRolling && this.middleRolling && this.rightRolling) {
+            this.gameState = MainGameState.ROLLING_ALL;
+        }
     }
 
     private void startRightAnimation() {
+        Log.d(TAG, "startRightAnimation");
         this.rightIcon.animate().y(1000).setDuration(500).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -100,17 +121,21 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                Log.d(TAG, "right moving to Top");
                 NewMainGameActivity.this.rightIcon.animate().y(-500).setDuration(0).setListener(new Animator
                         .AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
-
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
+                        Log.d(TAG, "right rolling started");
+                        NewMainGameActivity.this.rightIcon.animate().setListener(null);
                         NewMainGameActivity.this.rightIcon.startAnimation(
                                 NewMainGameActivity.this.rightRollingAnimation);
+                        NewMainGameActivity.this.rightRolling = true;
+                        checkIfAllRolling();
                     }
 
                     @Override
@@ -154,8 +179,11 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
+                        NewMainGameActivity.this.middleIcon.animate().setListener(null);
                         NewMainGameActivity.this.middleIcon.startAnimation(
                                 NewMainGameActivity.this.middleRollingAnimation);
+                        NewMainGameActivity.this.middleRolling = true;
+                        checkIfAllRolling();
                     }
 
                     @Override
@@ -199,8 +227,11 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
+                        NewMainGameActivity.this.leftIcon.animate().setListener(null);
                         NewMainGameActivity.this.leftIcon.startAnimation(
                                 NewMainGameActivity.this.leftRollingAnimation);
+                        NewMainGameActivity.this.leftRolling = true;
+                        checkIfAllRolling();
                     }
 
                     @Override
@@ -264,7 +295,9 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                Log.d(TAG, "moving leftIcon to endPosition");
+                NewMainGameActivity.this.leftIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
+                        .start();
             }
 
             @Override
@@ -288,7 +321,9 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                Log.d(TAG, "moving middleIcon to endposition");
+                NewMainGameActivity.this.middleIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
+                        .start();
             }
 
             @Override
@@ -312,11 +347,15 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                Log.d(TAG, "moving rightIcon to endPosition");
+                NewMainGameActivity.this.rightIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
+                        .start();
 
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+                Log.d(TAG, "right repeated");
                 changeIcon(NewMainGameActivity.this.rightIcon);
             }
         });
