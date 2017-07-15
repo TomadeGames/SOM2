@@ -1,6 +1,13 @@
 package com.tomade.saufomat.activity.mainGame;
 
+import android.content.Context;
+
+import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
+import com.tomade.saufomat.constant.MiniGame;
+import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.Random;
 
@@ -105,5 +112,39 @@ public class MainGameUtils {
                 return new DifficultWithSaufOMeterEndFrame(TaskDifficult.HARD, saufOMeterEndFrame);
         }
         return new DifficultWithSaufOMeterEndFrame(TaskDifficult.UNDEFINED, 0);
+    }
+
+    public static void saveGame(Context context, final int adCounter, final Player currentPlayer, final MiniGame
+            currentMiniGame) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+        databaseHelper.miniGameUsed(currentMiniGame);
+
+        saveGame(context, adCounter, currentPlayer, databaseHelper);
+    }
+
+    public static void saveGame(final Context context, final int adCounter, final Player currentPlayer, final Task
+            currentTask) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+
+        saveGame(context, adCounter, currentPlayer, databaseHelper);
+    }
+
+    private static void saveGame(final Context context, final int adCounter, final Player currentPlayer,
+                                 DatabaseHelper databaseHelper) {
+        Player player = currentPlayer;
+        do {
+            databaseHelper.updatePlayer(player);
+            player = player.getNextPlayer();
+        } while (player != currentPlayer);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GameValueHelper gameValueHelper = new GameValueHelper(context);
+                gameValueHelper.saveCurrentPlayer(currentPlayer);
+                gameValueHelper.saveAdCounter(adCounter);
+                gameValueHelper.saveGameSaved(true);
+            }
+        }).start();
     }
 }

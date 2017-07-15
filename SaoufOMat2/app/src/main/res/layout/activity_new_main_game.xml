@@ -89,7 +89,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:visibility="visible"
         app:srcCompat="@drawable/saufometer0"/>
 
 </RelativeLayout>

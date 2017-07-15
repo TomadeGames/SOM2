@@ -2,6 +2,8 @@ package com.tomade.saufomat.activity.mainGame;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,9 +12,19 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdListener;
+import com.tomade.saufomat.AdService;
+import com.tomade.saufomat.MiniGameProvider;
 import com.tomade.saufomat.R;
+import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
+import com.tomade.saufomat.activity.mainGame.task.TaskProvider;
+import com.tomade.saufomat.constant.IntentParameter;
+import com.tomade.saufomat.constant.MiniGame;
+import com.tomade.saufomat.model.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +41,12 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private static final int MEDIUM_CHANCE = 4;
     private static final int HARD_CHANCE = 3;
     private static final int GAME_CHANCE = 1;
+
+    private static final int AD_LIMIT = 7; //Original 8, erstmal 7
+    private static int adCounter = 0;
+
+    private Player currentPlayer;
+    private ArrayList<Player> playerList;
 
     private MainGameState gameState;
     private ImageView leftIcon;
@@ -50,6 +68,24 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AdService.initializeInterstitialAd(this);
+        AdService.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                adCounter = 0;
+                changeView();
+            }
+        });
+        Bundle extras = this.getIntent().getExtras();
+        ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
+        Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
+        adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
+        boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
+
+        if (newGame) {
+            TaskProvider taskProvider = new TaskProvider(this);
+            taskProvider.resetTasks();
+        }
         this.gameState = MainGameState.GAME_START;
 
         this.setContentView(R.layout.activity_new_main_game);
@@ -79,7 +115,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                         this.startRightAnimation();
                         break;
                     case ROLLING_ALL:
-                        this.stopRightAnimation();
+                        this.stopLeftAnimation();
                         this.gameState = MainGameState.STOP1;
                         break;
                     case STOP1:
@@ -87,7 +123,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                         this.gameState = MainGameState.STOP2;
                         break;
                     case STOP2:
-                        this.stopLeftAnimation();
+                        this.stopRightAnimation();
                         this.gameState = MainGameState.STOP_ALL;
                         break;
                     case STOP_ALL:
@@ -306,43 +342,89 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
         final int lastFrame = difficultWithSaufOMeterEndFrame.getSaufOMeterEndFrame();
         final TaskDifficult difficult = difficultWithSaufOMeterEndFrame.getDifficult();
+        final boolean isMiniGame = difficult == TaskDifficult.GAME;
 
-        final int[] imageIds = {R.drawable.saufometer1,
-                R.drawable.saufometer2,
-                R.drawable.saufometer3,
-                R.drawable.saufometer4,
-                R.drawable.saufometer5,
-                R.drawable.saufometer6,
-                R.drawable.saufometer7,
-                R.drawable.saufometer8,
-                R.drawable.saufometer9,
-                R.drawable.saufometer10,
-                R.drawable.saufometer11,
-                R.drawable.saufometer11
-        };
+        final List<Integer> imageIds = new ArrayList<>();
+        if (lastFrame >= 0) {
+            imageIds.add(R.drawable.saufometer1);
+        }
+        if (lastFrame >= 2) {
+            imageIds.add(R.drawable.saufometer2);
+        }
+        if (lastFrame >= 3) {
+            imageIds.add(R.drawable.saufometer3);
+        }
+        if (lastFrame >= 4) {
+            imageIds.add(R.drawable.saufometer4);
+        }
+        if (lastFrame >= 5) {
+            imageIds.add(R.drawable.saufometer5);
+        }
+        if (lastFrame >= 6) {
+            imageIds.add(R.drawable.saufometer6);
+        }
+        if (lastFrame >= 7) {
+            imageIds.add(R.drawable.saufometer7);
+            if (lastFrame == 7) {
+                imageIds.add(R.drawable.saufometer10);
+                imageIds.add(R.drawable.saufometer7);
+                imageIds.add(R.drawable.saufometer10);
+                imageIds.add(R.drawable.saufometer7);
+                imageIds.add(R.drawable.saufometer10);
+            }
+        }
+        if (lastFrame >= 8) {
+            imageIds.add(R.drawable.saufometer8);
+            if (lastFrame == 8) {
+                imageIds.add(R.drawable.saufometer11);
+                imageIds.add(R.drawable.saufometer8);
+                imageIds.add(R.drawable.saufometer11);
+                imageIds.add(R.drawable.saufometer8);
+                imageIds.add(R.drawable.saufometer11);
+            }
+        }
+        if (lastFrame >= 9) {
+            imageIds.add(R.drawable.saufometer9);
+            imageIds.add(R.drawable.saufometer12);
+            imageIds.add(R.drawable.saufometer9);
+            imageIds.add(R.drawable.saufometer12);
+            imageIds.add(R.drawable.saufometer9);
+            imageIds.add(R.drawable.saufometer12);
+        }
 
+        final Context context = this;
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
+            final int WAITING_FRAMES = 3;
             int animationCounter = 0;
+            boolean isWaitingTime = false;
 
             @Override
             public void run() {
-                if (this.animationCounter > lastFrame) {
-                    timer.cancel();
-                }
-                NewMainGameActivity.this.saufOMeter.post(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (animationCounter < imageIds.length) {
-                                    NewMainGameActivity.this.saufOMeter.setImageResource(imageIds[animationCounter]);
+                if (!this.isWaitingTime) {
+                    NewMainGameActivity.this.saufOMeter.post(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    NewMainGameActivity.this.saufOMeter.setImageResource(imageIds.get
+                                            (animationCounter));
                                 }
-                            }
-                        });
-                Log.d(TAG, "animationCounter: " + this.animationCounter);
+                            });
+                } else if (this.animationCounter - imageIds.size() > this.WAITING_FRAMES) {
+                    timer.cancel();
+                    if (isMiniGame) {
+                        changeToTaskView(new MiniGameProvider(context).getRandomMiniGame());
+                    } else {
+                        changeToTaskView(new TaskProvider(context).getNextTask(difficult));
+                    }
+                }
                 this.animationCounter++;
+                if (this.animationCounter >= imageIds.size() - 1) {
+                    Log.d(TAG, "SaufOMeterAnimation canceled");
+                    this.isWaitingTime = true;
+                }
             }
-        }, 0, 500);
+        }, 0, 250);
     }
 
     private void initAnimations() {
@@ -364,7 +446,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                 Log.d(TAG, "moving leftIcon to endPosition");
                 NewMainGameActivity.this.leftIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
                         .start();
-                moveSaufOMeter();
             }
 
             @Override
@@ -417,6 +498,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                 Log.d(TAG, "moving rightIcon to endPosition");
                 NewMainGameActivity.this.rightIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
                         .start();
+                moveSaufOMeter();
 
             }
 
@@ -426,5 +508,45 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                 changeIcon(2);
             }
         });
+    }
+
+    private void changeToTaskView(Task task) {
+        Intent taskViewIntent = new Intent(this, TaskViewActivity.class);
+        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, task);
+        MainGameUtils.saveGame(this, adCounter, this.currentPlayer, task);
+        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
+
+        this.changeToTaskView(taskViewIntent);
+    }
+
+    private void changeToTaskView(MiniGame miniGame) {
+        Intent taskViewIntent = new Intent(this, TaskViewActivity.class);
+        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
+        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
+        MainGameUtils.saveGame(this, adCounter, this.currentPlayer, miniGame);
+
+        this.changeToTaskView(taskViewIntent);
+    }
+
+    private void changeToTaskView(Intent taskViewIntent) {
+        taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
+        taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
+        if (adCounter >= AD_LIMIT) {
+            adCounter = 0;
+            if (!AdService.showAd()) {
+                Log.e(TAG, "Ad cannot be shown");
+                this.changeView(taskViewIntent);
+            }
+        } else {
+            adCounter++;
+            this.changeView(taskViewIntent);
+        }
+    }
+
+    private void changeView(Intent intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.putExtra(IntentParameter.MainGame.AD_COUNTER, adCounter);
+        this.finish();
+        this.startActivity(intent);
     }
 }
