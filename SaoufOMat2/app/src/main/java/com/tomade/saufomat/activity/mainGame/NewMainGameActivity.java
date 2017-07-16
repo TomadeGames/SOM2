@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.tomade.saufomat.AdService;
@@ -70,6 +71,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setContentView(R.layout.activity_new_main_game);
         AdService.initializeInterstitialAd(this);
         AdService.setAdListener(new AdListener() {
             @Override
@@ -92,7 +94,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
         this.taskViewIntent = new Intent(this, TaskViewActivity.class);
 
-        this.setContentView(R.layout.activity_new_main_game);
+        TextView playerNameTextView = (TextView) this.findViewById(R.id.playerName);
+        playerNameTextView.setText(this.currentPlayer.getName());
         this.leftIcon = (ImageView) this.findViewById(R.id.GameIconLeft);
         this.middleIcon = (ImageView) this.findViewById(R.id.GameIconMiddle);
         this.rightIcon = (ImageView) this.findViewById(R.id.GameIconRight);
@@ -405,7 +408,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             @Override
             public void run() {
                 if (!this.isWaitingTime) {
-                    Log.d(TAG, "waitingTime: " + this.isWaitingTime);
                     NewMainGameActivity.this.saufOMeter.post(
                             new Runnable() {
                                 @Override
@@ -429,7 +431,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                 }
                 this.animationCounter++;
                 if (this.animationCounter >= imageIds.size() - 1) {
-                    Log.d(TAG, "SaufOMeterAnimation canceled");
                     this.isWaitingTime = true;
                 }
             }

@@ -25,6 +25,7 @@ import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.Player;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 //TODO: Wenn kein Nein zur Verfügung steht: Anstatt einen ausgegrauten Button einen großen Grünen Button anzeigen
@@ -340,7 +341,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                 playerText = String.format("%s: %d", player.getName(), player.getDrinks());
             } else {
                 float alc = this.calculateAlcohol(player.getDrinks(), player.getWeight(), player.getIsMan());
-                playerText = String.format("%s: %1$.2d%", player.getName(), alc);
+                DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                playerText = player.getName() + ": " + decimalFormat.format(alc) + "%";
             }
             statisticValue += playerText + "\n";
             player = player.getNextPlayer();

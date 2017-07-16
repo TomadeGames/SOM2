@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,13 +24,13 @@
         android:id="@+id/GameIconLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="92dp"
-        android:layout_marginStart="92dp"
-        android:src="@drawable/beer_icon"
-        android:layout_marginBottom="37dp"
         android:layout_above="@+id/startButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="35dp"
+        android:layout_marginLeft="92dp"
+        android:layout_marginStart="92dp"
+        android:src="@drawable/beer_icon"/>
 
     <ImageView
         android:id="@+id/GameIconMiddle"
@@ -83,12 +82,47 @@
         android:src="@drawable/start_button"/>
 
     <ImageView
+        android:id="@+id/saufOMeterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/SaufOMeter"
+        android:layout_alignRight="@id/SaufOMeter"
+        android:layout_above="@id/SaufOMeter"
+        android:layout_marginLeft="-15dp"
+        android:layout_marginRight="-15dp"
+        android:layout_marginBottom="-100dp"
+        android:src="@drawable/saufometer_name"
+        />
+
+    <ImageView
         android:id="@+id/SaufOMeter"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        app:srcCompat="@drawable/saufometer0"/>
+        android:layout_marginLeft="55dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/saufometer0"/>
+
+    <RelativeLayout
+        android:id="@+id/playerNameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/playerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="PlayerName"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
 
 </RelativeLayout>
