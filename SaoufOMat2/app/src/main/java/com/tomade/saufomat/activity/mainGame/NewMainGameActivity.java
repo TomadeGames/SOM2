@@ -65,6 +65,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private boolean rightRolling = false;
     private ImageView saufOMeter;
 
+    private Intent taskViewIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +79,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             }
         });
         Bundle extras = this.getIntent().getExtras();
-        ArrayList<Player> players = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
-        Player currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
+        this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
+        this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
         adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
         boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
 
@@ -87,6 +89,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             taskProvider.resetTasks();
         }
         this.gameState = MainGameState.GAME_START;
+
+        this.taskViewIntent = new Intent(this, TaskViewActivity.class);
 
         this.setContentView(R.layout.activity_new_main_game);
         this.leftIcon = (ImageView) this.findViewById(R.id.GameIconLeft);
@@ -318,7 +322,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         int fullChance = EASY_CHANCE + MEDIUM_CHANCE + HARD_CHANCE + GAME_CHANCE;
         Random random = new Random(System.currentTimeMillis());
         ImageView view = this.icons[viewIndex];
-        Log.d(TAG, "viewIndex: " + viewIndex + ", icons.length: " + this.icons.length + ", View: " + view);
 
         int value = random.nextInt(fullChance);
         if (value < EASY_CHANCE) {
@@ -402,12 +405,18 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             @Override
             public void run() {
                 if (!this.isWaitingTime) {
+                    Log.d(TAG, "waitingTime: " + this.isWaitingTime);
                     NewMainGameActivity.this.saufOMeter.post(
                             new Runnable() {
                                 @Override
                                 public void run() {
-                                    NewMainGameActivity.this.saufOMeter.setImageResource(imageIds.get
-                                            (animationCounter));
+                                    if (animationCounter < imageIds.size()) {
+                                        NewMainGameActivity.this.saufOMeter.setImageResource(imageIds.get
+                                                (animationCounter));
+                                    } else {
+                                        NewMainGameActivity.this.saufOMeter.setImageResource(imageIds.get(imageIds
+                                                .size() - 1));
+                                    }
                                 }
                             });
                 } else if (this.animationCounter - imageIds.size() > this.WAITING_FRAMES) {
@@ -504,49 +513,46 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                Log.d(TAG, "right repeated");
                 changeIcon(2);
             }
         });
     }
 
     private void changeToTaskView(Task task) {
-        Intent taskViewIntent = new Intent(this, TaskViewActivity.class);
-        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, task);
+        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, task);
         MainGameUtils.saveGame(this, adCounter, this.currentPlayer, task);
-        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
+        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
 
-        this.changeToTaskView(taskViewIntent);
+        this.changeToTaskView();
     }
 
     private void changeToTaskView(MiniGame miniGame) {
-        Intent taskViewIntent = new Intent(this, TaskViewActivity.class);
-        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
-        taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
+        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
+        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
         MainGameUtils.saveGame(this, adCounter, this.currentPlayer, miniGame);
 
-        this.changeToTaskView(taskViewIntent);
+        this.changeToTaskView();
     }
 
-    private void changeToTaskView(Intent taskViewIntent) {
-        taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-        taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
+    private void changeToTaskView() {
+        this.taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
+        this.taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         if (adCounter >= AD_LIMIT) {
             adCounter = 0;
             if (!AdService.showAd()) {
                 Log.e(TAG, "Ad cannot be shown");
-                this.changeView(taskViewIntent);
+                this.changeView();
             }
         } else {
             adCounter++;
-            this.changeView(taskViewIntent);
+            this.changeView();
         }
     }
 
-    private void changeView(Intent intent) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra(IntentParameter.MainGame.AD_COUNTER, adCounter);
+    private void changeView() {
+        this.taskViewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        this.taskViewIntent.putExtra(IntentParameter.MainGame.AD_COUNTER, adCounter);
         this.finish();
-        this.startActivity(intent);
+        this.startActivity(this.taskViewIntent);
     }
 }

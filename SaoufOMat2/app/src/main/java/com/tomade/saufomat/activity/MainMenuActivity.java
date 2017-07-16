@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.mainGame.MainGameActivity;
+import com.tomade.saufomat.activity.mainGame.NewMainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.persistance.GameValueHelper;
@@ -106,7 +106,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         Player currentPlayer = gameValueHelper.getCurrentPlayer();
         int adCounter = gameValueHelper.getAdCounter();
 
-        Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
+        Intent intent = new Intent(this.getApplicationContext(), NewMainGameActivity.class);
         intent.putExtra(IntentParameter.PLAYER_LIST, allPlayer);
         intent.putExtra(IntentParameter.MainGame.NEW_GAME, false);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
