@@ -27,9 +27,11 @@
         android:layout_above="@+id/startButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginLeft="92dp"
         android:layout_marginStart="92dp"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
         android:src="@drawable/beer_icon"/>
 
     <ImageView
@@ -42,6 +44,8 @@
         android:layout_toLeftOf="@+id/startButton"
         android:layout_toStartOf="@+id/startButton"
         android:scaleType="fitXY"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
         android:src="@drawable/cocktail_icon"/>
 
     <ImageView
@@ -53,6 +57,8 @@
         android:layout_alignTop="@+id/GameIconLeft"
         android:layout_marginEnd="34dp"
         android:layout_marginRight="34dp"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
         android:src="@drawable/shot_icon"/>
 
     <ImageView
@@ -85,8 +91,8 @@
         android:id="@+id/saufOMeterName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/SaufOMeter"
-        android:layout_alignRight="@id/SaufOMeter"
+        android:layout_alignLeft="@+id/SaufOMeter"
+        android:layout_alignRight="@+id/SaufOMeter"
         android:layout_above="@id/SaufOMeter"
         android:layout_marginLeft="-15dp"
         android:layout_marginRight="-15dp"

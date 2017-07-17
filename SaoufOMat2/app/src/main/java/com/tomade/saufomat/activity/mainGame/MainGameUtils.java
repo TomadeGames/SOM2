@@ -45,8 +45,8 @@ class DifficultWithSaufOMeterEndFrame {
 }
 
 public class MainGameUtils {
-    public static DifficultWithSaufOMeterEndFrame getCurrentDifficult(TaskDifficult leftDifficult, TaskDifficult
-            middleDifficult, TaskDifficult rightDifficult) {
+    public static DifficultWithSaufOMeterEndFrame getCurrentDifficult(IconState leftDifficult, IconState
+            middleDifficult, IconState rightDifficult) {
 
         float difficult = 0;
         int gameCount = 0;
@@ -62,14 +62,14 @@ public class MainGameUtils {
                     break;
             }
         }
-        TaskDifficult[] difficulties = {leftDifficult, middleDifficult, rightDifficult};
+        IconState[] difficulties = {leftDifficult, middleDifficult, rightDifficult};
         for (int i = 0; i < 3; i++) {
             switch (difficulties[i]) {
                 case EASY:
                     difficult += 0.2;
                     break;
                 case MEDIUM:
-                    difficult += 1.4;
+                    difficult += 1.5;
                     break;
                 case HARD:
                     difficult += 2.8;
@@ -80,6 +80,16 @@ public class MainGameUtils {
             }
         }
 
+        if (leftDifficult == IconState.GAME) {
+            gameCount++;
+        }
+        if (middleDifficult == IconState.GAME) {
+            gameCount++;
+        }
+        if (rightDifficult == IconState.GAME) {
+            gameCount++;
+        }
+
         Random random = new Random(System.currentTimeMillis());
         difficult = ((difficult) / (3 - gameCount));
         int tmpDiff = (int) difficult;
@@ -88,19 +98,19 @@ public class MainGameUtils {
         if (random.nextInt(3) < gameCount) {
             return new DifficultWithSaufOMeterEndFrame(TaskDifficult.GAME, 0);
         }
-        if (difficult > 0.6) {
+        if (difficult >= 0.6) {
             saufOMeterEndFrame++;
         }
-        if (difficult > 0.95) {
+        if (difficult >= 0.95) {
             saufOMeterEndFrame++;
         }
-        if (difficult > 1.5) {
+        if (difficult >= 1.5) {
             saufOMeterEndFrame++;
         }
-        if (difficult > 2) {
+        if (difficult >= 2) {
             saufOMeterEndFrame++;
         }
-        if (difficult > 2.2) {
+        if (difficult >= 2.2) {
             saufOMeterEndFrame++;
         }
         switch (tmpDiff) {
@@ -111,7 +121,7 @@ public class MainGameUtils {
             case 2:
                 return new DifficultWithSaufOMeterEndFrame(TaskDifficult.HARD, saufOMeterEndFrame);
         }
-        return new DifficultWithSaufOMeterEndFrame(TaskDifficult.UNDEFINED, 0);
+        return null;
     }
 
     public static void saveGame(Context context, final int adCounter, final Player currentPlayer, final MiniGame

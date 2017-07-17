@@ -54,6 +54,7 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:maxLines="10"
             android:text="Large Text"

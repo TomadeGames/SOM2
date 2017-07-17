@@ -35,6 +35,8 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private static final long LEFT_ICON_ANIMATION_DURATION = 500;
     private static final long MIDDLE_ICON_ANIMATION_DURATION = 350;
     private static final long RIGHT_ICON_ANIMATION_DURATION = 400;
+    private static final long SAUFOMETER_ANIMATION_TICK_DURATION = 200;
+    private static final int SAUFOMETER_WAITING_FRAMES_AMOUNT = 2;
     private static final long ICONS_ANIMATION_DISTANCE = 1000;
     private static final long ICON_STOP_POSITION = 180;
     private static final long ICON_STOP_DURATION = 500;
@@ -55,7 +57,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private ImageView rightIcon;
     private ImageView[] icons = new ImageView[3];
 
-    private TaskDifficult[] difficults = {TaskDifficult.EASY, TaskDifficult.MEDIUM, TaskDifficult.HARD};
+    private IconState[] iconStates = {IconState.EASY, IconState.MEDIUM, IconState.HARD};
 
     private Animation leftRollingAnimation;
     private Animation middleRollingAnimation;
@@ -329,22 +331,22 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         int value = random.nextInt(fullChance);
         if (value < EASY_CHANCE) {
             view.setImageResource(easyImage);
-            this.difficults[viewIndex] = TaskDifficult.EASY;
+            this.iconStates[viewIndex] = IconState.EASY;
         } else if (value < EASY_CHANCE + MEDIUM_CHANCE) {
             view.setImageResource(mediumImage);
-            this.difficults[viewIndex] = TaskDifficult.MEDIUM;
+            this.iconStates[viewIndex] = IconState.MEDIUM;
         } else if (value < EASY_CHANCE + MEDIUM_CHANCE + HARD_CHANCE) {
             view.setImageResource(hardImage);
-            this.difficults[viewIndex] = TaskDifficult.HARD;
+            this.iconStates[viewIndex] = IconState.HARD;
         } else {
             view.setImageResource(gameImage);
-            this.difficults[viewIndex] = TaskDifficult.GAME;
+            this.iconStates[viewIndex] = IconState.GAME;
         }
     }
 
     private void moveSaufOMeter() {
         DifficultWithSaufOMeterEndFrame difficultWithSaufOMeterEndFrame = MainGameUtils.getCurrentDifficult(
-                this.difficults[0], this.difficults[1], this.difficults[2]);
+                this.iconStates[0], this.iconStates[1], this.iconStates[2]);
 
         final int lastFrame = difficultWithSaufOMeterEndFrame.getSaufOMeterEndFrame();
         final TaskDifficult difficult = difficultWithSaufOMeterEndFrame.getDifficult();
@@ -401,7 +403,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         final Context context = this;
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
-            final int WAITING_FRAMES = 3;
             int animationCounter = 0;
             boolean isWaitingTime = false;
 
@@ -421,7 +422,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                                     }
                                 }
                             });
-                } else if (this.animationCounter - imageIds.size() > this.WAITING_FRAMES) {
+                } else if (this.animationCounter - imageIds.size() > SAUFOMETER_WAITING_FRAMES_AMOUNT) {
                     timer.cancel();
                     if (isMiniGame) {
                         changeToTaskView(new MiniGameProvider(context).getRandomMiniGame());
@@ -434,7 +435,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
                     this.isWaitingTime = true;
                 }
             }
-        }, 0, 250);
+        }, 0, SAUFOMETER_ANIMATION_TICK_DURATION);
     }
 
     private void initAnimations() {
