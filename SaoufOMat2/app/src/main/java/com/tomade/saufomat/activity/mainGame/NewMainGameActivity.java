@@ -1,16 +1,20 @@
 package com.tomade.saufomat.activity.mainGame;
 
 import android.animation.Animator;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
@@ -38,7 +42,6 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
     private static final long SAUFOMETER_ANIMATION_TICK_DURATION = 200;
     private static final int SAUFOMETER_WAITING_FRAMES_AMOUNT = 2;
     private static final long ICONS_ANIMATION_DISTANCE = 1000;
-    private static final long ICON_STOP_POSITION = 180;
     private static final long ICON_STOP_DURATION = 500;
     private static final int EASY_CHANCE = 4;
     private static final int MEDIUM_CHANCE = 4;
@@ -70,6 +73,13 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
 
     private Intent taskViewIntent;
 
+    private int screenHeight;
+    private int screenWidth;
+
+    private float getIconStopPosition() {
+        return this.screenHeight / 6;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +97,10 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
         adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
         boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
+
+        Point screenSize = MainGameUtils.getScreenSize(this);
+        this.screenHeight = screenSize.y;
+        this.screenWidth = screenSize.x;
 
         if (newGame) {
             TaskProvider taskProvider = new TaskProvider(this);
@@ -106,10 +120,31 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
         this.icons[1] = this.middleIcon;
         this.icons[2] = this.rightIcon;
         View startButton = this.findViewById(R.id.startButton);
-
+        this.moveIconsToCorrectPositions();
         this.initAnimations();
 
         startButton.setOnClickListener(this);
+    }
+
+    private void moveIconsToCorrectPositions() {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = (int) (this.screenWidth / 6);
+        params.topMargin = (int) (this.screenHeight / 6);
+        this.leftIcon.setLayoutParams(params);
+
+        RelativeLayout.LayoutParams middleParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams
+                .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        middleParams.leftMargin = (int) (this.screenWidth / 2);
+
+        this.middleIcon.setLayoutParams(params);
+        this.middleIcon.setX((int) (this.screenWidth / 5.1));
+
+        RelativeLayout.LayoutParams rightParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams
+                .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        rightParams.leftMargin = middleParams.leftMargin;
+        this.rightIcon.setLayoutParams(params);
+        this.rightIcon.setX((int) (this.screenWidth / 2.55));
     }
 
     @Override
@@ -455,7 +490,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             @Override
             public void onAnimationEnd(Animation animation) {
                 Log.d(TAG, "moving leftIcon to endPosition");
-                NewMainGameActivity.this.leftIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
+                NewMainGameActivity.this.leftIcon.animate().y(getIconStopPosition()).setDuration(ICON_STOP_DURATION)
                         .start();
             }
 
@@ -481,7 +516,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             @Override
             public void onAnimationEnd(Animation animation) {
                 Log.d(TAG, "moving middleIcon to endposition");
-                NewMainGameActivity.this.middleIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
+                NewMainGameActivity.this.middleIcon.animate().y(getIconStopPosition()).setDuration(ICON_STOP_DURATION)
                         .start();
             }
 
@@ -507,7 +542,7 @@ public class NewMainGameActivity extends Activity implements View.OnClickListene
             @Override
             public void onAnimationEnd(Animation animation) {
                 Log.d(TAG, "moving rightIcon to endPosition");
-                NewMainGameActivity.this.rightIcon.animate().y(ICON_STOP_POSITION).setDuration(ICON_STOP_DURATION)
+                NewMainGameActivity.this.rightIcon.animate().y(getIconStopPosition()).setDuration(ICON_STOP_DURATION)
                         .start();
                 moveSaufOMeter();
 

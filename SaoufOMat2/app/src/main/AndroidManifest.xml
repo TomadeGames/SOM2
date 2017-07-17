@@ -79,7 +79,9 @@
             android:name=".activity.miniGames.biergeballer.BiergeballerActivity"
             android:label="@string/minigame.biergeballer.caption"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.mainGame.NewMainGameActivity">
+        <activity
+            android:name=".activity.mainGame.NewMainGameActivity"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 

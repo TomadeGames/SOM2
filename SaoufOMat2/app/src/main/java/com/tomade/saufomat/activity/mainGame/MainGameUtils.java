@@ -1,6 +1,8 @@
 package com.tomade.saufomat.activity.mainGame;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.view.WindowManager;
 
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
@@ -121,6 +123,13 @@ public class MainGameUtils {
             case 2:
                 return new DifficultWithSaufOMeterEndFrame(TaskDifficult.HARD, saufOMeterEndFrame);
         }
+        if (tmpDiff > 2) {
+            return new DifficultWithSaufOMeterEndFrame(TaskDifficult.HARD, saufOMeterEndFrame);
+        }
+        if (tmpDiff < 0) {
+            return new DifficultWithSaufOMeterEndFrame(TaskDifficult.EASY, saufOMeterEndFrame);
+        }
+
         return null;
     }
 
@@ -156,5 +165,12 @@ public class MainGameUtils {
                 gameValueHelper.saveGameSaved(true);
             }
         }).start();
+    }
+
+    public static Point getScreenSize(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Point size = new Point();
+        wm.getDefaultDisplay().getSize(size);
+        return size;
     }
 }
