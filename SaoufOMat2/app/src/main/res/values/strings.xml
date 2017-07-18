@@ -45,6 +45,8 @@
     <string name="minigame.kings.card_value.ace">Ass Alle müssen trinken!</string>
     <string name="minigame.ich_hab_noch_nie.i_have_never">Ich hab noch nie\n%s</string>
     <string name="minigame.werf_dich_dicht.drink">Trink einen</string>
+    <string name="minigame.werf_dich_dicht.drink_six">Alle geleert:\nTrink einen und suche aus, wer noch einen trinkt</string>
+    <string name="minigame.werf_dich_dicht.drink_six_in_last_turn">Alle geleert im letzten Zug:\nTrink einen und alle anderen trinken zwei</string>
     <string name="minigame.werf_dich_dicht.next_player">Nächster Spieler</string>
     <string name="minigame.werf_dich_dicht.next_turn">%s ist dran</string>
     <string name="minigame.busfahren.question.second">Ist die nächste Karte höher oder tiefer?</string>
@@ -92,4 +94,5 @@
     <string name="maingame.options.remove_player.error.to_many_to_remove">Du kannst nicht alle Spieler löschen</string>
     <string name="start_activity.text">Alle berechneten Blutalkholkonzentrationen dienen nur zur Unterhaltung und dienen nicht als rechtliche Grundlage. Wir haften auch nicht für die Folgen von übermäßigen Alkoholkonsums, auch dann nicht wenn von diesem Spiel verursacht. Wir haften weder für Magenentpumpungen, leichte, schwere oder fatale Leberschäden, noch für Fritierte Haustiere. Auch nicht wenn es Teil des Spiels ist. Alkohol ist eine durch und durch böse Droge und wir empfehlen weder den Konsum noch andere Missbräuche dieser sehr gesundheitsschädlichen Droge.</string>
     <string name="preference_file_key">de.tomade.SaufOMat.PREFERENCE_FILE_KEY</string>
+    <string name="minigame.werf_dich_dicht.game_over">Spiel vorbei</string>
 </resources>

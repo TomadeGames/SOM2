@@ -33,6 +33,8 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
     private int turnCount = 0;
     private int maxTurns;
 
+    private int shotsClearedInOneTurn = 0;
+
     private boolean[] isFull = new boolean[6];
     private WerfDichDichtState gameState = WerfDichDichtState.START;
     private int currentDiceIndex;
@@ -179,32 +181,55 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         this.popupText.setVisibility(View.VISIBLE);
 
         if (this.isFull[this.currentDiceIndex]) {
-            this.popupText.setText(R.string.minigame_werf_dich_dicht_drink);
-            if (this.fromMainGame) {
-                this.currentPlayer.increaseDrinks(1);
-            }
+            this.clearShot();
         } else {
-            if (!this.fromMainGame) {
-                this.popupText.setText(R.string.minigame_werf_dich_dicht_next_player);
-            } else {
-                this.turnCount++;
-                if (this.turnCount >= this.maxTurns) {
-                    this.gameState = WerfDichDichtState.END;
-                    this.popupText.setText("Spiel vorbei");
-                } else {
-                    this.nextPlayer();
-                    this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this
-                            .currentPlayer
-                            .getName()));
-                    this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
-                    this.playerText.setText(this.currentPlayer.getName());
-                }
-            }
+            this.fillShot();
         }
         this.isFull[this.currentDiceIndex] = !this.isFull[this.currentDiceIndex];
 
         if (this.gameState != WerfDichDichtState.END) {
             this.gameState = WerfDichDichtState.START;
+        }
+    }
+
+    private void clearShot() {
+        this.shotsClearedInOneTurn++;
+        if (this.shotsClearedInOneTurn >= 6) {
+            if (this.fromMainGame) {
+                this.currentPlayer.increaseDrinks(1);
+            }
+            if (this.turnCount >= this.maxTurns - 1) {
+                this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six_in_last_turn);
+                this.increaseDrinkCounterForAllButOnePlayer(2, this.currentPlayer);
+                this.gameState = WerfDichDichtState.END;
+            } else {
+                this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six);
+            }
+        } else {
+            this.popupText.setText(R.string.minigame_werf_dich_dicht_drink);
+            if (this.fromMainGame) {
+                this.currentPlayer.increaseDrinks(1);
+            }
+        }
+    }
+
+    private void fillShot() {
+        if (!this.fromMainGame) {
+            this.popupText.setText(R.string.minigame_werf_dich_dicht_next_player);
+        } else {
+            this.turnCount++;
+            if (this.turnCount >= this.maxTurns) {
+                this.gameState = WerfDichDichtState.END;
+                this.popupText.setText(R.string.minigame_werf_dich_dicht_game_over);
+            } else {
+                this.nextPlayer();
+                this.shotsClearedInOneTurn = 0;
+                this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this
+                        .currentPlayer
+                        .getName()));
+                this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+                this.playerText.setText(this.currentPlayer.getName());
+            }
         }
     }
 

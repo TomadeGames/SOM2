@@ -102,6 +102,24 @@ public abstract class BaseMiniGame extends Activity {
                 .getName());
     }
 
+    protected void increaseDrinkCounterForAllPlayer(int increment) {
+        Player player = this.currentPlayer;
+        do {
+            player.increaseDrinks(increment);
+            player = player.getNextPlayer();
+        } while (player != this.currentPlayer);
+    }
+
+    protected void increaseDrinkCounterForAllButOnePlayer(int increment, Player playerWithoutDrinks) {
+        Player player = this.currentPlayer;
+        do {
+            if (player != playerWithoutDrinks) {
+                player.increaseDrinks(increment);
+            }
+            player = player.getNextPlayer();
+        } while (player != this.currentPlayer);
+    }
+
     @Override
     public void onBackPressed() {
     }
