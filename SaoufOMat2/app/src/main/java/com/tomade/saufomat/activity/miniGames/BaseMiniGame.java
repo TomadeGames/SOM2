@@ -66,10 +66,24 @@ public abstract class BaseMiniGame extends Activity {
         Intent intent;
         if (!this.fromMainGame) {
             intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
-            intent.putExtra(IntentParameter.LAST_GAME, this.getThisGame());
         } else {
             this.nextPlayer();
             intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
+        }
+
+        this.leaveGame(intent);
+    }
+
+    /**
+     * Verlässt das Spiel und wechselt zum Minispiel-Menü oder Hauptspiel zurück. Dadurch ist auch der nächste
+     * Spieler an der Reihe.
+     *
+     * @param intent die Activity die geöffnet werden soll.
+     */
+    protected void leaveGame(Intent intent) {
+        if (!this.fromMainGame) {
+            intent.putExtra(IntentParameter.LAST_GAME, this.getThisGame());
+        } else {
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         }

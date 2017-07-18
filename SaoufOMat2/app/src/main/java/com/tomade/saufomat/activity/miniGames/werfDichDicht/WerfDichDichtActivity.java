@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.persistance.GameValueHelper;
 
 import java.util.Random;
 
@@ -41,7 +42,7 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_werf_dich_dicht);
 
-        random = new Random();
+        random = new Random(System.currentTimeMillis());
 
         this.playerText = (TextView) this.findViewById(R.id.nameText);
         this.turnCounter = (TextView) this.findViewById(R.id.turnCounter);
@@ -60,6 +61,8 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
         backButton.setOnClickListener(this);
         tutorialButton.setOnClickListener(this);
+
+        this.loadLastGame();
 
         if (this.fromMainGame) {
             this.playerText.setText(this.currentPlayer.getName());
@@ -83,6 +86,17 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         }
 
         this.tutorial = this.findViewById(R.id.tutorialPanel);
+    }
+
+    private void loadLastGame() {
+        GameValueHelper gameValueHelper = new GameValueHelper(this);
+        this.isFull = gameValueHelper.getSavedWerfDichDichtState();
+
+        for (int i = 0; i < this.isFull.length; i++) {
+            if (this.isFull[i]) {
+                this.glasses[i].setImageResource(R.drawable.schnapsglas_8);
+            }
+        }
     }
 
     @Override
@@ -277,5 +291,14 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
 
             }
         }, WerfDichDichtActivity.ANIMATION_DELAY);
+    }
+
+    @Override
+    protected void leaveGame() {
+        if (this.fromMainGame) {
+            GameValueHelper gameValueHelper = new GameValueHelper(this);
+            gameValueHelper.saveWerfDichDicht(this.isFull);
+        }
+        super.leaveGame();
     }
 }

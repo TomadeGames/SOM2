@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.mainGame.NewMainGameActivity;
+import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.persistance.GameValueHelper;
@@ -88,7 +88,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     private void changeToMainGame() {
-        Intent intent = new Intent(this, NewMainGameActivity.class);
+        Intent intent = new Intent(this, MainGameActivity.class);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
 

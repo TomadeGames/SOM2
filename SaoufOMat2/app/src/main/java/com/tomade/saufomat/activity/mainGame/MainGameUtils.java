@@ -2,6 +2,7 @@ package com.tomade.saufomat.activity.mainGame;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.tomade.saufomat.activity.mainGame.task.Task;
@@ -47,6 +48,12 @@ class DifficultWithSaufOMeterEndFrame {
 }
 
 public class MainGameUtils {
+    private static final String TAG = MainGameUtils.class.getSimpleName();
+    public static final int EASY_CHANCE = 4;
+    public static final int MEDIUM_CHANCE = 4;
+    public static final int HARD_CHANCE = 3;
+    public static final int GAME_CHANCE = 100000;
+
     public static DifficultWithSaufOMeterEndFrame getCurrentDifficult(IconState leftDifficult, IconState
             middleDifficult, IconState rightDifficult) {
 
@@ -130,6 +137,7 @@ public class MainGameUtils {
             return new DifficultWithSaufOMeterEndFrame(TaskDifficult.EASY, saufOMeterEndFrame);
         }
 
+        Log.wtf(TAG, "Unexpected Difficult calculated: " + tmpDiff);
         return null;
     }
 

@@ -152,7 +152,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
     private void openMainView() {
         Log.i(TAG, "Switching to MainView");
         this.currentPlayer = this.currentPlayer.getNextPlayer();
-        Intent intent = new Intent(this.getApplicationContext(), NewMainGameActivity.class);
+        Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

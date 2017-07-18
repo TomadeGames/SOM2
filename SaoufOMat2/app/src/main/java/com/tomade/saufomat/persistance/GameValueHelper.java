@@ -22,6 +22,15 @@ public class GameValueHelper {
     private static final String IS_GAME_SAVED_KEY = "is_game_saved";
     private static final String GAME_VERSION_KEY = "game_version";
 
+    private interface WerfDichDicht {
+        public static final String GLASS0_STATE = "glass0state";
+        public static final String GLASS1_STATE = "glass1state";
+        public static final String GLASS2_STATE = "glass2state";
+        public static final String GLASS3_STATE = "glass3state";
+        public static final String GLASS4_STATE = "glass4state";
+        public static final String GLASS5_STATE = "glass5state";
+    }
+
     //TODO: wenn etwas an den gespeicherten Spielen geändert wird, muss dieser Wert erhöht werden
     private static final int GAME_VERSION = 1;
 
@@ -53,6 +62,46 @@ public class GameValueHelper {
         editor.putInt(GAME_VERSION_KEY, GAME_VERSION);
         editor.apply();
         Log.d(TAG, "GameSaved [" + gameSaved + "] saved");
+    }
+
+    public void saveWerfDichDicht(boolean[] isGlassFull) {
+        if (isGlassFull.length != 6) {
+            throw new IllegalArgumentException("isGlassFull must have 6 entries");
+        }
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putBoolean(WerfDichDicht.GLASS0_STATE, isGlassFull[0]);
+        editor.putBoolean(WerfDichDicht.GLASS1_STATE, isGlassFull[1]);
+        editor.putBoolean(WerfDichDicht.GLASS2_STATE, isGlassFull[2]);
+        editor.putBoolean(WerfDichDicht.GLASS3_STATE, isGlassFull[3]);
+        editor.putBoolean(WerfDichDicht.GLASS4_STATE, isGlassFull[4]);
+        editor.putBoolean(WerfDichDicht.GLASS5_STATE, isGlassFull[5]);
+        editor.apply();
+        Log.d(TAG, "Werf dich dicht saved [" +
+                isGlassFull[0] + ", " +
+                isGlassFull[1] + ", " +
+                isGlassFull[2] + ", " +
+                isGlassFull[3] + ", " +
+                isGlassFull[4] + ", " +
+                isGlassFull[5] + "]");
+    }
+
+    public boolean[] getSavedWerfDichDichtState() {
+        boolean[] werfDichDichtState = new boolean[6];
+        werfDichDichtState[0] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS0_STATE, false);
+        werfDichDichtState[1] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS1_STATE, false);
+        werfDichDichtState[2] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS2_STATE, false);
+        werfDichDichtState[3] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS3_STATE, false);
+        werfDichDichtState[4] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS4_STATE, false);
+        werfDichDichtState[5] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS5_STATE, false);
+
+        Log.d(TAG, "Werf dich dicht loaded [" +
+                werfDichDichtState[0] + ", " +
+                werfDichDichtState[1] + ", " +
+                werfDichDichtState[2] + ", " +
+                werfDichDichtState[3] + ", " +
+                werfDichDichtState[4] + ", " +
+                werfDichDichtState[5] + "]");
+        return werfDichDichtState;
     }
 
     public int getAdCounter() {

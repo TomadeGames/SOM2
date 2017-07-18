@@ -32,10 +32,6 @@
             android:name=".activity.ChooseMiniGameActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".activity.mainGame.MainGameActivity"
-            android:label="@string/title_activity_main_game"
-            android:screenOrientation="landscape"/>
-        <activity
             android:name=".activity.mainGame.TaskViewActivity"
             android:label="@string/title_activity_task_view"
             android:screenOrientation="landscape"/>
@@ -80,7 +76,7 @@
             android:label="@string/minigame.biergeballer.caption"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".activity.mainGame.NewMainGameActivity"
+            android:name=".activity.mainGame.MainGameActivity"
             android:screenOrientation="landscape">
         </activity>
     </application>
