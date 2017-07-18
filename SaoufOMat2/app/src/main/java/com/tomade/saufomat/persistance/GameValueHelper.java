@@ -23,16 +23,16 @@ public class GameValueHelper {
     private static final String GAME_VERSION_KEY = "game_version";
 
     private interface WerfDichDicht {
-        public static final String GLASS0_STATE = "glass0state";
-        public static final String GLASS1_STATE = "glass1state";
-        public static final String GLASS2_STATE = "glass2state";
-        public static final String GLASS3_STATE = "glass3state";
-        public static final String GLASS4_STATE = "glass4state";
-        public static final String GLASS5_STATE = "glass5state";
+        String GLASS0_STATE = "glass0state";
+        String GLASS1_STATE = "glass1state";
+        String GLASS2_STATE = "glass2state";
+        String GLASS3_STATE = "glass3state";
+        String GLASS4_STATE = "glass4state";
+        String GLASS5_STATE = "glass5state";
     }
 
     //TODO: wenn etwas an den gespeicherten Spielen geändert wird, muss dieser Wert erhöht werden
-    private static final int GAME_VERSION = 1;
+    private static final int GAME_VERSION = 2;
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -127,5 +127,10 @@ public class GameValueHelper {
             return false;
         }
         return this.sharedPreferences.getBoolean(IS_GAME_SAVED_KEY, false);
+    }
+
+    public void clearGame() {
+        this.saveWerfDichDicht(new boolean[6]);
+        this.saveGameSaved(false);
     }
 }

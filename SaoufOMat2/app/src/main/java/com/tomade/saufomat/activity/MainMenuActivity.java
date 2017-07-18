@@ -2,12 +2,15 @@ package com.tomade.saufomat.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
@@ -31,6 +34,16 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         newGameButton.setOnClickListener(this);
         loadGameButton.setOnClickListener(this);
         final RelativeLayout loadGameField = (RelativeLayout) this.findViewById(R.id.loadGameField);
+
+        TextView versionTextView = (TextView) this.findViewById(R.id.versionTextView);
+        String versionName;
+        try {
+            PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "versionNotFound";
+        }
+        versionTextView.setText(versionName);
 
         this.findViewById(R.id.startButton).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -119,8 +132,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     }
 
     private void startNewGame() {
-        Intent intent = new Intent(MainMenuActivity.this.getApplicationContext(),
-                CreatePlayerActivity.class);
+        Intent intent = new Intent(this, CreatePlayerActivity.class);
         intent.putExtra(IntentParameter.MainGame.NEW_GAME, true);
         MainMenuActivity.this.startActivity(intent);
     }
