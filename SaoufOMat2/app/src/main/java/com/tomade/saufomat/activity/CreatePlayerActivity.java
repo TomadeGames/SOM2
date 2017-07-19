@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Drag and Drop zum sotieren der Spieler
-//TODO: Zu lange Spielernamen liegen unter den Buttons
 public class CreatePlayerActivity extends Activity implements View.OnClickListener {
     static int id = 0;
     LinearLayout linearLayout = null;

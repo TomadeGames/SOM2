@@ -20,7 +20,6 @@ import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Wenn man aus dem Hauptspiel kommt, müssen die Spielernamen und nicht "Nächster Spieler angezeigt werden"
 public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickListener {
     private static final String TAG = KistenStapelnActivity.class.getSimpleName();
     private static final int BALANCE_TOLERANCE = 130;

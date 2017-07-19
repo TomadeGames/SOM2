@@ -37,7 +37,6 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
         this.playerText = (TextView) this.findViewById(R.id.playerText);
         this.turnCounterView = (TextView) this.findViewById(R.id.turnCounter);
 
-        this.turnCounterView.setText((this.turnCount + 1) + "/" + this.playerList.size());
 
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
         if (this.fromMainGame) {
@@ -45,6 +44,9 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backText.setVisibility(View.GONE);
             this.playerText.setText(this.currentPlayer.getName());
+            this.turnCounterView.setText((this.turnCount + 1) + "/" + this.playerList.size());
+        } else {
+            this.turnCounterView.setVisibility(View.GONE);
         }
         backButton.setOnClickListener(this);
     }

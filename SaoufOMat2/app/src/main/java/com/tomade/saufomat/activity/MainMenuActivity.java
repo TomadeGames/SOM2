@@ -42,6 +42,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             versionName = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             versionName = "versionNotFound";
+            Log.e(TAG, "Could not find the VersionName", e);
         }
         versionTextView.setText(versionName);
 

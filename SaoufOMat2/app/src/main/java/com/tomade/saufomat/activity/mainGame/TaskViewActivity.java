@@ -28,7 +28,6 @@ import com.tomade.saufomat.model.Player;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-//TODO: Wenn kein Nein zur Verfügung steht: Anstatt einen ausgegrauten Button einen großen Grünen Button anzeigen
 //TODO: Die aktuelle Spielerliste aktuell halten und so...
 //TODO: Tasks nach dem Builder-Pattern
 public class TaskViewActivity extends Activity implements View.OnClickListener {

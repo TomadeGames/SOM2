@@ -14,8 +14,6 @@ import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
 import com.tomade.saufomat.model.card.Card;
 import com.tomade.saufomat.model.card.CardValue;
 
-//TODO: wenn View aus minispielmenü heraus gestertet wird, soll das spiel neu starten und nicht beendet werden.
-// Vieleicht eine Frage ob neu gestartet werden soll?
 public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListener {
     private ImageButton leftButton;
     private ImageButton rightButton;

@@ -65,7 +65,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "Table " + TaskContract.Task.TABLE_NAME + " created");
         sqLiteDatabase.execSQL(miniGameStatement);
         Log.i(TAG, "Table " + MiniGameContract.MiniGame.TABLE_NAME + " created");
-        sqLiteDatabase.close();
     }
 
     @Override
@@ -84,7 +83,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED, 0);
 
         database.insert(MiniGameContract.MiniGame.TABLE_NAME, null, contentValues);
-        database.close();
         Log.i(TAG, "Minigame [" + miniGame + "] added in Table");
         return true;
     }
@@ -104,7 +102,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PlayerContract.Player.COLUMN_NAME_NEXT_PLAYER, player.getNextPlayer().getId());
         contentValues.put(PlayerContract.Player.COLUMN_NAME_LAST_PLAYER, player.getLastPlayer().getId());
         database.insert(PlayerContract.Player.TABLE_NAME, null, contentValues);
-        database.close();
 
         Log.i(TAG, "Player [" + player + "] added in Table");
         return true;
@@ -125,7 +122,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(TaskContract.Task.COLUMN_NAME_ALREADY_USED, 0);
         }
         database.insert(TaskContract.Task.TABLE_NAME, null, contentValues);
-        database.close();
 
         return true;
     }
@@ -138,7 +134,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database.update(MiniGameContract.MiniGame.TABLE_NAME, contentValues, MiniGameContract.MiniGame
                 .COLUMN_NAME_NAME + " =? ", new String[]{miniGame.toString()});
-        database.close();
 
         Log.i(TAG, "Minigame [" + miniGame + "] is now used");
         return true;
@@ -152,7 +147,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database.update(MiniGameContract.MiniGame.TABLE_NAME, contentValues, MiniGameContract.MiniGame
                 .COLUMN_NAME_NAME + "=? ", new String[]{miniGame.toString()});
-        database.close();
 
         Log.i(TAG, "Minigame [" + miniGame + "] is no longer used");
         return true;
@@ -174,7 +168,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database.update(PlayerContract.Player.TABLE_NAME, contentValues,
                 PlayerContract.Player.COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(player.getId())});
-        database.close();
 
         Log.i(TAG, "Player [" + player + "] updated");
         return true;
@@ -195,7 +188,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         database.update(TaskContract.Task.TABLE_NAME, contentValues,
                 TaskContract.Task.COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(task.getId())});
-        database.close();
 
         Log.i(TAG, "Task [" + task + "] updated");
         return true;
@@ -216,7 +208,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } finally {
             result.close();
-            database.close();
         }
         Log.i(TAG, unusedMiniGames.size() + " unused Minigames loaded from Database");
         return unusedMiniGames;
@@ -255,7 +246,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } finally {
             result.close();
-            database.close();
         }
         Log.i(TAG, playerList.size() + " Players loaded from Databse");
         return playerList;
@@ -277,7 +267,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } finally {
             result.close();
-            database.close();
         }
         Log.i(TAG, taskList.size() + " Tasks with Difficult " + difficult + " loaded from Database");
         return taskList;
@@ -298,7 +287,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } finally {
             result.close();
-            database.close();
         }
 
         Log.i(TAG, taskList.size() + " Tasks loaded from Database");
@@ -321,7 +309,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         } finally {
             result.close();
-            database.close();
         }
 
         Log.i(TAG, unusedTasks.size() + " unused Tasks with Difficult " + difficult + " loaded from Database");
