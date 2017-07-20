@@ -1,10 +1,10 @@
-package com.tomade.saufomat.activity.miniGames.biergeballer;
+package com.tomade.saufomat.activity.miniGame.biergeballer;
 
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 
 /**
  * Activity, die das Spiel Biergeballer startet

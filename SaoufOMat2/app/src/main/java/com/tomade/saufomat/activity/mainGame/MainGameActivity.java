@@ -36,12 +36,13 @@ import java.util.TimerTask;
 
 public class MainGameActivity extends Activity implements View.OnClickListener {
     private static final String TAG = MainGameActivity.class.getSimpleName();
-    private static final long LEFT_ICON_ANIMATION_DURATION = 500;
-    private static final long MIDDLE_ICON_ANIMATION_DURATION = 350;
-    private static final long RIGHT_ICON_ANIMATION_DURATION = 400;
+    private static final long LEFT_ICON_ANIMATION_DURATION = 400;
+    private static final long MIDDLE_ICON_ANIMATION_DURATION = 300;
+    private static final long RIGHT_ICON_ANIMATION_DURATION = 250;
     private static final long SAUFOMETER_ANIMATION_TICK_DURATION = 200;
     private static final int SAUFOMETER_WAITING_FRAMES_AMOUNT = 2;
     private static final long ICONS_ANIMATION_DISTANCE = 1000;
+    private static final int ROLLING_ANIMATION_DISTANCE = 3;
     private static final long ICON_STOP_DURATION = 500;
 
     private static final int AD_LIMIT = 7; //Original 8, erstmal 7
@@ -127,7 +128,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private void moveIconsToCorrectPositions() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.leftMargin = this.screenWidth / 6;
+        params.leftMargin = (int) (this.screenWidth / 6.1f);
         params.topMargin = this.screenHeight / 6;
         this.leftIcon.setLayoutParams(params);
 
@@ -136,13 +137,13 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         middleParams.leftMargin = this.screenWidth / 2;
 
         this.middleIcon.setLayoutParams(params);
-        this.middleIcon.setX((int) (this.screenWidth / 5.1));
+        this.middleIcon.setX((int) (this.screenWidth / 5.25f));
 
         RelativeLayout.LayoutParams rightParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rightParams.leftMargin = middleParams.leftMargin;
         this.rightIcon.setLayoutParams(params);
-        this.rightIcon.setX((int) (this.screenWidth / 2.55));
+        this.rightIcon.setX((int) (this.screenWidth / 2.6f));
     }
 
     @Override
@@ -262,32 +263,33 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                MainGameActivity.this.middleIcon.animate().y(-500).setDuration(0).setListener(new Animator
-                        .AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
+                MainGameActivity.this.middleIcon.animate().y(-500).setDuration(0).setListener
+                        (new Animator
+                                .AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        MainGameActivity.this.middleIcon.animate().setListener(null);
-                        MainGameActivity.this.middleIcon.startAnimation(
-                                MainGameActivity.this.middleRollingAnimation);
-                        MainGameActivity.this.middleRolling = true;
-                        checkIfAllRolling();
-                    }
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                MainGameActivity.this.middleIcon.animate().setListener(null);
+                                MainGameActivity.this.middleIcon.startAnimation(
+                                        MainGameActivity.this.middleRollingAnimation);
+                                MainGameActivity.this.middleRolling = true;
+                                checkIfAllRolling();
+                            }
 
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
 
-                    }
-                }).start();
+                            }
+                        }).start();
             }
 
             @Override
@@ -474,7 +476,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private void initAnimations() {
         this.leftRollingAnimation =
                 new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
-                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, 5);
+                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
         this.leftRollingAnimation.setDuration(LEFT_ICON_ANIMATION_DURATION);
         this.leftRollingAnimation.setRepeatCount(Animation.INFINITE);
         this.leftRollingAnimation.setRepeatMode(Animation.RESTART);
@@ -500,7 +502,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
         this.middleRollingAnimation =
                 new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
-                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, 5);
+                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
         this.middleRollingAnimation.setDuration(MIDDLE_ICON_ANIMATION_DURATION);
         this.middleRollingAnimation.setRepeatCount(Animation.INFINITE);
         this.middleRollingAnimation.setRepeatMode(Animation.RESTART);
@@ -526,7 +528,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
         this.rightRollingAnimation =
                 new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
-                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, 5);
+                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
         this.rightRollingAnimation.setDuration(RIGHT_ICON_ANIMATION_DURATION);
         this.rightRollingAnimation.setRepeatCount(Animation.INFINITE);
         this.rightRollingAnimation.setRepeatMode(Animation.RESTART);

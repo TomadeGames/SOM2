@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.werfDichDicht;
+package com.tomade.saufomat.activity.miniGame.werfDichDicht;
 
 /**
  * Created by woors on 30.03.2016.

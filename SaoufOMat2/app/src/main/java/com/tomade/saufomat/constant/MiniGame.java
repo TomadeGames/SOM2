@@ -1,14 +1,14 @@
 package com.tomade.saufomat.constant;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
-import com.tomade.saufomat.activity.miniGames.augensaufen.AugensaufenActivity;
-import com.tomade.saufomat.activity.miniGames.bierrutsche.BierrutscheActivity;
-import com.tomade.saufomat.activity.miniGames.busfahren.BusfahrenActivity;
-import com.tomade.saufomat.activity.miniGames.ichHabNochNie.IchHabNochNieActivity;
-import com.tomade.saufomat.activity.miniGames.kings.KingsActivity;
-import com.tomade.saufomat.activity.miniGames.kistenStapeln.KistenStapelnActivity;
-import com.tomade.saufomat.activity.miniGames.werfDichDicht.WerfDichDichtActivity;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.augensaufen.AugensaufenActivity;
+import com.tomade.saufomat.activity.miniGame.bierrutsche.BierrutscheActivity;
+import com.tomade.saufomat.activity.miniGame.busfahren.BusfahrenActivity;
+import com.tomade.saufomat.activity.miniGame.ichHabNochNie.IchHabNochNieActivity;
+import com.tomade.saufomat.activity.miniGame.kings.KingsActivity;
+import com.tomade.saufomat.activity.miniGame.kistenStapeln.KistenStapelnActivity;
+import com.tomade.saufomat.activity.miniGame.werfDichDicht.WerfDichDichtActivity;
 
 import java.io.Serializable;
 

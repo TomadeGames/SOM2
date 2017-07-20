@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.biergeballer;
+package com.tomade.saufomat.activity.miniGame.biergeballer;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 
 import java.util.ArrayList;
 import java.util.List;

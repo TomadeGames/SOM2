@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.werfDichDicht;
+package com.tomade.saufomat.activity.miniGame.werfDichDicht;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 import com.tomade.saufomat.persistance.GameValueHelper;
 
 import java.util.Random;

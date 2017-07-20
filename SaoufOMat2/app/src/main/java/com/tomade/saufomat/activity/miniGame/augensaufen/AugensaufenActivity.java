@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.augensaufen;
+package com.tomade.saufomat.activity.miniGame.augensaufen;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 
 import java.util.Random;
 

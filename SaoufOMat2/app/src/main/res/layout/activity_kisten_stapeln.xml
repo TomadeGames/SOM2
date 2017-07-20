@@ -5,7 +5,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                tools:context=".activity.miniGames.kistenStapeln.KistenStapelnActivity">
+                tools:context=".activity.miniGame.kistenStapeln.KistenStapelnActivity">
 
     <ImageView
         android:id="@+id/backgroundImage"

@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="com.tomade.saufomat.activity.miniGames.biergeballer.BiergeballerActivity"
+                tools:context="com.tomade.saufomat.activity.miniGame.biergeballer.BiergeballerActivity"
                 android:id="@+id/allLayout">
 
     <ImageView

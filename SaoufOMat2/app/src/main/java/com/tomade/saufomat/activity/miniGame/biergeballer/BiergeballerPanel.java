@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.biergeballer;
+package com.tomade.saufomat.activity.miniGame.biergeballer;
 
 import android.content.Context;
 import android.graphics.Bitmap;

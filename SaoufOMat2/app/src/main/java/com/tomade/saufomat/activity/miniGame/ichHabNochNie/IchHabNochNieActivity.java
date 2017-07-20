@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.ichHabNochNie;
+package com.tomade.saufomat.activity.miniGame.ichHabNochNie;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 
 import java.util.ArrayList;
 import java.util.Collections;

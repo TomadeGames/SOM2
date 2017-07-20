@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.ichHabNochNie;
+package com.tomade.saufomat.activity.miniGame.ichHabNochNie;
 
 /**
  * Definitionen aller Sätze für IchHabNochNie

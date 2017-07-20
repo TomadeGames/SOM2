@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.kistenStapeln;
+package com.tomade.saufomat.activity.miniGame.kistenStapeln;
 
 /**
  * Created by woors on 08.04.2016.

@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                tools:context=".activity.miniGames.augensaufen.AugensaufenActivity">
+                tools:context=".activity.miniGame.augensaufen.AugensaufenActivity">
 
     <ImageView
         android:id="@+id/backgroundImage"

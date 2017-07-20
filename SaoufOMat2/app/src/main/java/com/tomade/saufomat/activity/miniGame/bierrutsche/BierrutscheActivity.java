@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.bierrutsche;
+package com.tomade.saufomat.activity.miniGame.bierrutsche;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.model.drawable.DynamicImageView;
 

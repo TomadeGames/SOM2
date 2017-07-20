@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.busfahren;
+package com.tomade.saufomat.activity.miniGame.busfahren;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 import com.tomade.saufomat.model.card.Card;
 import com.tomade.saufomat.model.card.CardValue;
 

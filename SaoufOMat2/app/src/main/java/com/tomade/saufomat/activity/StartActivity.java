@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.ichHabNochNie.IchHabNochNieTasks;
+import com.tomade.saufomat.activity.miniGame.ichHabNochNie.IchHabNochNieTasks;
 
 import java.util.ArrayList;
 import java.util.List;

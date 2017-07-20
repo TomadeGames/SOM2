@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames;
+package com.tomade.saufomat.activity.miniGame;
 
 import android.app.Activity;
 import android.content.Intent;

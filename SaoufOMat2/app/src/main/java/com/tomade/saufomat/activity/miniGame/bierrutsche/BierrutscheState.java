@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.bierrutsche;
+package com.tomade.saufomat.activity.miniGame.bierrutsche;
 
 /**
  * Created by woors on 06.04.2016.

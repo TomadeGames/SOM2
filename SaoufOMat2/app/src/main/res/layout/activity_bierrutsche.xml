@@ -4,7 +4,7 @@
                 android:id="@+id/backgroundLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".activity.miniGames.bierrutsche.BierrutscheActivity">
+                tools:context=".activity.miniGame.bierrutsche.BierrutscheActivity">
 
     <com.tomade.saufomat.model.drawable.DynamicImageView
         android:id="@+id/backgroundImage"

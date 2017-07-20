@@ -1,4 +1,4 @@
-package com.tomade.saufomat.activity.miniGames.kings;
+package com.tomade.saufomat.activity.miniGame.kings;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 import com.tomade.saufomat.model.card.Card;
 
 import java.util.ArrayList;
