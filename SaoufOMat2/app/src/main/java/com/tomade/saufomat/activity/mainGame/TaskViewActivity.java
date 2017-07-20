@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.tomade.saufomat.ActivityWithPlayer;
+import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.MainMenuActivity;
 import com.tomade.saufomat.activity.mainGame.task.Task;
@@ -29,7 +31,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 //TODO: Tasks nach dem Builder-Pattern
-public class TaskViewActivity extends Activity implements View.OnClickListener {
+public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
 
     private TextView statisticsText;
@@ -164,10 +166,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-            //TODO wieder einkommentieren
-            /*if (!(this.miniGame == MiniGame.BUSFAHREN)) {
+            if (!(this.miniGame == MiniGame.BUSFAHREN)) {
                 this.currentPlayer = this.currentPlayer.getNextPlayer();
-            }*/
+            }
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             this.finish();
@@ -176,39 +177,25 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         } else {
             boolean switchToMainView = true;
             if (this.currentPlayerIsAviable) {
-                Player nextPlayer;
                 Log.i(TAG, "Tasktarget is " + this.currentTask.getTarget());
                 switch (this.currentTask.getTarget()) {
                     case SELF:
                         this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
                         break;
                     case NEIGHBOUR:
-                        this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
-                        this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        DrinkHelper.increaseNeighbours(this.currentTask.getDrinkCount(), this.currentPlayer, this);
                         break;
                     case MEN:
-                        nextPlayer = this.currentPlayer;
-                        do {
-                            if (nextPlayer.getIsMan()) {
-                                nextPlayer.increaseDrinks(this.currentTask.getDrinkCount());
-                            }
-                            nextPlayer = nextPlayer.getNextPlayer();
-                        } while (nextPlayer != this.currentPlayer);
+                        DrinkHelper.increaseMen(this.currentTask.getDrinkCount(), this);
                         break;
                     case WOMEN:
-                        nextPlayer = this.currentPlayer;
-                        do {
-                            if (!nextPlayer.getIsMan()) {
-                                nextPlayer.increaseDrinks(this.currentTask.getDrinkCount());
-                            }
-                            nextPlayer = nextPlayer.getNextPlayer();
-                        } while (nextPlayer != this.currentPlayer);
+                        DrinkHelper.increaseWomen(this.currentTask.getDrinkCount(), this);
                         break;
                     case NEIGHBOUR_LEFT:
-                        this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        DrinkHelper.increaseLeft(this.currentTask.getDrinkCount(), this);
                         break;
                     case NEIGHBOUR_RIGHT:
-                        this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
+                        DrinkHelper.increaseRight(this.currentTask.getDrinkCount(), this);
                         break;
                     case SWITCH_PLACE_LEFT:
                         this.switchPlayers(this.currentPlayer, this.currentPlayer.getNextPlayer());
@@ -217,23 +204,15 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                         this.switchPlayers(this.currentPlayer, this.currentPlayer.getLastPlayer());
                         break;
                     case ALL:
-                        nextPlayer = this.currentPlayer;
-                        do {
-                            nextPlayer.increaseDrinks(this.currentTask.getDrinkCount());
-                            nextPlayer = nextPlayer.getNextPlayer();
-                        } while (nextPlayer != this.currentPlayer);
+                        DrinkHelper.increaseAll(this.currentTask.getDrinkCount(), this);
                         break;
                     case ALL_BUT_SELF:
-                        nextPlayer = this.currentPlayer.getNextPlayer();
-                        while (nextPlayer != this.currentPlayer) {
-                            nextPlayer.increaseDrinks(this.currentTask.getDrinkCount());
-                            nextPlayer = nextPlayer.getNextPlayer();
-                        }
+                        DrinkHelper.increaseAllButOnePlayer(this.currentTask.getDrinkCount(), this
+                                .currentPlayer, this);
                         break;
                     case SELF_AND_NEIGHBOURS:
-                        this.currentPlayer.getNextPlayer().increaseDrinks(this.currentTask.getDrinkCount());
-                        this.currentPlayer.getLastPlayer().increaseDrinks(this.currentTask.getDrinkCount());
-                        this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
+                        DrinkHelper.increasePlayerWithNeighbours(this.currentTask.getDrinkCount(), this
+                                .currentPlayer, this);
                         break;
                     case SELF_AND_CHOOSE_ONE:
                         this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
@@ -247,6 +226,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
                         }
                         break;
                     default:
+                        Log.e(TAG, "TaskTarget " + this.currentTask.getTarget() + " is not used");
                         break;
                 }
             }
@@ -394,6 +374,11 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
 
     public Player getCurrentPlayer() {
         return this.currentPlayer;
+    }
+
+    @Override
+    public boolean arePlayerValid() {
+        return true;
     }
 
     public void nextPlayerFromOptions() {

@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 import com.tomade.saufomat.persistance.GameValueHelper;
@@ -199,7 +200,7 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
             }
             if (this.turnCount >= this.maxTurns - 1) {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six_in_last_turn);
-                this.increaseDrinkCounterForAllButOnePlayer(2, this.currentPlayer);
+                DrinkHelper.increaseAllButOnePlayer(2, this.currentPlayer, this);
                 this.gameState = WerfDichDichtState.END;
             } else {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six);

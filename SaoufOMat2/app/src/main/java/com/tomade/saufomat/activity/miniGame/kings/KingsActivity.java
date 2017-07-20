@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
 import com.tomade.saufomat.model.card.Card;
@@ -159,11 +160,11 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
         switch (this.card.getValue()) {
             case SEVEN:
                 this.popupText.setText(R.string.minigame_kings_card_value_seven);
-                this.increaseDrinkCounterForLeftPlayer(1);
+                DrinkHelper.increaseLeft(1, this);
                 break;
             case EIGHT:
                 this.popupText.setText(R.string.minigame_kings_card_value_eight);
-                this.increaseDrinkCounterForRightPlayer(1);
+                DrinkHelper.increaseRight(1, this);
                 break;
             case NINE:
                 this.popupText.setText(R.string.minigame_kings_card_value_nine);
@@ -174,18 +175,18 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
                 break;
             case JACK:
                 this.popupText.setText(R.string.minigame_kings_card_value_jack);
-                this.increaseDrinkForAllMen(1);
+                DrinkHelper.increaseMen(1, this);
                 break;
             case QUEEN:
                 this.popupText.setText(R.string.minigame_kings_card_value_queen);
-                this.increaseDrinkForAllWomen(1);
+                DrinkHelper.increaseWomen(1, this);
                 break;
             case KING:
                 this.popupText.setText(R.string.minigame_kings_card_value_king);
                 break;
             case ACE:
                 this.popupText.setText(R.string.minigame_kings_card_value_ace);
-                this.increaseDrinkCounterForAllPlayer(1);
+                DrinkHelper.increaseAll(1, this);
                 break;
             default:
                 break;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import com.tomade.saufomat.ActivityWithPlayer;
 import com.tomade.saufomat.activity.ChooseMiniGameActivity;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
@@ -20,7 +21,7 @@ import java.util.Set;
  * Created by woors on 07.03.2017.
  */
 
-public abstract class BaseMiniGame extends Activity {
+public abstract class BaseMiniGame extends Activity implements ActivityWithPlayer {
     protected boolean fromMainGame;
     protected ArrayList<Player> playerList;
     protected Player currentPlayer;
@@ -102,142 +103,18 @@ public abstract class BaseMiniGame extends Activity {
                 .getName());
     }
 
-    /**
-     * Erhöht den Getränkezähler für alle Spieler
-     *
-     * @param increment um diesen Wert wird der Getränkezähler erhöht
-     */
-    protected void increaseDrinkCounterForAllPlayer(int increment) {
-        if (this.fromMainGame) {
-            Player player = this.currentPlayer;
-            do {
-                player.increaseDrinks(increment);
-                player = player.getNextPlayer();
-            } while (player != this.currentPlayer);
-        }
-    }
-
-    /**
-     * Erhöht den Getränkezähler für alle ausser einen Spieler
-     *
-     * @param increment           um diesen Wert wird der Getränkezähler erhöht
-     * @param playerWithoutDrinks der Spieler, der nicht trinken muss
-     */
-    protected void increaseDrinkCounterForAllButOnePlayer(int increment, Player playerWithoutDrinks) {
-        if (this.fromMainGame) {
-            Player player = this.currentPlayer;
-            do {
-                if (player != playerWithoutDrinks) {
-                    player.increaseDrinks(increment);
-                }
-                player = player.getNextPlayer();
-            } while (player != this.currentPlayer);
-        }
-    }
-
-    /**
-     * Erhöht den Getränkezähler für bestimmte Spieler
-     *
-     * @param increment           um diesen Wert wird der Getränkezähler erhöht
-     * @param playerWithoutDrinks die Spieler, die trinken muss
-     */
-    protected void increaseDrinkCounterForSomePlayer(int increment, Player[] playerWithoutDrinks) {
-        if (this.fromMainGame) {
-            Player player = this.currentPlayer;
-            do {
-                boolean getDrink = false;
-                for (Player playerWithoutDrink : playerWithoutDrinks) {
-                    if (player.getId() == playerWithoutDrink.getId()) {
-                        getDrink = true;
-                    }
-                }
-                if (getDrink) {
-                    player.increaseDrinks(increment);
-                }
-            } while (player != this.currentPlayer);
-        }
-    }
-
-    /**
-     * Erhöht den Getränkezähler für alle ausser für bestimmte Spieler
-     *
-     * @param increment           um diesen Wert wird der Getränkezähler erhöht
-     * @param playerWithoutDrinks die Spieler, die nicht trinken muss
-     */
-    protected void increaseDrinkCounterForAllButSomePlayer(int increment, Player[] playerWithoutDrinks) {
-        if (this.fromMainGame) {
-            Player player = this.currentPlayer;
-            do {
-                boolean getDrink = true;
-                for (Player playerWithoutDrink : playerWithoutDrinks) {
-                    if (player.getId() == playerWithoutDrink.getId()) {
-                        getDrink = false;
-                    }
-                }
-                if (getDrink) {
-                    player.increaseDrinks(increment);
-                }
-            } while (player != this.currentPlayer);
-        }
-    }
 
     @Override
     public void onBackPressed() {
     }
 
-    /**
-     * Erhöht den Getränkezähler für den vorherigen Spieler
-     *
-     * @param increment um diesen Wert wird der Getränkezähler erhöht
-     */
-    protected void increaseDrinkCounterForLeftPlayer(int increment) {
-        if (this.fromMainGame) {
-            this.currentPlayer.getLastPlayer().increaseDrinks(increment);
-        }
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
     }
 
-    /**
-     * Erhöht den Getränkezähler für den nächsten Spieler
-     *
-     * @param increment um diesen Wert wird der Getränkezähler erhöht
-     */
-    protected void increaseDrinkCounterForRightPlayer(int increment) {
-        if (this.fromMainGame) {
-            this.currentPlayer.getNextPlayer().increaseDrinks(increment);
-        }
+    @Override
+    public boolean arePlayerValid() {
+        return this.fromMainGame;
     }
 
-    /**
-     * Erhöht den Getränkezähler für alle Männer
-     *
-     * @param increment um diesen Wert wird der Getränkezähler erhöht
-     */
-    public void increaseDrinkForAllMen(int increment) {
-        if (this.fromMainGame) {
-            Player player = this.currentPlayer;
-            do {
-                if (player.getIsMan()) {
-                    player.increaseDrinks(increment);
-                }
-                player = player.getNextPlayer();
-            } while (player != this.currentPlayer);
-        }
-    }
-
-    /**
-     * Erhöht den Getränkezähler für alle Frauen
-     *
-     * @param increment um diesen Wert wird der Getränkezähler erhöht
-     */
-    public void increaseDrinkForAllWomen(int increment) {
-        if (this.fromMainGame) {
-            Player player = this.currentPlayer;
-            do {
-                if (!player.getIsMan()) {
-                    player.increaseDrinks(increment);
-                }
-                player = player.getNextPlayer();
-            } while (player != this.currentPlayer);
-        }
-    }
 }
