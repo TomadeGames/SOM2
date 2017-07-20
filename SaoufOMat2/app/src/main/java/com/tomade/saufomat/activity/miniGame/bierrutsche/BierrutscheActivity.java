@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
-import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.model.drawable.DynamicImageView;
+import com.tomade.saufomat.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;

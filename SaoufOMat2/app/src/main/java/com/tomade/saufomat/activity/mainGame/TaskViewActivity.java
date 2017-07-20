@@ -25,7 +25,7 @@ import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

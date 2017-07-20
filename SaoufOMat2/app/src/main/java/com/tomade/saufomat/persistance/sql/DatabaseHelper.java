@@ -12,8 +12,12 @@ import com.tomade.saufomat.activity.mainGame.task.TaskDefinitions;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
+import com.tomade.saufomat.model.player.Statistic;
 import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.sql.contract.MiniGameContract;
+import com.tomade.saufomat.persistance.sql.contract.PlayerContract;
+import com.tomade.saufomat.persistance.sql.contract.TaskContract;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -30,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "saufomat_database";
 
     //TODO wenn die Datenbank geändert wird muss dieser Wert inkrementiert werden
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
 
     private Context context;
 
@@ -47,6 +51,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 PlayerContract.Player.COLUMN_NAME_WEIGHT + " INTEGER, " +
                 PlayerContract.Player.COLUMN_NAME_IS_MAN + " INTEGER, " +
                 PlayerContract.Player.COLUMN_NAME_DRINKS + " INTEGER, " +
+                PlayerContract.Player.COLUMN_NAME_EASY_WINS + " INTEGER, " +
+                PlayerContract.Player.COLUMN_NAME_MEDIUM_WINS + " INTEGER, " +
+                PlayerContract.Player.COLUMN_NAME_HARD_WINS + " INTEGER, " +
                 PlayerContract.Player.COLUMN_NAME_NEXT_PLAYER + " INTEGER, " +
                 PlayerContract.Player.COLUMN_NAME_LAST_PLAYER + " INTEGER)";
 
@@ -106,6 +113,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PlayerContract.Player.COLUMN_NAME_DRINKS, player.getDrinks());
         contentValues.put(PlayerContract.Player.COLUMN_NAME_NEXT_PLAYER, player.getNextPlayer().getId());
         contentValues.put(PlayerContract.Player.COLUMN_NAME_LAST_PLAYER, player.getLastPlayer().getId());
+
+        contentValues.put(PlayerContract.Player.COLUMN_NAME_EASY_WINS, player.getStatistic().getEasyWins());
+        contentValues.put(PlayerContract.Player.COLUMN_NAME_MEDIUM_WINS, player.getStatistic().getMediumWins());
+        contentValues.put(PlayerContract.Player.COLUMN_NAME_HARD_WINS, player.getStatistic().getHardWins());
+
         database.insert(PlayerContract.Player.TABLE_NAME, null, contentValues);
 
         Log.i(TAG, "Player [" + player + "] added in Table");
@@ -170,6 +182,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PlayerContract.Player.COLUMN_NAME_DRINKS, player.getDrinks());
         contentValues.put(PlayerContract.Player.COLUMN_NAME_NEXT_PLAYER, player.getNextPlayer().getId());
         contentValues.put(PlayerContract.Player.COLUMN_NAME_LAST_PLAYER, player.getLastPlayer().getId());
+
+        contentValues.put(PlayerContract.Player.COLUMN_NAME_EASY_WINS, player.getStatistic().getEasyWins());
+        contentValues.put(PlayerContract.Player.COLUMN_NAME_MEDIUM_WINS, player.getStatistic().getMediumWins());
+        contentValues.put(PlayerContract.Player.COLUMN_NAME_HARD_WINS, player.getStatistic().getHardWins());
 
         database.update(PlayerContract.Player.TABLE_NAME, contentValues,
                 PlayerContract.Player.COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(player.getId())});
@@ -238,6 +254,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             .COLUMN_NAME_NEXT_PLAYER)));
                     lastPlayer.put(player, result.getInt(result.getColumnIndex(PlayerContract.Player
                             .COLUMN_NAME_LAST_PLAYER)));
+
+                    Statistic statistic = new Statistic();
+                    statistic.setEasyWins(result.getInt(result.getColumnIndex(PlayerContract.Player
+                            .COLUMN_NAME_EASY_WINS)));
+                    statistic.setMediumWins(result.getInt(result.getColumnIndex(PlayerContract.Player
+                            .COLUMN_NAME_MEDIUM_WINS)));
+                    statistic.setHardWins(result.getInt(result.getColumnIndex(PlayerContract.Player
+                            .COLUMN_NAME_HARD_WINS)));
+
                     playerList.put(player.getId(), player);
                 } while (result.moveToNext());
 
@@ -350,10 +375,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Log.i(TAG, "New Game started");
-    }
-
-    public boolean isDatabaseValid() {
-        return DATABASE_VERSION == this.getWritableDatabase().getVersion();
     }
 
     public int getDatabaseVersion() {

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

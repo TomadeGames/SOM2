@@ -1,4 +1,4 @@
-package com.tomade.saufomat.persistance.sql;
+package com.tomade.saufomat.persistance.sql.contract;
 
 import android.provider.BaseColumns;
 

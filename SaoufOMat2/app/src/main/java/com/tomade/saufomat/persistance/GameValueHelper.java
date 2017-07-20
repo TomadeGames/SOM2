@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.List;

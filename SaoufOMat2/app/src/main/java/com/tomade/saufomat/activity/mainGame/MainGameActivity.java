@@ -26,7 +26,7 @@ import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskProvider;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -385,6 +385,15 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
         final int lastFrame = difficultWithSaufOMeterEndFrame.getSaufOMeterEndFrame();
         final TaskDifficult difficult = difficultWithSaufOMeterEndFrame.getDifficult();
+
+        if (difficult == TaskDifficult.EASY_WIN) {
+            this.currentPlayer.getStatistic().increaseEasyWins();
+        } else if (difficult == TaskDifficult.MEDIUM_WIN) {
+            this.currentPlayer.getStatistic().increaseMediumWins();
+        } else if (difficult == TaskDifficult.HARD_WIN) {
+            this.currentPlayer.getStatistic().increaseHardWins();
+        }
+        
         final boolean isMiniGame = difficult == TaskDifficult.GAME;
 
         final List<Integer> imageIds = new ArrayList<>();

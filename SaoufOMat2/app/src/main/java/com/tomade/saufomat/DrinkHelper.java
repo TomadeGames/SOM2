@@ -1,6 +1,6 @@
 package com.tomade.saufomat;
 
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 
 /**
  * Hilfsklasse zum Verteilen von Getränken an Spielern

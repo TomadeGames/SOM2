@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.persistance.GameValueHelper;
 import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 

@@ -1,4 +1,4 @@
-package com.tomade.saufomat.model;
+package com.tomade.saufomat.model.player;
 
 import android.support.annotation.Nullable;
 
@@ -18,10 +18,12 @@ public class Player implements Serializable {
     private int drinks = 0;
     private Player nextPlayer;
     private Player lastPlayer;
+    private Statistic statistic;
 
     public Player() {
         this.id = nextId;
         nextId++;
+        this.statistic = new Statistic();
     }
 
     @Nullable
@@ -95,5 +97,13 @@ public class Player implements Serializable {
         if (id > nextId) {
             nextId = id + 1;
         }
+    }
+
+    public Statistic getStatistic() {
+        return this.statistic;
+    }
+
+    public void setStatistic(Statistic statistic) {
+        this.statistic = statistic;
     }
 }

@@ -10,7 +10,7 @@ import com.tomade.saufomat.activity.ChooseMiniGameActivity;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

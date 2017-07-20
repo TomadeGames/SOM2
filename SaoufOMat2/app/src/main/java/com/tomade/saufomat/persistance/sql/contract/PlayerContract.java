@@ -1,4 +1,4 @@
-package com.tomade.saufomat.persistance.sql;
+package com.tomade.saufomat.persistance.sql.contract;
 
 import android.provider.BaseColumns;
 
@@ -20,5 +20,8 @@ public final class PlayerContract {
         public static final String COLUMN_NAME_DRINKS = "drinks";
         public static final String COLUMN_NAME_NEXT_PLAYER = "next_player";
         public static final String COLUMN_NAME_LAST_PLAYER = "last_player";
+        public static final String COLUMN_NAME_EASY_WINS = "easy_wins";
+        public static final String COLUMN_NAME_MEDIUM_WINS = "medium_wins";
+        public static final String COLUMN_NAME_HARD_WINS = "hard_wins";
     }
 }

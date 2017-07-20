@@ -1,5 +1,7 @@
 package com.tomade.saufomat.model;
 
+import com.tomade.saufomat.model.player.Player;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
