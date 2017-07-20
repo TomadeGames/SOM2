@@ -36,6 +36,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
     private RelativeLayout tutorialPanel;
     private TextView nextPlayerText;
     private TextView crateCounter;
+    private TextView currentPlayerText;
     private RelativeLayout nextPlayerPanel;
     private RelativeLayout allLayout;
     private boolean tutorialShown = false;
@@ -68,6 +69,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
         this.nextPlayerPanel = (RelativeLayout) this.findViewById(R.id.nextPlayerLayout);
         this.allLayout = (RelativeLayout) this.findViewById(R.id.allLayout);
         this.crateCounter = (TextView) this.findViewById(R.id.crateCounter);
+        this.currentPlayerText = (TextView) this.findViewById(R.id.currentPlayerLabel);
 
         this.findViewById(R.id.tutorialButton).setOnClickListener(this);
         ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
@@ -77,6 +79,9 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
             backText.setVisibility(View.GONE);
+            this.currentPlayerText.setText(this.currentPlayer.getName());
+        } else {
+            this.currentPlayerText.setVisibility(View.GONE);
         }
     }
 
@@ -265,6 +270,7 @@ public class KistenStapelnActivity extends BaseMiniGame implements View.OnClickL
 
         if (this.fromMainGame) {
             this.nextPlayer();
+            this.currentPlayerText.setText(this.currentPlayer.getName());
             this.nextPlayerText.setText(this.currentPlayer.getName());
         }
 

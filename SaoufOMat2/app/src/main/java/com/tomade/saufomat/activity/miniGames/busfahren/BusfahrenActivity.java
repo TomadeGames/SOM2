@@ -113,9 +113,6 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                         this.rightButtonPressed();
                         break;
                     case R.id.backButton:
-                        if (this.fromMainGame) {
-                            this.currentPlayer.increaseDrinks(this.drinkCount);
-                        }
                         this.leaveGame();
                         break;
                     case R.id.tutorialButton:
@@ -165,6 +162,9 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                 this.rightText.setText(R.string.minigame_busfahren_question_last_answer_right);
                 break;
             case ACE_NO_ACE:
+                if (this.fromMainGame) {
+                    this.currentPlayer.increaseDrinks(this.drinkCount);
+                }
                 this.leaveGame();
                 break;
         }

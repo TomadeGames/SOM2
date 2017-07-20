@@ -14,7 +14,6 @@ import com.tomade.saufomat.persistance.GameValueHelper;
 
 import java.util.Random;
 
-//TODO: spiel endet nicht aus dem Hauptspiel herraus
 public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickListener {
     public static final String TAG = WerfDichDichtActivity.class.getSimpleName();
     private static Random random;

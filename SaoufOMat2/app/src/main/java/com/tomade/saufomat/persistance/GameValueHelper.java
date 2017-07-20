@@ -21,6 +21,7 @@ public class GameValueHelper {
     private static final String CURRENT_PLAYER_KEY = "current_player";
     private static final String IS_GAME_SAVED_KEY = "is_game_saved";
     private static final String GAME_VERSION_KEY = "game_version";
+    private static final String DATABASE_VERSION_KEY = "database_version";
 
     private interface WerfDichDicht {
         String GLASS0_STATE = "glass0state";
@@ -31,8 +32,9 @@ public class GameValueHelper {
         String GLASS5_STATE = "glass5state";
     }
 
-    //TODO: wenn etwas an den gespeicherten Spielen geändert wird, muss dieser Wert erhöht werden
-    private static final int GAME_VERSION = 2;
+    //TODO: wenn etwas an den gespeicherten Spielen geändert wird (egal ob Datenbank oder Key-Value-Speicher), muss
+    // dieser Wert erhöht werden
+    private static final int GAME_VERSION = 3;
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -121,12 +123,27 @@ public class GameValueHelper {
 
     public boolean isGameSaved() {
         int loadedGameVersion = this.sharedPreferences.getInt(GAME_VERSION_KEY, -1);
-        if (loadedGameVersion < GAME_VERSION) {
-            Log.i(TAG, "Loaded Game version is to low (Loaded Version: " + loadedGameVersion + ", current Version: "
-                    + GAME_VERSION + ")");
-            return false;
+        Log.d(TAG, "Loaded Game version is " + loadedGameVersion + " current GameVersion is " + GAME_VERSION);
+        if (loadedGameVersion == GAME_VERSION && new DatabaseHelper(this.context).getDatabaseVersion() == this
+                .getDatabseVersion()) {
+            return this.sharedPreferences.getBoolean(IS_GAME_SAVED_KEY, false);
         }
-        return this.sharedPreferences.getBoolean(IS_GAME_SAVED_KEY, false);
+        Log.i(TAG, "Loaded Game version [" + loadedGameVersion + "] is not equal current version [" +
+                GAME_VERSION + "] or Database is not valid");
+        return false;
+    }
+
+    public void saveDatabaseVersion(int databaseVersion) {
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        editor.putInt(DATABASE_VERSION_KEY, databaseVersion);
+        editor.apply();
+        Log.d(TAG, "Database version saved [" + databaseVersion + "]");
+    }
+
+    public int getDatabseVersion() {
+        int databaseVersion = this.sharedPreferences.getInt(DATABASE_VERSION_KEY, -1);
+        Log.d(TAG, "Loaded Database version is " + databaseVersion);
+        return databaseVersion;
     }
 
     public void clearGame() {

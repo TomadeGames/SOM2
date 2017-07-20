@@ -13,6 +13,7 @@ import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.Player;
+import com.tomade.saufomat.persistance.GameValueHelper;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -29,10 +30,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "saufomat_database";
 
     //TODO wenn die Datenbank geändert wird muss dieser Wert inkrementiert werden
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 12;
+
+    private Context context;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -65,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "Table " + TaskContract.Task.TABLE_NAME + " created");
         sqLiteDatabase.execSQL(miniGameStatement);
         Log.i(TAG, "Table " + MiniGameContract.MiniGame.TABLE_NAME + " created");
+        new GameValueHelper(this.context).saveDatabaseVersion(DATABASE_VERSION);
     }
 
     @Override
@@ -216,7 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Player> getAllPlayer() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor result = database.rawQuery("SELECT * FROM " + PlayerContract.Player.TABLE_NAME, null);
-        ArrayList<Player> playerList = new ArrayList<>();
+        Map<Integer, Player> playerList = new HashMap<>();
         Map<Player, Integer> nextPlayer = new HashMap<>();
         Map<Player, Integer> lastPlayer = new HashMap<>();
         try {
@@ -233,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             .COLUMN_NAME_NEXT_PLAYER)));
                     lastPlayer.put(player, result.getInt(result.getColumnIndex(PlayerContract.Player
                             .COLUMN_NAME_LAST_PLAYER)));
-                    playerList.add(player.getId(), player);
+                    playerList.put(player.getId(), player);
                 } while (result.moveToNext());
 
                 for (Map.Entry<Player, Integer> playerEntry : nextPlayer.entrySet()) {
@@ -247,8 +252,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             result.close();
         }
+        ArrayList<Player> players = new ArrayList<>();
+        for (Map.Entry<Integer, Player> entry : playerList.entrySet()) {
+            players.add(entry.getValue());
+        }
         Log.i(TAG, playerList.size() + " Players loaded from Databse");
-        return playerList;
+        return players;
     }
 
     public ArrayList<Task> getAllTasks(TaskDifficult difficult) {
@@ -341,5 +350,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Log.i(TAG, "New Game started");
+    }
+
+    public boolean isDatabaseValid() {
+        return DATABASE_VERSION == this.getWritableDatabase().getVersion();
+    }
+
+    public int getDatabaseVersion() {
+        return DATABASE_VERSION;
     }
 }

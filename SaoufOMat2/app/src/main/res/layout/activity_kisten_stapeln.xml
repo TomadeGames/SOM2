@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/allLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                tools:context=".activity.miniGames.kistenStapeln.KistenStapelnActivity"
-                android:id="@+id/allLayout">
+                tools:context=".activity.miniGames.kistenStapeln.KistenStapelnActivity">
 
     <ImageView
         android:id="@+id/backgroundImage"
@@ -33,24 +33,24 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="85dp"
         android:scaleType="fitXY"
-        android:src="@drawable/beer_crate"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentRight="true"/>
+        android:src="@drawable/beer_crate"/>
 
     <ImageButton
+        android:id="@+id/backButton"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:id="@+id/backButton"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_alignParentBottom="false"
         android:src="@drawable/no_button"/>
 
     <TextView
@@ -80,82 +80,93 @@
         android:src="@drawable/help"/>
 
     <RelativeLayout
+        android:id="@+id/nextPlayerLayout"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:id="@+id/nextPlayerLayout"
         android:layout_centerInParent="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:id="@+id/imageView4"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/popup"
-            android:scaleType="fitXY"/>
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/popup"/>
 
         <TextView
+            android:id="@+id/nextPlayerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Nächster Spieler ist dran"
-            android:id="@+id/nextPlayerText"
-            android:layout_alignTop="@+id/imageView4"
-            android:layout_alignLeft="@+id/imageView4"
             android:layout_alignBottom="@+id/imageView4"
+            android:layout_alignLeft="@+id/imageView4"
             android:layout_alignRight="@+id/imageView4"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_margin="10dp"
             android:gravity="center"
-            android:textColor="#000000"
-            android:layout_margin="10dp"/>
+            android:text="Nächster Spieler ist dran"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"/>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/tutorialLayout"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:id="@+id/tutorialLayout"
         android:layout_centerInParent="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/tutorialPopup"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:id="@+id/tutorialPopup"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/popup"
-            android:scaleType="fitXY"/>
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/popup"/>
 
         <TextView
+            android:id="@+id/tutorialText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/minigame.kisten_stapeln.tutorial"
-            android:id="@+id/tutorialText"
-            android:layout_alignTop="@+id/tutorialPopup"
-            android:layout_alignLeft="@+id/tutorialPopup"
             android:layout_alignBottom="@+id/tutorialPopup"
+            android:layout_alignLeft="@+id/tutorialPopup"
             android:layout_alignRight="@+id/tutorialPopup"
+            android:layout_alignTop="@+id/tutorialPopup"
+            android:layout_margin="10dp"
             android:gravity="center"
-            android:textColor="#000000"
-            android:layout_margin="10dp"/>
+            android:text="@string/minigame.kisten_stapeln.tutorial"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"/>
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/crateCounter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Kisten: 0"
-        android:id="@+id/crateCounter"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="#000000"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Kisten: 0"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/currentPlayerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/crateCounter"
+        android:layout_alignTop="@+id/crateCounter"
+        android:layout_marginLeft="5dp"
+        android:text="Spieler: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"/>
 
 </RelativeLayout>

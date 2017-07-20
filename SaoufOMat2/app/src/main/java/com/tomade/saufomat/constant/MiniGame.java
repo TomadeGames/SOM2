@@ -17,6 +17,9 @@ import java.io.Serializable;
  * Created by woors on 22.03.2016.
  */
 public enum MiniGame implements Serializable {
+    /**
+     * Wenn dieses Enum sich ändert muss DATENBANK_VERSION in DatabaseHelper erhöht werden!
+     */
     AUGENSAUFEN(AugensaufenActivity.class, R.drawable.augensaufen_screen, R.string.minigame_augensaufen_caption),
     BIERRUTSCHE(BierrutscheActivity.class, R.drawable.bierrutsche_screenshot, R.string.minigame_bierrutsche_caption),
     BUSFAHREN(BusfahrenActivity.class, R.drawable.busfahrer_screen, R.string.minigame_busfahren_caption),

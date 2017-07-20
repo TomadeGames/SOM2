@@ -93,7 +93,6 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
             this.playerText.setText(R.string.minigame_augensaufen_next_player);
             this.gameState = AugensaufenState.START;
         } else {
-            this.nextPlayer();
             this.turnCount++;
 
             if (this.turnCount >= this.playerList.size()) {
@@ -101,6 +100,7 @@ public class AugensaufenActivity extends BaseMiniGame implements View.OnClickLis
                 this.playerText.setVisibility(View.GONE);
                 this.gameState = AugensaufenState.END;
             } else {
+                this.nextPlayer();
                 this.turnCounterView.setText((this.turnCount + 1) + "/" + this.playerList.size());
                 this.playerText.setText(this.currentPlayer.getName());
                 this.gameState = AugensaufenState.START;

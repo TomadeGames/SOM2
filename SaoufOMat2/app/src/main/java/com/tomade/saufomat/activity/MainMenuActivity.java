@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class MainMenuActivity extends Activity implements View.OnClickListener {
     private static final String TAG = MainMenuActivity.class.getSimpleName();
+    private RelativeLayout loadGameField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         final ImageButton loadGameButton = (ImageButton) this.findViewById(R.id.loadGameButton);
         newGameButton.setOnClickListener(this);
         loadGameButton.setOnClickListener(this);
-        final RelativeLayout loadGameField = (RelativeLayout) this.findViewById(R.id.loadGameField);
+        this.loadGameField = (RelativeLayout) this.findViewById(R.id.loadGameField);
 
         TextView versionTextView = (TextView) this.findViewById(R.id.versionTextView);
         String versionName;
@@ -49,7 +50,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         this.findViewById(R.id.startButton).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (loadGameField.getVisibility() == View.GONE) {
+                if (MainMenuActivity.this.loadGameField.getVisibility() == View.GONE) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
                             ImageButton view = (ImageButton) v;
@@ -61,7 +62,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                             GameValueHelper gameValueHelper = new GameValueHelper(MainMenuActivity.this);
                             if (gameValueHelper.isGameSaved()) {
                                 Log.i(TAG, "Saved Game found");
-                                loadGameField.setVisibility(View.VISIBLE);
+                                MainMenuActivity.this.loadGameField.setVisibility(View.VISIBLE);
                             } else {
                                 Log.i(TAG, "No saved Game found");
                                 startNewGame();
@@ -74,7 +75,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                         }
                     }
                 } else {
-                    loadGameField.setVisibility(View.GONE);
+                    MainMenuActivity.this.loadGameField.setVisibility(View.GONE);
                 }
                 return true;
             }
@@ -83,7 +84,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         this.findViewById(R.id.gamesButton).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (loadGameField.getVisibility() == View.GONE) {
+                if (MainMenuActivity.this.loadGameField.getVisibility() == View.GONE) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN: {
                             ImageButton view = (ImageButton) v;
@@ -105,11 +106,17 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                         }
                     }
                 } else {
-                    loadGameField.setVisibility(View.GONE);
+                    MainMenuActivity.this.loadGameField.setVisibility(View.GONE);
                 }
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.loadGameField.setVisibility(View.GONE);
+        return super.onTouchEvent(event);
     }
 
     private void loadGame() {

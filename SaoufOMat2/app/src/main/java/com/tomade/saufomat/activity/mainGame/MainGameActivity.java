@@ -127,13 +127,13 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private void moveIconsToCorrectPositions() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.leftMargin = (int) (this.screenWidth / 6);
-        params.topMargin = (int) (this.screenHeight / 6);
+        params.leftMargin = this.screenWidth / 6;
+        params.topMargin = this.screenHeight / 6;
         this.leftIcon.setLayoutParams(params);
 
         RelativeLayout.LayoutParams middleParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        middleParams.leftMargin = (int) (this.screenWidth / 2);
+        middleParams.leftMargin = this.screenWidth / 2;
 
         this.middleIcon.setLayoutParams(params);
         this.middleIcon.setX((int) (this.screenWidth / 5.1));
@@ -589,5 +589,9 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         this.taskViewIntent.putExtra(IntentParameter.MainGame.AD_COUNTER, adCounter);
         this.finish();
         this.startActivity(this.taskViewIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

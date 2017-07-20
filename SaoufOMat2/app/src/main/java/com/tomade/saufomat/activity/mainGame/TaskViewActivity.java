@@ -28,7 +28,6 @@ import com.tomade.saufomat.model.Player;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-//TODO: Die aktuelle Spielerliste aktuell halten und so...
 //TODO: Tasks nach dem Builder-Pattern
 public class TaskViewActivity extends Activity implements View.OnClickListener {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
@@ -165,7 +164,10 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-            this.currentPlayer = this.currentPlayer.getNextPlayer();
+            //TODO wieder einkommentieren
+            /*if (!(this.miniGame == MiniGame.BUSFAHREN)) {
+                this.currentPlayer = this.currentPlayer.getNextPlayer();
+            }*/
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             this.finish();
@@ -398,7 +400,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener {
         this.currentPlayer = this.currentPlayer.getNextPlayer();
         this.currentPlayerIsAviable = false;
     }
-
 
     @Override
     public void onBackPressed() {

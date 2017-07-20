@@ -313,7 +313,6 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     }
 
     private void endGame() {
-        this.nextPlayer();
         this.tutorialPanel.setVisibility(View.VISIBLE);
         this.tutorialText.setText(this.getString(R.string.minigame_bierrutsche_game_over) + "\n" + this.getFullScore
                 () + "\n" + this

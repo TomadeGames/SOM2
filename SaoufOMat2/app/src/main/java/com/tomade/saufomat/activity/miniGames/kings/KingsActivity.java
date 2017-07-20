@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGames.BaseMiniGame;
-import com.tomade.saufomat.model.Player;
 import com.tomade.saufomat.model.card.Card;
 
 import java.util.ArrayList;
@@ -160,9 +159,11 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
         switch (this.card.getValue()) {
             case SEVEN:
                 this.popupText.setText(R.string.minigame_kings_card_value_seven);
+                this.increaseDrinkCounterForLeftPlayer(1);
                 break;
             case EIGHT:
                 this.popupText.setText(R.string.minigame_kings_card_value_eight);
+                this.increaseDrinkCounterForRightPlayer(1);
                 break;
             case NINE:
                 this.popupText.setText(R.string.minigame_kings_card_value_nine);
@@ -173,34 +174,18 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
                 break;
             case JACK:
                 this.popupText.setText(R.string.minigame_kings_card_value_jack);
-                if (this.fromMainGame) {
-                    for (Player player : this.playerList) {
-                        if (player.getIsMan()) {
-                            player.increaseDrinks(1);
-                        }
-                    }
-                }
+                this.increaseDrinkForAllMen(1);
                 break;
             case QUEEN:
                 this.popupText.setText(R.string.minigame_kings_card_value_queen);
-                if (this.fromMainGame) {
-                    for (Player player : this.playerList) {
-                        if (!player.getIsMan()) {
-                            player.increaseDrinks(1);
-                        }
-                    }
-                }
+                this.increaseDrinkForAllWomen(1);
                 break;
             case KING:
                 this.popupText.setText(R.string.minigame_kings_card_value_king);
                 break;
             case ACE:
                 this.popupText.setText(R.string.minigame_kings_card_value_ace);
-                if (this.fromMainGame) {
-                    for (Player player : this.playerList) {
-                        player.increaseDrinks(1);
-                    }
-                }
+                this.increaseDrinkCounterForAllPlayer(1);
                 break;
             default:
                 break;
