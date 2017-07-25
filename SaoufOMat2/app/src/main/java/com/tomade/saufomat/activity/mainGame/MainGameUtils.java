@@ -47,6 +47,9 @@ class DifficultWithSaufOMeterEndFrame {
     }
 }
 
+/**
+ * Hilfsklasse für die Logik der MainGameActivity
+ */
 public class MainGameUtils {
     private static final String TAG = MainGameUtils.class.getSimpleName();
     public static final int EASY_CHANCE = 4;

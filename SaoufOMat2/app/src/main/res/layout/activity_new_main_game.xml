@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/slot_machine_background"/>
+        android:src="@drawable/slot_machine_background"
+        android:contentDescription="Background Image"/>
 
     <RelativeLayout
         android:id="@+id/GameIcons"
@@ -31,7 +32,8 @@
         android:layout_marginStart="92dp"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        android:src="@drawable/beer_icon"/>
+        android:src="@drawable/beer_icon"
+        android:contentDescription="left Icon"/>
 
     <ImageView
         android:id="@+id/GameIconMiddle"
@@ -45,7 +47,8 @@
         android:scaleType="fitXY"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        android:src="@drawable/cocktail_icon"/>
+        android:src="@drawable/cocktail_icon"
+        android:contentDescription="middle Icon"/>
 
     <ImageView
         android:id="@+id/GameIconRight"
@@ -58,7 +61,8 @@
         android:layout_marginStart="117dp"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        android:src="@drawable/shot_icon"/>
+        android:src="@drawable/shot_icon"
+        android:contentDescription="right Icon"/>
 
     <ImageView
         android:id="@+id/SlotMachine"
@@ -84,7 +88,8 @@
         android:background="#00000000"
         android:scaleX="1.1"
         android:scaleY="1.1"
-        android:src="@drawable/start_button"/>
+        android:src="@drawable/start_button"
+        android:contentDescription="start button"/>
 
     <ImageView
         android:id="@+id/saufOMeterName"
@@ -97,7 +102,7 @@
         android:layout_marginRight="-15dp"
         android:layout_marginBottom="-100dp"
         android:src="@drawable/saufometer_name"
-        />
+        android:contentDescription="SaufOMeter label"/>
 
     <ImageView
         android:id="@+id/SaufOMeter"
@@ -107,7 +112,8 @@
         android:layout_marginLeft="55dp"
         android:layout_marginStart="55dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/saufometer0"/>
+        android:src="@drawable/saufometer0"
+        android:contentDescription="SaufOMeter"/>
 
     <RelativeLayout
         android:id="@+id/playerNameLayout"
