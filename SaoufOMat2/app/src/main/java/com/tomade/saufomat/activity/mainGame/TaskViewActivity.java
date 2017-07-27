@@ -66,20 +66,18 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
         if (!extras.getBoolean(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME)) {
             this.currentTask = (Task) extras.getSerializable(IntentParameter.MainGame.CURRENT_TASK);
-            if (this.currentTask.getSpecialEventCounter() > 0) {
-            }
             this.isGame = false;
         } else {
             this.miniGame = (MiniGame) extras.getSerializable(IntentParameter.MainGame.CURRENT_MINI_GAME);
             this.isGame = true;
         }
 
-        this.statisticsText = (TextView) this.findViewById(R.id.statisticText);
-        TextView currentPlayerNameText = (TextView) this.findViewById(R.id.currentPlayerNameText);
+        this.statisticsText = this.findViewById(R.id.statisticText);
+        TextView currentPlayerNameText = this.findViewById(R.id.currentPlayerNameText);
         currentPlayerNameText.setText(this.currentPlayer.getName());
-        TextView taskText = (TextView) this.findViewById(R.id.taskText);
-        ImageButton noButton = (ImageButton) this.findViewById(R.id.declineButton);
-        TextView costText = (TextView) this.findViewById(R.id.costText);
+        TextView taskText = this.findViewById(R.id.taskText);
+        ImageButton noButton = this.findViewById(R.id.declineButton);
+        TextView costText = this.findViewById(R.id.costText);
         int cost = 0;
 
         if (this.isGame) {
@@ -122,9 +120,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
         this.alcoholButtonPressed();
 
-        ImageButton yesButton = (ImageButton) this.findViewById(R.id.acceptButton);
-        ImageButton optionsButton = (ImageButton) this.findViewById(R.id.optionsButton);
-        ImageButton alcoholButton = (ImageButton) this.findViewById(R.id.alcoholButton);
+        ImageButton yesButton = this.findViewById(R.id.acceptButton);
+        ImageButton optionsButton = this.findViewById(R.id.optionsButton);
+        ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
@@ -294,11 +292,11 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         final View view = inflater.inflate(R.layout.maingame_options_dialog, null);
 
         builder.setView(view);
-        ImageButton abortButton = (ImageButton) view.findViewById(R.id.abortButton);
-        ImageButton acceptButton = (ImageButton) view.findViewById(R.id.acceptButton);
-        ImageButton closeButton = (ImageButton) view.findViewById(R.id.closeButton);
-        ImageButton addPlayerButton = (ImageButton) view.findViewById(R.id.addPlayerButton);
-        ImageButton removePlayerButton = (ImageButton) view.findViewById(R.id.removePlayerButton);
+        ImageButton abortButton = view.findViewById(R.id.abortButton);
+        ImageButton acceptButton = view.findViewById(R.id.acceptButton);
+        ImageButton closeButton = view.findViewById(R.id.closeButton);
+        ImageButton addPlayerButton = view.findViewById(R.id.addPlayerButton);
+        ImageButton removePlayerButton = view.findViewById(R.id.removePlayerButton);
 
 
         AlertDialog dialog = builder.create();
@@ -319,11 +317,11 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         do {
             String playerText;
             if (this.drinkCountShown) {
-                playerText = String.format("%s: %d", player.getName(), player.getDrinks());
+                playerText = player.getName() + ": " + player.getDrinks();
             } else {
                 float alc = this.calculateAlcohol(player.getDrinks(), player.getWeight(), player.getIsMan());
-                DecimalFormat decimalFormat = new DecimalFormat("#.00");
-                playerText = player.getName() + ": " + decimalFormat.format(alc) + "%";
+                DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                playerText = player.getName() + ": " + decimalFormat.format(alc) + "‰";
             }
             statisticValue += playerText + "\n";
             player = player.getNextPlayer();
