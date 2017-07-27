@@ -11,11 +11,21 @@ import android.widget.ImageView;
 public class DynamicImageView extends ImageView {
     private boolean fullX;
 
-    public DynamicImageView(final Context context, final AttributeSet attrs) {
-        super(context, attrs);
-        setFullX(false);
+    public DynamicImageView(final Context context) {
+        super(context);
+        this.setFullX(false);
     }
 
+    public DynamicImageView(final Context context, final AttributeSet attrs) {
+        super(context, attrs);
+        this.setFullX(false);
+    }
+
+    public DynamicImageView(final Context context, final AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.setFullX(false);
+    }
+    
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         final Drawable d = this.getDrawable();
