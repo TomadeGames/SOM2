@@ -321,7 +321,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             } else {
                 float alc = this.calculateAlcohol(player.getDrinks(), player.getWeight(), player.getIsMan());
                 DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                playerText = player.getName() + ": " + decimalFormat.format(alc) + "‰";
+                playerText = player.getName() + ": " + decimalFormat.format(alc) + " ‰";
             }
             statisticValue += playerText + "\n";
             player = player.getNextPlayer();

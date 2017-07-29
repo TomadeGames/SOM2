@@ -45,7 +45,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private static final int ROLLING_ANIMATION_DISTANCE = 3;
     private static final long ICON_STOP_DURATION = 500;
 
-    private static final int AD_LIMIT = 7; //Original 8, erstmal 7
+    private static final int AD_LIMIT = 5; //Original 8, erstmal 7
     private static int adCounter = 0;
 
     private static Random random = new Random(System.currentTimeMillis());
@@ -109,12 +109,12 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
         this.taskViewIntent = new Intent(this, TaskViewActivity.class);
 
-        TextView playerNameTextView = (TextView) this.findViewById(R.id.playerName);
+        TextView playerNameTextView = this.findViewById(R.id.playerName);
         playerNameTextView.setText(this.currentPlayer.getName());
-        this.leftIcon = (ImageView) this.findViewById(R.id.GameIconLeft);
-        this.middleIcon = (ImageView) this.findViewById(R.id.GameIconMiddle);
-        this.rightIcon = (ImageView) this.findViewById(R.id.GameIconRight);
-        this.saufOMeter = (ImageView) this.findViewById(R.id.SaufOMeter);
+        this.leftIcon = this.findViewById(R.id.GameIconLeft);
+        this.middleIcon = this.findViewById(R.id.GameIconMiddle);
+        this.rightIcon = this.findViewById(R.id.GameIconRight);
+        this.saufOMeter = this.findViewById(R.id.SaufOMeter);
         this.icons[0] = this.leftIcon;
         this.icons[1] = this.middleIcon;
         this.icons[2] = this.rightIcon;
@@ -393,7 +393,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         } else if (difficult == TaskDifficult.HARD_WIN) {
             this.currentPlayer.getStatistic().increaseHardWins();
         }
-        
+
         final boolean isMiniGame = difficult == TaskDifficult.GAME;
 
         final List<Integer> imageIds = new ArrayList<>();

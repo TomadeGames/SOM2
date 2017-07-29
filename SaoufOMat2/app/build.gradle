@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 10204
-        versionName "2.0.0.0"
+        versionName "2.0.0.3"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         jackOptions {
             enabled false

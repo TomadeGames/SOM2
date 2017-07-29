@@ -14,7 +14,7 @@ import com.google.android.gms.ads.InterstitialAd;
 
 public class AdService {
     private static final String TAG = AdService.class.getSimpleName();
-    private static InterstitialAd interstitialAd;
+    private static InterstitialAd interstitialAd = null;
 
     public static void initializeInterstitialAd(Context context) {
         if (interstitialAd == null) {
@@ -43,6 +43,7 @@ public class AdService {
             return true;
         }
         Log.e(TAG, "InterstitialAd was not loaded");
+        requestAd();
         return false;
     }
 }
