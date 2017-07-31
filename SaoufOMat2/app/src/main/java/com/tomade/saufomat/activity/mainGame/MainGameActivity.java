@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
 import com.tomade.saufomat.AdService;
 import com.tomade.saufomat.MiniGameProvider;
 import com.tomade.saufomat.R;
@@ -45,7 +46,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private static final int ROLLING_ANIMATION_DISTANCE = 3;
     private static final long ICON_STOP_DURATION = 500;
 
-    private static final int AD_LIMIT = 5; //Original 8, erstmal 7
+    private static final int AD_LIMIT = 7; //Original 8, erstmal 7
     private static int adCounter = 0;
 
     private static Random random = new Random(System.currentTimeMillis());
@@ -94,7 +95,6 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         Bundle extras = this.getIntent().getExtras();
         this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
         this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
-        adCounter = extras.getInt(IntentParameter.MainGame.AD_COUNTER);
         boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
 
         Point screenSize = MainGameUtils.getScreenSize(this);
@@ -583,14 +583,29 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private void changeToTaskView() {
         this.taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
         this.taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
+        Log.d(TAG, "AdCounter is " + adCounter + "/" + AD_LIMIT);
         if (adCounter >= AD_LIMIT) {
             adCounter = 0;
-            if (!AdService.showAd()) {
-                Log.e(TAG, "Ad cannot be shown");
-                this.changeView();
-            }
+
+            final InterstitialAd interstitialAd = AdService.getInterstitialAd();
+
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (interstitialAd.isLoaded()) {
+                        interstitialAd.show();
+                        Log.i(TAG, "InterstitialAd successful shown");
+                        AdService.requestAd();
+                    } else {
+                        Log.e(TAG, "Ad cannot be shown");
+                        AdService.requestAd();
+                        changeView();
+                    }
+                }
+            });
         } else {
             adCounter++;
+            Log.d(TAG, "Adcounter increased: " + adCounter);
             this.changeView();
         }
     }

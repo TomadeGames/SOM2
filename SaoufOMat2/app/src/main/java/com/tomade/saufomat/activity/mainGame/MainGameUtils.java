@@ -52,10 +52,10 @@ class DifficultWithSaufOMeterEndFrame {
  */
 public class MainGameUtils {
     private static final String TAG = MainGameUtils.class.getSimpleName();
-    public static final int EASY_CHANCE = 4;
-    public static final int MEDIUM_CHANCE = 4;
-    public static final int HARD_CHANCE = 3;
-    public static final int GAME_CHANCE = 1;
+    public static final int EASY_CHANCE = 40;
+    public static final int MEDIUM_CHANCE = 40;
+    public static final int HARD_CHANCE = 30;
+    public static final int GAME_CHANCE = 9;
 
     public static DifficultWithSaufOMeterEndFrame getCurrentDifficult(IconState leftDifficult, IconState
             middleDifficult, IconState rightDifficult) {

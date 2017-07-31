@@ -29,21 +29,13 @@ public class AdService {
         interstitialAd.setAdListener(adListener);
     }
 
-    private static void requestAd() {
+    public static void requestAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         interstitialAd.loadAd(adRequest);
         Log.i(TAG, "new InterstitialAd requested");
     }
 
-    public static boolean showAd() {
-        if (interstitialAd.isLoaded()) {
-            interstitialAd.show();
-            Log.i(TAG, "InterstitialAd successful shown");
-            requestAd();
-            return true;
-        }
-        Log.e(TAG, "InterstitialAd was not loaded");
-        requestAd();
-        return false;
+    public static InterstitialAd getInterstitialAd() {
+        return interstitialAd;
     }
 }
