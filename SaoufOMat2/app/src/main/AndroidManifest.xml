@@ -62,7 +62,7 @@
         <activity
             android:name=".activity.miniGame.bierrutsche.BierrutscheActivity"
             android:label="@string/minigame.bierrutsche.caption"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="sensorLandscape"/>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.

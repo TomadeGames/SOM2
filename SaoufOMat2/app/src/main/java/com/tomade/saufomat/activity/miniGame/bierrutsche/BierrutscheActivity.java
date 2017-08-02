@@ -164,7 +164,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
 
         int tableScrollDistance = this.screenWidth * accuracy / 100 - this.screenWidth / 2;
-        int tableScrollDelay = (int) ((1 / (float) accuracy) * ANIMATION_DURATION * 50);
+        int tableScrollDelay = (int) ((1 / (float) accuracy) * ANIMATION_DURATION * 40);
         if (tableScrollDistance < 0) {
             tableScrollDistance = 0;
         }
