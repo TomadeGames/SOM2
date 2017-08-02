@@ -120,7 +120,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         this.icons[2] = this.rightIcon;
         View startButton = this.findViewById(R.id.startButton);
         this.moveIconsToCorrectPositions();
-        this.initAnimations();
+        this.initRollingAnimations();
 
         startButton.setOnClickListener(this);
     }
@@ -482,15 +482,20 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         }, 0, SAUFOMETER_ANIMATION_TICK_DURATION);
     }
 
-    private void initAnimations() {
-        this.leftRollingAnimation =
-                new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
-                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
-        this.leftRollingAnimation.setDuration(LEFT_ICON_ANIMATION_DURATION);
-        this.leftRollingAnimation.setRepeatCount(Animation.INFINITE);
-        this.leftRollingAnimation.setRepeatMode(Animation.RESTART);
-        this.leftRollingAnimation.setInterpolator(new DecelerateInterpolator());
-        this.leftRollingAnimation.setAnimationListener(new Animation.AnimationListener() {
+    private Animation initRollingAnimation(long duration, Animation.AnimationListener listener) {
+        Animation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
+                Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
+        animation.setDuration(duration);
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.RESTART);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.setAnimationListener(listener);
+        return animation;
+    }
+
+    private void initRollingAnimations() {
+        this.leftRollingAnimation = this.initRollingAnimation(LEFT_ICON_ANIMATION_DURATION, new Animation
+                .AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 changeIcon(0);
@@ -509,14 +514,8 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
             }
         });
 
-        this.middleRollingAnimation =
-                new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
-                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
-        this.middleRollingAnimation.setDuration(MIDDLE_ICON_ANIMATION_DURATION);
-        this.middleRollingAnimation.setRepeatCount(Animation.INFINITE);
-        this.middleRollingAnimation.setRepeatMode(Animation.RESTART);
-        this.middleRollingAnimation.setInterpolator(new DecelerateInterpolator());
-        this.middleRollingAnimation.setAnimationListener(new Animation.AnimationListener() {
+        this.middleRollingAnimation = this.initRollingAnimation(MIDDLE_ICON_ANIMATION_DURATION, new Animation
+                .AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 changeIcon(1);
@@ -535,14 +534,8 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
             }
         });
 
-        this.rightRollingAnimation =
-                new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0F, Animation.RELATIVE_TO_SELF, 0.0F,
-                        Animation.RELATIVE_TO_PARENT, 0.0F, Animation.RELATIVE_TO_SELF, ROLLING_ANIMATION_DISTANCE);
-        this.rightRollingAnimation.setDuration(RIGHT_ICON_ANIMATION_DURATION);
-        this.rightRollingAnimation.setRepeatCount(Animation.INFINITE);
-        this.rightRollingAnimation.setRepeatMode(Animation.RESTART);
-        this.rightRollingAnimation.setInterpolator(new DecelerateInterpolator());
-        this.rightRollingAnimation.setAnimationListener(new Animation.AnimationListener() {
+        this.rightRollingAnimation = this.initRollingAnimation(RIGHT_ICON_ANIMATION_DURATION, new Animation
+                .AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 changeIcon(2);
