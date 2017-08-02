@@ -268,7 +268,6 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
                                 .AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
-
                             }
 
                             @Override
@@ -282,24 +281,20 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
                             @Override
                             public void onAnimationCancel(Animator animator) {
-
                             }
 
                             @Override
                             public void onAnimationRepeat(Animator animator) {
-
                             }
                         }).start();
             }
 
             @Override
             public void onAnimationCancel(Animator animator) {
-
             }
 
             @Override
             public void onAnimationRepeat(Animator animator) {
-
             }
         }).start();
     }
@@ -317,7 +312,6 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
                         .AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
-
                     }
 
                     @Override
@@ -331,24 +325,20 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onAnimationCancel(Animator animator) {
-
                     }
 
                     @Override
                     public void onAnimationRepeat(Animator animator) {
-
                     }
                 }).start();
             }
 
             @Override
             public void onAnimationCancel(Animator animator) {
-
             }
 
             @Override
             public void onAnimationRepeat(Animator animator) {
-
             }
         }).start();
     }
