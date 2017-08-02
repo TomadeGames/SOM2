@@ -17,7 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
+import com.tomade.saufomat.activity.SwipeController;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.constant.Direction;
 import com.tomade.saufomat.model.drawable.DynamicImageView;
 import com.tomade.saufomat.model.player.Player;
 
@@ -73,6 +75,8 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     private ObjectAnimator turningGlass;
     private ImageButton backButton;
     private TextView backText;
+
+    private SwipeController swipeController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +138,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             this.findViewById(R.id.namePanel).setVisibility(View.GONE);
         }
 
+        this.swipeController = new SwipeController();
     }
 
     @Override
@@ -391,63 +396,44 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         return fullScore;
     }
 
-    private void atStartOnTouch(MotionEvent event) {
-        if (this.downPositionX != -1) {
-            float x = event.getX();
-            if (x > this.screenWidth) {
-                x = this.screenWidth;
-            }
-            float deltaX = x - this.downPositionX;
-            if (deltaX > 0) {
-                this.gameState = BierrutscheState.ANIMATION;
-                this.tutorialButton.setVisibility(View.GONE);
-                this.backButton.setVisibility(View.GONE);
-                this.backText.setVisibility(View.GONE);
-                long eventDuration = event.getEventTime() - event.getDownTime();
+    private void atStartOnTouch() {
+        if (this.swipeController.getDirectionX() == Direction.RIGHT) {
+            this.gameState = BierrutscheState.ANIMATION;
+            this.tutorialButton.setVisibility(View.GONE);
+            this.backButton.setVisibility(View.GONE);
+            this.backText.setVisibility(View.GONE);
 
-                long accuracy = (long) (deltaX / eventDuration * 1000);
-                float percent = 100 / (float) TARGET_ACCURACY;
-                this.currentDistance = (int) (percent * accuracy);
-                Log.d(TAG, "Up: " + x + " deltaX: " + deltaX + " duration: " + eventDuration + " accuracy: " +
-                        accuracy + " percent: " + percent);
-                this.startAnimation(this.currentDistance);
-            }
+            long accuracy = (long) (this.swipeController.getDistanceX() / this.swipeController.getDuration() * 1000);
+            float percent = 100 / (float) TARGET_ACCURACY;
+            this.currentDistance = (int) (percent * accuracy);
+            this.startAnimation(this.currentDistance);
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                this.downPositionX = event.getX();
-                if (this.downPositionX > this.screenWidth) {
-                    this.downPositionX = -1;
-                }
-                Log.d(TAG, "Down: " + this.downPositionX);
-                break;
-            case MotionEvent.ACTION_UP:
-                if (this.tutorialPanel.getVisibility() == View.VISIBLE) {
-                    this.tutorialPanel.setVisibility(View.GONE);
-                    if (this.gameState != BierrutscheState.END_GAME) {
-                        if (this.gameState == BierrutscheState.NEXT_PLAYER) {
-                            this.startNextTurn();
-                        }
-                    } else {
-                        this.leaveGame();
+        if (this.swipeController.handleSwipe(event)) {
+            if (this.tutorialPanel.getVisibility() == View.VISIBLE) {
+                this.tutorialPanel.setVisibility(View.GONE);
+                if (this.gameState != BierrutscheState.END_GAME) {
+                    if (this.gameState == BierrutscheState.NEXT_PLAYER) {
+                        this.startNextTurn();
                     }
                 } else {
-                    switch (this.gameState) {
-                        case START:
-                            this.atStartOnTouch(event);
-                            break;
-                        case END_SINGEL_TURN:
-                            this.startNextTurn();
-                            break;
-                        default:
-                            break;
-                    }
+                    this.leaveGame();
                 }
-                break;
+            } else {
+                switch (this.gameState) {
+                    case START:
+                        this.atStartOnTouch();
+                        break;
+                    case END_SINGEL_TURN:
+                        this.startNextTurn();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         return true;
     }
