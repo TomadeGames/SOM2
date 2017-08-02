@@ -12,16 +12,6 @@
         android:layout_height="fill_parent"
         android:src="@drawable/bierrutsche_background"/>
 
-    <!--ImageView
-        android:id="@+id/startImage"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/beerImage"
-        android:scaleType="fitXY"
-        android:src="@drawable/bierrutsche_startfeld"/-->
 
     <pl.droidsonroids.gif.GifTextView
         android:id="@+id/startImage"

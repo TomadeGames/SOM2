@@ -104,31 +104,31 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         wm.getDefaultDisplay().getSize(size);
         this.screenWidth = size.x;
 
-        this.backgroundImage = (DynamicImageView) this.findViewById(R.id.backgroundImage);
+        this.backgroundImage = this.findViewById(R.id.backgroundImage);
         this.backgroundImage.setFullX(true);
-        this.startField = (GifTextView) this.findViewById(R.id.startImage);
-        this.targetImage = (ImageView) this.findViewById(R.id.targetImage);
-        this.beerImage = (ImageView) this.findViewById(R.id.beerImage);
-        this.tutorialPanel = (RelativeLayout) this.findViewById(R.id.tutorialPanel);
-        this.tutorialText = (TextView) this.findViewById(R.id.tutorialText);
-        this.statisticText = (TextView) this.findViewById(R.id.statisticText);
-        this.scoreText = (TextView) this.findViewById(R.id.accuracyText);
-        this.tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
+        this.startField = this.findViewById(R.id.startImage);
+        this.targetImage = this.findViewById(R.id.targetImage);
+        this.beerImage = this.findViewById(R.id.beerImage);
+        this.tutorialPanel = this.findViewById(R.id.tutorialPanel);
+        this.tutorialText = this.findViewById(R.id.tutorialText);
+        this.statisticText = this.findViewById(R.id.statisticText);
+        this.scoreText = this.findViewById(R.id.accuracyText);
+        this.tutorialButton = this.findViewById(R.id.tutorialButton);
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.backgroundImage.getLayoutParams();
         this.backgroundImage.setLayoutParams(params);
 
-        this.backButton = (ImageButton) this.findViewById(R.id.backButton);
+        this.backButton = this.findViewById(R.id.backButton);
 
         this.backButton.setOnClickListener(this);
         this.tutorialButton.setOnClickListener(this);
-        this.backText = (TextView) this.findViewById(R.id.backText);
+        this.backText = this.findViewById(R.id.backText);
 
         if (this.fromMainGame) {
             this.backButton.setVisibility(View.GONE);
             this.backText.setVisibility(View.GONE);
             this.maxTurnCount = SINGLE_TURN_LIMIT * this.playerList.size();
-            this.nameText = (TextView) this.findViewById(R.id.nameText);
+            this.nameText = this.findViewById(R.id.nameText);
             this.nameText.setText(this.currentPlayer.getName());
         } else {
             this.findViewById(R.id.namePanel).setVisibility(View.GONE);
@@ -219,19 +219,16 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
-
                 }
 
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-
                 }
             });
             this.fallingGlassY.addListener(new Animator.AnimatorListener() {
 
                 @Override
                 public void onAnimationStart(Animator animation) {
-
                 }
 
                 @Override
@@ -243,19 +240,16 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
-
                 }
 
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-
                 }
             });
         } else {
             targetX.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-
                 }
 
                 @Override
@@ -265,12 +259,10 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
-
                 }
 
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-
                 }
             });
 
@@ -402,8 +394,8 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     private void atStartOnTouch(MotionEvent event) {
         if (this.downPositionX != -1) {
             float x = event.getX();
-            if (x > this.startField.getWidth()) {
-                x = this.startField.getWidth();
+            if (x > this.screenWidth) {
+                x = this.screenWidth;
             }
             float deltaX = x - this.downPositionX;
             if (deltaX > 0) {
@@ -428,7 +420,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 this.downPositionX = event.getX();
-                if (this.downPositionX > this.startField.getWidth()) {
+                if (this.downPositionX > this.screenWidth) {
                     this.downPositionX = -1;
                 }
                 Log.d(TAG, "Down: " + this.downPositionX);
