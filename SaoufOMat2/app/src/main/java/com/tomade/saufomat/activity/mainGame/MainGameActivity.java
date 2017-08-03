@@ -2,10 +2,6 @@ package com.tomade.saufomat.activity.mainGame;
 
 import android.animation.Animator;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,25 +13,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.InterstitialAd;
-import com.tomade.saufomat.AdService;
-import com.tomade.saufomat.MiniGameProvider;
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.mainGame.task.Task;
-import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
-import com.tomade.saufomat.activity.mainGame.task.TaskProvider;
-import com.tomade.saufomat.constant.IntentParameter;
-import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.model.player.Player;
+import com.tomade.saufomat.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainGameActivity extends Activity implements View.OnClickListener {
+public class MainGameActivity extends BaseActivity<MainGamePresenter> implements View.OnClickListener {
     private static final String TAG = MainGameActivity.class.getSimpleName();
     private static final long LEFT_ICON_ANIMATION_DURATION = 400;
     private static final long MIDDLE_ICON_ANIMATION_DURATION = 300;
@@ -46,20 +32,11 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private static final int ROLLING_ANIMATION_DISTANCE = 3;
     private static final long ICON_STOP_DURATION = 500;
 
-    private static final int AD_LIMIT = 7; //Original 8, erstmal 7
-    private static int adCounter = 0;
-
-    private static Random random = new Random(System.currentTimeMillis());
-
-    private Player currentPlayer;
-    private ArrayList<Player> playerList;
-
     private MainGameState gameState;
     private ImageView leftIcon;
     private ImageView middleIcon;
     private ImageView rightIcon;
     private ImageView[] icons = new ImageView[3];
-
     private IconState[] iconStates = {IconState.EASY, IconState.MEDIUM, IconState.HARD};
 
     private Animation leftRollingAnimation;
@@ -71,11 +48,6 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     private boolean rightRolling = false;
     private ImageView saufOMeter;
 
-    private Intent taskViewIntent;
-
-    private int screenHeight;
-    private int screenWidth;
-
     private float getIconStopPosition() {
         return this.screenHeight / 6;
     }
@@ -84,33 +56,11 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_new_main_game);
-        AdService.initializeInterstitialAd(this);
-        AdService.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                adCounter = 0;
-                changeView();
-            }
-        });
-        Bundle extras = this.getIntent().getExtras();
-        this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
-        this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
-        boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
 
-        Point screenSize = MainGameUtils.getScreenSize(this);
-        this.screenHeight = screenSize.y;
-        this.screenWidth = screenSize.x;
-
-        if (newGame) {
-            TaskProvider taskProvider = new TaskProvider(this);
-            taskProvider.resetTasks();
-        }
         this.gameState = MainGameState.GAME_START;
 
-        this.taskViewIntent = new Intent(this, TaskViewActivity.class);
-
         TextView playerNameTextView = this.findViewById(R.id.playerName);
-        playerNameTextView.setText(this.currentPlayer.getName());
+        playerNameTextView.setText(this.presenter.getCurrentPlayer().getName());
         this.leftIcon = this.findViewById(R.id.GameIconLeft);
         this.middleIcon = this.findViewById(R.id.GameIconMiddle);
         this.rightIcon = this.findViewById(R.id.GameIconRight);
@@ -349,42 +299,24 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         final int hardImage = R.drawable.shot_icon;
         final int gameImage = R.drawable.dice_icon;
 
-        int fullChance = MainGameUtils.EASY_CHANCE + MainGameUtils.MEDIUM_CHANCE + MainGameUtils.HARD_CHANCE +
-                MainGameUtils.GAME_CHANCE;
         ImageView view = this.icons[viewIndex];
 
-        int value = random.nextInt(fullChance);
-        if (value < MainGameUtils.EASY_CHANCE) {
+        IconState newIconState = this.presenter.getRandomIconState();
+        this.iconStates[viewIndex] = newIconState;
+        if (newIconState == IconState.EASY) {
             view.setImageResource(easyImage);
-            this.iconStates[viewIndex] = IconState.EASY;
-        } else if (value < MainGameUtils.EASY_CHANCE + MainGameUtils.MEDIUM_CHANCE) {
+        } else if (newIconState == IconState.MEDIUM) {
             view.setImageResource(mediumImage);
-            this.iconStates[viewIndex] = IconState.MEDIUM;
-        } else if (value < MainGameUtils.EASY_CHANCE + MainGameUtils.MEDIUM_CHANCE + MainGameUtils.HARD_CHANCE) {
+        } else if (newIconState == IconState.HARD) {
             view.setImageResource(hardImage);
-            this.iconStates[viewIndex] = IconState.HARD;
         } else {
             view.setImageResource(gameImage);
-            this.iconStates[viewIndex] = IconState.GAME;
         }
     }
 
     private void moveSaufOMeter() {
-        DifficultWithSaufOMeterEndFrame difficultWithSaufOMeterEndFrame = MainGameUtils.getCurrentDifficult(
-                this.iconStates[0], this.iconStates[1], this.iconStates[2]);
-
-        final int lastFrame = difficultWithSaufOMeterEndFrame.getSaufOMeterEndFrame();
-        final TaskDifficult difficult = difficultWithSaufOMeterEndFrame.getDifficult();
-
-        if (difficult == TaskDifficult.EASY_WIN) {
-            this.currentPlayer.getStatistic().increaseEasyWins();
-        } else if (difficult == TaskDifficult.MEDIUM_WIN) {
-            this.currentPlayer.getStatistic().increaseMediumWins();
-        } else if (difficult == TaskDifficult.HARD_WIN) {
-            this.currentPlayer.getStatistic().increaseHardWins();
-        }
-
-        final boolean isMiniGame = difficult == TaskDifficult.GAME;
+        final int lastFrame = this.presenter.getCurrentDifficult(this.iconStates[0], this.iconStates[1], this
+                .iconStates[2]);
 
         final List<Integer> imageIds = new ArrayList<>();
         if (lastFrame >= 0) {
@@ -434,7 +366,6 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
             imageIds.add(R.drawable.saufometer12);
         }
 
-        final Context context = this;
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             int animationCounter = 0;
@@ -458,11 +389,7 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
                             });
                 } else if (this.animationCounter - imageIds.size() > SAUFOMETER_WAITING_FRAMES_AMOUNT) {
                     timer.cancel();
-                    if (isMiniGame) {
-                        changeToTaskView(new MiniGameProvider(context).getRandomMiniGame());
-                    } else {
-                        changeToTaskView(new TaskProvider(context).getNextTask(difficult));
-                    }
+                    MainGameActivity.this.presenter.changeToTaskView();
                 }
                 this.animationCounter++;
                 if (this.animationCounter >= imageIds.size() - 1) {
@@ -547,60 +474,12 @@ public class MainGameActivity extends Activity implements View.OnClickListener {
         });
     }
 
-    private void changeToTaskView(Task task) {
-        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, task);
-        MainGameUtils.saveGame(this, adCounter, this.currentPlayer, task);
-        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
-
-        this.changeToTaskView();
-    }
-
-    private void changeToTaskView(MiniGame miniGame) {
-        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
-        this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
-        MainGameUtils.saveGame(this, adCounter, this.currentPlayer, miniGame);
-
-        this.changeToTaskView();
-    }
-
-    private void changeToTaskView() {
-        this.taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-        this.taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
-        Log.d(TAG, "AdCounter is " + adCounter + "/" + AD_LIMIT);
-        if (adCounter >= AD_LIMIT) {
-            adCounter = 0;
-
-            final InterstitialAd interstitialAd = AdService.getInterstitialAd();
-
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (interstitialAd.isLoaded()) {
-                        interstitialAd.show();
-                        Log.i(TAG, "InterstitialAd successful shown");
-                        AdService.requestAd();
-                    } else {
-                        Log.e(TAG, "Ad cannot be shown");
-                        AdService.requestAd();
-                        changeView();
-                    }
-                }
-            });
-        } else {
-            adCounter++;
-            Log.d(TAG, "Adcounter increased: " + adCounter);
-            this.changeView();
-        }
-    }
-
-    private void changeView() {
-        this.taskViewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        this.taskViewIntent.putExtra(IntentParameter.MainGame.AD_COUNTER, adCounter);
-        this.finish();
-        this.startActivity(this.taskViewIntent);
+    @Override
+    public void onBackPressed() {
     }
 
     @Override
-    public void onBackPressed() {
+    protected void initPresenter() {
+        this.presenter = new MainGamePresenter(this);
     }
 }
