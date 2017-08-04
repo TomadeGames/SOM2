@@ -9,13 +9,14 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import com.tomade.saufomat.model.card.Card;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KingsActivity extends BaseMiniGame implements View.OnClickListener {
+public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
     private ImageView cardImage;
     private TextView popupText;
     private TextView cardCounterText;
@@ -32,16 +33,21 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
     private String lastText;
 
     @Override
+    protected void initPresenter() {
+        this.presenter = new BaseMiniGamePresenter(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_kings);
 
 
-        if (this.fromMainGame) {
-            if (3 * this.playerList.size() > 20) {
-                this.maximumCards = 2 * this.playerList.size();
+        if (this.presenter.isFromMainGame()) {
+            if (3 * this.presenter.getPlayerAmount() > 20) {
+                this.maximumCards = 2 * this.presenter.getPlayerAmount();
             } else {
-                this.maximumCards = 3 * this.playerList.size();
+                this.maximumCards = 3 * this.presenter.getPlayerAmount();
             }
             if (this.maximumCards > 32) {
                 this.maximumCards = 32;
@@ -50,22 +56,23 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
             this.maximumCards = 32;
         }
 
-        this.cardImage = (ImageView) this.findViewById(R.id.cardImage);
-        this.popupText = (TextView) this.findViewById(R.id.popupText);
-        this.cardCounterText = (TextView) this.findViewById(R.id.cardcounterText);
+        this.cardImage = this.findViewById(R.id.cardImage);
+        this.popupText = this.findViewById(R.id.popupText);
+        this.cardCounterText = this.findViewById(R.id.cardcounterText);
         this.cardCounterText.setText(this.cardCount + " / " + this.maximumCards);
 
-        if (this.fromMainGame) {
-            this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this.currentPlayer.getName()));
+        if (this.presenter.isFromMainGame()) {
+            this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this.presenter
+                    .getCurrentPlayer().getName()));
         }
 
         this.lastText = this.popupText.getText().toString();
 
-        ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
+        ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
         tutorialButton.setOnClickListener(this);
-        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
+        ImageButton backButton = this.findViewById(R.id.backButton);
         View backLabel = this.findViewById(R.id.backText);
-        if (!this.fromMainGame) {
+        if (!this.presenter.isFromMainGame()) {
             backButton.setOnClickListener(this);
         } else {
             backButton.setVisibility(View.GONE);
@@ -85,14 +92,14 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
                         this.getTask();
                         break;
                     case ROUND_END:
-                        if (!this.fromMainGame) {
+                        if (!this.presenter.isFromMainGame()) {
                             this.popupText.setText(R.string.minigame_kings_next_player);
                             this.gameState = KingsState.START;
                         } else {
-                            this.nextPlayer();
+                            this.presenter.nextPlayer();
                             if (this.cardCount < this.maximumCards) {
                                 this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
-                                        .currentPlayer.getName()));
+                                        .presenter.getCurrentPlayer().getName()));
                                 this.gameState = KingsState.START;
                             } else {
                                 this.popupText.setText(R.string.minigame_kings_game_over);
@@ -101,7 +108,7 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
                         }
                         break;
                     case GAME_OVER:
-                        this.leaveGame();
+                        this.presenter.leaveGame();
                         break;
                 }
             }
@@ -113,7 +120,7 @@ public class KingsActivity extends BaseMiniGame implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.backButton:
-                this.leaveGame();
+                this.presenter.leaveGame();
                 break;
             case R.id.tutorialButton:
                 if (this.tutorialShown) {

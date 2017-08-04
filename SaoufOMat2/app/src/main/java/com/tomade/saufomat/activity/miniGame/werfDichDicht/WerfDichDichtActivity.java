@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import com.tomade.saufomat.persistance.GameValueHelper;
 
 import java.util.Random;
 
-public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickListener {
+public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePresenter>
+        implements View.OnClickListener {
     public static final String TAG = WerfDichDichtActivity.class.getSimpleName();
     private static Random random;
     private static final int DICE_ROLL_DELAY = 100;
@@ -40,42 +42,47 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
     private int currentDiceIndex;
 
     @Override
+    protected void initPresenter() {
+        this.presenter = new BaseMiniGamePresenter(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_werf_dich_dicht);
 
         random = new Random(System.currentTimeMillis());
 
-        this.playerText = (TextView) this.findViewById(R.id.nameText);
-        this.turnCounter = (TextView) this.findViewById(R.id.turnCounter);
+        this.playerText = this.findViewById(R.id.nameText);
+        this.turnCounter = this.findViewById(R.id.turnCounter);
 
-        this.diceImage = (ImageView) this.findViewById(R.id.diceImage);
-        this.popupImage = (ImageView) this.findViewById(R.id.popupImage);
-        this.popupText = (TextView) this.findViewById(R.id.popupText);
-        this.glasses[0] = (ImageView) this.findViewById(R.id.glas0Image);
-        this.glasses[1] = (ImageView) this.findViewById(R.id.glas1Image);
-        this.glasses[2] = (ImageView) this.findViewById(R.id.glas2Image);
-        this.glasses[3] = (ImageView) this.findViewById(R.id.glas3Image);
-        this.glasses[4] = (ImageView) this.findViewById(R.id.glas4Image);
-        this.glasses[5] = (ImageView) this.findViewById(R.id.glas5Image);
+        this.diceImage = this.findViewById(R.id.diceImage);
+        this.popupImage = this.findViewById(R.id.popupImage);
+        this.popupText = this.findViewById(R.id.popupText);
+        this.glasses[0] = this.findViewById(R.id.glas0Image);
+        this.glasses[1] = this.findViewById(R.id.glas1Image);
+        this.glasses[2] = this.findViewById(R.id.glas2Image);
+        this.glasses[3] = this.findViewById(R.id.glas3Image);
+        this.glasses[4] = this.findViewById(R.id.glas4Image);
+        this.glasses[5] = this.findViewById(R.id.glas5Image);
 
-        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
-        ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
+        ImageButton backButton = this.findViewById(R.id.backButton);
+        ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
         backButton.setOnClickListener(this);
         tutorialButton.setOnClickListener(this);
 
         this.loadLastGame();
 
-        if (this.fromMainGame) {
-            this.playerText.setText(this.currentPlayer.getName());
-            TextView backText = (TextView) this.findViewById(R.id.backText);
+        if (this.presenter.isFromMainGame()) {
+            this.playerText.setText(this.presenter.getCurrentPlayerName());
+            TextView backText = this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
             backText.setVisibility(View.GONE);
-            this.maxTurns = this.playerList.size() * 3;
+            this.maxTurns = this.presenter.getPlayerAmount() * 3;
             if (this.maxTurns > 30) {
-                this.maxTurns = this.playerList.size() * 2;
+                this.maxTurns = this.presenter.getPlayerAmount() * 2;
                 if (this.maxTurns > 30) {
-                    this.maxTurns = this.playerList.size();
+                    this.maxTurns = this.presenter.getPlayerAmount();
                 }
             }
             this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
@@ -195,26 +202,26 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
     private void clearShot() {
         this.shotsClearedInOneTurn++;
         if (this.shotsClearedInOneTurn >= 6) {
-            if (this.fromMainGame) {
-                this.currentPlayer.increaseDrinks(1);
+            if (this.presenter.isFromMainGame()) {
+                this.presenter.increaseCurrentPlayerDrink(1);
             }
             if (this.turnCount >= this.maxTurns - 1) {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six_in_last_turn);
-                DrinkHelper.increaseAllButOnePlayer(2, this.currentPlayer, this);
+                DrinkHelper.increaseAllButOnePlayer(2, this.presenter.getCurrentPlayer(), this);
                 this.gameState = WerfDichDichtState.END;
             } else {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six);
             }
         } else {
             this.popupText.setText(R.string.minigame_werf_dich_dicht_drink);
-            if (this.fromMainGame) {
-                this.currentPlayer.increaseDrinks(1);
+            if (this.presenter.isFromMainGame()) {
+                this.presenter.increaseCurrentPlayerDrink(1);
             }
         }
     }
 
     private void fillShot() {
-        if (!this.fromMainGame) {
+        if (!this.presenter.isFromMainGame()) {
             this.popupText.setText(R.string.minigame_werf_dich_dicht_next_player);
         } else {
             this.turnCount++;
@@ -222,13 +229,12 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
                 this.gameState = WerfDichDichtState.END;
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_game_over);
             } else {
-                this.nextPlayer();
+                this.presenter.nextPlayer();
                 this.shotsClearedInOneTurn = 0;
-                this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn, this
-                        .currentPlayer
-                        .getName()));
+                this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn,
+                        this.presenter.getCurrentPlayerName()));
                 this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
-                this.playerText.setText(this.currentPlayer.getName());
+                this.playerText.setText(this.presenter.getCurrentPlayerName());
             }
         }
     }
@@ -318,12 +324,11 @@ public class WerfDichDichtActivity extends BaseMiniGame implements View.OnClickL
         }, WerfDichDichtActivity.ANIMATION_DELAY);
     }
 
-    @Override
     protected void leaveGame() {
-        if (this.fromMainGame) {
+        if (this.presenter.isFromMainGame()) {
             GameValueHelper gameValueHelper = new GameValueHelper(this);
             gameValueHelper.saveWerfDichDicht(this.isFull);
         }
-        super.leaveGame();
+        this.presenter.leaveGame();
     }
 }

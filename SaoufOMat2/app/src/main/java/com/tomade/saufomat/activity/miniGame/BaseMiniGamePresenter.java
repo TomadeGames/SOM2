@@ -1,11 +1,9 @@
 package com.tomade.saufomat.activity.miniGame;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.WindowManager;
 
-import com.tomade.saufomat.ActivityWithPlayer;
+import com.tomade.saufomat.activity.BasePresenter;
 import com.tomade.saufomat.activity.ChooseMiniGameActivity;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
@@ -17,25 +15,22 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * Basisklasse für Minispiele
- * Created by woors on 07.03.2017.
+ * Basisklasse für Minispiel-Presenter
+ * Created by woors on 03.08.2017.
  */
 
-public abstract class BaseMiniGame extends Activity implements ActivityWithPlayer {
-    protected boolean fromMainGame;
+public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extends BasePresenter<ACTIVITY> {
     protected ArrayList<Player> playerList;
     protected Player currentPlayer;
+    protected boolean fromMainGame;
 
-    public BaseMiniGame() {
-        this.fromMainGame = false;
+    public BaseMiniGamePresenter(ACTIVITY activity) {
+        super(activity);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        Bundle extras = this.getIntent().getExtras();
+    public void onCreate(Bundle savedInstanceState) {
+        Bundle extras = this.activity.getIntent().getExtras();
         if (extras != null) {
             this.fromMainGame = extras.getBoolean(IntentParameter.FROM_MAIN_GAME);
             if (this.fromMainGame) {
@@ -48,28 +43,29 @@ public abstract class BaseMiniGame extends Activity implements ActivityWithPlaye
     /**
      * Setzt den nächsten Spieler als aktuellen Spieler
      */
-    protected void nextPlayer() {
+    public void nextPlayer() {
         this.currentPlayer = this.currentPlayer.getNextPlayer();
     }
 
     /**
      * Setzt den vorherigen Spieler als aktuellen Spieler
      */
-    protected void lastPlayer() {
+    public void lastPlayer() {
         this.currentPlayer = this.currentPlayer.getLastPlayer();
     }
+
 
     /**
      * Verlässt das Spiel und wechselt zum Minispiel-Menü oder Hauptspiel zurück. Dadurch ist auch der nächste
      * Spieler an der Reihe
      */
-    protected void leaveGame() {
+    public void leaveGame() {
         Intent intent;
         if (!this.fromMainGame) {
-            intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
+            intent = new Intent(this.activity, ChooseMiniGameActivity.class);
         } else {
             this.nextPlayer();
-            intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
+            intent = new Intent(this.activity, MainGameActivity.class);
         }
 
         this.leaveGame(intent);
@@ -88,33 +84,40 @@ public abstract class BaseMiniGame extends Activity implements ActivityWithPlaye
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         }
-        this.finish();
-        this.startActivity(intent);
+        this.activity.finish();
+        this.activity.startActivity(intent);
     }
 
     private MiniGame getThisGame() {
         Set<MiniGame> allMiniGames = EnumSet.allOf(MiniGame.class);
         for (MiniGame miniGame : allMiniGames) {
-            if (miniGame.getActivity().equals(this.getClass())) {
+            if (miniGame.getActivity().equals(this.activity.getClass())) {
                 return miniGame;
             }
         }
-        throw new IllegalStateException("Activity [" + this.getClass() + "] is not defined in Enum " + MiniGame.class
-                .getName());
+        throw new IllegalStateException("Activity [" + this.activity.getClass() + "] is not defined in Enum " +
+                MiniGame.class
+                        .getName());
     }
 
 
-    @Override
-    public void onBackPressed() {
+    public String getCurrentPlayerName() {
+        return this.currentPlayer.getName();
+    }
+
+    public void increaseCurrentPlayerDrink(int amount) {
+        this.currentPlayer.increaseDrinks(amount);
+    }
+
+    public boolean isFromMainGame() {
+        return this.fromMainGame;
+    }
+
+    public int getPlayerAmount() {
+        return this.playerList.size();
     }
 
     public Player getCurrentPlayer() {
         return this.currentPlayer;
     }
-
-    @Override
-    public boolean arePlayerValid() {
-        return this.fromMainGame;
-    }
-
 }

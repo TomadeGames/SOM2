@@ -4,13 +4,10 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,30 +15,24 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.SwipeController;
-import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.constant.Direction;
 import com.tomade.saufomat.model.drawable.DynamicImageView;
 import com.tomade.saufomat.model.player.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import pl.droidsonroids.gif.GifTextView;
 
 //TODO: aktuelle Punktzahl anzeigen
-public class BierrutscheActivity extends BaseMiniGame implements View.OnClickListener {
+public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresenter> implements View.OnClickListener {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
     private static final int TARGET_ACCURACY = 5000;
     private static final int ANIMATION_DURATION = 1500;
     private static final int FALLING_DELAY = 1500;
-    private static final int SINGLE_TURN_LIMIT = 3;
-    private static final int DRINK_AMOUNT = 3;
 
     private float beerStartPositionX;
     private float beerStartPositionY;
-
 
     private DynamicImageView backgroundImage;
     private GifTextView startField;
@@ -56,19 +47,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     private TextView statisticText;
     private TextView scoreText;
 
-    private int turnCount = 0;
-    private int maxTurnCount;
-
-    private Map<Player, Integer> distances = new HashMap<>();
-    private int lastDistance = -1;
-    private int[] currentDistances = new int[3];
-    private int currentDistance;
-
-    //ScreenSize
-    private int screenWidth;
-
     private BierrutscheState gameState = BierrutscheState.START;
-    private float downPositionX;
 
     private ObjectAnimator fallingGlassX;
     private ObjectAnimator fallingGlassY;
@@ -79,34 +58,14 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
     private SwipeController swipeController;
 
     @Override
+    protected void initPresenter() {
+        this.presenter = new BierrutschePresenter(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_bierrutsche);
-
-        if (this.playerList == null) {
-            Player player1 = new Player();
-            player1.setName(this.getString(R.string.default_player_player1));
-
-            Player player2 = new Player();
-            player2.setName(this.getString(R.string.default_player_player2));
-
-            player1.setNextPlayer(player2);
-            player1.setLastPlayer(player2);
-
-            player2.setNextPlayer(player1);
-            player2.setLastPlayer(player1);
-
-            this.playerList = new ArrayList<>();
-            this.playerList.add(player1);
-            this.playerList.add(player2);
-
-            this.currentPlayer = player1;
-        }
-
-        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        Point size = new Point();
-        wm.getDefaultDisplay().getSize(size);
-        this.screenWidth = size.x;
 
         this.backgroundImage = this.findViewById(R.id.backgroundImage);
         this.backgroundImage.setFullX(true);
@@ -128,12 +87,11 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         this.tutorialButton.setOnClickListener(this);
         this.backText = this.findViewById(R.id.backText);
 
-        if (this.fromMainGame) {
+        if (this.presenter.isFromMainGame()) {
             this.backButton.setVisibility(View.GONE);
             this.backText.setVisibility(View.GONE);
-            this.maxTurnCount = SINGLE_TURN_LIMIT * this.playerList.size();
             this.nameText = this.findViewById(R.id.nameText);
-            this.nameText.setText(this.currentPlayer.getName());
+            this.nameText.setText(this.presenter.getCurrentPlayerName());
         } else {
             this.findViewById(R.id.namePanel).setVisibility(View.GONE);
         }
@@ -240,7 +198,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
                 public void onAnimationEnd(Animator animation) {
                     BierrutscheActivity.this.fallingGlassY.cancel();
                     BierrutscheActivity.this.fallingGlassX.cancel();
-                    endRound();
+                    BierrutscheActivity.this.endTurn();
                 }
 
                 @Override
@@ -259,7 +217,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    endRound();
+                    BierrutscheActivity.this.endTurn();
                 }
 
                 @Override
@@ -278,64 +236,20 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         animator.start();
     }
 
-    private void endRound() {
-        if (this.currentDistance > 100) {
-            this.currentDistance = 0;
-        }
-        this.currentDistances[this.turnCount % SINGLE_TURN_LIMIT] = this.currentDistance;
-
-        this.turnCount++;
-        if (this.turnCount % SINGLE_TURN_LIMIT == 0) {
-            int max = this.getMaximum(this.currentDistances);
-            this.distances.put(this.currentPlayer, max);
-            if (this.turnCount >= this.maxTurnCount && this.fromMainGame) {
-                this.endGame();
-            }
-            this.nextPlayer(max);
+    private void endTurn() {
+        if (this.presenter.endTurn()) {
+            this.nextPlayersTurn();
         } else {
             this.gameState = BierrutscheState.END_SINGEL_TURN;
         }
-        this.scoreText.setText(this.scoreText.getText() + "\n" + this.turnCount % SINGLE_TURN_LIMIT + "/" +
-                SINGLE_TURN_LIMIT);
+        this.scoreText.setText(this.presenter.getTurnText());
     }
 
-    private int getMaximum(int[] values) {
-        int max = 0;
-        for (int i : values) {
-            if (i > max) {
-                max = i;
-            }
-        }
-        return max;
-    }
-
-    private void endGame() {
+    public void endGame() {
         this.tutorialPanel.setVisibility(View.VISIBLE);
-        this.tutorialText.setText(this.getString(R.string.minigame_bierrutsche_game_over) + "\n" + this.getFullScore
-                () + "\n" + this
-                .getWorstPlayerText());
+        this.tutorialText.setText(this.getString(R.string.minigame_bierrutsche_game_over) + "\n" + this.presenter
+                .getFullScore() + "\n" + this.presenter.getWorstPlayerText());
         this.gameState = BierrutscheState.END_GAME;
-    }
-
-    private String getWorstPlayerText() {
-        String worstScore = "";
-        List<Player> worstPlayer = new ArrayList<>();
-        int worst = 101;
-        for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
-            int score = entry.getValue();
-            if (score < worst) {
-                worstPlayer.clear();
-                worstPlayer.add(entry.getKey());
-                worst = score;
-            } else if (score == worst) {
-                worstPlayer.add(entry.getKey());
-            }
-        }
-        for (Player worstSinglePlayer : worstPlayer) {
-            worstSinglePlayer.increaseDrinks(DRINK_AMOUNT);
-            worstScore += worstSinglePlayer.getName() + " trink " + DRINK_AMOUNT + "\n";
-        }
-        return worstScore;
     }
 
     private void startNextTurn() {
@@ -349,19 +263,19 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         this.startField.setX(0);
         this.gameState = BierrutscheState.START;
         this.tutorialButton.setVisibility(View.VISIBLE);
-        if (!this.fromMainGame) {
+        if (!this.presenter.isFromMainGame()) {
             this.backButton.setVisibility(View.VISIBLE);
             this.backText.setVisibility(View.VISIBLE);
         }
     }
 
-    private void nextPlayer(int score) {
+    private void nextPlayersTurn() {
         this.tutorialPanel.setVisibility(View.VISIBLE);
         this.scoreText.setVisibility(View.INVISIBLE);
-        if (this.fromMainGame) {
+        if (this.presenter.isFromMainGame()) {
             int max = 0;
             Player player = null;
-            for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
+            for (Map.Entry<Player, Integer> entry : this.presenter.getDistances().entrySet()) {
                 if (entry.getValue() > max) {
                     max = entry.getValue();
                     player = entry.getKey();
@@ -369,32 +283,27 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
             }
             if (this.gameState != BierrutscheState.END_GAME) {
                 this.statisticText.setText(player.getName() + ": " + max);
-                this.nextPlayer();
-                this.nameText.setText(this.currentPlayer.getName());
-                this.tutorialText.setText(this.getFullScore() + "\n" + this.currentPlayer.getName() +
-                        " ist dran");
+                this.presenter.nextPlayer();
+                this.nameText.setText(this.presenter.getCurrentPlayer().getName());
+                this.tutorialText.setText(this.presenter.getFullScore() + "\n" + this.presenter.getCurrentPlayer()
+                        .getName() + " ist dran");
             }
         } else {
-            if (this.lastDistance > 0) {
-                this.tutorialText.setText("Deine Punkte: " + score + "\nLezter Spieler: " + this.lastDistance +
-                        "\n\nNächster Spieler ist dran");
+            if (this.presenter.getLastPlayerDistance() > 0) {
+                this.tutorialText.setText("Deine Punkte: " + this.presenter.getCurrentPlayerScore() + "\nLezter " +
+                        "Spieler: " + this.presenter
+                        .getLastPlayerDistance() + "\n\nNächster Spieler ist dran");
             } else {
-                this.tutorialText.setText("Deine Punkte: " + score + "\n\nNächster Spieler ist dran");
+                this.tutorialText.setText("Deine Punkte: " + this.presenter.getCurrentPlayerScore() + "\n\nNächster " +
+                        "Spieler ist dran");
             }
-            this.lastDistance = score;
+            this.presenter.nextPlayersTurn();
         }
         if (this.gameState != BierrutscheState.END_GAME) {
             this.gameState = BierrutscheState.NEXT_PLAYER;
         }
     }
 
-    private String getFullScore() {
-        String fullScore = "";
-        for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
-            fullScore += entry.getKey().getName() + ": " + entry.getValue() + "\n";
-        }
-        return fullScore;
-    }
 
     private void atStartOnTouch() {
         if (this.swipeController.getDirectionX() == Direction.RIGHT) {
@@ -405,8 +314,8 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
 
             long accuracy = (long) (this.swipeController.getDistanceX() / this.swipeController.getDuration() * 1000);
             float percent = 100 / (float) TARGET_ACCURACY;
-            this.currentDistance = (int) (percent * accuracy);
-            this.startAnimation(this.currentDistance);
+            this.presenter.setCurrentDistances((int) (percent * accuracy));
+            this.startAnimation(this.presenter.getCurrentDistance());
         }
     }
 
@@ -420,7 +329,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
                         this.startNextTurn();
                     }
                 } else {
-                    this.leaveGame();
+                    this.presenter.leaveGame();
                 }
             } else {
                 switch (this.gameState) {
@@ -445,7 +354,7 @@ public class BierrutscheActivity extends BaseMiniGame implements View.OnClickLis
         } else {
             switch (v.getId()) {
                 case R.id.backButton:
-                    this.leaveGame();
+                    this.presenter.leaveGame();
                     break;
                 case R.id.tutorialButton:
                     if (this.tutorialPanel.getVisibility() == View.GONE && this.gameState == BierrutscheState.START) {

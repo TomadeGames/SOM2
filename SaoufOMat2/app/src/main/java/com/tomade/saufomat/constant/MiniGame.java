@@ -1,7 +1,7 @@
 package com.tomade.saufomat.constant;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.augensaufen.AugensaufenActivity;
 import com.tomade.saufomat.activity.miniGame.bierrutsche.BierrutscheActivity;
 import com.tomade.saufomat.activity.miniGame.busfahren.BusfahrenActivity;
@@ -31,17 +31,17 @@ public enum MiniGame implements Serializable {
     WERF_DICH_DICHT(WerfDichDichtActivity.class, R.drawable.werf_dich_dicht_screen, R.string
             .minigame_werf_dich_dicht_caption);
 
-    private Class<? extends BaseMiniGame> activity;
+    private Class<? extends BaseMiniGameActivity> activity;
     private int screenshotId;
     private int nameId;
 
-    MiniGame(Class<? extends BaseMiniGame> activity, int screenshotId, int nameId) {
+    MiniGame(Class<? extends BaseMiniGameActivity> activity, int screenshotId, int nameId) {
         this.activity = activity;
         this.screenshotId = screenshotId;
         this.nameId = nameId;
     }
 
-    public Class<? extends BaseMiniGame> getActivity() {
+    public Class<? extends BaseMiniGameActivity> getActivity() {
         return this.activity;
     }
 

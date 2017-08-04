@@ -6,14 +6,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickListener {
+public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
     private static Random random;
 
     private List<String> currentQuestions;
@@ -29,6 +30,11 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
     private boolean gameOver = false;
 
     @Override
+    protected void initPresenter() {
+        this.presenter = new BaseMiniGamePresenter(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_ich_hab_noch_nie);
@@ -40,20 +46,20 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
 
         this.initLists();
 
-        this.taskView = (TextView) this.findViewById(R.id.taskText);
-        this.turnCounter = (TextView) this.findViewById(R.id.turnCounter);
+        this.taskView = this.findViewById(R.id.taskText);
+        this.turnCounter = this.findViewById(R.id.turnCounter);
         this.currentTask = this.getQuestion();
         this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
 
-        ImageButton popup = (ImageButton) this.findViewById(R.id.popupButton);
-        ImageButton tutorial = (ImageButton) this.findViewById(R.id.tutorialButton);
-        ImageButton back = (ImageButton) this.findViewById(R.id.backButton);
+        ImageButton popup = this.findViewById(R.id.popupButton);
+        ImageButton tutorial = this.findViewById(R.id.tutorialButton);
+        ImageButton back = this.findViewById(R.id.backButton);
 
-        if (this.fromMainGame) {
+        if (this.presenter.isFromMainGame()) {
             back.setVisibility(View.INVISIBLE);
             TextView backText = (TextView) this.findViewById(R.id.backText);
             backText.setVisibility(View.INVISIBLE);
-            this.maxTurns = this.playerList.size() * 3;
+            this.maxTurns = this.presenter.getPlayerAmount() * 3;
             if (this.maxTurns > 30) {
                 this.maxTurns = 30;
             }
@@ -70,7 +76,7 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.backButton) {
-            this.leaveGame();
+            this.presenter.leaveGame();
         } else {
             if (this.tutorialShown) {
                 this.tutorialShown = false;
@@ -91,12 +97,12 @@ public class IchHabNochNieActivity extends BaseMiniGame implements View.OnClickL
 
     private void nextQuestion() {
         if (this.gameOver) {
-            this.leaveGame();
+            this.presenter.leaveGame();
         }
         this.currentTask = this.getQuestion();
         this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
         this.turnCount++;
-        if (this.fromMainGame) {
+        if (this.presenter.isFromMainGame()) {
             if (this.turnCount >= this.maxTurns) {
                 this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_game_over));
                 this.gameOver = true;

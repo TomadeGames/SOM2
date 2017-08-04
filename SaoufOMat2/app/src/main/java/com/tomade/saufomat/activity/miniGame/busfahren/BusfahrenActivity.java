@@ -10,11 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
-import com.tomade.saufomat.activity.miniGame.BaseMiniGame;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
+import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import com.tomade.saufomat.model.card.Card;
 import com.tomade.saufomat.model.card.CardValue;
 
-public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListener {
+public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
     private ImageButton leftButton;
     private ImageButton rightButton;
     private TextView leftText;
@@ -32,13 +33,18 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
     private ImageView[] cardImages;
 
     @Override
+    protected void initPresenter() {
+        this.presenter = new BaseMiniGamePresenter(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_busfahren);
 
-        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
-        if (this.fromMainGame) {
-            TextView backText = (TextView) this.findViewById(R.id.backText);
+        ImageButton backButton = this.findViewById(R.id.backButton);
+        if (this.presenter.isFromMainGame()) {
+            TextView backText = this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
             backText.setVisibility(View.GONE);
         } else {
@@ -49,22 +55,22 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
         this.cardImages = new ImageView[5];
         this.initCards();
 
-        this.cardImages[0] = (ImageView) this.findViewById(R.id.card1Image);
-        this.cardImages[1] = (ImageView) this.findViewById(R.id.card2Image);
-        this.cardImages[2] = (ImageView) this.findViewById(R.id.card3Image);
-        this.cardImages[3] = (ImageView) this.findViewById(R.id.card4Image);
-        this.cardImages[4] = (ImageView) this.findViewById(R.id.card5Image);
+        this.cardImages[0] = this.findViewById(R.id.card1Image);
+        this.cardImages[1] = this.findViewById(R.id.card2Image);
+        this.cardImages[2] = this.findViewById(R.id.card3Image);
+        this.cardImages[3] = this.findViewById(R.id.card4Image);
+        this.cardImages[4] = this.findViewById(R.id.card5Image);
 
-        this.leftButton = (ImageButton) this.findViewById(R.id.leftButton);
-        this.rightButton = (ImageButton) this.findViewById(R.id.rightButton);
-        this.leftText = (TextView) this.findViewById(R.id.leftButtonText);
-        this.rightText = (TextView) this.findViewById(R.id.rightButtonText);
-        this.taskText = (TextView) this.findViewById(R.id.taskText);
-        this.drinkCounterText = (TextView) this.findViewById(R.id.drinkCounterText);
-        this.plusText = (TextView) this.findViewById(R.id.drinkCounterPlusText);
+        this.leftButton = this.findViewById(R.id.leftButton);
+        this.rightButton = this.findViewById(R.id.rightButton);
+        this.leftText = this.findViewById(R.id.leftButtonText);
+        this.rightText = this.findViewById(R.id.rightButtonText);
+        this.taskText = this.findViewById(R.id.taskText);
+        this.drinkCounterText = this.findViewById(R.id.drinkCounterText);
+        this.plusText = this.findViewById(R.id.drinkCounterPlusText);
 
         this.tutorial = this.findViewById(R.id.tutorialPanel);
-        ImageButton tutorialButton = (ImageButton) this.findViewById(R.id.tutorialButton);
+        ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
 
         tutorialButton.setOnClickListener(this);
         this.leftButton.setOnClickListener(this);
@@ -113,7 +119,7 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                         this.rightButtonPressed();
                         break;
                     case R.id.backButton:
-                        this.leaveGame();
+                        this.presenter.leaveGame();
                         break;
                     case R.id.tutorialButton:
                         this.tutorial.setVisibility(View.VISIBLE);
@@ -162,10 +168,10 @@ public class BusfahrenActivity extends BaseMiniGame implements View.OnClickListe
                 this.rightText.setText(R.string.minigame_busfahren_question_last_answer_right);
                 break;
             case ACE_NO_ACE:
-                if (this.fromMainGame) {
-                    this.currentPlayer.increaseDrinks(this.drinkCount);
+                if (this.presenter.isFromMainGame()) {
+                    this.presenter.getCurrentPlayer().increaseDrinks(this.drinkCount);
                 }
-                this.leaveGame();
+                this.presenter.leaveGame();
                 break;
         }
         this.buttonsClickable = true;
