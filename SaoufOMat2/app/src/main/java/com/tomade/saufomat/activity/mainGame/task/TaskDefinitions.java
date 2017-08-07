@@ -11,7 +11,16 @@ import java.util.List;
 public class TaskDefinitions {
     public static List<Task> getDebugTasks() {
         List<Task> taskList = new ArrayList<>();
-        taskList.add(new Task("DEBUG_TASK", TaskDifficult.EASY, 1, 1, TaskTarget.AD));
+        String taskName = "DEBUG_TASK";
+        int drinkCount = 0;
+        int cost = 0;
+        TaskTarget taskTarget = TaskTarget.GLAS_IN_THE_MIDDLE;
+        taskList.add(new Task(taskName, TaskDifficult.EASY, drinkCount, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.MEDIUM, drinkCount, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.HARD, drinkCount, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.EASY_WIN, drinkCount, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.MEDIUM_WIN, drinkCount, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.HARD_WIN, drinkCount, cost, taskTarget));
         return taskList;
     }
 
@@ -146,7 +155,7 @@ public class TaskDefinitions {
                 TaskTarget.SELF));
         taskList.add(new Task("Dein linker Nachbar kneift dich", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
-                TaskDifficult.EASY, 0, 0, TaskTarget.SELF));
+                TaskDifficult.EASY, 0, 0, TaskTarget.GLAS_IN_THE_MIDDLE));
         taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
                 TaskDifficult.EASY, 0, 0, TaskTarget.SELF));
         taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",

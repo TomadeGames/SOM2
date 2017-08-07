@@ -25,5 +25,5 @@ public enum TaskTarget {
     VICTOM,
     ONCE,
     AD,
-    UNDEFINED
+    GLAS_IN_THE_MIDDLE, EVENT, UNDEFINED
 }

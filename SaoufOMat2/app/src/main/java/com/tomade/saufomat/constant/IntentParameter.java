@@ -17,6 +17,7 @@ public interface IntentParameter {
         String CURRENT_TASK_IS_MINI_GAME = "currentTaskIsMiniGame";
         String AD_COUNTER = "adCounter";
         String NEW_GAME = "newGame";
+        String NEW_TASK_EVENT = "newTaskEvent";
     }
 
     interface ChoosePlayersActivity {

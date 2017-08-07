@@ -23,12 +23,15 @@ import com.tomade.saufomat.activity.MainMenuActivity;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
+import com.tomade.saufomat.activity.mainGame.taskevent.TaskEvent;
+import com.tomade.saufomat.activity.mainGame.taskevent.TaskEventType;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
 //TODO: Tasks nach dem Builder-Pattern
 public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
@@ -147,15 +150,20 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void openMainView() {
+    private void openMainView(TaskEvent newTaskEvent) {
         Log.i(TAG, "Switching to MainView");
         this.currentPlayer = this.currentPlayer.getNextPlayer();
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
+        intent.putExtra(IntentParameter.MainGame.NEW_TASK_EVENT, newTaskEvent);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         this.finish();
         this.startActivity(intent);
+    }
+
+    private void openMainView() {
+        this.openMainView(null);
     }
 
     private void yesButtonPressed() {
@@ -174,6 +182,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             this.startActivity(intent);
         } else {
             boolean switchToMainView = true;
+            TaskEvent newTaskEvent = null;
             if (this.currentPlayerIsAviable) {
                 Log.i(TAG, "Tasktarget is " + this.currentTask.getTarget());
                 switch (this.currentTask.getTarget()) {
@@ -222,6 +231,13 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                         } else {
                             this.openMainView();
                         }
+                        break;
+                    case GLAS_IN_THE_MIDDLE:
+                        newTaskEvent = new TaskEvent();
+                        newTaskEvent.setType(TaskEventType.GLAS_IN_THE_MIDDLE);
+                        newTaskEvent.setTasksToEventLimit(new Random(System.currentTimeMillis()).nextInt(2) + 2);
+                        switchToMainView = false;
+                        this.openMainView(newTaskEvent);
                         break;
                     default:
                         Log.e(TAG, "TaskTarget " + this.currentTask.getTarget() + " is not used");

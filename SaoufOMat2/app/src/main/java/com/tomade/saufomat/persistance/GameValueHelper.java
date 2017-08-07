@@ -34,7 +34,7 @@ public class GameValueHelper {
 
     //TODO: wenn etwas an den gespeicherten Spielen geändert wird (egal ob Datenbank oder Key-Value-Speicher), muss
     // dieser Wert erhöht werden
-    private static final int GAME_VERSION = 3;
+    private static final int GAME_VERSION = 4;
 
     private Context context;
     private SharedPreferences sharedPreferences;

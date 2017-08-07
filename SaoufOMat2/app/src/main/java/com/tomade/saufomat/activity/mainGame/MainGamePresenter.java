@@ -14,6 +14,8 @@ import com.tomade.saufomat.activity.BasePresenter;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskProvider;
+import com.tomade.saufomat.activity.mainGame.taskevent.TaskEvent;
+import com.tomade.saufomat.activity.mainGame.taskevent.TaskEventTaskDefinitions;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
@@ -33,7 +35,7 @@ public class MainGamePresenter extends BasePresenter {
     private static final int EASY_CHANCE = 40;
     private static final int MEDIUM_CHANCE = 40;
     private static final int HARD_CHANCE = 30;
-    private static final int GAME_CHANCE = 100000;   //10
+    private static final int GAME_CHANCE = 10;   //10
 
     private static final int AD_LIMIT = 7; //Original 8, erstmal 7
     private static int adCounter = 0;
@@ -43,6 +45,8 @@ public class MainGamePresenter extends BasePresenter {
     private Player currentPlayer;
     private ArrayList<Player> playerList;
     private TaskDifficult currentDificult;
+
+    private ArrayList<TaskEvent> taskEvents;
 
     public MainGamePresenter(BaseActivity activity) {
         super(activity);
@@ -55,10 +59,18 @@ public class MainGamePresenter extends BasePresenter {
         this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
         this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
         boolean newGame = extras.getBoolean(IntentParameter.MainGame.NEW_GAME);
+        TaskEvent newTaskEvent = (TaskEvent) extras.getSerializable(IntentParameter.MainGame.NEW_TASK_EVENT);
+
+        if (newTaskEvent != null) {
+            new DatabaseHelper(this.activity).insertTaskEvent(newTaskEvent);
+        }
 
         if (newGame) {
             TaskProvider taskProvider = new TaskProvider(this.activity);
             taskProvider.resetTasks();
+            this.taskEvents = new ArrayList<>();
+        } else {
+            this.taskEvents = new DatabaseHelper(this.activity).getTaskEvents();
         }
         this.initAd();
     }
@@ -174,8 +186,7 @@ public class MainGamePresenter extends BasePresenter {
         this.saveGame(context, adCounter, currentPlayer, databaseHelper);
     }
 
-    public void saveGame(final Context context, final int adCounter, final Player currentPlayer, final Task
-            currentTask) {
+    public void saveGame(final Context context, final int adCounter, final Player currentPlayer) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         this.saveGame(context, adCounter, currentPlayer, databaseHelper);
@@ -188,6 +199,8 @@ public class MainGamePresenter extends BasePresenter {
             databaseHelper.updatePlayer(player);
             player = player.getNextPlayer();
         } while (player != currentPlayer);
+
+        databaseHelper.updateTaskEvents(this.taskEvents);
 
         new Thread(new Runnable() {
             @Override
@@ -212,18 +225,47 @@ public class MainGamePresenter extends BasePresenter {
     }
 
     public void changeToTaskView() {
-        if (this.currentDificult == TaskDifficult.GAME) {
-            MiniGame miniGame = new MiniGameProvider(this.activity).getRandomMiniGame();
-            this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
-            this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
-            this.saveGame(this.activity, adCounter, this.currentPlayer, miniGame);
-        } else {
-            Task task = new TaskProvider(this.activity).getNextTask(this.currentDificult);
-            this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, task);
-            this.saveGame(this.activity, adCounter, this.currentPlayer, task);
+        TaskEvent firedTaskEvent = null;
+
+        for (TaskEvent taskEvent : this.taskEvents) {
+            taskEvent.increaseTaskToEventCounter();
+            if (firedTaskEvent == null) {
+                if (taskEvent.getTasksToEventCounter() >= taskEvent.getTasksToEventLimit()) {
+                    firedTaskEvent = taskEvent;
+                }
+            }
+        }
+
+        if (firedTaskEvent != null) {
+            Log.i(TAG, "TaskEvent (" + firedTaskEvent.getId() + "/" + this.taskEvents.size() + " [" + firedTaskEvent
+                    .getEventCounter() + "/" + TaskEventTaskDefinitions.getTaskAmount(firedTaskEvent.getType()) + "])" +
+                    " fired");
+            this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, TaskEventTaskDefinitions.getTask
+                    (firedTaskEvent.getType(), firedTaskEvent.getEventCounter()));
+            this.saveGame(this.activity, adCounter, this.currentPlayer);
             this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
 
+            firedTaskEvent.increaseEventCounter();
+            if (firedTaskEvent.getEventCounter() >= TaskEventTaskDefinitions.getTaskAmount(firedTaskEvent.getType())) {
+                this.taskEvents.remove(firedTaskEvent);
+                new DatabaseHelper(this.activity).removeTaskEvent(firedTaskEvent);
+            }
+        } else {
+            if (this.currentDificult == TaskDifficult.GAME) {
+                MiniGame miniGame = new MiniGameProvider(this.activity).getRandomMiniGame();
+                this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
+                this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
+                this.saveGame(this.activity, adCounter, this.currentPlayer, miniGame);
+            } else {
+                Task task = new TaskProvider(this.activity).getNextTask(this.currentDificult);
+                this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, task);
+                this.saveGame(this.activity, adCounter, this.currentPlayer);
+                this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
+            }
         }
+
+        new DatabaseHelper(this.activity).updateTaskEvents(this.taskEvents);
+
         this.taskViewIntent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
         this.taskViewIntent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         Log.d(TAG, "AdCounter is " + adCounter + "/" + AD_LIMIT);

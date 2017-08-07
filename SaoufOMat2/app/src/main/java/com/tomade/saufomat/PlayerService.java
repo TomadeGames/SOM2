@@ -17,7 +17,7 @@ public class PlayerService {
         try {
             newPlayer.setWeight((int) Float.parseFloat(weight));
         } catch (NumberFormatException e) {
-            Log.e(TAG, "Error et formating Weight to Float: " + weight, e);
+            Log.w(TAG, "Error et formating Weight to Float: " + weight, e);
         }
         boolean genderSet = false;
         if (gender.equals("Mann")) {
