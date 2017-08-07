@@ -30,10 +30,10 @@ import java.util.Random;
 
 public class MainGamePresenter extends BasePresenter {
     private static final String TAG = MainGamePresenter.class.getSimpleName();
-    public static final int EASY_CHANCE = 40;
-    public static final int MEDIUM_CHANCE = 40;
-    public static final int HARD_CHANCE = 30;
-    public static final int GAME_CHANCE = 10;
+    private static final int EASY_CHANCE = 40;
+    private static final int MEDIUM_CHANCE = 40;
+    private static final int HARD_CHANCE = 30;
+    private static final int GAME_CHANCE = 100000;   //10
 
     private static final int AD_LIMIT = 7; //Original 8, erstmal 7
     private static int adCounter = 0;

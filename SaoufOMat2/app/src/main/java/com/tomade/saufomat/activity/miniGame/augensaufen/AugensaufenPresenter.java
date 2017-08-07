@@ -18,7 +18,7 @@ public class AugensaufenPresenter extends BaseMiniGamePresenter<AugensaufenActiv
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
     }
 
     public int getRandomNumber() {
