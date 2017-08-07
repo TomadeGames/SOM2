@@ -236,7 +236,7 @@ public class MainGamePresenter extends BasePresenter {
             }
         }
 
-        if (firedTaskEvent != null) {
+        if (firedTaskEvent != null && !this.isDifficultWin() && this.currentDificult != TaskDifficult.GAME) {
             Log.i(TAG, "TaskEvent (" + firedTaskEvent.getId() + "/" + this.taskEvents.size() + " [" + firedTaskEvent
                     .getEventCounter() + "/" + TaskEventTaskDefinitions.getTaskAmount(firedTaskEvent.getType()) + "])" +
                     " fired");
@@ -332,5 +332,10 @@ public class MainGamePresenter extends BasePresenter {
         } else {
             return IconState.GAME;
         }
+    }
+
+    public boolean isDifficultWin() {
+        return this.currentDificult == TaskDifficult.EASY_WIN || this.currentDificult == TaskDifficult.MEDIUM_WIN ||
+                this.currentDificult == TaskDifficult.HARD_WIN;
     }
 }

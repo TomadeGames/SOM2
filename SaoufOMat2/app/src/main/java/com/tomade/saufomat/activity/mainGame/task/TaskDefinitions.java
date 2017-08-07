@@ -156,14 +156,6 @@ public class TaskDefinitions {
         taskList.add(new Task("Dein linker Nachbar kneift dich", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
                 TaskDifficult.EASY, 0, 0, TaskTarget.GLAS_IN_THE_MIDDLE));
-        taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
-                TaskDifficult.EASY, 0, 0, TaskTarget.SELF));
-        taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
-                TaskDifficult.EASY, 0, 0, TaskTarget.SELF));
-        taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
-                TaskDifficult.EASY, 0, 0, TaskTarget.SELF));
-        taskList.add(new Task("Leere das Glas in der Mitte und fülle 2cl eines beliebigen Getränks ein",
-                TaskDifficult.EASY, 1, 0, TaskTarget.SELF));
         taskList.add(new Task("Alle Männer trinken", TaskDifficult.EASY, 1, 0, TaskTarget.MEN));
         taskList.add(new Task("Arbeitslose trinken", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Alle Frauen trinken", TaskDifficult.EASY, 1, 0, TaskTarget.WOMEN));
