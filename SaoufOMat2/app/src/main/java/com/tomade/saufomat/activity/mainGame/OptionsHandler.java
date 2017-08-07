@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tomade.saufomat.PlayerService;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.model.player.Player;
 
@@ -76,9 +77,9 @@ public class OptionsHandler implements View.OnClickListener {
         );
         final LayoutInflater inflater = this.taskViewActivity.getLayoutInflater();
         final View view = inflater.inflate(R.layout.activity_new_player_dialog, null);
-        final EditText etxtName = (EditText) view.findViewById(R.id.etxtName);
-        final EditText etxtWeight = (EditText) view.findViewById(R.id.etxtWeight);
-        final Spinner spGender = (Spinner) view.findViewById(R.id.spGender);
+        final EditText etxtName = view.findViewById(R.id.etxtName);
+        final EditText etxtWeight = view.findViewById(R.id.etxtWeight);
+        final Spinner spGender = view.findViewById(R.id.spGender);
         ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(this.taskViewActivity, R.array.gender, android.R
                 .layout
                 .simple_spinner_item);
@@ -86,7 +87,7 @@ public class OptionsHandler implements View.OnClickListener {
         spGender.setAdapter(arrayAdapter);
 
         etxtName.setText("");
-        etxtWeight.setText("70");
+        etxtWeight.setText(R.string.create_player_activity_weight_default);
 
         final Player newPlayer = new Player();
 
@@ -95,17 +96,8 @@ public class OptionsHandler implements View.OnClickListener {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        newPlayer.setName(etxtName.getText().toString());
-                        newPlayer.setWeight(Integer.parseInt(etxtWeight.getText().toString()));
-                        boolean genderSet = false;
-                        if (spGender.getSelectedItem().equals("Mann")) {
-                            newPlayer.setIsMan(true);
-                            genderSet = true;
-                        } else if (spGender.getSelectedItem().equals("Frau")) {
-                            newPlayer.setIsMan(false);
-                            genderSet = true;
-                        }
-                        if (!newPlayer.getName().isEmpty() && newPlayer.getWeight() > 0 && genderSet) {
+                        if (PlayerService.fillPlayerData(newPlayer, etxtName.getText().toString(), etxtWeight.getText
+                                ().toString(), spGender.getSelectedItem().toString())) {
                             addPlayer(newPlayer);
                         } else {
                             Toast.makeText(OptionsHandler.this.taskViewActivity, R.string.create_player_check_data,
@@ -130,8 +122,8 @@ public class OptionsHandler implements View.OnClickListener {
         LayoutInflater inflater = this.taskViewActivity.getLayoutInflater();
         View view = inflater.inflate(R.layout.activity_choose_players, null);
 
-        LinearLayout playerContainer = (LinearLayout) view.findViewById(R.id.playerContainer);
-        ImageButton acceptButton = (ImageButton) view.findViewById(R.id.acceptButton);
+        LinearLayout playerContainer = view.findViewById(R.id.playerContainer);
+        ImageButton acceptButton = view.findViewById(R.id.acceptButton);
 
         final List<Player> selectedPlayers = new ArrayList<>();
         this.initRemovePlayerPlayerContainer(playerContainer, selectedPlayers);
@@ -198,8 +190,8 @@ public class OptionsHandler implements View.OnClickListener {
             LayoutInflater inflater = this.taskViewActivity.getLayoutInflater();
             final View playerView = inflater.inflate(R.layout.display_player_element, null);
 
-            TextView playerNameText = (TextView) playerView.findViewById(R.id.playerNameText);
-            final ImageButton playerButton = (ImageButton) playerView.findViewById(R.id.playerButton);
+            TextView playerNameText = playerView.findViewById(R.id.playerNameText);
+            final ImageButton playerButton = playerView.findViewById(R.id.playerButton);
 
             playerNameText.setText(player.getName());
             playerButton.setOnClickListener(new View.OnClickListener() {
