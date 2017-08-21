@@ -38,11 +38,6 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder withSpecialEvent(int turnCount) {
-        this.task.setSpecialEventCounter(turnCount);
-        return this;
-    }
-
     public Task build() {
         return this.task;
     }

@@ -95,7 +95,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                     taskTextValue = this.getString(R.string.maingame_task_jackpot);
                     break;
             }
-            taskTextValue += this.currentTask.getText();
+            taskTextValue += this.currentTask.getParsedText(this.currentPlayer);
             taskText.setText(taskTextValue);
             cost = this.currentTask.getCost();
 

@@ -1,41 +1,49 @@
 package com.tomade.saufomat.activity.mainGame.task;
 
+import com.tomade.saufomat.model.player.Player;
+
 import java.io.Serializable;
 
 /**
+ * Aufgaben vom Hauptspiel
  * Created by woors on 10.03.2016.
  */
 public class Task implements Serializable {
-
     private static final long serialVersionUID = 7664080231665909479L;
+
     private static int nextId = 0;
     private int id;
     private String text;
     private TaskDifficult difficult;
-    private int drinkCount;     //Getränkeanzahl bei Ja
-    private int cost;           //Getränkeanzahl bei Nein
+    /**
+     * Getränkeanzahl bei Ja
+     */
+    private int drinkCount;
+    /**
+     * Getränkeanzahl bei Nein
+     */
+    private int cost;
     private TaskTarget target;
     private boolean alreadyUsed;
-    private int specialEventCounter;
 
     public Task() {
 
     }
 
     public Task(String text, TaskDifficult difficult, int drinkCount, int cost, TaskTarget target) {
-        this.setId(nextId++);
-        this.setText(text);
-        this.setDifficult(difficult);
+        this.id = nextId++;
+        this.text = text;
+        this.difficult = difficult;
         if (drinkCount < 0) {
             drinkCount = 0;
         }
-        this.setDrinkCount(drinkCount);
+        this.drinkCount = drinkCount;
         if (cost < 0) {
             cost = 0;
         }
-        this.setCost(cost);
-        this.setTarget(target);
-        this.setAlreadyUsed(false);
+        this.cost = cost;
+        this.target = target;
+        this.alreadyUsed = false;
     }
 
     public String getText() {
@@ -50,6 +58,11 @@ public class Task implements Serializable {
         return this.drinkCount;
     }
 
+    /**
+     * Gibt die Kosten für eine Aufgabe zurück
+     *
+     * @return die Kosten der Aufgabe oder 0, wenn sie nicht abgelehnt werden kann
+     */
     public int getCost() {
         return this.cost;
     }
@@ -81,6 +94,11 @@ public class Task implements Serializable {
         this.difficult = difficult;
     }
 
+    /**
+     * Gibt die Anzahl der Getränke an, die beider dieser Aufgabe getrunken werden, wenn sie bestätigt wird.
+     *
+     * @param drinkCount die Anzahl der Schlücke, die bei "Ja" getrunken werden
+     */
     public void setDrinkCount(int drinkCount) {
         this.drinkCount = drinkCount;
     }
@@ -101,15 +119,14 @@ public class Task implements Serializable {
         this.alreadyUsed = alreadyUsed;
     }
 
-    public int getSpecialEventCounter() {
-        return this.specialEventCounter;
+    /**
+     * Gibt einen übersetzten Aufgabentext ohne Tokens zurück
+     *
+     * @param currentPlayer der aktuelle Spieler
+     * @return der übersetzte Aufgabentext
+     */
+    public String getParsedText(Player currentPlayer) {
+        return TaskParser.parseText(this.text, currentPlayer);
     }
 
-    public void setSpecialEventCounter(int specialEventCounter) {
-        this.specialEventCounter = specialEventCounter;
-    }
-
-    public void decreaseSpecialEventCounter() {
-        this.specialEventCounter--;
-    }
 }
