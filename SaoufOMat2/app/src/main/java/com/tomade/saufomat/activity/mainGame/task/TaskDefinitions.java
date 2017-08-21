@@ -304,6 +304,14 @@ public class TaskDefinitions {
                 "Nachbarn ansprechen", TaskDifficult.MEDIUM, 0, 0, TaskTarget.UNDEFINED));
         taskList.add(new Task("Dein linker Nachbar darf den Namen von einen deiner Kontakte ändern", TaskDifficult
                 .HARD, 0, 5, TaskTarget.SELF));
+        taskList.add(new Task("Doppelt hält besser:\nTrinke zwei Runde lang das doppelte", TaskDifficult.MEDIUM, 0,
+                0, TaskTarget.DOUBLE));
+        taskList.add(new Task("Dreifach hält noch besser:\nTrinke drei Runde lang das dreifache", TaskDifficult.HARD,
+                0, 0, TaskTarget.TRIBLE));
+        taskList.add(new Task("Du hast 2 Runden lang Torrette mit Tiernamen", TaskDifficult.MEDIUM, 0, 0, TaskTarget
+                .UNDEFINED));
+        taskList.add(new Task("Nenne 5 Dinge, die dir Rick Astley niemals antun würde", TaskDifficult.HARD, 0, 3,
+                TaskTarget.UNDEFINED));
 
         //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
