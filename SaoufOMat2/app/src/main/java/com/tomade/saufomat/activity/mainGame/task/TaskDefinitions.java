@@ -192,9 +192,12 @@ public class TaskDefinitions {
         taskList.add(new Task("Die schönste Person trinkt 3", TaskDifficult.MEDIUM, 3, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Tausche dein Glas mit deinem linken Nachbarn", TaskDifficult.HARD, 0, 4, TaskTarget
                 .SELF));
-        taskList.add(new Task("Du und deine Nachbarn seid jetzt Trinkbuddys. Wenn einer trinken muss, müssen alle " +
+        taskList.add(new Task("Du und deine Nachbarn seid jetzt drei Runden lang Trinkbuddys. Wenn einer trinken " +
+                "muss, müssen alle trinken" +
                 "trinken", TaskDifficult.HARD, 0, 0, TaskTarget.SELF_AND_NEIGHBOURS));
-        taskList.add(new Task("Such dir einen Trinkbuddy aus. Wenn einer von trinken muss, müsst ihr beide trinken",
+        taskList.add(new Task("Such dir einen Trinkbuddy aus für drei Runden. Wenn einer von euch trinken muss, müsst" +
+                " ihr " +
+                "beide trinken",
                 TaskDifficult.MEDIUM, 0, 0, TaskTarget.SELF));
         taskList.add(new Task("Fansupport:\nJeder, der SaufOMat schon mehr als 7 mal gespielt hat, trinkt 3",
                 TaskDifficult.MEDIUM, 3, 0, TaskTarget.CHOOSE_ALL));
@@ -203,8 +206,6 @@ public class TaskDefinitions {
         taskList.add(new Task("Jeder, der bei der letzten Aufgabe trinken musste, darf jetzt 2 verteilen",
                 TaskDifficult.MEDIUM, 2, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Trinke dein Glas auf Ex", TaskDifficult.HARD, 1, 0, TaskTarget.SELF));
-        taskList.add(new Task("Jeder, der schon einmal in einer Schlägerei verwickelt war trinkt 2", TaskDifficult
-                .MEDIUM, 2, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Die Person, die bei seinem ersten mal Saufen am jüngsten war trinkt 2", TaskDifficult
                 .MEDIUM, 2, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Trinke eine Runde lang nur noch aus fremden Gläsern", TaskDifficult.HARD, 0, 0,
