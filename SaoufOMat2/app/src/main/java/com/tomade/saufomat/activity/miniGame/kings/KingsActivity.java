@@ -164,38 +164,72 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> i
         }
         this.lastCards.add(this.card);
         this.cardImage.setImageResource(this.card.getImageId());
-        switch (this.card.getValue()) {
-            case SEVEN:
-                this.popupText.setText(R.string.minigame_kings_card_value_seven);
-                DrinkHelper.increaseLeft(1, this);
-                break;
-            case EIGHT:
-                this.popupText.setText(R.string.minigame_kings_card_value_eight);
-                DrinkHelper.increaseRight(1, this);
-                break;
-            case NINE:
-                this.popupText.setText(R.string.minigame_kings_card_value_nine);
-                break;
-            case TEN:
-                this.popupText.setText(R.string.minigame_kings_card_value_ten);
-                break;
-            case JACK:
-                this.popupText.setText(R.string.minigame_kings_card_value_jack);
-                DrinkHelper.increaseMen(1, this);
-                break;
-            case QUEEN:
-                this.popupText.setText(R.string.minigame_kings_card_value_queen);
-                DrinkHelper.increaseWomen(1, this);
-                break;
-            case KING:
-                this.popupText.setText(R.string.minigame_kings_card_value_king);
-                break;
-            case ACE:
-                this.popupText.setText(R.string.minigame_kings_card_value_ace);
-                DrinkHelper.increaseAll(1, this);
-                break;
-            default:
-                break;
+        if (this.card.isRed()) {
+            switch (this.card.getValue()) {
+                case SEVEN:
+                    this.popupText.setText(R.string.minigame_kings_card_red_seven);
+                    break;
+                case EIGHT:
+                    this.popupText.setText(R.string.minigame_kings_card_red_eight);
+                    break;
+                case NINE:
+                    this.popupText.setText(R.string.minigame_kings_card_red_nine);
+                    break;
+                case TEN:
+                    this.popupText.setText(R.string.minigame_kings_card_red_ten);
+                    break;
+                case JACK:
+                    this.popupText.setText(R.string.minigame_kings_card_red_jack);
+                    break;
+                case QUEEN:
+                    this.popupText.setText(R.string.minigame_kings_card_red_queen);
+                    break;
+                case KING:
+                    this.popupText.setText(R.string.minigame_kings_card_red_king);
+                    break;
+                case ACE:
+                    this.popupText.setText(R.string.minigame_kings_card_red_ace);
+                    DrinkHelper.increaseAll(3, this);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (this.card.getValue()) {
+                case SEVEN:
+                    this.popupText.setText(R.string.minigame_kings_card_black_seven);
+                    DrinkHelper.increaseCurrentPlayer(1, this);
+                    break;
+                case EIGHT:
+                    this.popupText.setText(R.string.minigame_kings_card_black_eight);
+                    DrinkHelper.increaseCurrentPlayer(2, this);
+                    break;
+                case NINE:
+                    this.popupText.setText(R.string.minigame_kings_card_black_nine);
+                    DrinkHelper.increaseCurrentPlayer(3, this);
+                    break;
+                case TEN:
+                    this.popupText.setText(R.string.minigame_kings_card_black_ten);
+                    DrinkHelper.increaseCurrentPlayer(4, this);
+                    break;
+                case JACK:
+                    this.popupText.setText(R.string.minigame_kings_card_black_jack);
+                    DrinkHelper.increaseMen(1, this);
+                    break;
+                case QUEEN:
+                    this.popupText.setText(R.string.minigame_kings_card_black_queen);
+                    DrinkHelper.increaseWomen(1, this);
+                    break;
+                case KING:
+                    this.popupText.setText(R.string.minigame_kings_card_black_king);
+                    break;
+                case ACE:
+                    this.popupText.setText(R.string.minigame_kings_card_black_ace);
+                    DrinkHelper.increaseAll(1, this);
+                    break;
+                default:
+                    break;
+            }
         }
         this.cardCount = this.cardCount + 1;
         this.cardCounterText.setText(this.cardCount + " / " + this.maximumCards);

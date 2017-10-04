@@ -175,4 +175,14 @@ public class DrinkHelper {
         player.getNextPlayer().increaseDrinks(increment);
         player.getLastPlayer().increaseDrinks(increment);
     }
+
+    /**
+     * Erhöht den Getränkezähler für den Aktuellen Spieler
+     *
+     * @param increment um diesen Wert wird der Getränkezähler erhöht
+     * @param source    die Klasse, die diese Methode aufruft
+     */
+    public static void increaseCurrentPlayer(int increment, ActivityWithPlayer source) {
+        source.getCurrentPlayer().increaseDrinks(increment);
+    }
 }
