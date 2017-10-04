@@ -578,7 +578,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void startNewGame() {
         SQLiteDatabase database = this.getWritableDatabase();
         this.onUpgrade(database, 0, 0);
-        for (Task task : TaskDefinitions.getDebugTasks()) {
+        for (Task task : TaskDefinitions.getTasks()) {
             if (!this.insertTask(task)) {
                 Log.e(TAG, "Error at writing Task: " + task.getText());
             }
