@@ -22,6 +22,7 @@ import java.util.Set;
 public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extends BasePresenter<ACTIVITY> {
     protected ArrayList<Player> playerList;
     protected Player currentPlayer;
+    private Player currentPlayerAtStart;
     protected boolean fromMainGame;
 
     public BaseMiniGamePresenter(ACTIVITY activity) {
@@ -36,6 +37,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
             if (this.fromMainGame) {
                 this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
                 this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
+                this.currentPlayerAtStart = this.currentPlayer;
             }
         }
     }
@@ -64,7 +66,6 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
         if (!this.fromMainGame) {
             intent = new Intent(this.activity, ChooseMiniGameActivity.class);
         } else {
-            this.nextPlayer();
             intent = new Intent(this.activity, MainGameActivity.class);
         }
 
@@ -82,7 +83,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
             intent.putExtra(IntentParameter.LAST_GAME, this.getThisGame());
         } else {
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-            intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
+            intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayerAtStart.getNextPlayer());
         }
         this.activity.finish();
         this.activity.startActivity(intent);

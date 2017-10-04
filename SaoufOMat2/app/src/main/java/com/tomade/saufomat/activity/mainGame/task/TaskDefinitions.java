@@ -1,5 +1,7 @@
 package com.tomade.saufomat.activity.mainGame.task;
 
+import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,21 @@ public class TaskDefinitions {
                 RANDOM_OTHER_PLAYER.getToken();
         int drinkCount = 0;
         int cost = 0;
-        TaskTarget taskTarget = TaskTarget.UNDEFINED;
-        taskList.add(new Task(taskName, TaskDifficult.EASY, drinkCount, cost, taskTarget));
-        taskList.add(new Task(taskName, TaskDifficult.MEDIUM, drinkCount, cost, taskTarget));
-        taskList.add(new Task(taskName, TaskDifficult.HARD, drinkCount, cost, taskTarget));
-        taskList.add(new Task(taskName, TaskDifficult.EASY_WIN, drinkCount, cost, taskTarget));
-        taskList.add(new Task(taskName, TaskDifficult.MEDIUM_WIN, drinkCount, cost, taskTarget));
-        taskList.add(new Task(taskName, TaskDifficult.HARD_WIN, drinkCount, cost, taskTarget));
+        int maxTasks = 1;
+        int minTasks = 1;
+        TaskTarget taskTarget = TaskTarget.TASK_EVENT;
+        taskList.add(new TaskEvent(taskName, TaskDifficult.EASY, drinkCount, cost, taskTarget, new Task[]{new Task
+                ("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
+        taskList.add(new TaskEvent(taskName, TaskDifficult.MEDIUM, drinkCount, cost, taskTarget, new Task[]{new Task
+                ("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
+        taskList.add(new TaskEvent(taskName, TaskDifficult.HARD, drinkCount, cost, taskTarget, new Task[]{new Task
+                ("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
+        taskList.add(new TaskEvent(taskName, TaskDifficult.EASY_WIN, drinkCount, cost, taskTarget, new Task[]{new
+                Task("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
+        taskList.add(new TaskEvent(taskName, TaskDifficult.MEDIUM_WIN, drinkCount, cost, taskTarget, new Task[]{new
+                Task("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
+        taskList.add(new TaskEvent(taskName, TaskDifficult.HARD_WIN, drinkCount, cost, taskTarget, new Task[]{new
+                Task("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
         return taskList;
     }
 
@@ -168,8 +178,16 @@ public class TaskDefinitions {
         taskList.add(new Task(LEFT_PLAYER.getToken() + " malt dir etwas auf deine Hand", TaskDifficult.MEDIUM, 0, 2,
                 TaskTarget.SELF));
         taskList.add(new Task(LEFT_PLAYER.getToken() + " kneift dich", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
-        taskList.add(new Task("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
-                TaskDifficult.EASY, 0, 0, TaskTarget.GLAS_IN_THE_MIDDLE));
+        taskList.add(new TaskEvent("Stelle ein Glas in die Mitte und fülle es mit 2cl eines beliebigen Getränks",
+                TaskDifficult.EASY, 0, 0, TaskTarget.TASK_EVENT, new Task[]{
+                new Task("Fülle das Glas in der Mitte mit 2cl eines beliebiegen Getränks", TaskDifficult.MEDIUM, 0,
+                        0, TaskTarget.UNDEFINED),
+                new Task("Fülle das Glas in der Mitte mit 2cl eines beliebiegen Getränks", TaskDifficult.MEDIUM, 0,
+                        0, TaskTarget.UNDEFINED),
+                new Task("Fülle das Glas in der Mitte mit 2cl eines beliebiegen Getränks", TaskDifficult.MEDIUM, 0,
+                        0, TaskTarget.UNDEFINED),
+                new Task("Leere das Glas in der Mitte", TaskDifficult.MEDIUM, 4, 0, TaskTarget.SELF)
+        }, 2, 4));
         taskList.add(new Task("Alle Männer trinken", TaskDifficult.EASY, 1, 0, TaskTarget.MEN));
         taskList.add(new Task("Arbeitslose trinken", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Alle Frauen trinken", TaskDifficult.EASY, 1, 0, TaskTarget.WOMEN));
@@ -321,7 +339,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Doppelt hält besser:\nTrinke zwei Runde lang das doppelte", TaskDifficult.MEDIUM, 0,
                 0, TaskTarget.DOUBLE));
         taskList.add(new Task("Dreifach hält noch besser:\nTrinke drei Runde lang das dreifache", TaskDifficult.HARD,
-                0, 0, TaskTarget.TRIBLE));
+                0, 0, TaskTarget.TRIPLE));
         taskList.add(new TemporaryTask("Du hast 2 Runden lang Torrette mit Tiernamen", TaskDifficult.MEDIUM, 0, 0,
                 TaskTarget.UNDEFINED, 2, "Du bist jetzt vom Torrette geheilt"));
         taskList.add(new Task("Nenne 5 Dinge, die dir Rick Astley niemals antun würde", TaskDifficult.HARD, 0, 3,
@@ -330,6 +348,8 @@ public class TaskDefinitions {
                 "solche Frage aus. Anschließend zeigen alle auf die Person, die dies am ehesten tun würde. Jede " +
                 "Person trinkt so oft, wie auf sie gezeigt wurde.",
                 TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ONE));
+        taskList.add(new Task("Zahle 50 Cent an den Besitzer des Handys", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
+        taskList.add(new Task("Tanze mit einem Gegenstand", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
 
         //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
@@ -345,7 +365,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Suche drei Mitspieler aus, die einen Kurzen deiner Wahl trinken", TaskDifficult
                 .HARD_WIN, 1, 0, TaskTarget.CHOOSE_THREE));
         taskList.add(new Task("Suche dir ein Opfer aus. Dieses Opfer trinkt 3 Runden lang deine Schlucke...\nDoppelt!",
-                TaskDifficult.HARD_WIN, 1, 0, TaskTarget.VICTOM));
+                TaskDifficult.HARD_WIN, 1, 0, TaskTarget.VICTIM));
 
         return taskList;
     }

@@ -15,7 +15,7 @@ public class TaskTest {
         Assert.assertEquals(TaskDifficult.EASY, t.getDifficult());
         Assert.assertEquals(0, t.getCost());
         Assert.assertEquals(0, t.getDrinkCount());
-        Assert.assertEquals(TaskTarget.ALL, t.getTarget());
+        Assert.assertEquals(TaskTarget.ALL, t.getTaskTarget());
     }
 
     @Test
@@ -25,6 +25,6 @@ public class TaskTest {
         Assert.assertEquals(TaskDifficult.EASY, t.getDifficult());
         Assert.assertEquals(0, t.getCost());
         Assert.assertEquals(0, t.getDrinkCount());
-        Assert.assertEquals(TaskTarget.ALL, t.getTarget());
+        Assert.assertEquals(TaskTarget.ALL, t.getTaskTarget());
     }
 }

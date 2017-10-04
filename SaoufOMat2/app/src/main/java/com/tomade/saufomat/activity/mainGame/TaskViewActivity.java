@@ -23,15 +23,13 @@ import com.tomade.saufomat.activity.MainMenuActivity;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
-import com.tomade.saufomat.activity.mainGame.taskevent.TaskEvent;
-import com.tomade.saufomat.activity.mainGame.taskevent.TaskEventType;
+import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Random;
 
 //TODO: Tasks nach dem Builder-Pattern
 public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
@@ -99,7 +97,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             taskText.setText(taskTextValue);
             cost = this.currentTask.getCost();
 
-            if (this.currentTask.getTarget() == TaskTarget.AD) {
+            if (this.currentTask.getTaskTarget() == TaskTarget.AD) {
                 this.interstitialAd = new InterstitialAd(this);
                 this.interstitialAd.setAdUnitId(this.getString(R.string.maingame_ad_id));
                 this.interstitialAd.setAdListener(new AdListener() {
@@ -184,8 +182,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             boolean switchToMainView = true;
             TaskEvent newTaskEvent = null;
             if (this.currentPlayerIsAviable) {
-                Log.i(TAG, "Tasktarget is " + this.currentTask.getTarget());
-                switch (this.currentTask.getTarget()) {
+                Log.i(TAG, "Tasktarget is " + this.currentTask.getTaskTarget());
+                switch (this.currentTask.getTaskTarget()) {
                     case SELF:
                         this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
                         break;
@@ -232,15 +230,13 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                             this.openMainView();
                         }
                         break;
-                    case GLAS_IN_THE_MIDDLE:
-                        newTaskEvent = new TaskEvent();
-                        newTaskEvent.setType(TaskEventType.GLAS_IN_THE_MIDDLE);
-                        newTaskEvent.setTasksToEventLimit(new Random(System.currentTimeMillis()).nextInt(2) + 2);
+                    case TASK_EVENT:
+                        newTaskEvent = (TaskEvent) this.currentTask;
                         switchToMainView = false;
                         this.openMainView(newTaskEvent);
                         break;
                     default:
-                        Log.e(TAG, "TaskTarget " + this.currentTask.getTarget() + " is not used");
+                        Log.e(TAG, "TaskTarget " + this.currentTask.getTaskTarget() + " is not used");
                         break;
                 }
             }

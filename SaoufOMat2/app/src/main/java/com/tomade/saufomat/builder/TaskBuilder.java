@@ -17,7 +17,7 @@ public class TaskBuilder {
         this.task.setId();
         this.task.setText(text);
         this.task.setDifficult(difficult);
-        this.task.setTarget(taskTarget);
+        this.task.setTaskTarget(taskTarget);
         this.task.setDrinkCount(0);
         this.task.setCost(0);
         this.task.setAlreadyUsed(false);

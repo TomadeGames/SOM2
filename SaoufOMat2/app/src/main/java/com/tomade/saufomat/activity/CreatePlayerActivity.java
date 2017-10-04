@@ -91,6 +91,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         Intent intent = new Intent(this, MainGameActivity.class);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.players);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.players.get(0));
+        intent.putExtra(IntentParameter.MainGame.NEW_GAME, true);
 
         this.finish();
         this.startActivity(intent);

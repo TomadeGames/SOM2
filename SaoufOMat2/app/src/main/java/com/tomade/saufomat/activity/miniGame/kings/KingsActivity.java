@@ -178,7 +178,6 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> i
                 break;
             case TEN:
                 this.popupText.setText(R.string.minigame_kings_card_value_ten);
-
                 break;
             case JACK:
                 this.popupText.setText(R.string.minigame_kings_card_value_jack);

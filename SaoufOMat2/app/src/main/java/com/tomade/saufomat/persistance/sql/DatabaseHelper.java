@@ -6,13 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDefinitions;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
-import com.tomade.saufomat.activity.mainGame.taskevent.TaskEvent;
-import com.tomade.saufomat.activity.mainGame.taskevent.TaskEventType;
+import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.model.player.Statistic;
@@ -25,6 +25,7 @@ import com.tomade.saufomat.persistance.sql.contract.TaskEventContract;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "saufomat_database";
 
     //TODO wenn die Datenbank geändert wird muss dieser Wert inkrementiert werden
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 33;
 
     private Context context;
 
@@ -75,11 +76,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String taskEventStatement = "CREATE TABLE " + TaskEventContract.TaskEvent.TABLE_NAME + "(" +
                 TaskEventContract.TaskEvent.COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
-                TaskEventContract.TaskEvent.COLUMN_NAME_TYPE + " TEXT, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_TEXT + " TEXT, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_DRINK_COUNT + " INTEGER, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_COST + " INTEGER, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_DIFFICULT + " TEXT, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_TARGET + " TEXT, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_ALREADY_USED + " INTEGER, " +
                 TaskEventContract.TaskEvent.COLUMN_NAME_EVENT_COUNTER + " INTEGER, " +
-                TaskEventContract.TaskEvent.COLUMN_NAME_EVENT_LIMIT + " INTEGER, " +
                 TaskEventContract.TaskEvent.COLUMN_NAME_TASKS_TO_EVENT_COUNTER + " INTEGER, " +
-                TaskEventContract.TaskEvent.COLUMN_NAME_TASKS_TO_EVENT_LIMIT + " INTEGER)";
+                TaskEventContract.TaskEvent.COLUMN_NAME_CURRENT_TASK_LIMIT + " INTEGER, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_MAX_TURN_TIME + " INTEGER, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_ACTIVE + " INTEGER, " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_MIN_TURN_TIME + " INTEGER)";
+
+        String taskEventTaskStatement = "CREATE TABLE " + TaskEventContract.TaskEventTask.TABLE_NAME + "(" +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_TASK_EVENT_ID + " INTEGER, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_TEXT + " TEXT, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_DRINK_COUNT + " INTEGER, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_COST + " INTEGER, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_DIFFICULT + " TEXT, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_TARGET + " TEXT, " +
+                TaskEventContract.TaskEventTask.COLUMN_NAME_ALREADY_USED + " INTEGER)";
 
         sqLiteDatabase.execSQL(playerStatement);
         Log.i(TAG, "Table " + PlayerContract.Player.TABLE_NAME + " created");
@@ -89,6 +107,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "Table " + MiniGameContract.MiniGame.TABLE_NAME + " created");
         sqLiteDatabase.execSQL(taskEventStatement);
         Log.i(TAG, "Table " + TaskEventContract.TaskEvent.TABLE_NAME + " created");
+        sqLiteDatabase.execSQL(taskEventTaskStatement);
+        Log.i(TAG, "Table " + TaskEventContract.TaskEventTask.TABLE_NAME + " created");
         new GameValueHelper(this.context).saveDatabaseVersion(DATABASE_VERSION);
     }
 
@@ -98,11 +118,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.execSQL("DROP TABLE IF EXISTS " + TaskContract.Task.TABLE_NAME);
         database.execSQL("DROP TABLE IF EXISTS " + MiniGameContract.MiniGame.TABLE_NAME);
         database.execSQL("DROP TABLE IF EXISTS " + TaskEventContract.TaskEvent.TABLE_NAME);
+        database.execSQL("DROP TABLE IF EXISTS " + TaskEventContract.TaskEventTask.TABLE_NAME);
         Log.i(TAG, "onUpgrade: Tables dropped");
         this.onCreate(database);
     }
 
-    public boolean insertMiniGame(MiniGame miniGame) {
+    private boolean insertMiniGame(MiniGame miniGame) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_NAME, miniGame.toString());
@@ -139,22 +160,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private boolean insertTask(Task task) {
+        if (task instanceof TaskEvent) {
+            return this.insertTaskEvent((TaskEvent) task);
+        }
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TaskContract.Task.COLUMN_NAME_ID, task.getId());
-        contentValues.put(TaskContract.Task.COLUMN_NAME_TEXT, task.getText());
-        contentValues.put(TaskContract.Task.COLUMN_NAME_DRINK_COUNT, task.getDrinkCount());
-        contentValues.put(TaskContract.Task.COLUMN_NAME_COST, task.getCost());
-        contentValues.put(TaskContract.Task.COLUMN_NAME_DIFFICULT, task.getDifficult().toString());
-        contentValues.put(TaskContract.Task.COLUMN_NAME_TARGET, task.getTarget().toString());
-        if (task.isAlreadyUsed()) {
-            contentValues.put(TaskContract.Task.COLUMN_NAME_ALREADY_USED, 1);
-        } else {
-            contentValues.put(TaskContract.Task.COLUMN_NAME_ALREADY_USED, 0);
-        }
-        database.insert(TaskContract.Task.TABLE_NAME, null, contentValues);
+        this.getTaskContentValue(contentValues, task);
+        return database.insert(TaskContract.Task.TABLE_NAME, null, contentValues) != -1;
 
-        return true;
     }
 
     public boolean miniGameUsed(MiniGame miniGame) {
@@ -210,21 +223,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean updateTask(Task task) {
         SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
 
-        database.update(TaskContract.Task.TABLE_NAME, this.getTaskContentValue(task),
+        database.update(TaskContract.Task.TABLE_NAME, this.getTaskContentValue(contentValues, task),
                 TaskContract.Task.COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(task.getId())});
 
         Log.i(TAG, "Task [" + task + "] updated");
         return true;
     }
 
-    private ContentValues getTaskContentValue(Task task) {
-        ContentValues contentValues = new ContentValues();
+    private ContentValues getTaskContentValue(ContentValues contentValues, Task task) {
+        contentValues.put(TaskContract.Task.COLUMN_NAME_ID, task.getId());
         contentValues.put(TaskContract.Task.COLUMN_NAME_TEXT, task.getText());
         contentValues.put(TaskContract.Task.COLUMN_NAME_DRINK_COUNT, task.getDrinkCount());
         contentValues.put(TaskContract.Task.COLUMN_NAME_COST, task.getCost());
         contentValues.put(TaskContract.Task.COLUMN_NAME_DIFFICULT, task.getDifficult().toString());
-        contentValues.put(TaskContract.Task.COLUMN_NAME_TARGET, task.getTarget().toString());
+        contentValues.put(TaskContract.Task.COLUMN_NAME_TARGET, task.getTaskTarget().toString());
         if (task.isAlreadyUsed()) {
             contentValues.put(TaskContract.Task.COLUMN_NAME_ALREADY_USED, 1);
         } else {
@@ -237,7 +251,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<MiniGame> getUnusedMiniGames() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor result = database.rawQuery("SELECT * FROM " + MiniGameContract.MiniGame.TABLE_NAME + " WHERE " +
-                MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED + " =? ", new String[]{Integer.toString(0)});
+                MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED + " = 0 ", null);
         ArrayList<MiniGame> unusedMiniGames = new ArrayList<>();
         try {
             if (result.moveToFirst()) {
@@ -257,7 +271,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Player> getAllPlayer() {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor result = database.rawQuery("SELECT * FROM " + PlayerContract.Player.TABLE_NAME, null);
-        Map<Integer, Player> playerList = new HashMap<>();
+        SparseArray<Player> playerList = new SparseArray<>();
         Map<Player, Integer> nextPlayer = new HashMap<>();
         Map<Player, Integer> lastPlayer = new HashMap<>();
         try {
@@ -298,8 +312,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             result.close();
         }
         ArrayList<Player> players = new ArrayList<>();
-        for (Map.Entry<Integer, Player> entry : playerList.entrySet()) {
-            players.add(entry.getValue());
+        for (int i = 0; i < playerList.size(); i++) {
+            players.add(playerList.get(i));
         }
         Log.i(TAG, playerList.size() + " Players loaded from Databse");
         return players;
@@ -319,6 +333,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     taskList.add(task);
                 } while (result.moveToNext());
             }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error at getting all Task", e);
+        } finally {
+            result.close();
+        }
+
+        result = database.rawQuery("SELECT * FROM " + TaskEventContract.TaskEvent.TABLE_NAME + " WHERE " +
+                TaskEventContract.TaskEvent.COLUMN_NAME_DIFFICULT + " =?", new String[]{difficult.toString()});
+
+        try {
+            if (result.moveToFirst()) {
+                do {
+                    TaskEvent taskEvent = this.parseTaskEvent(result);
+                    taskList.add(taskEvent);
+                } while (result.moveToNext());
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error at getting all TaskEvents", e);
         } finally {
             result.close();
         }
@@ -343,6 +375,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             result.close();
         }
 
+        result = database.rawQuery("SELECT * FROM " + TaskEventContract.TaskEvent.TABLE_NAME, null);
+
+        try {
+            if (result.moveToFirst()) {
+                do {
+                    TaskEvent taskEvent = this.parseTaskEvent(result);
+                    taskList.add(taskEvent);
+                } while (result.moveToNext());
+            }
+        } finally {
+            result.close();
+        }
+
         Log.i(TAG, taskList.size() + " Tasks loaded from Database");
         return taskList;
     }
@@ -352,17 +397,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Task> unusedTasks = new ArrayList<>();
 
         String query = "Select * FROM " + TaskContract.Task.TABLE_NAME + " WHERE " + TaskContract
-                .Task.COLUMN_NAME_ALREADY_USED + " =? AND " + TaskContract.Task.COLUMN_NAME_DIFFICULT + " =?";
-        Cursor result = database.rawQuery(query, new String[]{Integer.toString(0), difficult.toString()});
+                .Task.COLUMN_NAME_ALREADY_USED + " = 0 AND " + TaskContract.Task.COLUMN_NAME_DIFFICULT + " = '" +
+                difficult.toString() + "'";
+        Cursor result = database.rawQuery(query, null);
 
         try {
             if (result.moveToFirst()) {
                 do {
-                    unusedTasks.add((this.parseTask(result)));
+                    unusedTasks.add(this.parseTask(result));
                 } while (result.moveToNext());
             }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error at reading unused Tasks", e);
         } finally {
             result.close();
+        }
+
+        String taskEventQuery = "SELECT * FROM " + TaskEventContract.TaskEvent.TABLE_NAME + " WHERE " + TaskContract
+                .Task.COLUMN_NAME_ALREADY_USED + " = 0 AND " + TaskContract.Task.COLUMN_NAME_DIFFICULT + " = '" +
+                difficult.toString() + "'";
+        Cursor taskEventResult = database.rawQuery(taskEventQuery, null);
+
+        try {
+            if (taskEventResult.moveToFirst()) {
+                do {
+                    unusedTasks.add(this.parseTaskEvent(taskEventResult));
+                } while (taskEventResult.moveToNext());
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error at reading unused Tasks", e);
+        } finally {
+            taskEventResult.close();
         }
 
         Log.i(TAG, unusedTasks.size() + " unused Tasks with Difficult " + difficult + " loaded from Database");
@@ -372,42 +437,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertTaskEvent(TaskEvent taskEvent) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        this.getTaskEventContentValues(contentValues, taskEvent);
 
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_ID, taskEvent.getId());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_TYPE, taskEvent.getType().toString());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_EVENT_COUNTER, taskEvent.getEventCounter());
+        database.replace(TaskEventContract.TaskEvent.TABLE_NAME, null, contentValues);
+        this.insertTasksFromTaskEvent(taskEvent);
+        return true;
+    }
+
+    private void getTaskEventContentValues(ContentValues contentValues, TaskEvent taskEvent) {
+        this.getTaskContentValue(contentValues, taskEvent);
+        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_MAX_TURN_TIME, taskEvent.getMaxTurnTime());
+        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_MIN_TURN_TIME, taskEvent.getMinTurnTime());
+        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_CURRENT_TASK_LIMIT, taskEvent.getCurrentTaskLimit());
         contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_TASKS_TO_EVENT_COUNTER, taskEvent
                 .getTasksToEventCounter());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_TASKS_TO_EVENT_LIMIT, taskEvent
-                .getTasksToEventLimit());
-
-        database.insert(TaskEventContract.TaskEvent.TABLE_NAME, null, contentValues);
-
-        return true;
+        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_EVENT_COUNTER, taskEvent.getEventCounter());
+        if (taskEvent.isActive()) {
+            contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_ACTIVE, 1);
+        } else {
+            contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_ACTIVE, 0);
+        }
     }
 
     public boolean updateTaskEvents(ArrayList<TaskEvent> taskEvents) {
         for (TaskEvent taskEvent : taskEvents) {
-            this.updateTaskEvent(taskEvent);
+            this.insertTaskEvent(taskEvent);
         }
-        return true;
-    }
-
-    private boolean updateTaskEvent(TaskEvent taskEvent) {
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_ID, taskEvent.getId());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_TYPE, taskEvent.getType().toString());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_EVENT_COUNTER, taskEvent.getEventCounter());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_TASKS_TO_EVENT_COUNTER, taskEvent
-                .getTasksToEventCounter());
-        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_TASKS_TO_EVENT_LIMIT, taskEvent
-                .getTasksToEventLimit());
-
-        database.update(TaskEventContract.TaskEvent.TABLE_NAME, contentValues,
-                TaskContract.Task.COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(taskEvent.getId())});
-
         return true;
     }
 
@@ -432,47 +487,101 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return taskEvents;
     }
 
-    public boolean removeTaskEvent(TaskEvent taskEvent) {
+    private void findTasksToTaskEvent(TaskEvent taskEvent) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        String query = "Select * FROM " + TaskEventContract.TaskEventTask.TABLE_NAME + " WHERE " + TaskEventContract
+                .TaskEventTask.COLUMN_NAME_TASK_EVENT_ID + " = " + taskEvent.getId();
+        Cursor result = database.rawQuery(query, null);
+
+        List<Task> taskList = new ArrayList<>();
+
+        try {
+            if (result.moveToFirst()) {
+                do {
+                    taskList.add(this.parseTask(result));
+                } while (result.moveToNext());
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error at getting Tasks for TaskEvent", e);
+        } finally {
+            result.close();
+        }
+
+        taskEvent.setTasks(taskList.toArray(new Task[0]));
+    }
+
+    private void insertTasksFromTaskEvent(TaskEvent taskEvent) {
         SQLiteDatabase database = this.getWritableDatabase();
-        return database.delete(TaskEventContract.TaskEvent.TABLE_NAME, TaskEventContract.TaskEvent.COLUMN_NAME_ID +
-                "=" + taskEvent.getId(), null) > 0;
+        for (Task task : taskEvent.getTasks()) {
+            ContentValues contentValues = new ContentValues();
+            this.getTaskContentValue(contentValues, task);
+            contentValues.put(TaskEventContract.TaskEventTask.COLUMN_NAME_TASK_EVENT_ID, taskEvent.getId());
+
+            if (database.replace(TaskEventContract.TaskEventTask.TABLE_NAME, null, contentValues) == -1) {
+                Log.e(TAG, "Error at inserting Task from TaskEvent");
+            }
+        }
+    }
+
+    public boolean deactivateTaskEvent(TaskEvent taskEvent) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_ACTIVE, 0);
+        return database.update(TaskEventContract.TaskEvent.TABLE_NAME, contentValues, TaskEventContract.TaskEvent
+                .COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(taskEvent.getId())}) == 1;
     }
 
     private TaskEvent parseTaskEvent(Cursor cursor) {
         TaskEvent taskEvent = new TaskEvent();
-        taskEvent.setId(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent.COLUMN_NAME_ID)));
-        taskEvent.setType(TaskEventType.valueOf(cursor.getString(cursor.getColumnIndex(TaskEventContract.TaskEvent
-                .COLUMN_NAME_TYPE))));
-        taskEvent.setEventCounter(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
-                .COLUMN_NAME_EVENT_COUNTER)));
+        taskEvent.setMaxTurnTime(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
+                .COLUMN_NAME_MAX_TURN_TIME)));
+        taskEvent.setMinTurnTime(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
+                .COLUMN_NAME_MIN_TURN_TIME)));
+        taskEvent.setCurrentTaskLimit(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
+                .COLUMN_NAME_CURRENT_TASK_LIMIT)));
         taskEvent.setTasksToEventCounter(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
                 .COLUMN_NAME_TASKS_TO_EVENT_COUNTER)));
-        taskEvent.setTasksToEventLimit(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
-                .COLUMN_NAME_TASKS_TO_EVENT_LIMIT)));
+        taskEvent.setEventCounter(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent
+                .COLUMN_NAME_EVENT_COUNTER)));
+        taskEvent.setActive(cursor.getInt(cursor.getColumnIndex(TaskEventContract.TaskEvent.COLUMN_NAME_ACTIVE)) != 0);
+        this.parseTask(cursor, taskEvent);
+        this.findTasksToTaskEvent(taskEvent);
 
         return taskEvent;
     }
 
-    private Task parseTask(Cursor cursor) {
-        Task task = new Task();
+    private Task parseTask(Cursor cursor, Task task) {
         task.setId(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_ID)));
         task.setText(cursor.getString(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_TEXT)));
         task.setDrinkCount(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_DRINK_COUNT)));
         task.setCost(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_COST)));
         task.setDifficult(TaskDifficult.valueOf(cursor.getString(cursor.getColumnIndex(TaskContract.Task
                 .COLUMN_NAME_DIFFICULT))));
-        task.setTarget(TaskTarget.valueOf(cursor.getString(cursor.getColumnIndex(TaskContract.Task
+        task.setTaskTarget(TaskTarget.valueOf(cursor.getString(cursor.getColumnIndex(TaskContract.Task
                 .COLUMN_NAME_TARGET))));
         task.setAlreadyUsed(cursor.getInt(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_ALREADY_USED))
                 != 0);
         return task;
     }
 
+    private Task parseTask(Cursor cursor) {
+        Task task;
+        if (TaskTarget.valueOf(cursor.getString(cursor.getColumnIndex(TaskContract.Task.COLUMN_NAME_TARGET))) ==
+                TaskTarget.TASK_EVENT) {
+            task = new TaskEvent();
+        } else {
+            task = new Task();
+        }
+        return this.parseTask(cursor, task);
+    }
+
     public void startNewGame() {
         SQLiteDatabase database = this.getWritableDatabase();
         this.onUpgrade(database, 0, 0);
-        for (Task task : TaskDefinitions.getTasks()) {
-            this.insertTask(task);
+        for (Task task : TaskDefinitions.getDebugTasks()) {
+            if (!this.insertTask(task)) {
+                Log.e(TAG, "Error at writing Task: " + task.getText());
+            }
         }
         for (MiniGame miniGame : EnumSet.allOf(MiniGame.class)) {
             this.insertMiniGame(miniGame);
@@ -483,5 +592,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public int getDatabaseVersion() {
         return DATABASE_VERSION;
+    }
+
+    public void activateTaskEvent(TaskEvent taskEvent) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TaskEventContract.TaskEvent.COLUMN_NAME_ACTIVE, 1);
+
+        if (database.update(TaskEventContract.TaskEvent.TABLE_NAME, contentValues, TaskEventContract.TaskEvent
+                .COLUMN_NAME_ID + " = ?", new String[]{Integer.toString(taskEvent.getId())}) != 1) {
+            Log.e(TAG, "Error at activating TaskEvent {" + taskEvent + "]");
+        }
+    }
+
+    public ArrayList<TaskEvent> getActiveTaskEvents() {
+        ArrayList<TaskEvent> activeTaskEvents = new ArrayList<>();
+        ArrayList<TaskEvent> allTaskEvents = this.getTaskEvents();
+
+        for (TaskEvent taskEvent : allTaskEvents) {
+            if (taskEvent.isActive()) {
+                activeTaskEvents.add(taskEvent);
+            }
+        }
+
+        return activeTaskEvents;
     }
 }

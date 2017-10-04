@@ -1,6 +1,7 @@
 package com.tomade.saufomat.activity.mainGame.task;
 
 /**
+ * Die möglichen Ziele einer Aufgabe
  * Created by woors on 10.03.2016.
  */
 public enum TaskTarget {
@@ -22,8 +23,11 @@ public enum TaskTarget {
     SWITCH_PLACE_LEFT,
     MEN,
     WOMEN,
-    VICTOM,
+    VICTIM,
     ONCE,
     AD,
-    GLAS_IN_THE_MIDDLE, EVENT, DOUBLE, TRIBLE, UNDEFINED
+    DOUBLE,
+    TRIPLE,
+    TASK_EVENT,
+    UNDEFINED
 }

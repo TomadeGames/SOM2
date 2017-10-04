@@ -14,8 +14,7 @@ import com.tomade.saufomat.activity.BasePresenter;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskProvider;
-import com.tomade.saufomat.activity.mainGame.taskevent.TaskEvent;
-import com.tomade.saufomat.activity.mainGame.taskevent.TaskEventTaskDefinitions;
+import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
@@ -35,7 +34,7 @@ public class MainGamePresenter extends BasePresenter {
     private static final int EASY_CHANCE = 40;
     private static final int MEDIUM_CHANCE = 40;
     private static final int HARD_CHANCE = 30;
-    private static final int GAME_CHANCE = 10;   //10
+    private static final int GAME_CHANCE = 1;   //9
 
     private static final int AD_LIMIT = 7; //Original 8, erstmal 7
     private static int adCounter = 0;
@@ -62,7 +61,7 @@ public class MainGamePresenter extends BasePresenter {
         TaskEvent newTaskEvent = (TaskEvent) extras.getSerializable(IntentParameter.MainGame.NEW_TASK_EVENT);
 
         if (newTaskEvent != null) {
-            new DatabaseHelper(this.activity).insertTaskEvent(newTaskEvent);
+            new DatabaseHelper(this.activity).activateTaskEvent(newTaskEvent);
         }
 
         if (newGame) {
@@ -70,7 +69,7 @@ public class MainGamePresenter extends BasePresenter {
             taskProvider.resetTasks();
             this.taskEvents = new ArrayList<>();
         } else {
-            this.taskEvents = new DatabaseHelper(this.activity).getTaskEvents();
+            this.taskEvents = new DatabaseHelper(this.activity).getActiveTaskEvents();
         }
         this.initAd();
     }
@@ -225,31 +224,29 @@ public class MainGamePresenter extends BasePresenter {
     }
 
     public void changeToTaskView() {
-        TaskEvent firedTaskEvent = null;
+        TaskEvent firedEvent = null;
 
         for (TaskEvent taskEvent : this.taskEvents) {
             taskEvent.increaseTaskToEventCounter();
-            if (firedTaskEvent == null) {
-                if (taskEvent.getTasksToEventCounter() >= taskEvent.getTasksToEventLimit()) {
-                    firedTaskEvent = taskEvent;
+            if (firedEvent == null) {
+                if (taskEvent.checkIfEventFired()) {
+                    firedEvent = taskEvent;
                 }
             }
         }
 
-        if (firedTaskEvent != null && !this.isDifficultWin() && this.currentDificult != TaskDifficult.GAME) {
-            Log.i(TAG, "TaskEvent (" + firedTaskEvent.getId() + "/" + this.taskEvents.size() + " [" + firedTaskEvent
-                    .getEventCounter() + "/" + TaskEventTaskDefinitions.getTaskAmount(firedTaskEvent.getType()) + "])" +
-                    " fired");
-            this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, TaskEventTaskDefinitions.getTask
-                    (firedTaskEvent.getType(), firedTaskEvent.getEventCounter()));
+
+        //Wenn Event drann ist und kein Minispiel oder Hauptgewinn ist wird es ausgelöst
+        if (firedEvent != null && !this.isDifficultWin() && this.currentDificult != TaskDifficult.GAME) {
+            Task firedTask = firedEvent.fireEvent();
+            if (firedEvent.isFinished()) {
+                this.taskEvents.remove(firedEvent);
+                new DatabaseHelper(this.activity).deactivateTaskEvent(firedEvent);
+            }
+
+            this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK, firedTask);
             this.saveGame(this.activity, adCounter, this.currentPlayer);
             this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
-
-            firedTaskEvent.increaseEventCounter();
-            if (firedTaskEvent.getEventCounter() >= TaskEventTaskDefinitions.getTaskAmount(firedTaskEvent.getType())) {
-                this.taskEvents.remove(firedTaskEvent);
-                new DatabaseHelper(this.activity).removeTaskEvent(firedTaskEvent);
-            }
         } else {
             if (this.currentDificult == TaskDifficult.GAME) {
                 MiniGame miniGame = new MiniGameProvider(this.activity).getRandomMiniGame();

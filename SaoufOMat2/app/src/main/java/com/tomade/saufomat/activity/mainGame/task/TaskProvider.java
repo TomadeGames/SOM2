@@ -12,6 +12,10 @@ import java.util.Random;
  */
 
 public class TaskProvider {
+    /**
+     * Für Debug-Zwecke kann hier eine Schwierigkeit für alle Aufgaben festgelegt werden.
+     * Standard ist NULL
+     */
     private static final TaskDifficult DEBUG_DIFFICULT = null;
 
     private final Context context;

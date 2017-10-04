@@ -81,6 +81,9 @@ public class TaskParser {
     }
 
     private static Player getRandomOtherPlayer(Player currentPlayer, int playerCount) {
+        if (playerCount == 1) {
+            return currentPlayer;
+        }
         Random random = new Random(System.currentTimeMillis());
         int index = random.nextInt(playerCount - 1);
         int counter = 0;

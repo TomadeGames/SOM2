@@ -12,8 +12,8 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 7664080231665909479L;
 
     private static int nextId = 0;
-    private int id;
-    private String text;
+    protected int id;
+    protected String text;
     private TaskDifficult difficult;
     /**
      * Getränkeanzahl bei Ja
@@ -23,16 +23,19 @@ public class Task implements Serializable {
      * Getränkeanzahl bei Nein
      */
     private int cost;
-    private TaskTarget target;
-    private boolean alreadyUsed;
+    private TaskTarget taskTarget;
+    protected boolean alreadyUsed;
 
     public Task() {
-
+        this.id = nextId++;
     }
 
     public Task(String text, TaskDifficult difficult, int drinkCount, int cost, TaskTarget target) {
-        this.id = nextId++;
+        this();
         this.text = text;
+        if (difficult == TaskDifficult.GAME) {
+            throw new IllegalArgumentException("Taskdifficult must not be GAME");
+        }
         this.difficult = difficult;
         if (drinkCount < 0) {
             drinkCount = 0;
@@ -42,7 +45,7 @@ public class Task implements Serializable {
             cost = 0;
         }
         this.cost = cost;
-        this.target = target;
+        this.taskTarget = target;
         this.alreadyUsed = false;
     }
 
@@ -67,8 +70,8 @@ public class Task implements Serializable {
         return this.cost;
     }
 
-    public TaskTarget getTarget() {
-        return this.target;
+    public TaskTarget getTaskTarget() {
+        return this.taskTarget;
     }
 
     public int getId() {
@@ -107,8 +110,8 @@ public class Task implements Serializable {
         this.cost = cost;
     }
 
-    public void setTarget(TaskTarget target) {
-        this.target = target;
+    public void setTaskTarget(TaskTarget taskTarget) {
+        this.taskTarget = taskTarget;
     }
 
     public boolean isAlreadyUsed() {
