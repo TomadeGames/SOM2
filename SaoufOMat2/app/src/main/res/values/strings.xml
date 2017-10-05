@@ -8,7 +8,7 @@
     </string-array>
     <string name="title_activity_task_view">TaskViewActivity</string>
     <string name="n_chster_spieler">Nächster Spieler</string>
-    <string name="minigame.wer_dich_dicht.tutorial">Anleitung:\nEs wird nacheinander Gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler es leer trinken und ist nochmal an der Reihe.</string>
+    <string name="minigame.wer_dich_dicht.tutorial">Anleitung:\nEs wird nacheinander gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler es leer trinken und ist nochmal an der Reihe.</string>
     <string name="minigame.biergeballer.caption">Biergeballer</string>
     <string name="minigame.augensaufen.caption">Augensaufen</string>
     <string name="minigame.werf_dich_dicht.caption">Werf dich dicht</string>
@@ -18,11 +18,11 @@
     <string name="minigame.kings.caption">Kings</string>
     <string name="minigame.kisten_stapeln.caption">Kisten stapeln</string>
     <string name="minigame.bierrutsche.caption">Bierrutsche</string>
-    <string name="minigame.bierrutsche.tutorial">Anleitung:\nJeder Spieler bekommt 3 Versuche, die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Wer die Flasche am Ende am weitesten geschubst hat muss nicht trinken.\nWenn die Flasche runter fällt ist der Wurf ungültig</string>
-    <string name="minigame.kisten_stapeln.tutorial">Anleitung:\nDie Spieler müssen abwechselnd\nBierkisten auf den Hügel fallen lassen\num einen Turm zu bilden.\nWenn ein Spieler den Turm umwirft\nmuss er die Anzahl der Kisten trinken.</string>
-    <string name="minigame.biergeballer.tutorial">Anleitung:\nZwei Spieler treten gegeneinander an.\nJeder bekommt eine Bierkiste, aus der nach einiger Zeit Bierflaschen geschosen werden.\nDie Spieler müssen versuchen, die gegnerischen Falschen zu fangen. Wer 3 Flaschen verfehlt muss die Anzahl der Leben des gegners trinken.</string>
-    <string name="minigame.kings.tutorial">Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten hatte.</string>
-    <string name="maingame.task_view.button.accept.description">Bestätitgt die Aufgabe</string>
+    <string name="minigame.bierrutsche.tutorial">Anleitung:\nJeder Spieler bekommt 3 Versuche, die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Wer die Flasche am Ende am weitesten geschubst hat, muss nicht trinken.\nWenn die Flasche runter fällt, ist der Wurf ungültig</string>
+    <string name="minigame.kisten_stapeln.tutorial">Anleitung:\nDie Spieler müssen abwechselnd\nBierkisten auf den Hügel fallen lassen,\num einen Turm zu bilden.\nWenn ein Spieler den Turm umwirft,\nmuss er die Anzahl der umgeworfenen Kisten trinken.</string>
+    <string name="minigame.biergeballer.tutorial">Anleitung:\nZwei Spieler treten gegeneinander an.\nJeder bekommt eine Bierkiste, aus der nach einiger Zeit Bierflaschen geschossen werden.\nDie Spieler müssen versuchen, die gegnerischen Flaschen zu fangen. Wer 3 Flaschen verfehlt, muss die Anzahl der Leben des Gegners trinken.</string>
+    <string name="minigame.kings.tutorial">Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten gezogen hat.</string>
+    <string name="maingame.task_view.button.accept.description">Bestätigt die Aufgabe</string>
     <string name="choose_mini_game.button.start_mini_game.description">Startet das ausgewählte Minispiel</string>
     <string name="choose_mini_game.button.left"/>
     <string name="choose_mini_game.button.right"/>
@@ -41,15 +41,15 @@
     <string name="minigame.kings.card.black.ten">Schwarz 10:\nTrink vier!</string>
     <string name="minigame.kings.card.black.jack">Schwarz Bube:\nAlle Männer müssen trinken!</string>
     <string name="minigame.kings.card.black.queen">Schwarz Dame:\nAlle Frauen müssen trinken!</string>
-    <string name="minigame.kings.card.black.king">Schwarz König:\nDier dürfen keine Fragen mehr beantwortet werden!</string>
-    <string name="minigame.kings.card.black.ace">Schwarz Ass:\nWasserfall:\nAlle setzten gleichzeitig ihre Getränke an. Jeder muss so lange trinken, bis sein rechter Nachbar aufgehört hat. Du darfst aufhören, wann du willst!</string>
-    <string name="minigame.kings.card.red.seven">Rot 7:\nDu darfst einen Verteilen!</string>
-    <string name="minigame.kings.card.red.eight">Rot 8:\nDu darfst zwei Verteilenn!</string>
-    <string name="minigame.kings.card.red.nine">Rot 9:\nDu darfst drei Verteilen!</string>
-    <string name="minigame.kings.card.red.ten">Rot 10:\nDu darfst vier Verteilen!</string>
+    <string name="minigame.kings.card.black.king">Schwarz König:\nDir dürfen keine Fragen mehr beantwortet werden!</string>
+    <string name="minigame.kings.card.black.ace">Schwarz Ass:\nWasserfall:\nAlle setzen gleichzeitig ihre Getränke zum Trinken an. Jeder muss so lange trinken, bis sein rechter Nachbar aufgehört hat. Du darfst aufhören, wann du willst!</string>
+    <string name="minigame.kings.card.red.seven">Rot 7:\nDu darfst einen verteilen!</string>
+    <string name="minigame.kings.card.red.eight">Rot 8:\nDu darfst zwei verteilenn!</string>
+    <string name="minigame.kings.card.red.nine">Rot 9:\nDu darfst drei verteilen!</string>
+    <string name="minigame.kings.card.red.ten">Rot 10:\nDu darfst vier verteilen!</string>
     <string name="minigame.kings.card.red.jack">Rot Bube:\nDu darfst dir eine Regel ausdenken, die für dieses Minispiel bestehen bleibt!</string>
     <string name="minigame.kings.card.red.queen">Rot Dame:\nWenn du deinen Daumen auf den Tisch legst, müssen alle ihre Daumen auf den Tisch legen. Der Letzte trinkt vier!</string>
-    <string name="minigame.kings.card.red.king">Rot König:\nDu darfst dir eine Kategorie ausdenken(Bsp. Autmoarken). Ihr nennt reihum Begriffe zu dieser Kategorie(Bsp. Opel). Wem keine Einfällt oder eine Doppelt nennt trinkt vier!</string>
+    <string name="minigame.kings.card.red.king">Rot König:\nDu darfst dir eine Kategorie ausdenken (bspw. Automarken). Ihr nennt reihum Begriffe zu dieser Kategorie (bspw. Opel). Wem keine einfällt oder eine doppelt nennt, trinkt vier!</string>
     <string name="minigame.kings.card.red.ace">Rot Ass:\nAlle müssen drei trinken!</string>
     <string name="minigame.ich_hab_noch_nie.i_have_never">Ich hab noch nie\n%s</string>
     <string name="minigame.werf_dich_dicht.drink">Trink einen</string>
@@ -100,7 +100,7 @@
     <string name="maingame.options.button.abort">Schließen</string>
     <string name="title_activity_choose_players">choosePlayersActivity</string>
     <string name="maingame.options.remove_player.error.to_many_to_remove">Du kannst nicht alle Spieler löschen</string>
-    <string name="start_activity.text">Alle berechneten Blutalkholkonzentrationen dienen nur zur Unterhaltung und dienen nicht als rechtliche Grundlage. Wir haften auch nicht für die Folgen von übermäßigen Alkoholkonsums, auch dann nicht wenn von diesem Spiel verursacht. Wir haften weder für Magenentpumpungen, leichte, schwere oder fatale Leberschäden, noch für Fritierte Haustiere. Auch nicht wenn es Teil des Spiels ist. Alkohol ist eine durch und durch böse Droge und wir empfehlen weder den Konsum noch andere Missbräuche dieser sehr gesundheitsschädlichen Droge.</string>
+    <string name="start_activity.text">Alle berechneten Blutalkoholkonzentrationen dienen nur zur Unterhaltung und dienen nicht als rechtliche Grundlage. Wir haften auch nicht für die Folgen übermäßigen Alkoholkonsums, auch dann nicht, wenn von diesem Spiel verursacht. Wir haften weder für Magenentpumpungen, leichte, schwere oder fatale Leberschäden, noch für fritierte Haustiere. Auch nicht wenn es Teil des Spiels ist. Alkohol ist eine durch und durch böse Droge und wir empfehlen weder den Konsum noch andere Missbräuche dieser sehr gesundheitsschädlichen Droge.\n Cannabis ist verboten, weil es eine illegale Droge ist. Punkt!</string>
     <string name="preference_file_key">de.tomade.SaufOMat.PREFERENCE_FILE_KEY</string>
     <string name="minigame.werf_dich_dicht.game_over">Spiel vorbei</string>
     <string name="create_player_activity.weight.default">70</string>
