@@ -2,12 +2,12 @@ package com.tomade.saufomat.activity.miniGame.bierrutsche;
 
 import android.os.Bundle;
 
+import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import com.tomade.saufomat.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,16 +16,15 @@ import java.util.Map;
 
 public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActivity> {
     private static final int SINGLE_TURN_LIMIT = 3;
-    private static final int DRINK_AMOUNT = 3;
 
     private int turnCount = 0;
-    private int maxTurnCount;
 
     private Map<Player, Integer> distances = new HashMap<>();
     private int lastPlayerDistance = -1;
     private int[] currentDistances = new int[3];
     private int currentDistance;
-    private int currentTurnScore;
+
+    private int firstDistance;
 
     public BierrutschePresenter(BierrutscheActivity activity) {
         super(activity);
@@ -34,8 +33,6 @@ public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActiv
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (this.isFromMainGame())
-            this.maxTurnCount = SINGLE_TURN_LIMIT * this.playerList.size();
     }
 
     /**
@@ -47,18 +44,29 @@ public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActiv
         if (this.currentDistance > 100) {
             this.currentDistance = 0;
         }
-        this.currentDistances[this.turnCount % SINGLE_TURN_LIMIT] = this.currentDistance;
-
-        this.turnCount++;
-        if (this.turnCount % SINGLE_TURN_LIMIT == 0) {
-            this.currentTurnScore = this.getMaximum(this.currentDistances);
-            this.distances.put(this.currentPlayer, this.currentTurnScore);
-            if (this.turnCount >= this.maxTurnCount && this.fromMainGame) {
+        if (this.currentPlayer.equals(this.currentPlayerAtStart)) {
+            this.firstDistance = this.currentDistance;
+            this.currentDistances = new int[3];
+            if (this.currentPlayer.getNextPlayer().equals(this.currentPlayerAtStart) && this.fromMainGame) {
                 this.activity.endGame();
             }
             return true;
         } else {
-            return false;
+            this.currentDistances[this.turnCount % SINGLE_TURN_LIMIT] = this.currentDistance;
+
+            this.turnCount++;
+            if (this.turnCount % SINGLE_TURN_LIMIT == 0 || this.currentDistance > this.firstDistance) {
+                int currentTurnScore = this.getMaximum(this.currentDistances);
+                this.distances.put(this.currentPlayer, currentTurnScore);
+                this.currentDistances = new int[3];
+                this.turnCount = 0;
+                if (this.currentPlayer.getNextPlayer().equals(this.currentPlayerAtStart) && this.fromMainGame) {
+                    this.activity.endGame();
+                }
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -78,31 +86,43 @@ public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActiv
         return max;
     }
 
-
-    public String getWorstPlayerText() {
-        String worstScore = "";
-        List<Player> worstPlayer = new ArrayList<>();
-        int worst = 101;
+    public String getBestPlayerText() {
+        ArrayList<Player> betterPlayer = new ArrayList<>();
         for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
-            int score = entry.getValue();
-            if (score < worst) {
-                worstPlayer.clear();
-                worstPlayer.add(entry.getKey());
-                worst = score;
-            } else if (score == worst) {
-                worstPlayer.add(entry.getKey());
+            if (entry.getValue() > this.firstDistance) {
+                betterPlayer.add(entry.getKey());
             }
         }
-        for (Player worstSinglePlayer : worstPlayer) {
-            worstSinglePlayer.increaseDrinks(DRINK_AMOUNT);
-            worstScore += worstSinglePlayer.getName() + " trink " + DRINK_AMOUNT + "\n";
+        StringBuilder resultText;
+
+        if (betterPlayer.isEmpty()) {
+            resultText = new StringBuilder("Alle ausser " + this.currentPlayerAtStart.getName() + " trinken 3!");
+            DrinkHelper.increaseAllButOnePlayer(3, this.currentPlayerAtStart, this.activity);
+        } else {
+            resultText = new StringBuilder(this.currentPlayerAtStart.getName() + " trink " + betterPlayer.size() + "," +
+                    " " +
+                    "da ");
+            for (int i = 0; i < betterPlayer.size(); i++) {
+                resultText.append(betterPlayer.get(i).getName());
+                if (i + 2 < betterPlayer.size()) {
+                    resultText.append(", ");
+                } else if (i + 1 < betterPlayer.size()) {
+                    resultText.append(" und ");
+                }
+            }
+            if (betterPlayer.size() > 1) {
+                resultText.append(" besser waren!");
+            } else {
+                resultText.append(" besser war!");
+            }
+            this.currentPlayerAtStart.increaseDrinks(betterPlayer.size());
         }
-        return worstScore;
+
+        return resultText.toString();
     }
 
     public String getTurnText() {
-        return this.getMaximum(this.currentDistances) + "\n" + this.turnCount % SINGLE_TURN_LIMIT + "/" +
-                SINGLE_TURN_LIMIT;
+        return this.currentDistance + "\n" + this.turnCount % SINGLE_TURN_LIMIT + "/" + SINGLE_TURN_LIMIT;
     }
 
     public int getLastPlayerDistance() {
@@ -113,12 +133,15 @@ public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActiv
         return this.distances;
     }
 
+    //TODO liste sortiert anzeigen
     public String getFullScore() {
-        String fullScore = "";
+        StringBuilder fullScore = new StringBuilder();
+        fullScore.append("Vorgelegt:\n").append(this.currentPlayerAtStart.getName()).append(": ").append(this
+                .firstDistance).append("\n\n");
         for (Map.Entry<Player, Integer> entry : this.distances.entrySet()) {
-            fullScore += entry.getKey().getName() + ": " + entry.getValue() + "\n";
+            fullScore.append(entry.getKey().getName()).append(": ").append(entry.getValue()).append("\n");
         }
-        return fullScore;
+        return fullScore.toString();
     }
 
     public int getCurrentDistance() {
@@ -131,5 +154,13 @@ public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActiv
 
     public int getCurrentPlayerScore() {
         return this.getMaximum(this.currentDistances);
+    }
+
+    public String getStartPlayerName() {
+        return this.currentPlayerAtStart.getName();
+    }
+
+    public int getStartDistance() {
+        return this.firstDistance;
     }
 }

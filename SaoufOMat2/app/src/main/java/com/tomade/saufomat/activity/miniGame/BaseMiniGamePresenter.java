@@ -22,7 +22,7 @@ import java.util.Set;
 public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extends BasePresenter<ACTIVITY> {
     protected ArrayList<Player> playerList;
     protected Player currentPlayer;
-    private Player currentPlayerAtStart;
+    protected Player currentPlayerAtStart;
     protected boolean fromMainGame;
 
     public BaseMiniGamePresenter(ACTIVITY activity) {

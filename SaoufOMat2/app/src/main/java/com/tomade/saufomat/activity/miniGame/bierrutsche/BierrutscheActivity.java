@@ -18,16 +18,13 @@ import com.tomade.saufomat.activity.SwipeController;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.constant.Direction;
 import com.tomade.saufomat.model.drawable.DynamicImageView;
-import com.tomade.saufomat.model.player.Player;
-
-import java.util.Map;
 
 import pl.droidsonroids.gif.GifTextView;
 
 //TODO: aktuelle Punktzahl anzeigen
 public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresenter> implements View.OnClickListener {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
-    private static final int TARGET_ACCURACY = 5000;
+    private static final int TARGET_ACCURACY = 30000;
     private static final int ANIMATION_DURATION = 1500;
     private static final int FALLING_DELAY = 1500;
 
@@ -248,7 +245,7 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
     public void endGame() {
         this.tutorialPanel.setVisibility(View.VISIBLE);
         this.tutorialText.setText(this.getString(R.string.minigame_bierrutsche_game_over) + "\n" + this.presenter
-                .getFullScore() + "\n" + this.presenter.getWorstPlayerText());
+                .getFullScore() + "\n" + this.presenter.getBestPlayerText());
         this.gameState = BierrutscheState.END_GAME;
     }
 
@@ -273,16 +270,9 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
         this.tutorialPanel.setVisibility(View.VISIBLE);
         this.scoreText.setVisibility(View.INVISIBLE);
         if (this.presenter.isFromMainGame()) {
-            int max = 0;
-            Player player = null;
-            for (Map.Entry<Player, Integer> entry : this.presenter.getDistances().entrySet()) {
-                if (entry.getValue() > max) {
-                    max = entry.getValue();
-                    player = entry.getKey();
-                }
-            }
             if (this.gameState != BierrutscheState.END_GAME) {
-                this.statisticText.setText(player.getName() + ": " + max);
+                this.statisticText.setText(this.presenter.getStartPlayerName() + ": " + this.presenter
+                        .getStartDistance());
                 this.presenter.nextPlayer();
                 this.nameText.setText(this.presenter.getCurrentPlayer().getName());
                 this.tutorialText.setText(this.presenter.getFullScore() + "\n" + this.presenter.getCurrentPlayer()

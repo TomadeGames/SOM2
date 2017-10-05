@@ -170,9 +170,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             Intent intent = new Intent(this, this.miniGame.getActivity());
             intent.putExtra(IntentParameter.FROM_MAIN_GAME, true);
             intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-            if (!(this.miniGame == MiniGame.BUSFAHREN)) {
-                this.currentPlayer = this.currentPlayer.getNextPlayer();
-            }
             intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             this.finish();
