@@ -3,7 +3,7 @@ package com.tomade.saufomat.activity.miniGame;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.tomade.saufomat.ActivityWithPlayer;
+import com.tomade.saufomat.activity.ActivityWithPlayer;
 import com.tomade.saufomat.activity.BaseActivity;
 import com.tomade.saufomat.model.player.Player;
 

@@ -1,4 +1,4 @@
-package com.tomade.saufomat;
+package com.tomade.saufomat.activity;
 
 import com.tomade.saufomat.model.player.Player;
 

@@ -1,5 +1,6 @@
 package com.tomade.saufomat;
 
+import com.tomade.saufomat.activity.ActivityWithPlayer;
 import com.tomade.saufomat.model.player.Player;
 
 /**

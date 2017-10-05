@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId 'com.tomade.saufomat'
         minSdkVersion 14
@@ -10,10 +10,6 @@ android {
         versionCode 102029
         versionName "2.0.0.7"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        jackOptions {
-            enabled false
-            jackInProcess false
-        }
     }
     buildTypes {
         release {

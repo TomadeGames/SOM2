@@ -24,6 +24,11 @@ import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.tomade.saufomat.constant.MainGameIconChances.EASY_CHANCE;
+import static com.tomade.saufomat.constant.MainGameIconChances.GAME_CHANCE;
+import static com.tomade.saufomat.constant.MainGameIconChances.HARD_CHANCE;
+import static com.tomade.saufomat.constant.MainGameIconChances.MEDIUM_CHANCE;
+
 /**
  * Presenter für MainGame
  * Created by woors on 03.08.2017.
@@ -31,10 +36,6 @@ import java.util.Random;
 
 public class MainGamePresenter extends BasePresenter {
     private static final String TAG = MainGamePresenter.class.getSimpleName();
-    private static final int EASY_CHANCE = 40;
-    private static final int MEDIUM_CHANCE = 40;
-    private static final int HARD_CHANCE = 30;
-    private static final int GAME_CHANCE = 1;   //9
 
     private static final int AD_LIMIT = 7; //Original 8, erstmal 7
     private static int adCounter = 0;

@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 
 public class Statistic implements Serializable {
+    private static final long serialVersionUID = -4524493427828798362L;
     private int easyWins;
     private int mediumWins;
     private int hardWins;

@@ -18,7 +18,6 @@ import java.util.Random;
 
 public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePresenter>
         implements View.OnClickListener {
-    public static final String TAG = WerfDichDichtActivity.class.getSimpleName();
     private static Random random;
     private static final int DICE_ROLL_DELAY = 100;
     private static final int ANIMATION_DELAY = 100;
