@@ -21,7 +21,7 @@ import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.player.Player;
-import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.SaveGameHelper;
 import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                     for (Player player : this.players) {
                         databaseHelper.insertPlayer(player);
                     }
-                    GameValueHelper gameValueHelper = new GameValueHelper(this);
-                    gameValueHelper.clearGame();
+                    SaveGameHelper saveGameHelper = new SaveGameHelper(this);
+                    saveGameHelper.clearGame();
 
                     this.changeToMainGame();
                 } else {

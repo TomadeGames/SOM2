@@ -132,7 +132,8 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> i
         }
     }
 
-    private void showTutorial() {
+    @Override
+    public void showTutorial() {
         if (!this.tutorialShown) {
             this.tutorialShown = true;
             this.lastText = this.popupText.getText().toString();

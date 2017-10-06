@@ -13,13 +13,18 @@ import com.tomade.saufomat.model.player.Player;
  */
 
 public abstract class BaseMiniGameActivity<PRESENTER extends BaseMiniGamePresenter> extends BaseActivity<PRESENTER>
-        implements
-        ActivityWithPlayer {
+        implements ActivityWithPlayer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        this.presenter.showTutorialIfFirstStart();
     }
 
     @Override
@@ -35,4 +40,6 @@ public abstract class BaseMiniGameActivity<PRESENTER extends BaseMiniGamePresent
     public boolean arePlayerValid() {
         return this.presenter.isFromMainGame();
     }
+
+    public abstract void showTutorial();
 }

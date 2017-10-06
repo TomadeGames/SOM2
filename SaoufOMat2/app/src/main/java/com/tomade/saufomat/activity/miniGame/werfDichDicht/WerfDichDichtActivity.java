@@ -12,7 +12,7 @@ import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
-import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.SaveGameHelper;
 
 import java.util.Random;
 
@@ -96,9 +96,14 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
         this.tutorial = this.findViewById(R.id.tutorialPanel);
     }
 
+    @Override
+    public void showTutorial() {
+        this.tutorial.setVisibility(View.VISIBLE);
+    }
+
     private void loadLastGame() {
-        GameValueHelper gameValueHelper = new GameValueHelper(this);
-        this.isFull = gameValueHelper.getSavedWerfDichDichtState();
+        SaveGameHelper saveGameHelper = new SaveGameHelper(this);
+        this.isFull = saveGameHelper.getSavedWerfDichDichtState();
 
         for (int i = 0; i < this.isFull.length; i++) {
             if (this.isFull[i]) {
@@ -139,7 +144,7 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
                 this.leaveGame();
                 break;
             case R.id.tutorialButton:
-                this.tutorial.setVisibility(View.VISIBLE);
+                this.showTutorial();
                 break;
         }
     }
@@ -325,8 +330,8 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
 
     protected void leaveGame() {
         if (this.presenter.isFromMainGame()) {
-            GameValueHelper gameValueHelper = new GameValueHelper(this);
-            gameValueHelper.saveWerfDichDicht(this.isFull);
+            SaveGameHelper saveGameHelper = new SaveGameHelper(this);
+            saveGameHelper.saveWerfDichDicht(this.isFull);
         }
         this.presenter.leaveGame();
     }

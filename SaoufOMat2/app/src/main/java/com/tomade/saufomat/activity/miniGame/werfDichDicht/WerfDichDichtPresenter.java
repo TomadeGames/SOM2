@@ -3,7 +3,7 @@ package com.tomade.saufomat.activity.miniGame.werfDichDicht;
 import android.os.Bundle;
 
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
-import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.SaveGameHelper;
 
 import java.util.Random;
 
@@ -27,8 +27,8 @@ public class WerfDichDichtPresenter extends BaseMiniGamePresenter<WerfDichDichtA
     @Override
     public void leaveGame() {
         if (this.fromMainGame) {
-            GameValueHelper gameValueHelper = new GameValueHelper(this.activity);
-            gameValueHelper.saveWerfDichDicht(this.isFull);
+            SaveGameHelper saveGameHelper = new SaveGameHelper(this.activity);
+            saveGameHelper.saveWerfDichDicht(this.isFull);
         }
         super.leaveGame();
     }
@@ -58,8 +58,8 @@ public class WerfDichDichtPresenter extends BaseMiniGamePresenter<WerfDichDichtA
     }
 
     public void loadLastGame() {
-        GameValueHelper gameValueHelper = new GameValueHelper(this.activity);
-        this.isFull = gameValueHelper.getSavedWerfDichDichtState();
+        SaveGameHelper saveGameHelper = new SaveGameHelper(this.activity);
+        this.isFull = saveGameHelper.getSavedWerfDichDichtState();
 
     }
 

@@ -77,6 +77,12 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         this.rightButton.setOnClickListener(this);
     }
 
+    @Override
+    public void showTutorial() {
+        this.tutorial.setVisibility(View.VISIBLE);
+        this.buttonsClickable = true;
+    }
+
     private void initCards() {
         this.cards[0] = Card.getRandomCard();
 
@@ -122,8 +128,7 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
                         this.presenter.leaveGame();
                         break;
                     case R.id.tutorialButton:
-                        this.tutorial.setVisibility(View.VISIBLE);
-                        this.buttonsClickable = true;
+                        this.showTutorial();
                         break;
                 }
             }

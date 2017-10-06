@@ -142,7 +142,7 @@ public class PlayerTable extends BaseTable<Player> {
 
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < playerList.size(); i++) {
-            players.add(playerList.get(i));
+            players.add(playerList.get(playerList.keyAt(i)));
         }
         Log.i(TAG, playerList.size() + " Players loaded from Databse");
         return players;

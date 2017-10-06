@@ -18,7 +18,7 @@ import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
-import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.SaveGameHelper;
 import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -205,10 +205,10 @@ public class MainGamePresenter extends BasePresenter {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                GameValueHelper gameValueHelper = new GameValueHelper(context);
-                gameValueHelper.saveCurrentPlayer(currentPlayer);
-                gameValueHelper.saveAdCounter(adCounter);
-                gameValueHelper.saveGameSaved(true);
+                SaveGameHelper saveGameHelper = new SaveGameHelper(context);
+                saveGameHelper.saveCurrentPlayer(currentPlayer);
+                saveGameHelper.saveAdCounter(adCounter);
+                saveGameHelper.saveGameSaved(true);
             }
         }).start();
     }

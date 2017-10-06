@@ -112,7 +112,8 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         }
     }
 
-    private void showTutorial() {
+    @Override
+    public void showTutorial() {
         this.taskView.setText(R.string.minigame_ich_hab_noch_nie_tutorial);
         this.tutorialShown = true;
     }

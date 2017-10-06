@@ -97,6 +97,14 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
     }
 
     @Override
+    public void showTutorial() {
+        if (this.tutorialPanel.getVisibility() == View.GONE && this.gameState == BierrutscheState.START) {
+            this.tutorialPanel.setVisibility(View.VISIBLE);
+            this.tutorialText.setText(R.string.minigame_bierrutsche_tutorial);
+        }
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         this.beerStartPositionX = this.beerImage.getX();
@@ -347,10 +355,7 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
                     this.presenter.leaveGame();
                     break;
                 case R.id.tutorialButton:
-                    if (this.tutorialPanel.getVisibility() == View.GONE && this.gameState == BierrutscheState.START) {
-                        this.tutorialPanel.setVisibility(View.VISIBLE);
-                        this.tutorialText.setText(R.string.minigame_bierrutsche_tutorial);
-                    }
+                    this.showTutorial();
                     break;
             }
         }

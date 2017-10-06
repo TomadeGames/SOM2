@@ -11,7 +11,7 @@ import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
-import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.SaveGameHelper;
 import com.tomade.saufomat.persistance.sql.table.MiniGameTable;
 import com.tomade.saufomat.persistance.sql.table.PlayerTable;
 import com.tomade.saufomat.persistance.sql.table.TaskEventTable;
@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.miniGameTable.createTable(sqLiteDatabase);
         this.taskEventTable.createTable(sqLiteDatabase);
 
-        new GameValueHelper(this.context).saveDatabaseVersion(DATABASE_VERSION);
+        new SaveGameHelper(this.context).saveDatabaseVersion(DATABASE_VERSION);
     }
 
     @Override

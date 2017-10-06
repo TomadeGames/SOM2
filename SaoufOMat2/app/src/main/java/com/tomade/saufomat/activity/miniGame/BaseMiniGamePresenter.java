@@ -9,6 +9,7 @@ import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
+import com.tomade.saufomat.persistance.GameValueHelper;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -20,10 +21,11 @@ import java.util.Set;
  */
 
 public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extends BasePresenter<ACTIVITY> {
-    protected ArrayList<Player> playerList;
+    private ArrayList<Player> playerList;
     protected Player currentPlayer;
     protected Player currentPlayerAtStart;
     protected boolean fromMainGame;
+    private boolean shownFirstTime = false;
 
     public BaseMiniGamePresenter(ACTIVITY activity) {
         super(activity);
@@ -38,7 +40,15 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
                 this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
                 this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
                 this.currentPlayerAtStart = this.currentPlayer;
+                this.shownFirstTime = new GameValueHelper(this.activity).isTutorialSeen(this.getThisGame());
             }
+        }
+    }
+
+    public void showTutorialIfFirstStart() {
+        if (!this.shownFirstTime && this.isFromMainGame()) {
+            this.activity.showTutorial();
+            new GameValueHelper(this.activity).setTutorialSeen(this.getThisGame());
         }
     }
 
@@ -89,7 +99,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
         this.activity.startActivity(intent);
     }
 
-    private MiniGame getThisGame() {
+    public MiniGame getThisGame() {
         Set<MiniGame> allMiniGames = EnumSet.allOf(MiniGame.class);
         for (MiniGame miniGame : allMiniGames) {
             if (miniGame.getActivity().equals(this.activity.getClass())) {
@@ -97,8 +107,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
             }
         }
         throw new IllegalStateException("Activity [" + this.activity.getClass() + "] is not defined in Enum " +
-                MiniGame.class
-                        .getName());
+                MiniGame.class.getName());
     }
 
 

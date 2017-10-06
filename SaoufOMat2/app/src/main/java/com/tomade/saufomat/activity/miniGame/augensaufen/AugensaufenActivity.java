@@ -53,6 +53,11 @@ public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresent
     }
 
     @Override
+    public void showTutorial() {
+        //Dieses Spiel braucht kein Tutorial ^^
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(TAG, "Touch, state: " + this.gameState + " action: " + event.getAction());
         if (event.getAction() == 0) {

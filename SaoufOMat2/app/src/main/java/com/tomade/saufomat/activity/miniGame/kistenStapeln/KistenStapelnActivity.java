@@ -92,6 +92,12 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
     }
 
     @Override
+    public void showTutorial() {
+        this.tutorialPanel.setVisibility(View.VISIBLE);
+        this.setTutorialShown(true);
+    }
+
+    @Override
     public void onClick(View v) {
         if (this.isTutorialShown()) {
             this.tutorialPanel.setVisibility(View.GONE);
@@ -102,8 +108,7 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
                     this.presenter.leaveGame();
                     break;
                 case R.id.tutorialButton:
-                    this.tutorialPanel.setVisibility(View.VISIBLE);
-                    this.setTutorialShown(true);
+                    this.showTutorial();
                     break;
             }
         }

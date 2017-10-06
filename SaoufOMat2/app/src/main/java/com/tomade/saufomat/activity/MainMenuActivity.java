@@ -16,7 +16,7 @@ import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.player.Player;
-import com.tomade.saufomat.persistance.GameValueHelper;
+import com.tomade.saufomat.persistance.SaveGameHelper;
 import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -59,8 +59,8 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
                             break;
                         }
                         case MotionEvent.ACTION_UP:
-                            GameValueHelper gameValueHelper = new GameValueHelper(MainMenuActivity.this);
-                            if (gameValueHelper.isGameSaved()) {
+                            SaveGameHelper saveGameHelper = new SaveGameHelper(MainMenuActivity.this);
+                            if (saveGameHelper.isGameSaved()) {
                                 Log.i(TAG, "Saved Game found");
                                 MainMenuActivity.this.loadGameField.setVisibility(View.VISIBLE);
                             } else {
@@ -121,11 +121,11 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
 
     private void loadGame() {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        GameValueHelper gameValueHelper = new GameValueHelper(this);
+        SaveGameHelper saveGameHelper = new SaveGameHelper(this);
 
         ArrayList<Player> allPlayer = databaseHelper.getAllPlayer();
-        Player currentPlayer = gameValueHelper.getCurrentPlayer();
-        int adCounter = gameValueHelper.getAdCounter();
+        Player currentPlayer = saveGameHelper.getCurrentPlayer();
+        int adCounter = saveGameHelper.getAdCounter();
 
         Intent intent = new Intent(this.getApplicationContext(), MainGameActivity.class);
         intent.putExtra(IntentParameter.PLAYER_LIST, allPlayer);
