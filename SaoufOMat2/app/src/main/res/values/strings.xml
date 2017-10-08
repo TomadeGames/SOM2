@@ -8,7 +8,7 @@
     </string-array>
     <string name="title_activity_task_view">TaskViewActivity</string>
     <string name="n_chster_spieler">Nächster Spieler</string>
-    <string name="minigame.wer_dich_dicht.tutorial">Anleitung:\nEs wird nacheinander gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler es leer trinken und ist nochmal an der Reihe.</string>
+    <string name="minigame.wer_dich_dicht.tutorial">Anleitung:\nEs wird nacheinander gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler einen trinken und ist nochmal an der Reihe.</string>
     <string name="minigame.biergeballer.caption">Biergeballer</string>
     <string name="minigame.augensaufen.caption">Augensaufen</string>
     <string name="minigame.werf_dich_dicht.caption">Werf dich dicht</string>
@@ -18,10 +18,9 @@
     <string name="minigame.kings.caption">Kings</string>
     <string name="minigame.kisten_stapeln.caption">Kisten stapeln</string>
     <string name="minigame.bierrutsche.caption">Bierrutsche</string>
-    <string name="minigame.bierrutsche.tutorial">Anleitung:\nJeder Spieler bekommt 3 Versuche, die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Wer die Flasche am Ende am weitesten geschubst hat, muss nicht trinken.\nWenn die Flasche runter fällt, ist der Wurf ungültig</string>
-    <string name="minigame.kisten_stapeln.tutorial">Anleitung:\nDie Spieler müssen abwechselnd\nBierkisten auf den Hügel fallen lassen,\num einen Turm zu bilden.\nWenn ein Spieler den Turm umwirft,\nmuss er die Anzahl der umgeworfenen Kisten trinken.</string>
-    <string name="minigame.biergeballer.tutorial">Anleitung:\nZwei Spieler treten gegeneinander an.\nJeder bekommt eine Bierkiste, aus der nach einiger Zeit Bierflaschen geschossen werden.\nDie Spieler müssen versuchen, die gegnerischen Flaschen zu fangen. Wer 3 Flaschen verfehlt, muss die Anzahl der Leben des Gegners trinken.</string>
-    <string name="minigame.kings.tutorial">Es werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt. Das Spiel endet, wenn jeder Spieler drei Karten gezogen hat.</string>
+    <string name="minigame.bierrutsche.tutorial">Anleitung\nDu fängst an die Bierflasche möglichst weit über den Tisch zu schubsen, ohne Sie runter zu werfen. Alle anderen bekommen 3 Versuche dich zu überbieten. Sollte die Flasche zu weit rutschen und runterfallen, ist der Wurf ungültig.</string>
+    <string name="minigame.kisten_stapeln.tutorial">Anleitung\nDie Spieler müssen abwechselnd Bierkisten auf den Hügel fallen lassen, um einen Turm zu bilden. Wenn ein Spieler den Turm umwirft, muss er die Anzahl der umgeworfenen Kisten trinken.</string>
+    <string name="minigame.kings.tutorial">Anleitung\nEs werden der Reihe nach Karten mit verschiedenen Aufgaben aufgedeckt.</string>
     <string name="maingame.task_view.button.accept.description">Bestätigt die Aufgabe</string>
     <string name="choose_mini_game.button.start_mini_game.description">Startet das ausgewählte Minispiel</string>
     <string name="choose_mini_game.button.left"/>
@@ -31,7 +30,7 @@
     <string name="minigame.augensaufen.next_player">Nächster Spieler</string>
     <string name="minigame.augensaufen.drink_amount">Trink %d</string>
     <string name="minigame.bierrutsche.game_over">Spiel vorbei</string>
-    <string name="minigame.ich_hab_noch_nie.tutorial">Anleitung: Es werden Sätze generiert, die mit \"Ich hab noch nie\" beginnen. Jeder, der die verneinte Handlung doch schon mal gemacht hat, muss trinken. Danach wird das Handy weitergegeben.</string>
+    <string name="minigame.ich_hab_noch_nie.tutorial">Anleitung:\nEs werden Sätze generiert, die mit \"Ich hab noch nie\" beginnen. Jeder, der die verneinte Handlung doch schon mal gemacht hat, muss trinken.</string>
     <string name="minigame.kings.tap_to_start">%s\n\nTippen um die Karte aufzudecken</string>
     <string name="minigame.kings.game_over">Spiel vorbei</string>
     <string name="minigame.kings.next_player">Nächster Spieler</string>
