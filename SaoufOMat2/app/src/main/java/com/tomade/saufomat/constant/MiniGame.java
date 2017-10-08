@@ -20,25 +20,31 @@ public enum MiniGame implements Serializable {
     /**
      * Wenn dieses Enum sich ändert muss DATENBANK_VERSION in DatabaseHelper erhöht werden!
      */
-    AUGENSAUFEN(AugensaufenActivity.class, R.drawable.augensaufen_screen, R.string.minigame_augensaufen_caption),
-    BIERRUTSCHE(BierrutscheActivity.class, R.drawable.bierrutsche_screenshot, R.string.minigame_bierrutsche_caption),
-    BUSFAHREN(BusfahrenActivity.class, R.drawable.busfahrer_screen, R.string.minigame_busfahren_caption),
+    AUGENSAUFEN(AugensaufenActivity.class, R.drawable.augensaufen_screen, R.string.minigame_augensaufen_caption, R
+            .string.minigame_augensaufen_tutorial),
+    BIERRUTSCHE(BierrutscheActivity.class, R.drawable.bierrutsche_screenshot, R.string.minigame_bierrutsche_caption,
+            R.string.minigame_bierrutsche_tutorial),
+    BUSFAHREN(BusfahrenActivity.class, R.drawable.busfahrer_screen, R.string.minigame_busfahren_caption, R.string
+            .minigame_busfahren_tutorial),
     ICH_HAB_NOCH_NIE(IchHabNochNieActivity.class, R.drawable.ich_hab_nie_screen, R.string
-            .minigame_ich_hab_noch_nie_caption),
-    KINGS(KingsActivity.class, R.drawable.kings_screen, R.string.minigame_kings_caption),
+            .minigame_ich_hab_noch_nie_caption, R.string.minigame_ich_hab_noch_nie_tutorial),
+    KINGS(KingsActivity.class, R.drawable.kings_screen, R.string.minigame_kings_caption, R.string
+            .minigame_kings_tutorial),
     KISTEN_STAPELN(KistenStapelnActivity.class, R.drawable.kistenstapeln_screen, R.string
-            .minigame_kisten_stapeln_caption),
+            .minigame_kisten_stapeln_caption, R.string.minigame_kisten_stapeln_tutorial),
     WERF_DICH_DICHT(WerfDichDichtActivity.class, R.drawable.werf_dich_dicht_screen, R.string
-            .minigame_werf_dich_dicht_caption);
+            .minigame_werf_dich_dicht_caption, R.string.minigame_werf_dich_dicht_tutorial);
 
     private Class<? extends BaseMiniGameActivity> activity;
     private int screenshotId;
     private int nameId;
+    private int tutorialId;
 
-    MiniGame(Class<? extends BaseMiniGameActivity> activity, int screenshotId, int nameId) {
+    MiniGame(Class<? extends BaseMiniGameActivity> activity, int screenshotId, int nameId, int tutorialId) {
         this.activity = activity;
         this.screenshotId = screenshotId;
         this.nameId = nameId;
+        this.tutorialId = tutorialId;
     }
 
     public Class<? extends BaseMiniGameActivity> getActivity() {
@@ -51,5 +57,9 @@ public enum MiniGame implements Serializable {
 
     public int getNameId() {
         return this.nameId;
+    }
+
+    public int getTutorialId() {
+        return this.tutorialId;
     }
 }

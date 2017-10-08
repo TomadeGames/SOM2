@@ -161,8 +161,10 @@ public class DrinkHelper {
      * @param source    die Klasse, die diese Methode aufruft
      */
     public static void increasePlayerWithNeighbours(int increment, Player player, ActivityWithPlayer source) {
-        player.increaseDrinks(increment);
-        increaseNeighbours(increment, player, source);
+        if (source.arePlayerValid()) {
+            player.increaseDrinks(increment);
+            increaseNeighbours(increment, player, source);
+        }
     }
 
     /**
@@ -173,8 +175,10 @@ public class DrinkHelper {
      * @param source    die Klasse, die diese Methode aufruft
      */
     public static void increaseNeighbours(int increment, Player player, ActivityWithPlayer source) {
-        player.getNextPlayer().increaseDrinks(increment);
-        player.getLastPlayer().increaseDrinks(increment);
+        if (source.arePlayerValid()) {
+            player.getNextPlayer().increaseDrinks(increment);
+            player.getLastPlayer().increaseDrinks(increment);
+        }
     }
 
     /**
@@ -184,6 +188,8 @@ public class DrinkHelper {
      * @param source    die Klasse, die diese Methode aufruft
      */
     public static void increaseCurrentPlayer(int increment, ActivityWithPlayer source) {
-        source.getCurrentPlayer().increaseDrinks(increment);
+        if (source.arePlayerValid()) {
+            source.getCurrentPlayer().increaseDrinks(increment);
+        }
     }
 }

@@ -23,7 +23,6 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
     private TextView turnCounter;
     private TextView taskView;
 
-    private boolean tutorialShown = false;
     private String currentTask;
     private int turnCount = 0;
     private int maxTurns;
@@ -39,7 +38,7 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_ich_hab_noch_nie);
 
-        random = new Random();
+        random = new Random(System.currentTimeMillis());
 
         this.currentQuestions = new ArrayList<>();
         this.allQuestions = new ArrayList<>();
@@ -52,12 +51,11 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
 
         ImageButton popup = this.findViewById(R.id.popupButton);
-        ImageButton tutorial = this.findViewById(R.id.tutorialButton);
         ImageButton back = this.findViewById(R.id.backButton);
 
         if (this.presenter.isFromMainGame()) {
             back.setVisibility(View.INVISIBLE);
-            TextView backText = (TextView) this.findViewById(R.id.backText);
+            TextView backText = this.findViewById(R.id.backText);
             backText.setVisibility(View.INVISIBLE);
             this.maxTurns = this.presenter.getPlayerAmount() * 3;
             if (this.maxTurns > 30) {
@@ -67,31 +65,18 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         } else {
             this.turnCounter.setVisibility(View.GONE);
         }
-
+        this.findViewById(R.id.tutorialButton).setOnClickListener(this);
         popup.setOnClickListener(this);
-        tutorial.setOnClickListener(this);
         back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.backButton) {
-            this.presenter.leaveGame();
-        } else {
-            if (this.tutorialShown) {
-                this.tutorialShown = false;
-                this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this
-                        .currentTask));
-            } else {
-                switch (v.getId()) {
-                    case R.id.popupButton:
-                        this.nextQuestion();
-                        break;
-                    case R.id.tutorialButton:
-                        this.showTutorial();
-                        break;
-                }
-            }
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.popupButton:
+                this.nextQuestion();
+                break;
         }
     }
 
@@ -110,12 +95,6 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
                 this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
             }
         }
-    }
-
-    @Override
-    public void showTutorial() {
-        this.taskView.setText(R.string.minigame_ich_hab_noch_nie_tutorial);
-        this.tutorialShown = true;
     }
 
     private void initLists() {

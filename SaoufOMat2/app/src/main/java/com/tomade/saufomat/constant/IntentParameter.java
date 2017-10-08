@@ -12,15 +12,15 @@ public interface IntentParameter {
     String LAST_GAME = "lastGame";
 
     interface MainGame {
-        String CURRENT_TASK = "currentTask";
-        String CURRENT_MINI_GAME = "currentMiniGame";
-        String CURRENT_TASK_IS_MINI_GAME = "currentTaskIsMiniGame";
-        String AD_COUNTER = "adCounter";
-        String NEW_GAME = "newGame";
-        String NEW_TASK_EVENT = "newTaskEvent";
+        String CURRENT_TASK = "mainGame_currentTask";
+        String CURRENT_MINI_GAME = "mainGame_currentMiniGame";
+        String CURRENT_TASK_IS_MINI_GAME = "mainGame_currentTaskIsMiniGame";
+        String AD_COUNTER = "mainGame_adCounter";
+        String NEW_GAME = "mainGame_newGame";
+        String NEW_TASK_EVENT = "mainGame_newTaskEvent";
     }
 
-    interface ChoosePlayersActivity {
-        String SELECTION_AMOUNT = "selectionAmount";
+    interface Tutorial {
+        String TEXT_ID = "tutorial_textKey";
     }
 }

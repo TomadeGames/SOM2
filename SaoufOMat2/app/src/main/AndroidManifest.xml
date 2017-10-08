@@ -72,13 +72,13 @@
             android:value="@integer/google_play_services_version"/>
 
         <activity
-            android:name=".activity.miniGame.biergeballer.BiergeballerActivity"
-            android:label="@string/minigame.biergeballer.caption"
-            android:screenOrientation="sensorLandscape"/>
-        <activity
             android:name=".activity.mainGame.MainGameActivity"
             android:screenOrientation="sensorLandscape">
         </activity>
+        <activity
+            android:name=".activity.miniGame.TutorialDialog"
+            android:label="@string/dialog.tutorial.caption"
+            android:theme="@style/Theme.TutorialDialog"/>
     </application>
 
 </manifest>

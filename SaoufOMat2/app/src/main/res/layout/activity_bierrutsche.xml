@@ -124,21 +124,21 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/tutorialPanel"
+        android:id="@+id/popupPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/tutorialPopup"
+            android:id="@+id/popupImage"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:scaleType="fitXY"
             android:src="@drawable/popup"/>
 
         <TextView
-            android:id="@+id/tutorialText"
+            android:id="@+id/popupText"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_margin="10dp"

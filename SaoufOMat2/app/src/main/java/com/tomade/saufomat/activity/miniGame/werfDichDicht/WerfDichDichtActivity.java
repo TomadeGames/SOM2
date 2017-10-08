@@ -16,8 +16,7 @@ import com.tomade.saufomat.persistance.SaveGameHelper;
 
 import java.util.Random;
 
-public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePresenter>
-        implements View.OnClickListener {
+public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
     private static Random random;
     private static final int DICE_ROLL_DELAY = 100;
     private static final int ANIMATION_DELAY = 100;
@@ -28,7 +27,6 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
     private ImageView popupImage;
     private ImageView diceImage;
     private ImageView[] glasses = new ImageView[6];
-    private View tutorial;
 
     private int animationCounter = 0;
     private int turnCount = 0;
@@ -66,9 +64,8 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
         this.glasses[5] = this.findViewById(R.id.glas5Image);
 
         ImageButton backButton = this.findViewById(R.id.backButton);
-        ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
+        this.findViewById(R.id.tutorialButton).setOnClickListener(this);
         backButton.setOnClickListener(this);
-        tutorialButton.setOnClickListener(this);
 
         this.loadLastGame();
 
@@ -89,16 +86,9 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
         } else {
             this.playerText.setVisibility(View.GONE);
             this.turnCounter.setVisibility(View.GONE);
-            ImageView playerPopup = (ImageView) this.findViewById(R.id.nameBackground);
+            ImageView playerPopup = this.findViewById(R.id.nameBackground);
             playerPopup.setVisibility(View.GONE);
         }
-
-        this.tutorial = this.findViewById(R.id.tutorialPanel);
-    }
-
-    @Override
-    public void showTutorial() {
-        this.tutorial.setVisibility(View.VISIBLE);
     }
 
     private void loadLastGame() {
@@ -114,39 +104,23 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (this.tutorial.getVisibility() == View.GONE) {
-            if (event.getAction() == 0) {
-                switch (this.gameState) {
-                    case START:
-                        this.startRolling();
-                        break;
-                    case ROLLING:
-                        this.stopRolling();
-                        break;
-                    case END:
-                        this.leaveGame();
-                        break;
-                    default:
-                        break;
-                }
-                return true;
+        if (event.getAction() == 0) {
+            switch (this.gameState) {
+                case START:
+                    this.startRolling();
+                    break;
+                case ROLLING:
+                    this.stopRolling();
+                    break;
+                case END:
+                    this.leaveGame();
+                    break;
+                default:
+                    break;
             }
-        } else {
-            this.tutorial.setVisibility(View.GONE);
+            return true;
         }
         return super.onTouchEvent(event);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.backButton:
-                this.leaveGame();
-                break;
-            case R.id.tutorialButton:
-                this.showTutorial();
-                break;
-        }
     }
 
     private void startRolling() {

@@ -16,7 +16,7 @@ import com.tomade.saufomat.model.card.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
+public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
     private ImageView cardImage;
     private TextView popupText;
     private TextView cardCounterText;
@@ -24,13 +24,10 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> i
     private int maximumCards;
     private int cardCount = 0;
 
-    private boolean tutorialShown = false;
     private KingsState gameState = KingsState.START;
 
     private Card card;
     private List<Card> lastCards = new ArrayList<>();
-
-    private String lastText;
 
     @Override
     protected void initPresenter() {
@@ -66,8 +63,6 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> i
                     .getCurrentPlayer().getName()));
         }
 
-        this.lastText = this.popupText.getText().toString();
-
         ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
         tutorialButton.setOnClickListener(this);
         ImageButton backButton = this.findViewById(R.id.backButton);
@@ -83,69 +78,33 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> i
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == 0) {
-            if (this.tutorialShown) {
-                this.hideTutorial();
-            } else {
-                switch (this.gameState) {
-                    case START:
-                        this.gameState = KingsState.ROUND_END;
-                        this.getTask();
-                        break;
-                    case ROUND_END:
-                        if (!this.presenter.isFromMainGame()) {
-                            this.popupText.setText(R.string.minigame_kings_next_player);
+            switch (this.gameState) {
+                case START:
+                    this.gameState = KingsState.ROUND_END;
+                    this.getTask();
+                    break;
+                case ROUND_END:
+                    if (!this.presenter.isFromMainGame()) {
+                        this.popupText.setText(R.string.minigame_kings_next_player);
+                        this.gameState = KingsState.START;
+                    } else {
+                        this.presenter.nextPlayer();
+                        if (this.cardCount < this.maximumCards) {
+                            this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
+                                    .presenter.getCurrentPlayer().getName()));
                             this.gameState = KingsState.START;
                         } else {
-                            this.presenter.nextPlayer();
-                            if (this.cardCount < this.maximumCards) {
-                                this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
-                                        .presenter.getCurrentPlayer().getName()));
-                                this.gameState = KingsState.START;
-                            } else {
-                                this.popupText.setText(R.string.minigame_kings_game_over);
-                                this.gameState = KingsState.GAME_OVER;
-                            }
+                            this.popupText.setText(R.string.minigame_kings_game_over);
+                            this.gameState = KingsState.GAME_OVER;
                         }
-                        break;
-                    case GAME_OVER:
-                        this.presenter.leaveGame();
-                        break;
-                }
+                    }
+                    break;
+                case GAME_OVER:
+                    this.presenter.leaveGame();
+                    break;
             }
         }
         return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.backButton:
-                this.presenter.leaveGame();
-                break;
-            case R.id.tutorialButton:
-                if (this.tutorialShown) {
-                    this.hideTutorial();
-                } else {
-                    this.showTutorial();
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void showTutorial() {
-        if (!this.tutorialShown) {
-            this.tutorialShown = true;
-            this.lastText = this.popupText.getText().toString();
-            this.popupText.setText(R.string.minigame_kings_tutorial);
-        }
-    }
-
-    private void hideTutorial() {
-        if (this.tutorialShown) {
-            this.tutorialShown = false;
-            this.popupText.setText(this.lastText);
-        }
     }
 
     private void getTask() {

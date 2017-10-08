@@ -25,7 +25,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
     protected Player currentPlayer;
     protected Player currentPlayerAtStart;
     protected boolean fromMainGame;
-    private boolean shownFirstTime = false;
+    private boolean tutorialAlreadySeen = false;
 
     public BaseMiniGamePresenter(ACTIVITY activity) {
         super(activity);
@@ -40,15 +40,15 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
                 this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
                 this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
                 this.currentPlayerAtStart = this.currentPlayer;
-                this.shownFirstTime = new GameValueHelper(this.activity).isTutorialSeen(this.getThisGame());
             }
         }
+        this.tutorialAlreadySeen = new GameValueHelper(this.activity).isTutorialSeen(this.getThisGame());
     }
 
     public void showTutorialIfFirstStart() {
-        if (!this.shownFirstTime && this.isFromMainGame()) {
-            this.activity.showTutorial();
+        if (!this.tutorialAlreadySeen) {
             new GameValueHelper(this.activity).setTutorialSeen(this.getThisGame());
+            this.activity.showTutorial();
         }
     }
 

@@ -3,7 +3,6 @@ package com.tomade.saufomat.activity.miniGame.busfahren;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
     private TextView taskText;
     private TextView drinkCounterText;
     private TextView plusText;
-    private View tutorial;
 
     private int drinkCount = 0;
     private BusfahrenState gameState = BusfahrenState.RED_BLACK;
@@ -69,18 +67,11 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         this.drinkCounterText = this.findViewById(R.id.drinkCounterText);
         this.plusText = this.findViewById(R.id.drinkCounterPlusText);
 
-        this.tutorial = this.findViewById(R.id.tutorialPanel);
         ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
 
         tutorialButton.setOnClickListener(this);
         this.leftButton.setOnClickListener(this);
         this.rightButton.setOnClickListener(this);
-    }
-
-    @Override
-    public void showTutorial() {
-        this.tutorial.setVisibility(View.VISIBLE);
-        this.buttonsClickable = true;
     }
 
     private void initCards() {
@@ -102,38 +93,21 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == 0) {
-            if (this.tutorial.getVisibility() == View.VISIBLE) {
-                this.tutorial.setVisibility(View.GONE);
-            }
-        }
-        return true;
-    }
 
     @Override
     public void onClick(View v) {
-        if (this.tutorial.getVisibility() == View.GONE) {
-            if (this.buttonsClickable) {
-                this.buttonsClickable = false;
-                switch (v.getId()) {
-                    case R.id.leftButton:
-                        this.leftButtonPressed();
-                        break;
-                    case R.id.rightButton:
-                        this.rightButtonPressed();
-                        break;
-                    case R.id.backButton:
-                        this.presenter.leaveGame();
-                        break;
-                    case R.id.tutorialButton:
-                        this.showTutorial();
-                        break;
-                }
+        super.onClick(v);
+        if (this.buttonsClickable) {
+            switch (v.getId()) {
+                case R.id.leftButton:
+                    this.buttonsClickable = false;
+                    this.leftButtonPressed();
+                    break;
+                case R.id.rightButton:
+                    this.buttonsClickable = false;
+                    this.rightButtonPressed();
+                    break;
             }
-        } else {
-            this.tutorial.setVisibility(View.GONE);
         }
     }
 

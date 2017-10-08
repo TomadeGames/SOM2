@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 
-public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresenter> implements View.OnClickListener {
+public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresenter> {
     private static final String TAG = AugensaufenActivity.class.getSimpleName();
     private static final int DICE_ROLL_DELAY = 100;
     private AugensaufenState gameState = AugensaufenState.START;
@@ -32,12 +32,10 @@ public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_augensaufen);
-
         this.diceImage = this.findViewById(R.id.diceImage);
         this.bottomText = this.findViewById(R.id.bottemLargeText);
         this.playerText = this.findViewById(R.id.playerText);
         this.turnCounterView = this.findViewById(R.id.turnCounter);
-
 
         ImageButton backButton = this.findViewById(R.id.backButton);
         if (this.presenter.isFromMainGame()) {
@@ -50,11 +48,6 @@ public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresent
             this.turnCounterView.setVisibility(View.GONE);
         }
         backButton.setOnClickListener(this);
-    }
-
-    @Override
-    public void showTutorial() {
-        //Dieses Spiel braucht kein Tutorial ^^
     }
 
     @Override
@@ -148,12 +141,5 @@ public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresent
                 }
             }
         }, DICE_ROLL_DELAY);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.backButton) {
-            this.presenter.leaveGame();
-        }
     }
 }

@@ -22,7 +22,7 @@ import com.tomade.saufomat.model.drawable.DynamicImageView;
 import pl.droidsonroids.gif.GifTextView;
 
 //TODO: aktuelle Punktzahl anzeigen
-public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresenter> implements View.OnClickListener {
+public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresenter> {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
     private static final int TARGET_ACCURACY = 30000;
     private static final int ANIMATION_DURATION = 1500;
@@ -35,14 +35,13 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
     private GifTextView startField;
     private ImageView targetImage;
     private ImageView beerImage;
-    private ImageButton tutorialButton;
-
-    private RelativeLayout tutorialPanel;
+    private View tutorialPanel;
+    private View tutorialButton;
 
     private TextView nameText;
-    private TextView tutorialText;
     private TextView statisticText;
     private TextView scoreText;
+    private TextView tutorialText;
 
     private BierrutscheState gameState = BierrutscheState.START;
 
@@ -69,11 +68,11 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
         this.startField = this.findViewById(R.id.startImage);
         this.targetImage = this.findViewById(R.id.targetImage);
         this.beerImage = this.findViewById(R.id.beerImage);
-        this.tutorialPanel = this.findViewById(R.id.tutorialPanel);
-        this.tutorialText = this.findViewById(R.id.tutorialText);
         this.statisticText = this.findViewById(R.id.statisticText);
         this.scoreText = this.findViewById(R.id.accuracyText);
         this.tutorialButton = this.findViewById(R.id.tutorialButton);
+        this.tutorialPanel = this.findViewById(R.id.popupPanel);
+        this.tutorialText = this.findViewById(R.id.popupText);
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.backgroundImage.getLayoutParams();
         this.backgroundImage.setLayoutParams(params);
@@ -94,14 +93,6 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
         }
 
         this.swipeController = new SwipeController();
-    }
-
-    @Override
-    public void showTutorial() {
-        if (this.tutorialPanel.getVisibility() == View.GONE && this.gameState == BierrutscheState.START) {
-            this.tutorialPanel.setVisibility(View.VISIBLE);
-            this.tutorialText.setText(R.string.minigame_bierrutsche_tutorial);
-        }
     }
 
     @Override
@@ -343,21 +334,5 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
             }
         }
         return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (this.tutorialPanel.getVisibility() == View.VISIBLE) {
-            this.tutorialPanel.setVisibility(View.GONE);
-        } else {
-            switch (v.getId()) {
-                case R.id.backButton:
-                    this.presenter.leaveGame();
-                    break;
-                case R.id.tutorialButton:
-                    this.showTutorial();
-                    break;
-            }
-        }
     }
 }

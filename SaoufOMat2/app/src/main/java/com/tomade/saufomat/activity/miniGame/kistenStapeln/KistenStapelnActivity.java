@@ -2,13 +2,10 @@ package com.tomade.saufomat.activity.miniGame.kistenStapeln;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,7 +18,7 @@ import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
+public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
     private static final String TAG = KistenStapelnActivity.class.getSimpleName();
     private static final int BALANCE_TOLERANCE = 130;
     private float crateStartX;
@@ -31,16 +28,11 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
 
     private KistenStapelnState gameState = KistenStapelnState.MOVING_CRATE;
 
-    private int screenWidth;
-    private int screenHeight;
-
-    private RelativeLayout tutorialPanel;
     private TextView nextPlayerText;
     private TextView crateCounter;
     private TextView currentPlayerText;
     private RelativeLayout nextPlayerPanel;
     private RelativeLayout allLayout;
-    private boolean tutorialShown = false;
 
     private List<ImageView> towerImageList = new ArrayList<>();
     private ImageView currentCrate;
@@ -62,24 +54,17 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_kisten_stapeln);
 
-        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        Point size = new Point();
-        wm.getDefaultDisplay().getSize(size);
-        this.screenWidth = size.x;
-        this.screenHeight = size.y;
-
         this.currentCrate = this.findViewById(R.id.beerCrate0);
         this.towerImageList.add((ImageView) this.findViewById(R.id.targetImage));
-        this.tutorialPanel = this.findViewById(R.id.tutorialLayout);
         this.nextPlayerText = this.findViewById(R.id.nextPlayerText);
         this.nextPlayerPanel = this.findViewById(R.id.nextPlayerLayout);
         this.allLayout = this.findViewById(R.id.allLayout);
         this.crateCounter = this.findViewById(R.id.crateCounter);
         this.currentPlayerText = this.findViewById(R.id.currentPlayerLabel);
 
-        this.findViewById(R.id.tutorialButton).setOnClickListener(this);
+
+        ImageButton tutorialButton = this.findViewById(R.id.tutorialButton);
         ImageButton backButton = this.findViewById(R.id.backButton);
-        backButton.setOnClickListener(this);
 
         if (this.presenter.isFromMainGame()) {
             TextView backText = this.findViewById(R.id.backText);
@@ -89,42 +74,9 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
         } else {
             this.currentPlayerText.setVisibility(View.GONE);
         }
-    }
 
-    @Override
-    public void showTutorial() {
-        this.tutorialPanel.setVisibility(View.VISIBLE);
-        this.setTutorialShown(true);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (this.isTutorialShown()) {
-            this.tutorialPanel.setVisibility(View.GONE);
-            this.setTutorialShown(false);
-        } else {
-            switch (v.getId()) {
-                case R.id.backButton:
-                    this.presenter.leaveGame();
-                    break;
-                case R.id.tutorialButton:
-                    this.showTutorial();
-                    break;
-            }
-        }
-    }
-
-    public boolean isTutorialShown() {
-        return this.tutorialShown;
-    }
-
-    public void setTutorialShown(boolean tutorialShown) {
-        this.tutorialShown = tutorialShown;
-        if (tutorialShown) {
-            this.tutorialPanel.setVisibility(View.VISIBLE);
-        } else {
-            this.tutorialPanel.setVisibility(View.GONE);
-        }
+        backButton.setOnClickListener(this);
+        tutorialButton.setOnClickListener(this);
     }
 
     private float getTargetY() {
@@ -163,45 +115,40 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (this.tutorialShown) {
-            this.tutorialPanel.setVisibility(View.GONE);
-            this.tutorialShown = false;
-        } else {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (this.gameState == KistenStapelnState.MOVING_CRATE) {
-                        this.crateStartX = this.currentCrate.getX();
-                        this.crateSTartY = this.currentCrate.getY();
-                        this.createWidth = this.currentCrate.getWidth();
-                        this.crateHeight = this.currentCrate.getHeight();
-                        this.targetY = this.getTargetY();
-                        this.touchDown = true;
-                    } else if (this.gameState == KistenStapelnState.END_TURN) {
-                        this.startTurn();
-                    } else if (this.gameState == KistenStapelnState.GAME_END) {
-                        this.presenter.leaveGame();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (this.gameState == KistenStapelnState.MOVING_CRATE) {
+                    this.crateStartX = this.currentCrate.getX();
+                    this.crateSTartY = this.currentCrate.getY();
+                    this.createWidth = this.currentCrate.getWidth();
+                    this.crateHeight = this.currentCrate.getHeight();
+                    this.targetY = this.getTargetY();
+                    this.touchDown = true;
+                } else if (this.gameState == KistenStapelnState.END_TURN) {
+                    this.startTurn();
+                } else if (this.gameState == KistenStapelnState.GAME_END) {
+                    this.presenter.leaveGame();
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (this.gameState == KistenStapelnState.MOVING_CRATE) {
+                    if (this.touchDown) {
+                        this.touchDown = false;
+                        this.gameState = KistenStapelnState.FALLING_CRATE;
+                        this.crateFall();
                     }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (this.gameState == KistenStapelnState.MOVING_CRATE) {
-                        if (this.touchDown) {
-                            this.touchDown = false;
-                            this.gameState = KistenStapelnState.FALLING_CRATE;
-                            this.crateFall();
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (this.gameState == KistenStapelnState.MOVING_CRATE) {
+                    if (this.touchDown) {
+                        this.currentCrate.setX(event.getRawX() - this.currentCrate.getWidth() / 2);
+                        if (event.getRawY() < this.targetY) {
+                            this.currentCrate.setY(event.getRawY() - this.currentCrate.getHeight() / 2);
                         }
                     }
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if (this.gameState == KistenStapelnState.MOVING_CRATE) {
-                        if (this.touchDown) {
-                            this.currentCrate.setX(event.getRawX() - this.currentCrate.getWidth() / 2);
-                            if (event.getRawY() < this.targetY) {
-                                this.currentCrate.setY(event.getRawY() - this.currentCrate.getHeight() / 2);
-                            }
-                        }
-                    }
-                    break;
-            }
+                }
+                break;
         }
         return true;
     }
@@ -297,7 +244,6 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
         this.currentCrate.setImageResource(R.drawable.beer_crate);
         this.allLayout.addView(this.currentCrate, lp);
         this.nextPlayerPanel.bringToFront();
-        this.tutorialPanel.bringToFront();
         this.gameState = KistenStapelnState.END_TURN;
     }
 

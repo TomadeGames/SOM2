@@ -112,39 +112,6 @@
             android:textColor="#000000"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/tutorialLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/tutorialPopup"
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/popup"/>
-
-        <TextView
-            android:id="@+id/tutorialText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tutorialPopup"
-            android:layout_alignLeft="@+id/tutorialPopup"
-            android:layout_alignRight="@+id/tutorialPopup"
-            android:layout_alignTop="@+id/tutorialPopup"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="@string/minigame.kisten_stapeln.tutorial"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000"/>
-    </RelativeLayout>
-
     <TextView
         android:id="@+id/crateCounter"
         android:layout_width="wrap_content"

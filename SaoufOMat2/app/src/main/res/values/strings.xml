@@ -8,11 +8,12 @@
     </string-array>
     <string name="title_activity_task_view">TaskViewActivity</string>
     <string name="n_chster_spieler">Nächster Spieler</string>
-    <string name="minigame.wer_dich_dicht.tutorial">Anleitung:\nEs wird nacheinander gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler einen trinken und ist nochmal an der Reihe.</string>
+    <string name="minigame_werf_dich_dicht_tutorial">Anleitung:\nEs wird nacheinander gewürfelt. Ist das Glas, das der Zahl entspricht leer, wird es aufgefüllt. Ist das Glas voll, muss der Spieler einen trinken und ist nochmal an der Reihe.</string>
     <string name="minigame.biergeballer.caption">Biergeballer</string>
     <string name="minigame.augensaufen.caption">Augensaufen</string>
     <string name="minigame.werf_dich_dicht.caption">Werf dich dicht</string>
     <string name="minigame.busfahren.caption">Busfahren</string>
+    <string name="minigame.busfahren.tutorial">Anleitung\nVor dir liegen 5 Karten. Zu jeder Karte wird dir eine Frage gestellt. Beantwortest du eine Frage falsch musst du trinken und von vorne anfangen. Beantwortest du alle Fragen hintereinander richtig hast du es überstanden.</string>
     <string name="minigame.circle_of_death.caption">Circle of Death</string>
     <string name="minigame.ich_hab_noch_nie.caption">Ich hab noch nie</string>
     <string name="minigame.kings.caption">Kings</string>
@@ -99,8 +100,10 @@
     <string name="maingame.options.button.abort">Schließen</string>
     <string name="title_activity_choose_players">choosePlayersActivity</string>
     <string name="maingame.options.remove_player.error.to_many_to_remove">Du kannst nicht alle Spieler löschen</string>
-    <string name="start_activity.text">Alle berechneten Blutalkoholkonzentrationen dienen nur zur Unterhaltung und dienen nicht als rechtliche Grundlage. Wir haften auch nicht für die Folgen übermäßigen Alkoholkonsums, auch dann nicht, wenn von diesem Spiel verursacht. Wir haften weder für Magenentpumpungen, leichte, schwere oder fatale Leberschäden, noch für fritierte Haustiere. Auch nicht wenn es Teil des Spiels ist. Alkohol ist eine durch und durch böse Droge und wir empfehlen weder den Konsum noch andere Missbräuche dieser sehr gesundheitsschädlichen Droge.\n Cannabis ist verboten, weil es eine illegale Droge ist. Punkt!</string>
+    <string name="start_activity.text">Alle berechneten Blutalkoholkonzentrationen dienen nur zur Unterhaltung und dienen nicht als rechtliche Grundlage. Wir haften auch nicht für die Folgen übermäßigen Alkoholkonsums, auch dann nicht, wenn von diesem Spiel verursacht. Wir haften weder für Magenentpumpungen, leichte, schwere oder fatale Leberschäden, noch für fritierte Haustiere. Auch nicht wenn es Teil des Spiels ist. Alkohol ist eine durch und durch böse Droge und wir empfehlen weder den Konsum noch andere Missbräuche dieser sehr gesundheitsschädlichen Droge.\nCannabis ist verboten, weil es eine illegale Droge ist.</string>
     <string name="preference_file_key">de.tomade.SaufOMat.PREFERENCE_FILE_KEY</string>
     <string name="minigame.werf_dich_dicht.game_over">Spiel vorbei</string>
     <string name="create_player_activity.weight.default">70</string>
+    <string name="dialog.tutorial.caption">Anleitung</string>
+    <string name="minigame_augensaufen_tutorial">Anleitung\nIhr habt Alkohol und einen Würfel… Noch Fragen?</string>
 </resources>

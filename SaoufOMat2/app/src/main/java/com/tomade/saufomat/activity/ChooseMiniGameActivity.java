@@ -34,16 +34,16 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
 
         this.currentGame = this.allGames[0];
 
-        this.gameText = (TextView) this.findViewById(R.id.gameText);
-        ImageButton leftButton = (ImageButton) this.findViewById(R.id.leftButton);
-        ImageButton rightButton = (ImageButton) this.findViewById(R.id.rightButton);
-        ImageButton backButton = (ImageButton) this.findViewById(R.id.backButton);
+        this.gameText = this.findViewById(R.id.gameText);
+        ImageButton leftButton = this.findViewById(R.id.leftButton);
+        ImageButton rightButton = this.findViewById(R.id.rightButton);
+        ImageButton backButton = this.findViewById(R.id.backButton);
 
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             this.currentGame = (MiniGame) extras.getSerializable(IntentParameter.LAST_GAME);
         }
-        this.currentGameButton = (ImageButton) this.findViewById(R.id.currentGameButton);
+        this.currentGameButton = this.findViewById(R.id.currentGameButton);
         this.gameText.setText(this.currentGame.getNameId());
 
         for (int i = 0; i < this.allGames.length; i++) {
