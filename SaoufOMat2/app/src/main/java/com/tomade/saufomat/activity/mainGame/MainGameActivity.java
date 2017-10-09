@@ -84,7 +84,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> implements
 
         RelativeLayout.LayoutParams middleParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams
                 .WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        middleParams.leftMargin = this.screenWidth / 2;
+        middleParams.leftMargin = this.screenWidth / 2 + this.icons[1].getWidth() / 2;
 
         this.middleIcon.setLayoutParams(params);
         this.middleIcon.setX((int) (this.screenWidth / 5.25f));
