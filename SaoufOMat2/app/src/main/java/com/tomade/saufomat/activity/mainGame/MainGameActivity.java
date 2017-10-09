@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -70,6 +71,12 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
         this.icons[2] = this.rightIcon;
         this.moveIconsToCorrectPositions();
         this.initRollingAnimations();
+        this.findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleTouchUp();
+            }
+        });
     }
 
     private void moveIconsToCorrectPositions() {
@@ -94,6 +101,31 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
 
     }
 
+    private void handleTouchUp() {
+        Log.d(TAG, "Touch up in Gamestate " + this.gameState);
+        switch (this.gameState) {
+            case GAME_START:
+                this.startLeftAnimation();
+                this.startMiddleAnimation();
+                this.startRightAnimation();
+                break;
+            case ROLLING_ALL:
+                this.stopLeftAnimation();
+                this.gameState = MainGameState.STOP1;
+                break;
+            case STOP1:
+                this.stopMiddleAnimation();
+                this.gameState = MainGameState.STOP2;
+                break;
+            case STOP2:
+                this.stopRightAnimation();
+                this.gameState = MainGameState.STOP_ALL;
+                break;
+            case STOP_ALL:
+                break;
+        }
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -101,28 +133,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
                 //TODO: Hebel animation
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d(TAG, "Touch up in Gamestate " + this.gameState);
-                switch (this.gameState) {
-                    case GAME_START:
-                        this.startLeftAnimation();
-                        this.startMiddleAnimation();
-                        this.startRightAnimation();
-                        break;
-                    case ROLLING_ALL:
-                        this.stopLeftAnimation();
-                        this.gameState = MainGameState.STOP1;
-                        break;
-                    case STOP1:
-                        this.stopMiddleAnimation();
-                        this.gameState = MainGameState.STOP2;
-                        break;
-                    case STOP2:
-                        this.stopRightAnimation();
-                        this.gameState = MainGameState.STOP_ALL;
-                        break;
-                    case STOP_ALL:
-                        break;
-                }
+                this.handleTouchUp();
                 break;
         }
         return super.onTouchEvent(event);

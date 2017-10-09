@@ -23,7 +23,7 @@ public enum MiniGame implements Serializable {
     AUGENSAUFEN(AugensaufenActivity.class, R.drawable.augensaufen_screen, R.string.minigame_augensaufen_caption, R
             .string.minigame_augensaufen_tutorial),
     BIERRUTSCHE(BierrutscheActivity.class, R.drawable.bierrutsche_screenshot, R.string.minigame_bierrutsche_caption,
-            R.string.minigame_bierrutsche_tutorial),
+            R.string.minigame_bierrutsche_tutorial, 2),
     BUSFAHREN(BusfahrenActivity.class, R.drawable.busfahrer_screen, R.string.minigame_busfahren_caption, R.string
             .minigame_busfahren_tutorial),
     ICH_HAB_NOCH_NIE(IchHabNochNieActivity.class, R.drawable.ich_hab_nie_screen, R.string
@@ -39,12 +39,19 @@ public enum MiniGame implements Serializable {
     private int screenshotId;
     private int nameId;
     private int tutorialId;
+    private int playerLimit;
 
-    MiniGame(Class<? extends BaseMiniGameActivity> activity, int screenshotId, int nameId, int tutorialId) {
+    MiniGame(Class<? extends BaseMiniGameActivity> activity, int screenshotId, int nameId, int tutorialId, int
+            playerLimit) {
         this.activity = activity;
         this.screenshotId = screenshotId;
         this.nameId = nameId;
         this.tutorialId = tutorialId;
+        this.playerLimit = playerLimit;
+    }
+
+    MiniGame(Class<? extends BaseMiniGameActivity> activity, int screenshotId, int nameId, int tutorialId) {
+        this(activity, screenshotId, nameId, tutorialId, 1);
     }
 
     public Class<? extends BaseMiniGameActivity> getActivity() {
@@ -61,5 +68,9 @@ public enum MiniGame implements Serializable {
 
     public int getTutorialId() {
         return this.tutorialId;
+    }
+
+    public int getPlayerLimit() {
+        return this.playerLimit;
     }
 }

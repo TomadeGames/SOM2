@@ -20,10 +20,12 @@ public class MiniGameTable {
     private static final String TABLE_NAME = "mini_game";
     private static final String COLUMN_NAME_NAME = "name";
     private static final String COLUMN_NAME_ALREADY_USED = "already_used";
+    private static final String COLUMN_NAME_PLAYER_LIMIT = "player_limit";
 
     public void createTable(SQLiteDatabase sqLiteDatabase) {
         String miniGameStatement = "CREATE TABLE " + TABLE_NAME + "(" +
                 COLUMN_NAME_NAME + " TEXT PRIMARY KEY, " +
+                COLUMN_NAME_PLAYER_LIMIT + " INTEGER, " +
                 COLUMN_NAME_ALREADY_USED + " INTEGER) ";
 
         sqLiteDatabase.execSQL(miniGameStatement);
@@ -34,6 +36,7 @@ public class MiniGameTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_NAME, miniGame.toString());
         contentValues.put(COLUMN_NAME_ALREADY_USED, 0);
+        contentValues.put(COLUMN_NAME_PLAYER_LIMIT, miniGame.getPlayerLimit());
 
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         Log.i(TAG, "Minigame [" + miniGame + "] added in Table");
@@ -41,20 +44,19 @@ public class MiniGameTable {
 
     public void setMiniGameUsed(SQLiteDatabase sqLiteDatabase, MiniGame miniGame, boolean used) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME_NAME, miniGame.toString());
         if (used) {
             contentValues.put(COLUMN_NAME_ALREADY_USED, 1);
         } else {
             contentValues.put(COLUMN_NAME_ALREADY_USED, 0);
         }
 
-        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+        sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_NAME + " = \"" + miniGame.toString() + "\"", null);
         Log.i(TAG, "Minigame [" + miniGame + "] added in Table");
     }
 
-    public ArrayList<MiniGame> getUnusedMiniGames(SQLiteDatabase sqLiteDatabase) {
+    public ArrayList<MiniGame> getUnusedMiniGames(SQLiteDatabase sqLiteDatabase, int playerCount) {
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
-                COLUMN_NAME_ALREADY_USED + " = 0 ", null);
+                COLUMN_NAME_ALREADY_USED + " = 0 AND " + COLUMN_NAME_PLAYER_LIMIT + " <= " + playerCount, null);
         ArrayList<MiniGame> unusedMiniGames = new ArrayList<>();
         try {
             if (result.moveToFirst()) {

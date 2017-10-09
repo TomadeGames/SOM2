@@ -250,7 +250,7 @@ public class MainGamePresenter extends BasePresenter {
             this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, false);
         } else {
             if (this.currentDificult == TaskDifficult.GAME) {
-                MiniGame miniGame = new MiniGameProvider(this.activity).getRandomMiniGame();
+                MiniGame miniGame = new MiniGameProvider(this.activity).getRandomMiniGame(this.playerList.size());
                 this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_MINI_GAME, miniGame);
                 this.taskViewIntent.putExtra(IntentParameter.MainGame.CURRENT_TASK_IS_MINI_GAME, true);
                 this.saveGame(this.activity, adCounter, this.currentPlayer, miniGame);

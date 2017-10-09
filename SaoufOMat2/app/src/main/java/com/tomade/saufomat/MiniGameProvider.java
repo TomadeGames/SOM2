@@ -21,13 +21,14 @@ public class MiniGameProvider {
         this.context = context;
     }
 
-    public MiniGame getRandomMiniGame() {
+    public MiniGame getRandomMiniGame(int playerCount) {
         Random random = new Random(System.currentTimeMillis());
         DatabaseHelper databaseHelper = new DatabaseHelper(this.context);
-        List<MiniGame> miniGames = databaseHelper.getUnusedMiniGames();
+        List<MiniGame> miniGames = databaseHelper.getUnusedMiniGames(playerCount);
+
         if (miniGames.isEmpty()) {
             this.resetMiniGames();
-            miniGames = databaseHelper.getUnusedMiniGames();
+            miniGames = databaseHelper.getUnusedMiniGames(playerCount);
         }
 
         return miniGames.get(random.nextInt(miniGames.size()));

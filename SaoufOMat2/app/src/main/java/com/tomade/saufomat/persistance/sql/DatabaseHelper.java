@@ -113,9 +113,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<MiniGame> getUnusedMiniGames() {
+    public ArrayList<MiniGame> getUnusedMiniGames(int playerCount) {
         SQLiteDatabase database = this.getReadableDatabase();
-        return this.miniGameTable.getUnusedMiniGames(database);
+        return this.miniGameTable.getUnusedMiniGames(database, playerCount);
     }
 
     public ArrayList<Player> getAllPlayer() {
