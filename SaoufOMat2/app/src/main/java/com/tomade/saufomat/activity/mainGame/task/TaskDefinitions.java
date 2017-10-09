@@ -232,7 +232,7 @@ public class TaskDefinitions {
                 TaskDifficult.MEDIUM, 0, 0, TaskTarget.SELF));
         taskList.add(new Task("Fansupport:\nJeder, der SaufOMat schon mehr als 7 mal gespielt hat, trinkt 3",
                 TaskDifficult.MEDIUM, 3, 0, TaskTarget.CHOOSE_ALL));
-        taskList.add(new Task("Einstigshilfe:\nJeder, der noch nie SaufOMat gespielt hat, trinkt 3", TaskDifficult
+        taskList.add(new Task("Einstiegshilfe:\nJeder, der noch nie SaufOMat gespielt hat, trinkt 3", TaskDifficult
                 .MEDIUM, 3, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Jeder, der bei der letzten Aufgabe trinken musste, darf jetzt das doppelte verteilen",
                 TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ALL));
