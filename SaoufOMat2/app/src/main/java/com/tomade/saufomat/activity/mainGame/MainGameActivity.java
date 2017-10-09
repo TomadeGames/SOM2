@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainGameActivity extends BaseActivity<MainGamePresenter> implements View.OnClickListener {
+public class MainGameActivity extends BaseActivity<MainGamePresenter> {
     private static final String TAG = MainGameActivity.class.getSimpleName();
     private static final long LEFT_ICON_ANIMATION_DURATION = 400;
     private static final long MIDDLE_ICON_ANIMATION_DURATION = 300;
@@ -68,11 +68,8 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> implements
         this.icons[0] = this.leftIcon;
         this.icons[1] = this.middleIcon;
         this.icons[2] = this.rightIcon;
-        View startButton = this.findViewById(R.id.startButton);
         this.moveIconsToCorrectPositions();
         this.initRollingAnimations();
-
-        startButton.setOnClickListener(this);
     }
 
     private void moveIconsToCorrectPositions() {
@@ -94,13 +91,17 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> implements
         rightParams.leftMargin = middleParams.leftMargin;
         this.rightIcon.setLayoutParams(params);
         this.rightIcon.setX((int) (this.screenWidth / 2.6f));
+
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.startButton:
-                Log.d(TAG, "startbutton clicked in Gamestate " + this.gameState);
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                //TODO: Hebel animation
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.d(TAG, "Touch up in Gamestate " + this.gameState);
                 switch (this.gameState) {
                     case GAME_START:
                         this.startLeftAnimation();
@@ -124,6 +125,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> implements
                 }
                 break;
         }
+        return super.onTouchEvent(event);
     }
 
     private void stopLeftAnimation() {
