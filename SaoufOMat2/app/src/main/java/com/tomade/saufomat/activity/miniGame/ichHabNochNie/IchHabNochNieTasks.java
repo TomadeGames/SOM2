@@ -6,7 +6,7 @@ package com.tomade.saufomat.activity.miniGame.ichHabNochNie;
  */
 
 public class IchHabNochNieTasks {
-    public static final String[] TASKS = {"so getan als würde ich vor einem Millionenpublikum stehen und singe",
+    public static final String[] TASKS = {"so getan als würde ich vor einem Millionenpublikum stehen und singen",
             "ein Telefonat von mehr als 5 Stunden geführt",
             "das Handy meines Partner durchstöbert",
             "eine erotische Massage gegeben oder erhalten",

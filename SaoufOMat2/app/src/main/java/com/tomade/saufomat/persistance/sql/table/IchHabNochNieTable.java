@@ -28,17 +28,20 @@ public class IchHabNochNieTable extends BaseTable {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_TASK, task);
         contentValues.put(COLUMN_NAME_USED, 1);
-        database.update(TABLE_NAME, contentValues, COLUMN_NAME_TASK + " = " + task, null);
+        database.update(TABLE_NAME, contentValues, COLUMN_NAME_TASK + " = \"" + this
+                .convertQuoationMarksToPlaceholder(task) + "\"", null);
     }
 
     public List<String> getUnusedTasks(SQLiteDatabase database) {
         List<String> unusedTasks = new ArrayList<>();
-        Cursor result = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_USED + " = 0", null);
+        Cursor result = database.rawQuery("SELECT " + COLUMN_NAME_TASK + " FROM " + TABLE_NAME + " WHERE " +
+                COLUMN_NAME_USED + " = 0", null);
 
         try {
             if (result.moveToFirst()) {
                 do {
-                    unusedTasks.add(result.getString(result.getColumnIndex(COLUMN_NAME_TASK)));
+                    unusedTasks.add(this.convertPlaceholderToQuoationMarks(result.getString(result.getColumnIndex
+                            (COLUMN_NAME_TASK))));
                 } while (result.moveToNext());
             }
         } catch (Exception e) {
@@ -54,7 +57,8 @@ public class IchHabNochNieTable extends BaseTable {
         for (String task : tasks) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_NAME_USED, 0);
-            database.update(TABLE_NAME, contentValues, COLUMN_NAME_TASK + " = " + task, null);
+            contentValues.put(COLUMN_NAME_TASK, this.convertQuoationMarksToPlaceholder(task));
+            database.replace(TABLE_NAME, null, contentValues);
         }
     }
 
@@ -63,5 +67,13 @@ public class IchHabNochNieTable extends BaseTable {
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
                 COLUMN_NAME_TASK + " TEXT PRIMARY KEY, " +
                 COLUMN_NAME_USED + " INTEGER)");
+    }
+
+    private String convertQuoationMarksToPlaceholder(String task) {
+        return task.replace('"', '\'');
+    }
+
+    private String convertPlaceholderToQuoationMarks(String convertedTask) {
+        return convertedTask.replace('\'', '"');
     }
 }

@@ -15,13 +15,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Minispiel Ich hab noch nie
+ */
 public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
     private TextView turnCounter;
     private TextView taskView;
 
     private String currentTask;
     private int turnCount = 0;
-    private int maxTurns;
     private boolean gameOver = false;
 
     List<String> currentQuestions = new ArrayList<>();
@@ -48,11 +50,8 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
             back.setVisibility(View.INVISIBLE);
             TextView backText = this.findViewById(R.id.backText);
             backText.setVisibility(View.INVISIBLE);
-            this.maxTurns = this.presenter.getPlayerAmount() * 3;
-            if (this.maxTurns > 30) {
-                this.maxTurns = 30;
-            }
-            this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+            this.turnCounter.setText(String.format(this.getString(R.string.minigame_turn_counter),
+                    this.turnCount + 1, TARGET_TURN_COUNT));
         } else {
             this.turnCounter.setVisibility(View.GONE);
         }
@@ -79,11 +78,12 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_i_have_never, this.currentTask));
         this.turnCount++;
         if (this.presenter.isFromMainGame()) {
-            if (this.turnCount >= this.maxTurns) {
+            if (this.turnCount >= TARGET_TURN_COUNT) {
                 this.taskView.setText(this.getString(R.string.minigame_ich_hab_noch_nie_game_over));
                 this.gameOver = true;
             } else {
-                this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+                this.turnCounter.setText(String.format(this.getString(R.string.minigame_turn_counter),
+                        this.turnCount + 1, TARGET_TURN_COUNT));
             }
         }
     }

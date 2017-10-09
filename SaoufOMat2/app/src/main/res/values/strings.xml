@@ -106,4 +106,5 @@
     <string name="create_player_activity.weight.default">70</string>
     <string name="dialog.tutorial.caption">Anleitung</string>
     <string name="minigame_augensaufen_tutorial">Anleitung\nIhr habt Alkohol und einen Würfel… Noch Fragen?</string>
+    <string name="minigame_turn_counter">%d/%d</string>
 </resources>

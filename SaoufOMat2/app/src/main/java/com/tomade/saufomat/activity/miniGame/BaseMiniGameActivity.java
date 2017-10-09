@@ -19,6 +19,7 @@ import com.tomade.saufomat.model.player.Player;
 
 public abstract class BaseMiniGameActivity<PRESENTER extends BaseMiniGamePresenter> extends BaseActivity<PRESENTER>
         implements ActivityWithPlayer, View.OnClickListener {
+    protected static final int TARGET_TURN_COUNT = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

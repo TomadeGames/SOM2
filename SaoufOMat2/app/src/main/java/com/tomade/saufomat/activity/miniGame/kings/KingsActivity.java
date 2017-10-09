@@ -21,7 +21,7 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
     private TextView popupText;
     private TextView cardCounterText;
 
-    private int maximumCards;
+    private int maximumCards = 32;
     private int cardCount = 0;
 
     private KingsState gameState = KingsState.START;
@@ -41,16 +41,13 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
 
 
         if (this.presenter.isFromMainGame()) {
-            if (3 * this.presenter.getPlayerAmount() > 20) {
-                this.maximumCards = 2 * this.presenter.getPlayerAmount();
-            } else {
-                this.maximumCards = 3 * this.presenter.getPlayerAmount();
+            this.maximumCards = this.presenter.getPlayerAmount() * 3;
+            if (this.maximumCards > TARGET_TURN_COUNT) {
+                this.maximumCards = this.presenter.getPlayerAmount() * 2;
             }
-            if (this.maximumCards > 32) {
-                this.maximumCards = 32;
+            if (this.maximumCards > TARGET_TURN_COUNT) {
+                this.maximumCards = this.presenter.getPlayerAmount();
             }
-        } else {
-            this.maximumCards = 32;
         }
 
         this.cardImage = this.findViewById(R.id.cardImage);

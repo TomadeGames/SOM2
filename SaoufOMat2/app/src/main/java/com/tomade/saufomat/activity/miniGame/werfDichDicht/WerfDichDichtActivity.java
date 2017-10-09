@@ -75,13 +75,14 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
             backButton.setVisibility(View.GONE);
             backText.setVisibility(View.GONE);
             this.maxTurns = this.presenter.getPlayerAmount() * 3;
-            if (this.maxTurns > 30) {
+            if (this.maxTurns > TARGET_TURN_COUNT) {
                 this.maxTurns = this.presenter.getPlayerAmount() * 2;
-                if (this.maxTurns > 30) {
-                    this.maxTurns = this.presenter.getPlayerAmount();
-                }
             }
-            this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+            if (this.maxTurns > TARGET_TURN_COUNT) {
+                this.maxTurns = this.presenter.getPlayerAmount();
+            }
+            this.turnCounter.setText(String.format(this.getString(R.string.minigame_turn_counter), this.turnCount +
+                    1, this.maxTurns));
 
         } else {
             this.playerText.setVisibility(View.GONE);
@@ -211,7 +212,8 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
                 this.shotsClearedInOneTurn = 0;
                 this.popupText.setText(this.getString(R.string.minigame_werf_dich_dicht_next_turn,
                         this.presenter.getCurrentPlayerName()));
-                this.turnCounter.setText((this.turnCount + 1) + "/" + this.maxTurns);
+                this.turnCounter.setText(String.format(this.getString(R.string.minigame_turn_counter), this.turnCount
+                        + 1, this.maxTurns));
                 this.playerText.setText(this.presenter.getCurrentPlayerName());
             }
         }

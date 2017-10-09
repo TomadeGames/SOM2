@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Presenter für das Minipsiel Bierrutsche
  * Created by woors on 04.08.2017.
  */
 
@@ -96,8 +97,8 @@ public class BierrutschePresenter extends BaseMiniGamePresenter<BierrutscheActiv
         StringBuilder resultText;
 
         if (betterPlayer.isEmpty()) {
-            resultText = new StringBuilder("Alle ausser " + this.currentPlayerAtStart.getName() + " trinken 3!");
-            DrinkHelper.increaseAllButOnePlayer(3, this.currentPlayerAtStart, this.activity);
+            resultText = new StringBuilder("Alle ausser " + this.currentPlayerAtStart.getName() + " trinken 5!");
+            DrinkHelper.increaseAllButOnePlayer(5, this.currentPlayerAtStart, this.activity);
         } else {
             resultText = new StringBuilder(this.currentPlayerAtStart.getName() + " trink " + betterPlayer.size() + "," +
                     " " +
