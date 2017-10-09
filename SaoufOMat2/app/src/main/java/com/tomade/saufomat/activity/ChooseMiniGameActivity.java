@@ -162,8 +162,4 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         intent.putExtra(IntentParameter.FROM_MAIN_GAME, false);
         this.startActivity(intent);
     }
-
-    @Override
-    public void onBackPressed() {
-    }
 }

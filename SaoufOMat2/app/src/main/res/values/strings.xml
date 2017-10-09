@@ -107,4 +107,5 @@
     <string name="dialog.tutorial.caption">Anleitung</string>
     <string name="minigame_augensaufen_tutorial">Anleitung\nIhr habt Alkohol und einen Würfel… Noch Fragen?</string>
     <string name="minigame_turn_counter">%d/%d</string>
+    <string name="toast.tap_back_twice_to_close">Tippe zweimal zum Beenden</string>
 </resources>

@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
@@ -30,13 +32,13 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main_menu);
 
-        ImageButton newGameButton = (ImageButton) this.findViewById(R.id.newGameButton);
-        final ImageButton loadGameButton = (ImageButton) this.findViewById(R.id.loadGameButton);
+        ImageButton newGameButton = this.findViewById(R.id.newGameButton);
+        final ImageButton loadGameButton = this.findViewById(R.id.loadGameButton);
         newGameButton.setOnClickListener(this);
         loadGameButton.setOnClickListener(this);
-        this.loadGameField = (RelativeLayout) this.findViewById(R.id.loadGameField);
+        this.loadGameField = this.findViewById(R.id.loadGameField);
 
-        TextView versionTextView = (TextView) this.findViewById(R.id.versionTextView);
+        TextView versionTextView = this.findViewById(R.id.versionTextView);
         String versionName;
         try {
             PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
@@ -135,8 +137,23 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         this.startActivity(intent);
     }
 
+    boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
+        if (this.doubleBackToExitPressedOnce) {
+            this.finishAffinity();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.toast_tap_back_twice_to_close, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainMenuActivity.this.doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     private void startNewGame() {

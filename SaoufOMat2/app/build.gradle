@@ -5,10 +5,10 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId 'com.tomade.saufomat'
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 26
-        versionCode 102030
-        versionName "2.0.0.8"
+        versionCode 102031
+        versionName "2.0.0.9"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
