@@ -15,18 +15,23 @@ import com.tomade.saufomat.constant.MiniGame;
 import java.util.EnumSet;
 
 public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
+    private static final MiniGame[] NOT_CHOOSABLE_MINIGAMES = {MiniGame.BIERRUTSCHE};
+
     private MiniGame currentGame;
     private ImageButton currentGameButton;
     private TextView gameText;
     private MiniGame[] allGames;
-    private int minigameIndex = 0;
+    private int miniGameIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_choose_mini_game);
-
-        Object[] allGamesAsObjects = EnumSet.allOf(MiniGame.class).toArray();
+        EnumSet<MiniGame> allGames = EnumSet.allOf(MiniGame.class);
+        for (MiniGame notChooseableMiniGame : NOT_CHOOSABLE_MINIGAMES) {
+            allGames.remove(notChooseableMiniGame);
+        }
+        Object[] allGamesAsObjects = allGames.toArray();
         this.allGames = new MiniGame[allGamesAsObjects.length];
         for (int i = 0; i < this.allGames.length; i++) {
             this.allGames[i] = (MiniGame) allGamesAsObjects[i];
@@ -48,7 +53,7 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
 
         for (int i = 0; i < this.allGames.length; i++) {
             if (this.allGames[i].equals(this.currentGame)) {
-                this.minigameIndex = i;
+                this.miniGameIndex = i;
             }
         }
         this.currentGameButton.setImageResource(this.currentGame.getScreenshotId());
@@ -131,23 +136,23 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
     }
 
     private void leftButtonPressed() {
-        this.minigameIndex--;
-        if (this.minigameIndex < 0) {
-            this.minigameIndex = this.allGames.length - 1;
+        this.miniGameIndex--;
+        if (this.miniGameIndex < 0) {
+            this.miniGameIndex = this.allGames.length - 1;
         }
         this.reloadView();
     }
 
     private void reloadView() {
-        this.currentGame = this.allGames[this.minigameIndex];
+        this.currentGame = this.allGames[this.miniGameIndex];
         this.currentGameButton.setImageResource(this.currentGame.getScreenshotId());
         this.gameText.setText(this.currentGame.getNameId());
     }
 
     private void rightButtonPressed() {
-        this.minigameIndex++;
-        if (this.minigameIndex > this.allGames.length - 1) {
-            this.minigameIndex = 0;
+        this.miniGameIndex++;
+        if (this.miniGameIndex > this.allGames.length - 1) {
+            this.miniGameIndex = 0;
         }
         this.reloadView();
     }
