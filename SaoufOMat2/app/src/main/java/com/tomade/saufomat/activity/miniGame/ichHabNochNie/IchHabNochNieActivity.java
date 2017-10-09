@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
+import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,11 +16,6 @@ import java.util.List;
 import java.util.Random;
 
 public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
-    private static Random random;
-
-    private List<String> currentQuestions;
-    private List<String> allQuestions;
-
     private TextView turnCounter;
     private TextView taskView;
 
@@ -27,6 +23,8 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
     private int turnCount = 0;
     private int maxTurns;
     private boolean gameOver = false;
+
+    List<String> currentQuestions = new ArrayList<>();
 
     @Override
     protected void initPresenter() {
@@ -37,13 +35,6 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_ich_hab_noch_nie);
-
-        random = new Random(System.currentTimeMillis());
-
-        this.currentQuestions = new ArrayList<>();
-        this.allQuestions = new ArrayList<>();
-
-        this.initLists();
 
         this.taskView = this.findViewById(R.id.taskText);
         this.turnCounter = this.findViewById(R.id.turnCounter);
@@ -97,23 +88,29 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         }
     }
 
-    private void initLists() {
-        Collections.addAll(this.allQuestions, IchHabNochNieTasks.TASKS);
-
-        this.refreshList();
-    }
-
     private String getQuestion() {
+        Random random = new Random(System.currentTimeMillis());
+        if (this.presenter.isFromMainGame()) {
+            DatabaseHelper databaseHelper = new DatabaseHelper(this);
+            List<String> questions = databaseHelper.getUnusedIchHabNochNieTasks();
+
+            if (questions.isEmpty()) {
+                databaseHelper.resetIchHabNochNieTasks(IchHabNochNieTasks.TASKS);
+                questions = databaseHelper.getUnusedIchHabNochNieTasks();
+            }
+
+            int index = random.nextInt(questions.size());
+
+            String result = questions.get(index);
+            databaseHelper.useIchHabNochNieTask(result);
+            return result;
+        }
+        if (this.currentQuestions.isEmpty()) {
+            Collections.addAll(this.currentQuestions, IchHabNochNieTasks.TASKS);
+        }
         int index = random.nextInt(this.currentQuestions.size());
         String result = this.currentQuestions.get(index);
-        this.currentQuestions.remove(index);
-        if (this.currentQuestions.size() <= 0) {
-            this.refreshList();
-        }
+        this.currentQuestions.remove(result);
         return result;
-    }
-
-    private void refreshList() {
-        this.currentQuestions.addAll(this.allQuestions);
     }
 }

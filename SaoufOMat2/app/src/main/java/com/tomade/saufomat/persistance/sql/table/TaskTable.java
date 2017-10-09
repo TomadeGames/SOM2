@@ -11,6 +11,7 @@ import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import java.util.ArrayList;
 
 /**
+ * Tabelle für Aufgaben des Hauptspiels
  * Created by woors on 05.10.2017.
  */
 

@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by woors on 05.10.2017.
  */
 
-public class PlayerTable extends BaseTable<Player> {
+public class PlayerTable extends BasePOJOTable<Player> {
     private static final String TAG = PlayerTable.class.getSimpleName();
     private static final String TABLE_NAME = "player";
     private static final String COLUMN_NAME_ID = "id";

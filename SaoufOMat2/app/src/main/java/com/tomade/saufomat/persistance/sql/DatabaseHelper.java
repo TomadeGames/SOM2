@@ -12,6 +12,7 @@ import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.persistance.SaveGameHelper;
+import com.tomade.saufomat.persistance.sql.table.IchHabNochNieTable;
 import com.tomade.saufomat.persistance.sql.table.MiniGameTable;
 import com.tomade.saufomat.persistance.sql.table.PlayerTable;
 import com.tomade.saufomat.persistance.sql.table.TaskEventTable;
@@ -19,6 +20,7 @@ import com.tomade.saufomat.persistance.sql.table.TaskTable;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 /**
  * Verwaltet Datenbankoperationen
@@ -37,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private TaskTable taskTable;
     private MiniGameTable miniGameTable;
     private TaskEventTable taskEventTable;
+    private IchHabNochNieTable ichHabNochNieTable;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.taskTable = new TaskTable();
         this.miniGameTable = new MiniGameTable();
         this.taskEventTable = new TaskEventTable();
+        this.ichHabNochNieTable = new IchHabNochNieTable();
     }
 
     @Override
@@ -53,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.taskTable.createTable(sqLiteDatabase);
         this.miniGameTable.createTable(sqLiteDatabase);
         this.taskEventTable.createTable(sqLiteDatabase);
+        this.ichHabNochNieTable.createTable(sqLiteDatabase);
 
         new SaveGameHelper(this.context).saveDatabaseVersion(DATABASE_VERSION);
     }
@@ -63,6 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.taskTable.deleteTable(database);
         this.miniGameTable.deleteTable(database);
         this.taskEventTable.deleteTable(database);
+        this.ichHabNochNieTable.deleteTable(database);
         Log.i(TAG, "onUpgrade: Tables dropped");
         this.onCreate(database);
     }
@@ -134,7 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return taskList;
     }
 
-    public ArrayList<Task> getUnusedTasks(TaskDifficult difficult) {
+    public ArrayList<Task> getUnusedIchHabNochNieTasks(TaskDifficult difficult) {
         SQLiteDatabase database = this.getReadableDatabase();
         ArrayList<Task> unusedTasks = new ArrayList<>();
 
@@ -188,4 +194,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getReadableDatabase();
         return this.taskEventTable.getActiveTaskEvents(database);
     }
+
+    public void useIchHabNochNieTask(String task) {
+        this.ichHabNochNieTable.useTask(this.getWritableDatabase(), task);
+    }
+
+    public List<String> getUnusedIchHabNochNieTasks() {
+        return this.ichHabNochNieTable.getUnusedTasks(this.getReadableDatabase());
+    }
+
+    public void resetIchHabNochNieTasks(String[] tasks) {
+        this.ichHabNochNieTable.resetTasks(this.getWritableDatabase(), tasks);
+    }
+
 }

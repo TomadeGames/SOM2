@@ -12,7 +12,7 @@ import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
  * Created by woors on 05.10.2017.
  */
 
-public abstract class BaseTaskTable<ENTRY extends Task> extends BaseTable<ENTRY> {
+public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<ENTRY> {
     protected static final String COLUMN_NAME_ID = "id";
     protected static final String COLUMN_NAME_TEXT = "text";
     protected static final String COLUMN_NAME_DIFFICULT = "difficult";

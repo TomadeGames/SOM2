@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.tomade.saufomat.constant.MiniGame;
-import com.tomade.saufomat.persistance.sql.contract.MiniGameContract;
 
 import java.util.ArrayList;
 
@@ -28,15 +27,15 @@ public class MiniGameTable {
                 COLUMN_NAME_ALREADY_USED + " INTEGER) ";
 
         sqLiteDatabase.execSQL(miniGameStatement);
-        Log.i(TAG, "Table " + MiniGameContract.MiniGame.TABLE_NAME + " created");
+        Log.i(TAG, "Table " + TABLE_NAME + " created");
     }
 
     public void insertEntry(SQLiteDatabase sqLiteDatabase, MiniGame miniGame) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_NAME, miniGame.toString());
-        contentValues.put(MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED, 0);
+        contentValues.put(COLUMN_NAME_NAME, miniGame.toString());
+        contentValues.put(COLUMN_NAME_ALREADY_USED, 0);
 
-        sqLiteDatabase.insert(MiniGameContract.MiniGame.TABLE_NAME, null, contentValues);
+        sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         Log.i(TAG, "Minigame [" + miniGame + "] added in Table");
     }
 
@@ -54,15 +53,13 @@ public class MiniGameTable {
     }
 
     public ArrayList<MiniGame> getUnusedMiniGames(SQLiteDatabase sqLiteDatabase) {
-        Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + MiniGameContract.MiniGame.TABLE_NAME + " WHERE " +
-                MiniGameContract.MiniGame.COLUMN_NAME_ALREADY_USED + " = 0 ", null);
+        Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
+                COLUMN_NAME_ALREADY_USED + " = 0 ", null);
         ArrayList<MiniGame> unusedMiniGames = new ArrayList<>();
         try {
             if (result.moveToFirst()) {
                 do {
-                    unusedMiniGames.add(MiniGame.valueOf(result.getString(result.getColumnIndex(MiniGameContract
-                            .MiniGame
-                            .COLUMN_NAME_NAME))));
+                    unusedMiniGames.add(MiniGame.valueOf(result.getString(result.getColumnIndex(COLUMN_NAME_NAME))));
                 } while (result.moveToNext());
             }
         } finally {

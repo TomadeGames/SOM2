@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Tabelle für TaskEvents
  * Created by woors on 05.10.2017.
  */
 
