@@ -6,13 +6,13 @@
     "apkInfo": {
       "type": "MAIN",
       "splits": [],
-      "versionCode": 102030
+      "versionCode": 102031
     },
     "path": "app-release.apk",
     "properties": {
       "packageId": "com.tomade.saufomat",
       "split": "",
-      "minSdkVersion": "14"
+      "minSdkVersion": "16"
     }
   }
 ]

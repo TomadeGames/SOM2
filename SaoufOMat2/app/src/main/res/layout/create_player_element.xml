@@ -12,10 +12,12 @@
 
         <TextView
             android:id="@+id/txtvPlayerName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toStartOf="@id/ibDelete"
             android:text="Spielername"
             android:textColor="#000"
             android:textSize="18sp"/>
