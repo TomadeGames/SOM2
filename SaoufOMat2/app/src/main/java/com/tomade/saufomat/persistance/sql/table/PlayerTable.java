@@ -30,12 +30,11 @@ public class PlayerTable extends BasePOJOTable<Player> {
     private static final String COLUMN_NAME_MEDIUM_WINS = "medium_wins";
     private static final String COLUMN_NAME_HARD_WINS = "hard_wins";
     private static final String COLUMN_NAME_NEXT_PLAYER = "next_player";
+    private static final String COLUMN_NAME_LAST_PLAYER = "last_player";
 
     public PlayerTable() {
         super(TABLE_NAME);
     }
-
-    private static final String COLUMN_NAME_LAST_PLAYER = "last_player";
 
     @Override
     public void createTable(SQLiteDatabase sqLiteDatabase) {

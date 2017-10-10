@@ -34,7 +34,7 @@ public class SwipeController {
         this.duration = -1;
     }
 
-    public void startSwipe(MotionEvent motionEvent) {
+    private void startSwipe(MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
             this.swipeStarted = true;
             this.resetSwipe();
@@ -50,12 +50,7 @@ public class SwipeController {
         }
     }
 
-    /**
-     * Beendet den Swipe
-     *
-     * @param motionEvent
-     */
-    public void endSwipe(MotionEvent motionEvent) {
+    private void endSwipe(MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             long endTime = System.currentTimeMillis();
             float endX = motionEvent.getX();
@@ -143,10 +138,20 @@ public class SwipeController {
         return false;
     }
 
+    /**
+     * Gibt die Richtung auf der Y-Achse zurück
+     *
+     * @return die Richtung auf der Y-Achse
+     */
     public Direction getDirectionY() {
         return this.directionY;
     }
 
+    /**
+     * Gibt die Richtung auf der X-Achse zurück
+     *
+     * @return die Richtung auf der X-Achse
+     */
     public Direction getDirectionX() {
         return this.directionX;
     }

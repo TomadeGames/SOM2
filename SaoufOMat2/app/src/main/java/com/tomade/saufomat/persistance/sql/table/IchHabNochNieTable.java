@@ -24,6 +24,12 @@ public class IchHabNochNieTable extends BaseTable {
         super(TABLE_NAME);
     }
 
+    /**
+     * Markiert eine Frage als bereits gesehen
+     *
+     * @param database die Datenbank in der die Tabelle steht in Schreibmodus
+     * @param task     die Frage, die als gesehen markiert wird
+     */
     public void useTask(SQLiteDatabase database, String task) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_TASK, task);
@@ -32,6 +38,12 @@ public class IchHabNochNieTable extends BaseTable {
                 .convertQuoationMarksToPlaceholder(task) + "\"", null);
     }
 
+    /**
+     * Gibt alle noch nicht gesehenen Fragen zurück
+     *
+     * @param database die Datenbank, in der die Tabelle steht in Lesemodus
+     * @return alle ungeshenen Fragen
+     */
     public List<String> getUnusedTasks(SQLiteDatabase database) {
         List<String> unusedTasks = new ArrayList<>();
         Cursor result = database.rawQuery("SELECT " + COLUMN_NAME_TASK + " FROM " + TABLE_NAME + " WHERE " +
@@ -53,6 +65,12 @@ public class IchHabNochNieTable extends BaseTable {
         return unusedTasks;
     }
 
+    /**
+     * Setzt alle Fragen auf noch nicht gelesen
+     *
+     * @param database die Datenbank, in der die Tabelle steht in Schreibmodus
+     * @param tasks    die Fragen, die auf noch nicht gelesen gesetzt werden sollen
+     */
     public void resetTasks(SQLiteDatabase database, String[] tasks) {
         for (String task : tasks) {
             ContentValues contentValues = new ContentValues();

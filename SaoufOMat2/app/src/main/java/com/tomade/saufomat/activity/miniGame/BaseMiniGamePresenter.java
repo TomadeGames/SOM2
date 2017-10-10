@@ -2,6 +2,7 @@ package com.tomade.saufomat.activity.miniGame;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 
 import com.tomade.saufomat.activity.BasePresenter;
 import com.tomade.saufomat.activity.ChooseMiniGameActivity;
@@ -32,6 +33,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
     }
 
     @Override
+    @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         Bundle extras = this.activity.getIntent().getExtras();
         if (extras != null) {
@@ -45,7 +47,7 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
         this.tutorialAlreadySeen = new GameValueHelper(this.activity).isTutorialSeen(this.getThisGame());
     }
 
-    public void showTutorialIfFirstStart() {
+    protected void showTutorialIfFirstStart() {
         if (!this.tutorialAlreadySeen) {
             new GameValueHelper(this.activity).setTutorialSeen(this.getThisGame());
             this.activity.showTutorial();
@@ -99,7 +101,12 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
         this.activity.startActivity(intent);
     }
 
-    public MiniGame getThisGame() {
+    /**
+     * Gibt das aktuelle Minispiel zurück
+     *
+     * @return das aktuelle Minispiel
+     */
+    MiniGame getThisGame() {
         Set<MiniGame> allMiniGames = EnumSet.allOf(MiniGame.class);
         for (MiniGame miniGame : allMiniGames) {
             if (miniGame.getActivity().equals(this.activity.getClass())) {
@@ -110,23 +117,38 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
                 MiniGame.class.getName());
     }
 
-
+    /**
+     * Gibt den Namen des aktuellen Spielers zurück
+     *
+     * @return der Name des aktuellen Spielers
+     */
     public String getCurrentPlayerName() {
         return this.currentPlayer.getName();
     }
 
-    public void increaseCurrentPlayerDrink(int amount) {
-        this.currentPlayer.increaseDrinks(amount);
-    }
-
+    /**
+     * Gibt an, ob das Minispiel vom Hauptspiel oder Minispielmenü aufgerufen wurde
+     *
+     * @return true, wenn es vom Hauptspiel aufgerufen wurde, sonst false
+     */
     public boolean isFromMainGame() {
         return this.fromMainGame;
     }
 
-    public int getPlayerAmount() {
+    /**
+     * Git die Spielerzahl zurück
+     *
+     * @return die Spielerzahl
+     */
+    public int getPlayerCount() {
         return this.playerList.size();
     }
 
+    /**
+     * Gibt den aktuellen Spieler zurück
+     *
+     * @return der aktuelle Spieler
+     */
     public Player getCurrentPlayer() {
         return this.currentPlayer;
     }

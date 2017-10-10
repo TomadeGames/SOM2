@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Ein Spiler
  * Created by markk on 09.03.2016.
  */
 public class Player implements Serializable {

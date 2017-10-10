@@ -41,12 +41,12 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
 
 
         if (this.presenter.isFromMainGame()) {
-            this.maximumCards = this.presenter.getPlayerAmount() * 3;
+            this.maximumCards = this.presenter.getPlayerCount() * 3;
             if (this.maximumCards > TARGET_TURN_COUNT) {
-                this.maximumCards = this.presenter.getPlayerAmount() * 2;
+                this.maximumCards = this.presenter.getPlayerCount() * 2;
             }
             if (this.maximumCards > TARGET_TURN_COUNT) {
-                this.maximumCards = this.presenter.getPlayerAmount();
+                this.maximumCards = this.presenter.getPlayerCount();
             }
         }
 

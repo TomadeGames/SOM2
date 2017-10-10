@@ -21,6 +21,12 @@ public class MiniGameProvider {
         this.context = context;
     }
 
+    /**
+     * Gibt ein zufälliges, noch nicht gespieltes, Minispiel zurück
+     *
+     * @param playerCount die Spieleranzahl
+     * @return ein zufälliges, noch nicht gespieltes, Minispiel
+     */
     public MiniGame getRandomMiniGame(int playerCount) {
         Random random = new Random(System.currentTimeMillis());
         DatabaseHelper databaseHelper = new DatabaseHelper(this.context);

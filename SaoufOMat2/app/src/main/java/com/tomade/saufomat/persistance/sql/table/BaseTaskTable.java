@@ -9,6 +9,7 @@ import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 
 /**
+ * Basistabelle für alle Task-Tabellen
  * Created by woors on 05.10.2017.
  */
 
@@ -25,6 +26,12 @@ public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<EN
         super(tableName);
     }
 
+    /**
+     * Füllt in ContentValues alle werte eines Tasks
+     *
+     * @param contentValues die ContentValues, die gefüllt werden sollen
+     * @param task          der Task, der in die ContentValues gefüllt wird
+     */
     protected void fillTaskContentValue(ContentValues contentValues, Task task) {
         contentValues.put(COLUMN_NAME_ID, task.getId());
         contentValues.put(COLUMN_NAME_TEXT, task.getText());
@@ -39,6 +46,13 @@ public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<EN
         }
     }
 
+    /**
+     * Gibt einen Task aus einer Datenbankabfrage zurück
+     *
+     * @param cursor das Ergebnis der Datenbankabfrage
+     * @param task   der Task, in den das Ergebnis eingetragen wird
+     * @return der Task
+     */
     protected Task parseTask(Cursor cursor, Task task) {
         task.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_ID)));
         task.setText(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TEXT)));
@@ -50,6 +64,12 @@ public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<EN
         return task;
     }
 
+    /**
+     * Gibt einen Task aus einer Datenbankabfrage zurück
+     *
+     * @param cursor das Ergebnis der Datenbankabfrage
+     * @return der Task
+     */
     protected Task parseTask(Cursor cursor) {
         Task task;
         if (TaskTarget.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TARGET))) ==

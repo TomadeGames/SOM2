@@ -21,16 +21,30 @@ public class GameValueHelper {
                 .SHARED_PREFERENCES_FILE_KEY, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Marikert zu einem Minispiel, dass das zugehörige Tutorial bereits gesehen wurde
+     *
+     * @param miniGame das Minispiel
+     */
     public void setTutorialSeen(MiniGame miniGame) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putBoolean(this.generateMiniGameTutorialKey(miniGame), true);
         editor.apply();
     }
 
+    /**
+     * Gibt zurück, ob zu einem Minispiel das Tutorial bereits gesehen wurde
+     *
+     * @param miniGame das Minispiel
+     * @return ture, wenn das Tutorial bereits gesehen wurde
+     */
     public boolean isTutorialSeen(MiniGame miniGame) {
         return this.sharedPreferences.getBoolean(this.generateMiniGameTutorialKey(miniGame), false);
     }
 
+    /**
+     * Setzt die Minispieltutorials zurück
+     */
     public void resetAllTutorials() {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         for (MiniGame miniGame : MiniGame.values()) {

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
@@ -171,7 +172,7 @@ public class KistenStapelnActivity extends BaseMiniGameActivity<BaseMiniGamePres
         int drinkCount = this.towerImageList.size() - 1;
         if (this.presenter.isFromMainGame()) {
             losingPlayerText = this.presenter.getCurrentPlayerName() + "\n";
-            this.presenter.increaseCurrentPlayerDrink(drinkCount);
+            DrinkHelper.increaseCurrentPlayer(drinkCount, this);
         }
 
         this.nextPlayerPanel.setVisibility(View.VISIBLE);

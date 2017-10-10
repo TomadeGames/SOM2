@@ -54,22 +54,47 @@ public enum MiniGame implements Serializable {
         this(activity, screenshotId, nameId, tutorialId, 1);
     }
 
+    /**
+     * Gibt die Activity zu dem Minispiel zurück
+     *
+     * @return die Activity zum Minispiel
+     */
     public Class<? extends BaseMiniGameActivity> getActivity() {
         return this.activity;
     }
 
+    /**
+     * Gibt die ID eines Screenshots zu dem Minispiel zurück
+     *
+     * @return ID eines Screenshots zum Minispiel
+     */
     public int getScreenshotId() {
         return this.screenshotId;
     }
 
+    /**
+     * Gibt die ID zu den Namen des Minispiels zurück
+     *
+     * @return die ID zu den Namen des Minipsiels
+     */
     public int getNameId() {
         return this.nameId;
     }
 
+    /**
+     * Gibt die ID zu den TutorialString zurück
+     *
+     * @return die Id zu den TutorialString
+     */
     public int getTutorialId() {
         return this.tutorialId;
     }
 
+    /**
+     * Gibt die minimale Spieleranzahl für das Minispiel zurück
+     *
+     * @return die minimale Spieleranzahl
+     */
     public int getPlayerLimit() {
         return this.playerLimit;
     }

@@ -45,6 +45,11 @@ public class SaveGameHelper {
                 .SHARED_PREFERENCES_FILE_KEY, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Speichert den Rundenzähler zur nächsten Werbung
+     *
+     * @param adCounter der Rundenzähler zur nächsten Werbung
+     */
     public void saveAdCounter(int adCounter) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putInt(AD_COUNTER_KEY, adCounter);
@@ -52,6 +57,11 @@ public class SaveGameHelper {
         Log.d(TAG, "AdCounter [" + adCounter + "] saved");
     }
 
+    /**
+     * Speichert wer der aktuelle Spieler ist
+     *
+     * @param currentPlayer der Aktuelle Spieler
+     */
     public void saveCurrentPlayer(Player currentPlayer) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putInt(CURRENT_PLAYER_KEY, currentPlayer.getId());
@@ -59,6 +69,11 @@ public class SaveGameHelper {
         Log.d(TAG, "CurrentPlayer [" + currentPlayer + "] saved");
     }
 
+    /**
+     * Speichert, dass ein Spiel gespeichert ist
+     *
+     * @param gameSaved true, wenn ein Gespeichertes Spiel existiert, sonst false
+     */
     public void saveGameSaved(boolean gameSaved) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putBoolean(IS_GAME_SAVED_KEY, gameSaved);
@@ -67,6 +82,11 @@ public class SaveGameHelper {
         Log.d(TAG, "GameSaved [" + gameSaved + "] saved");
     }
 
+    /**
+     * Speichert den Spielstand von WerfDichDicht
+     *
+     * @param isGlassFull Der Zustand der einzelnen Gläser
+     */
     public void saveWerfDichDicht(boolean[] isGlassFull) {
         if (isGlassFull.length != 6) {
             throw new IllegalArgumentException("isGlassFull must have 6 entries");
@@ -88,6 +108,11 @@ public class SaveGameHelper {
                 isGlassFull[5] + "]");
     }
 
+    /**
+     * Gibt den Spielstand von WerfDichDicht zurück
+     *
+     * @return Der Zustand der einzelnen Gläser
+     */
     public boolean[] getSavedWerfDichDichtState() {
         boolean[] werfDichDichtState = new boolean[6];
         werfDichDichtState[0] = this.sharedPreferences.getBoolean(WerfDichDicht.GLASS0_STATE, false);
@@ -107,10 +132,20 @@ public class SaveGameHelper {
         return werfDichDichtState;
     }
 
+    /**
+     * Gibt den Rundenzähler zur nächsten Werbung zurück
+     *
+     * @return der Rundenzähler zur nächsten Werbung
+     */
     public int getAdCounter() {
         return this.sharedPreferences.getInt(AD_COUNTER_KEY, 0);
     }
 
+    /**
+     * Gibt den Aktuelle Spieler zurück
+     *
+     * @return der Aktuelle Spieler
+     */
     public Player getCurrentPlayer() {
         int currentPlayerId = this.sharedPreferences.getInt(CURRENT_PLAYER_KEY, -1);
         List<Player> allPlayer = new DatabaseHelper(this.context).getAllPlayer();
@@ -122,11 +157,16 @@ public class SaveGameHelper {
         return allPlayer.get(0);
     }
 
+    /**
+     * Gibt an, ob ein gespeichertes Spiel existiert
+     *
+     * @return true, wenn ein gespeichertes Spiel existiert, sonst false
+     */
     public boolean isGameSaved() {
         int loadedGameVersion = this.sharedPreferences.getInt(GAME_VERSION_KEY, -1);
         Log.d(TAG, "Loaded Game version is " + loadedGameVersion + " current GameVersion is " + GAME_VERSION);
         if (loadedGameVersion == GAME_VERSION && new DatabaseHelper(this.context).getDatabaseVersion() == this
-                .getDatabseVersion()) {
+                .getDatabaseVersion()) {
             return this.sharedPreferences.getBoolean(IS_GAME_SAVED_KEY, false);
         }
         Log.i(TAG, "Loaded Game version [" + loadedGameVersion + "] is not equal current version [" +
@@ -134,6 +174,11 @@ public class SaveGameHelper {
         return false;
     }
 
+    /**
+     * Speichert die Datenbankversion
+     *
+     * @param databaseVersion die Datenbankversion
+     */
     public void saveDatabaseVersion(int databaseVersion) {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
         editor.putInt(DATABASE_VERSION_KEY, databaseVersion);
@@ -141,14 +186,17 @@ public class SaveGameHelper {
         Log.d(TAG, "Database version saved [" + databaseVersion + "]");
     }
 
-    public int getDatabseVersion() {
+    /**
+     * Löscht einen Spielstand
+     */
+    public void deleteSaveGame() {
+        this.saveWerfDichDicht(new boolean[6]);
+        this.saveGameSaved(false);
+    }
+
+    private int getDatabaseVersion() {
         int databaseVersion = this.sharedPreferences.getInt(DATABASE_VERSION_KEY, -1);
         Log.d(TAG, "Loaded Database version is " + databaseVersion);
         return databaseVersion;
-    }
-
-    public void clearGame() {
-        this.saveWerfDichDicht(new boolean[6]);
-        this.saveGameSaved(false);
     }
 }

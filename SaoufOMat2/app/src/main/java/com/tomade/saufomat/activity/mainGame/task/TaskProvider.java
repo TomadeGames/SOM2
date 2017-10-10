@@ -29,17 +29,17 @@ public class TaskProvider {
         DatabaseHelper databaseHelper = new DatabaseHelper(this.context);
         ArrayList<Task> tasks;
         if (DEBUG_DIFFICULT == null) {
-            tasks = databaseHelper.getUnusedIchHabNochNieTasks(difficult);
+            tasks = databaseHelper.getUnusedTasks(difficult);
         } else {
-            tasks = databaseHelper.getUnusedIchHabNochNieTasks(DEBUG_DIFFICULT);
+            tasks = databaseHelper.getUnusedTasks(DEBUG_DIFFICULT);
         }
         if (tasks.isEmpty()) {
             if (DEBUG_DIFFICULT == null) {
                 this.resetTasks(difficult);
-                tasks = databaseHelper.getUnusedIchHabNochNieTasks(difficult);
+                tasks = databaseHelper.getUnusedTasks(difficult);
             } else {
                 this.resetTasks(DEBUG_DIFFICULT);
-                tasks = databaseHelper.getUnusedIchHabNochNieTasks(DEBUG_DIFFICULT);
+                tasks = databaseHelper.getUnusedTasks(DEBUG_DIFFICULT);
             }
         }
 

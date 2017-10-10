@@ -17,6 +17,9 @@ public abstract class BaseActivity<PRESENTER extends BasePresenter> extends Acti
     protected int screenHeight;
     protected int screenWidth;
 
+    /**
+     * Initialisert den Presenter
+     */
     protected abstract void initPresenter();
 
     @Override

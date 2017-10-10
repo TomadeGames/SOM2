@@ -76,7 +76,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                         databaseHelper.insertPlayer(player);
                     }
                     SaveGameHelper saveGameHelper = new SaveGameHelper(this);
-                    saveGameHelper.clearGame();
+                    saveGameHelper.deleteSaveGame();
 
                     this.changeToMainGame();
                 } else {

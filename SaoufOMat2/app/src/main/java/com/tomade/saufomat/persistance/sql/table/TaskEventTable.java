@@ -29,8 +29,7 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
 
 
     private static final String TASK_EVENT_TAKS_TABLE_NAME = "task_event_task";
-    public static final String COLUMN_NAME_TASK_EVENT_ID = "task_event_id";
-    private static final String COLUMN_NAME_TASK_ID = "task_id";
+    private static final String COLUMN_NAME_TASK_EVENT_ID = "task_event_id";
 
     public TaskEventTable() {
         super(TABLE_NAME);
@@ -110,6 +109,13 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
         return taskList;
     }
 
+    /**
+     * Gibt alle TaskEvents zurück, die einen bestimmten Schwierigkeitsgrad haben
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Lesemodus
+     * @param taskDifficult  die Schwierigketisstufe der Aufgaben
+     * @return alle TaskEvents einer bestimmten Schweirigkeitsstufe
+     */
     public ArrayList<TaskEvent> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
         ArrayList<TaskEvent> taskList = new ArrayList<>();
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_DIFFICULT +
@@ -131,6 +137,13 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
         return taskList;
     }
 
+    /**
+     * Gibt alle ungenutzen TaskEvents zurück, die einen bestimmten Schwierigkeitsgrad haben
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Lesemodus
+     * @param taskDifficult  die Schwierigketisstufe der Aufgaben
+     * @return alle ungenutzen TaskEvents einer bestimmten Schweirigkeitsstufe
+     */
     public ArrayList<TaskEvent> getUnusedTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
         ArrayList<TaskEvent> unusedTasks = new ArrayList<>();
         String taskEventQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_ALREADY_USED + " = 0 AND " +
@@ -151,6 +164,51 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
         }
 
         return unusedTasks;
+    }
+
+    /**
+     * Deaktiviert ein TaskEvent
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Schreibmodus
+     * @param taskEvent      das TaskEvent
+     */
+    public void deactivateTaskEvent(SQLiteDatabase sqLiteDatabase, TaskEvent taskEvent) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME_ACTIVE, 0);
+        sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString
+                (taskEvent.getId())});
+    }
+
+    /**
+     * Aktiviert ein TaskEvent
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Schreibmodus
+     * @param taskEvent      das TaskEvent
+     */
+    public void activateTaskEvent(SQLiteDatabase sqLiteDatabase, TaskEvent taskEvent) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME_ACTIVE, 1);
+        sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString
+                (taskEvent.getId())});
+    }
+
+    /**
+     * Gibt alle aktiven TaskEvents zurück
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Lesemodus
+     * @return alle aktiven TaskEvents
+     */
+    public ArrayList<TaskEvent> getActiveTaskEvents(SQLiteDatabase sqLiteDatabase) {
+        ArrayList<TaskEvent> activeTaskEvents = new ArrayList<>();
+        ArrayList<TaskEvent> allTaskEvents = this.getAllEntries(sqLiteDatabase);
+
+        for (TaskEvent taskEvent : allTaskEvents) {
+            if (taskEvent.isActive()) {
+                activeTaskEvents.add(taskEvent);
+            }
+        }
+
+        return activeTaskEvents;
     }
 
     private void fillTaskEventContentValues(ContentValues contentValues, TaskEvent taskEvent) {
@@ -204,33 +262,6 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
         }
 
         taskEvent.setTasks(taskList.toArray(new Task[0]));
-    }
-
-    public void deactivateTaskEvent(SQLiteDatabase sqLiteDatabase, TaskEvent taskEvent) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME_ACTIVE, 0);
-        sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString
-                (taskEvent.getId())});
-    }
-
-    public void activateTaskEvent(SQLiteDatabase sqLiteDatabase, TaskEvent taskEvent) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_NAME_ACTIVE, 1);
-        sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString
-                (taskEvent.getId())});
-    }
-
-    public ArrayList<TaskEvent> getActiveTaskEvents(SQLiteDatabase sqLiteDatabase) {
-        ArrayList<TaskEvent> activeTaskEvents = new ArrayList<>();
-        ArrayList<TaskEvent> allTaskEvents = this.getAllEntries(sqLiteDatabase);
-
-        for (TaskEvent taskEvent : allTaskEvents) {
-            if (taskEvent.isActive()) {
-                activeTaskEvents.add(taskEvent);
-            }
-        }
-
-        return activeTaskEvents;
     }
 
     private void insertTasksFromTaskEvent(SQLiteDatabase sqLiteDatabase, TaskEvent taskEvent) {

@@ -43,7 +43,7 @@ public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresent
             TextView backText = this.findViewById(R.id.backText);
             backText.setVisibility(View.GONE);
             this.playerText.setText(this.presenter.getCurrentPlayer().getName());
-            this.turnCounterView.setText((this.turnCount + 1) + "/" + this.presenter.getPlayerAmount());
+            this.turnCounterView.setText((this.turnCount + 1) + "/" + this.presenter.getPlayerCount());
         } else {
             this.turnCounterView.setVisibility(View.GONE);
         }
@@ -94,13 +94,13 @@ public class AugensaufenActivity extends BaseMiniGameActivity<AugensaufenPresent
         } else {
             this.turnCount++;
 
-            if (this.turnCount >= this.presenter.getPlayerAmount()) {
+            if (this.turnCount >= this.presenter.getPlayerCount()) {
                 this.bottomText.setText(R.string.minigame_augensaufen_game_over);
                 this.playerText.setVisibility(View.GONE);
                 this.gameState = AugensaufenState.END;
             } else {
                 this.presenter.nextPlayer();
-                this.turnCounterView.setText((this.turnCount + 1) + "/" + this.presenter.getPlayerAmount());
+                this.turnCounterView.setText((this.turnCount + 1) + "/" + this.presenter.getPlayerCount());
                 this.playerText.setText(this.presenter.getCurrentPlayer().getName());
                 this.gameState = AugensaufenState.START;
             }

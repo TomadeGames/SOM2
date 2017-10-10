@@ -11,6 +11,9 @@ public interface IntentParameter {
     String CURRENT_PLAYER = "currentPlayer";
     String LAST_GAME = "lastGame";
 
+    /**
+     * Übergabeparemeter für Minispiele
+     */
     interface MainGame {
         String CURRENT_TASK = "mainGame_currentTask";
         String CURRENT_MINI_GAME = "mainGame_currentMiniGame";
@@ -20,6 +23,9 @@ public interface IntentParameter {
         String NEW_TASK_EVENT = "mainGame_newTaskEvent";
     }
 
+    /**
+     * Übergabeparameter für Tutorials
+     */
     interface Tutorial {
         String TEXT_ID = "tutorial_textKey";
     }

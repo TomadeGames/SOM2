@@ -10,9 +10,19 @@ import android.os.Bundle;
 public abstract class BasePresenter<ACTIVITY extends BaseActivity> {
     protected ACTIVITY activity;
 
+    /**
+     * Konstruktor
+     *
+     * @param activity die Activity zu dem Presenter
+     */
     public BasePresenter(ACTIVITY activity) {
         this.activity = activity;
     }
 
+    /**
+     * Wird beim erstellen der Activity aufgerufen
+     *
+     * @param savedInstanceState -
+     */
     public abstract void onCreate(Bundle savedInstanceState);
 }

@@ -39,11 +39,11 @@ public class WerfDichDichtPresenter extends BaseMiniGamePresenter<WerfDichDichtA
         this.random = new Random(System.currentTimeMillis());
 
         if (this.fromMainGame) {
-            this.maxTurns = this.getPlayerAmount() * 3;
+            this.maxTurns = this.getPlayerCount() * 3;
             if (this.maxTurns > 30) {
-                this.maxTurns = this.getPlayerAmount() * 2;
+                this.maxTurns = this.getPlayerCount() * 2;
                 if (this.maxTurns > 30) {
-                    this.maxTurns = this.getPlayerAmount();
+                    this.maxTurns = this.getPlayerCount();
                 }
             }
         }

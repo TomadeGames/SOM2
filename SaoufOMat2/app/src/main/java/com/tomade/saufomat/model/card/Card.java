@@ -5,6 +5,7 @@ import com.tomade.saufomat.R;
 import java.util.Random;
 
 /**
+ * Eine Spielkarte
  * Created by woors on 22.03.2016.
  */
 public class Card {
@@ -17,57 +18,85 @@ public class Card {
     public Card(CardColor color, CardValue value) {
         this.color = color;
         this.value = value;
-        initImage();
+        this.initImage();
     }
 
     public Card(int color, int value) {
         this.setColor(color);
         this.setValue(value);
-        initImage();
+        this.initImage();
     }
 
     public Card(CardColor color, int value) {
         this.setColor(color);
         this.setValue(value);
-        initImage();
+        this.initImage();
     }
 
     public Card(int color, CardValue value) {
         this.setColor(color);
         this.setValue(value);
-        initImage();
+        this.initImage();
     }
 
+    /**
+     * Gibt eine zufällige Spielkarte zurück
+     *
+     * @return eine zufällige Karte
+     */
     public static Card getRandomCard() {
         int color = random.nextInt(4);
         int value = random.nextInt(13);
         return new Card(color, value);
     }
 
+    /**
+     * Gibt eine Zufällge Spielkarte zwischen 7 und Ass zurück
+     *
+     * @return eine zufällige Karte zwischen 7 und Ass
+     */
     public static Card getRandomCard7OrHigher() {
         int color = random.nextInt(4);
         int value = random.nextInt(8) + 5;
         return new Card(color, value);
     }
 
+    /**
+     * Gibt true zurück, wenn die Spielkarte rot ist
+     *
+     * @return ture, wenn die Karte rot ist. Sonst false
+     */
     public boolean isRed() {
         return this.color == CardColor.DIAMOND
                 || this.color == CardColor.HEART;
     }
 
-    public boolean isHigherAs(Card c) {
-        return this.getValueAsInt() > c.getValueAsInt();
+    /**
+     * Gibt true zurück, wenn der Kartenwert höher ist als der Kartenwert der übergebenen Karte.
+     *
+     * @param card die Karte mit der diese Verglichen wird
+     * @return true, wenn der Kartenwert höher ist
+     */
+    public boolean isHigherAs(Card card) {
+        return this.getValueAsInt() > card.getValueAsInt();
     }
 
-    public boolean isBetween(Card c0, Card c1) {
+    /**
+     * Gibt true zurück, wenn der Kartenwert zwischen den Kartenwerten der beiden übergebenen Karten liegt.
+     *
+     * @param card1 die erste Karte
+     * @param card2 die zweite Karte
+     * @return true, wenn der Kartenwert zwischen den übergeben ist.
+     */
+    public boolean isBetween(Card card1, Card card2) {
         Card lowerCard;
         Card higherCard;
-        if (c0.getValueAsInt() < c1.getValueAsInt()) {
-            lowerCard = c0;
-            higherCard = c1;
+        if (card1.getValueAsInt() < card2.getValueAsInt()) {
+            lowerCard = card1;
+            higherCard = card2;
         } else {
-            lowerCard = c1;
-            higherCard = c0;
+            lowerCard = card2;
+            higherCard = card1;
         }
         return lowerCard.getValueAsInt() < this.getValueAsInt()
                 && this.getValueAsInt() < higherCard.getValueAsInt();
@@ -85,14 +114,30 @@ public class Card {
         return false;
     }
 
+    /**
+     * Gibt den Kartenwert der Karte zurück
+     *
+     * @return der Kartenwert der Karte
+     */
     public CardValue getValue() {
         return this.value;
     }
 
+    /**
+     * Setzt den Kartenwert der Karte
+     *
+     * @param value der Kartenwert der Karte
+     */
     public void setValue(CardValue value) {
         this.value = value;
     }
 
+    /**
+     * Setzt den Kartenwert der Karte
+     *
+     * @param value der Kartenwert der Karte als Zahl (0 = 2, 1 = 3, ...,  12 = Ass)
+     * @throws IllegalArgumentException wird geworfen, wenn der übergebene Kartenwert nicht zwischen 0 und 12 lag.
+     */
     public void setValue(int value) throws IllegalArgumentException {
         switch (value) {
             case 0:
@@ -139,6 +184,11 @@ public class Card {
         }
     }
 
+    /**
+     * Gibt den Kartenwert als Zahl zurück
+     *
+     * @return der Kartenwert als Zahl (0 = 2, 1 = 3, ..., 12 = Ass)
+     */
     public int getValueAsInt() {
         switch (this.value) {
             case TWO:
@@ -171,14 +221,30 @@ public class Card {
         return -1;
     }
 
+    /**
+     * Gibt die Farbe der Karte zurück
+     *
+     * @return die Farbe der Karte
+     */
     public CardColor getColor() {
         return this.color;
     }
 
+    /**
+     * Setzt die Farbe der Karte
+     *
+     * @param color die Farbe der Karte
+     */
     public void setColor(CardColor color) {
         this.color = color;
     }
 
+    /**
+     * Setzt die Farbe der Karte
+     *
+     * @param color die Farbe der Karte als Zahl (0 = Karo, 1 = Herz, 2 = Kreuz, 3 = Pik)
+     * @throws IllegalArgumentException wird geworfen, wenn die Farbe nicht zwichen 0 und 3 liegt
+     */
     public void setColor(int color) throws IllegalArgumentException {
         switch (color) {
             case 0:
@@ -199,12 +265,13 @@ public class Card {
 
     }
 
+    /**
+     * Gibt die Id zum Bild der Karte zurück
+     *
+     * @return die Id zum Bild
+     */
     public int getImageId() {
         return this.imageId;
-    }
-
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
     }
 
     private void initImage() {

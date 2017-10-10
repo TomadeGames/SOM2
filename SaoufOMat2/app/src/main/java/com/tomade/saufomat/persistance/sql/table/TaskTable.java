@@ -76,6 +76,13 @@ public class TaskTable extends BaseTaskTable<Task> {
         return taskList;
     }
 
+    /**
+     * Gibt alle Aufgaben einer bestimmten Schwierigkeitsstufe zurück
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle setht in Lesemodus
+     * @param difficult      die Schwierigkeitsstufe
+     * @return alle Aufgaben einer bestimmten Schwierigkeitsstufe
+     */
     public ArrayList<Task> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult difficult) {
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_DIFFICULT +
                 " = " + difficult.toString(), null);
@@ -97,6 +104,13 @@ public class TaskTable extends BaseTaskTable<Task> {
         return taskList;
     }
 
+    /**
+     * Gibt alle ungenutzen Aufgaben einer bestimmten Schwierigkeitsstufe zurück
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle setht in Lesemodus
+     * @param difficult      die Schwierigkeitsstufe
+     * @return alle ungenuzten Aufgaben einer bestimmten Schwierigkeitsstufe
+     */
     public ArrayList<Task> getUnusedTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult difficult) {
         ArrayList<Task> unusedTasks = new ArrayList<>();
 

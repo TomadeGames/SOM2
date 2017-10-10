@@ -12,6 +12,15 @@ import com.tomade.saufomat.model.player.Player;
 public class PlayerService {
     private static final String TAG = PlayerService.class.getSimpleName();
 
+    /**
+     * Füllt Werte in ein Spieler-Objekt
+     *
+     * @param newPlayer das Spieler-Objekt
+     * @param name      der Name
+     * @param weight    das Gewicht
+     * @param gender    das Geschlecht
+     * @return true, wenn alle Werte korrekt eingetragen wurden, sonst false
+     */
     public static boolean fillPlayerData(Player newPlayer, String name, String weight, String gender) {
         newPlayer.setName(name);
         try {

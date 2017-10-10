@@ -60,6 +60,9 @@ public abstract class BaseMiniGameActivity<PRESENTER extends BaseMiniGamePresent
         return this.presenter.isFromMainGame();
     }
 
+    /**
+     * Zeigt das Tutoriel des Minispiels an
+     */
     public void showTutorial() {
         Intent intent = new Intent(this, TutorialDialog.class);
         intent.putExtra(IntentParameter.Tutorial.TEXT_ID, this.presenter.getThisGame().getTutorialId());

@@ -307,24 +307,10 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
     }
 
     private void changeIcon(int viewIndex) {
-        final int easyImage = R.drawable.beer_icon;
-        final int mediumImage = R.drawable.cocktail_icon;
-        final int hardImage = R.drawable.shot_icon;
-        final int gameImage = R.drawable.dice_icon;
-
         ImageView view = this.icons[viewIndex];
 
         IconState newIconState = this.presenter.getRandomIconState();
-        this.iconStates[viewIndex] = newIconState;
-        if (newIconState == IconState.EASY) {
-            view.setImageResource(easyImage);
-        } else if (newIconState == IconState.MEDIUM) {
-            view.setImageResource(mediumImage);
-        } else if (newIconState == IconState.HARD) {
-            view.setImageResource(hardImage);
-        } else {
-            view.setImageResource(gameImage);
-        }
+        view.setImageResource(newIconState.getImageId());
     }
 
     private void moveSaufOMeter() {

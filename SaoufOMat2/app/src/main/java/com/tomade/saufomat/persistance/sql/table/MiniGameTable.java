@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by woors on 05.10.2017.
  */
 
-public class MiniGameTable {
+public class MiniGameTable extends BaseTable {
     private static final String TAG = MiniGameTable.class.getSimpleName();
 
     private static final String TABLE_NAME = "mini_game";
@@ -22,6 +22,11 @@ public class MiniGameTable {
     private static final String COLUMN_NAME_ALREADY_USED = "already_used";
     private static final String COLUMN_NAME_PLAYER_LIMIT = "player_limit";
 
+    public MiniGameTable() {
+        super(TABLE_NAME);
+    }
+
+    @Override
     public void createTable(SQLiteDatabase sqLiteDatabase) {
         String miniGameStatement = "CREATE TABLE " + TABLE_NAME + "(" +
                 COLUMN_NAME_NAME + " TEXT PRIMARY KEY, " +
@@ -32,6 +37,12 @@ public class MiniGameTable {
         Log.i(TAG, "Table " + TABLE_NAME + " created");
     }
 
+    /**
+     * Erstellt einen Eintrag
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Schreibmodus
+     * @param miniGame       das Minigame, dass eingetragen werden soll
+     */
     public void insertEntry(SQLiteDatabase sqLiteDatabase, MiniGame miniGame) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME_NAME, miniGame.toString());
@@ -42,6 +53,13 @@ public class MiniGameTable {
         Log.i(TAG, "Minigame [" + miniGame + "] added in Table");
     }
 
+    /**
+     * Setzt "bereits gespielt" eins Minispiel
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Schreibmodus
+     * @param miniGame       das Minispiel, das markiert werden soll
+     * @param used           true, wenn es als bereits gepsielt markiert werden soll, sonst false
+     */
     public void setMiniGameUsed(SQLiteDatabase sqLiteDatabase, MiniGame miniGame, boolean used) {
         ContentValues contentValues = new ContentValues();
         if (used) {
@@ -54,6 +72,14 @@ public class MiniGameTable {
         Log.i(TAG, "Minigame [" + miniGame + "] added in Table");
     }
 
+    /**
+     * Gibt alle noch nicht gespielten Minispiele zurück. Dabei werden nur die Spiele zurückgegeben, die mit der
+     * aktuellen Spielerzahl spielbar sind
+     *
+     * @param sqLiteDatabase die Datenbank, in der die Tabelle steht in Lesemodus
+     * @param playerCount    die Anzahl der aktuellen Spieler
+     * @return alle ungespielten Minispiele, die spielbar sind
+     */
     public ArrayList<MiniGame> getUnusedMiniGames(SQLiteDatabase sqLiteDatabase, int playerCount) {
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
                 COLUMN_NAME_ALREADY_USED + " = 0 AND " + COLUMN_NAME_PLAYER_LIMIT + " <= " + playerCount, null);
@@ -69,9 +95,5 @@ public class MiniGameTable {
         }
         Log.i(TAG, unusedMiniGames.size() + " unused Minigames loaded from Database");
         return unusedMiniGames;
-    }
-
-    public void deleteTable(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 }

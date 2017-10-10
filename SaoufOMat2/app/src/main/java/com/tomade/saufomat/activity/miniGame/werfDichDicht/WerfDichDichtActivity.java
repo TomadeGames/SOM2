@@ -74,12 +74,12 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
             TextView backText = this.findViewById(R.id.backText);
             backButton.setVisibility(View.GONE);
             backText.setVisibility(View.GONE);
-            this.maxTurns = this.presenter.getPlayerAmount() * 3;
+            this.maxTurns = this.presenter.getPlayerCount() * 3;
             if (this.maxTurns > TARGET_TURN_COUNT) {
-                this.maxTurns = this.presenter.getPlayerAmount() * 2;
+                this.maxTurns = this.presenter.getPlayerCount() * 2;
             }
             if (this.maxTurns > TARGET_TURN_COUNT) {
-                this.maxTurns = this.presenter.getPlayerAmount();
+                this.maxTurns = this.presenter.getPlayerCount();
             }
             this.turnCounter.setText(String.format(this.getString(R.string.minigame_turn_counter), this.turnCount +
                     1, this.maxTurns));
@@ -182,7 +182,7 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
         this.shotsClearedInOneTurn++;
         if (this.shotsClearedInOneTurn >= 6) {
             if (this.presenter.isFromMainGame()) {
-                this.presenter.increaseCurrentPlayerDrink(1);
+                DrinkHelper.increaseCurrentPlayer(1, this);
             }
             if (this.turnCount >= this.maxTurns - 1) {
                 this.popupText.setText(R.string.minigame_werf_dich_dicht_drink_six_in_last_turn);
@@ -194,7 +194,7 @@ public class WerfDichDichtActivity extends BaseMiniGameActivity<BaseMiniGamePres
         } else {
             this.popupText.setText(R.string.minigame_werf_dich_dicht_drink);
             if (this.presenter.isFromMainGame()) {
-                this.presenter.increaseCurrentPlayerDrink(1);
+                DrinkHelper.increaseCurrentPlayer(1, this);
             }
         }
     }

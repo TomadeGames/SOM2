@@ -31,7 +31,9 @@ import com.tomade.saufomat.model.player.Player;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-//TODO: Tasks nach dem Builder-Pattern
+/**
+ * Die Ansicht, in der die Aufgabe angezeigt wird
+ */
 public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
 

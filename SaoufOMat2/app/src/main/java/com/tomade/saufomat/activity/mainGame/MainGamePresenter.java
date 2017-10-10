@@ -309,11 +309,11 @@ public class MainGamePresenter extends BasePresenter {
     }
 
     public void increaseMediumWins() {
-        this.currentPlayer.getStatistic().increaseEasyWins();
+        this.currentPlayer.getStatistic().increaseMediumWins();
     }
 
     public void increaseHardWins() {
-        this.currentPlayer.getStatistic().increaseEasyWins();
+        this.currentPlayer.getStatistic().increaseHardWins();
     }
 
     public IconState getRandomIconState() {

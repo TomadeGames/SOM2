@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
+ * Eine Imageview für Dynamische Bilder (z.B. Bierrutsche Hintergrund)
  * Created by woors on 05.04.2016.
  */
 public class DynamicImageView extends ImageView {
@@ -25,7 +26,7 @@ public class DynamicImageView extends ImageView {
         super(context, attrs, defStyleAttr);
         this.setFullX(false);
     }
-    
+
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         final Drawable d = this.getDrawable();
