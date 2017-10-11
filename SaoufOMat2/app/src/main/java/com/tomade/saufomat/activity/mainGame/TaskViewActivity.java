@@ -16,13 +16,14 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.tomade.saufomat.DrinkHelper;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.ActivityWithPlayer;
 import com.tomade.saufomat.activity.MainMenuActivity;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
+import com.tomade.saufomat.activity.mainGame.task.TaskDrinkHandler;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
+import com.tomade.saufomat.activity.mainGame.task.TimedTask;
 import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
@@ -150,6 +151,18 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    private void openTimerView(TimedTask timedTask) {
+        Log.i(TAG, "Switching to TimerView");
+        Intent intent = new Intent(this, TaskTimerActivity.class);
+        intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
+        intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
+        intent.putExtra(IntentParameter.TaskTimer.TIME, timedTask.getTime());
+        intent.putExtra(IntentParameter.TaskTimer.TASK_IF_WON, timedTask.getTaskIfWon());
+        intent.putExtra(IntentParameter.TaskTimer.TASK_IF_LOST, timedTask.getTaskIfLost());
+        this.finish();
+        this.startActivity(intent);
+    }
+
     private void openMainView(TaskEvent newTaskEvent) {
         Log.i(TAG, "Switching to MainView");
         this.currentPlayer = this.currentPlayer.getNextPlayer();
@@ -181,45 +194,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             boolean switchToMainView = true;
             TaskEvent newTaskEvent = null;
             if (this.currentPlayerIsAviable) {
-                Log.i(TAG, "Tasktarget is " + this.currentTask.getTaskTarget());
+                TaskDrinkHandler.increaseDrinks(this.currentTask, this);
+
                 switch (this.currentTask.getTaskTarget()) {
-                    case SELF:
-                        this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
-                        break;
-                    case NEIGHBOUR:
-                        DrinkHelper.increaseNeighbours(this.currentTask.getDrinkCount(), this.currentPlayer, this);
-                        break;
-                    case MEN:
-                        DrinkHelper.increaseMen(this.currentTask.getDrinkCount(), this);
-                        break;
-                    case WOMEN:
-                        DrinkHelper.increaseWomen(this.currentTask.getDrinkCount(), this);
-                        break;
-                    case NEIGHBOUR_LEFT:
-                        DrinkHelper.increaseLeft(this.currentTask.getDrinkCount(), this);
-                        break;
-                    case NEIGHBOUR_RIGHT:
-                        DrinkHelper.increaseRight(this.currentTask.getDrinkCount(), this);
-                        break;
                     case SWITCH_PLACE_LEFT:
                         this.switchPlayers(this.currentPlayer, this.currentPlayer.getNextPlayer());
                         break;
                     case SWITCH_PLACE_RIGHT:
                         this.switchPlayers(this.currentPlayer, this.currentPlayer.getLastPlayer());
-                        break;
-                    case ALL:
-                        DrinkHelper.increaseAll(this.currentTask.getDrinkCount(), this);
-                        break;
-                    case ALL_BUT_SELF:
-                        DrinkHelper.increaseAllButOnePlayer(this.currentTask.getDrinkCount(), this
-                                .currentPlayer, this);
-                        break;
-                    case SELF_AND_NEIGHBOURS:
-                        DrinkHelper.increasePlayerWithNeighbours(this.currentTask.getDrinkCount(), this
-                                .currentPlayer, this);
-                        break;
-                    case SELF_AND_CHOOSE_ONE:
-                        this.currentPlayer.increaseDrinks(this.currentTask.getDrinkCount());
                         break;
                     case AD:
                         switchToMainView = false;
@@ -229,14 +211,15 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                             this.openMainView();
                         }
                         break;
-                    case TASK_EVENT:
-                        newTaskEvent = (TaskEvent) this.currentTask;
-                        switchToMainView = false;
-                        this.openMainView(newTaskEvent);
-                        break;
-                    default:
-                        Log.e(TAG, "TaskTarget " + this.currentTask.getTaskTarget() + " is not used");
-                        break;
+                }
+                if (this.currentTask instanceof TaskEvent) {
+                    newTaskEvent = (TaskEvent) this.currentTask;
+                    switchToMainView = false;
+                    this.openMainView(newTaskEvent);
+                }
+                if (this.currentTask instanceof TimedTask) {
+                    switchToMainView = false;
+                    this.openTimerView((TimedTask) this.currentTask);
                 }
             }
             if (switchToMainView) {

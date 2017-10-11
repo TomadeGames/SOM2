@@ -176,8 +176,14 @@ public class DrinkHelper {
      */
     public static void increaseNeighbours(int increment, Player player, ActivityWithPlayer source) {
         if (source.arePlayerValid()) {
-            player.getNextPlayer().increaseDrinks(increment);
-            player.getLastPlayer().increaseDrinks(increment);
+            Player lastPlayer = player.getLastPlayer();
+            Player nextPlayer = player.getNextPlayer();
+            if (nextPlayer != player) {
+                nextPlayer.increaseDrinks(increment);
+                if (lastPlayer != nextPlayer) {
+                    lastPlayer.increaseDrinks(increment);
+                }
+            }
         }
     }
 

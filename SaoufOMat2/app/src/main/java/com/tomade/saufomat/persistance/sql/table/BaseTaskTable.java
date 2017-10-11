@@ -2,44 +2,60 @@ package com.tomade.saufomat.persistance.sql.table;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
+import com.tomade.saufomat.activity.mainGame.task.SimpleTask;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
+
+import java.util.ArrayList;
 
 /**
  * Basistabelle für alle Task-Tabellen
  * Created by woors on 05.10.2017.
  */
 
-public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<ENTRY> {
-    protected static final String COLUMN_NAME_ID = "id";
-    protected static final String COLUMN_NAME_TEXT = "text";
+public abstract class BaseTaskTable<ENTRY extends Task> extends SimpleTaskTable<ENTRY> {
     protected static final String COLUMN_NAME_DIFFICULT = "difficult";
-    protected static final String COLUMN_NAME_DRINK_COUNT = "drink_count";     //Getränkeanzahl bei Ja
-    protected static final String COLUMN_NAME_COST = "cost";           //Getränkeanzahl bei Nein
-    protected static final String COLUMN_NAME_TARGET = "target";
-    protected static final String COLUMN_NAME_ALREADY_USED = "already_used";
+    protected static final String COLUMN_NAME_COST = "cost";
 
     protected BaseTaskTable(String tableName) {
         super(tableName);
     }
 
+    @Override
+    protected String getColumnsForCreateStatement() {
+        return super.getColumnsForCreateStatement() + ", " +
+                COLUMN_NAME_COST + " INTEGER, " +
+                COLUMN_NAME_DIFFICULT + " TEXT";
+    }
+
     /**
-     * Füllt in ContentValues alle werte eines Tasks
+     * Füllt in ContentValues alle Werte eines Tasks
      *
      * @param contentValues die ContentValues, die gefüllt werden sollen
      * @param task          der Task, der in die ContentValues gefüllt wird
      */
-    protected void fillTaskContentValue(ContentValues contentValues, Task task) {
-        contentValues.put(COLUMN_NAME_ID, task.getId());
-        contentValues.put(COLUMN_NAME_TEXT, task.getText());
-        contentValues.put(COLUMN_NAME_DRINK_COUNT, task.getDrinkCount());
+    protected void fillContentValue(ContentValues contentValues, Task task) {
+        this.fillSimpleTaskContentValues(contentValues, task);
         contentValues.put(COLUMN_NAME_COST, task.getCost());
         contentValues.put(COLUMN_NAME_DIFFICULT, task.getDifficult().toString());
-        contentValues.put(COLUMN_NAME_TARGET, task.getTaskTarget().toString());
-        if (task.isAlreadyUsed()) {
+    }
+
+    /**
+     * Füllt in ContentValues alle Werte eines SimpleTasks
+     *
+     * @param contentValues
+     * @param simpleTask
+     */
+    protected void fillSimpleTaskContentValues(ContentValues contentValues, SimpleTask simpleTask) {
+        contentValues.put(COLUMN_NAME_ID, simpleTask.getId());
+        contentValues.put(COLUMN_NAME_TEXT, simpleTask.getText());
+        contentValues.put(COLUMN_NAME_DRINK_COUNT, simpleTask.getDrinkCount());
+        contentValues.put(COLUMN_NAME_TARGET, simpleTask.getTaskTarget().toString());
+        if (simpleTask.isAlreadyUsed()) {
             contentValues.put(COLUMN_NAME_ALREADY_USED, 1);
         } else {
             contentValues.put(COLUMN_NAME_ALREADY_USED, 0);
@@ -54,14 +70,18 @@ public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<EN
      * @return der Task
      */
     protected Task parseTask(Cursor cursor, Task task) {
+        this.parseSimpleTask(cursor, task);
+        task.setCost(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_COST)));
+        task.setDifficult(TaskDifficult.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_DIFFICULT))));
+        return task;
+    }
+
+    protected void parseSimpleTask(Cursor cursor, SimpleTask task) {
         task.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_ID)));
         task.setText(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TEXT)));
         task.setDrinkCount(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_DRINK_COUNT)));
-        task.setCost(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_COST)));
-        task.setDifficult(TaskDifficult.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_DIFFICULT))));
         task.setTaskTarget(TaskTarget.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TARGET))));
         task.setAlreadyUsed(cursor.getInt(cursor.getColumnIndex(COLUMN_NAME_ALREADY_USED)) != 0);
-        return task;
     }
 
     /**
@@ -81,4 +101,7 @@ public abstract class BaseTaskTable<ENTRY extends Task> extends BasePOJOTable<EN
         return this.parseTask(cursor, task);
     }
 
+    public abstract ArrayList<Task> getUnusedTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult);
+
+    public abstract ArrayList<Task> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult);
 }

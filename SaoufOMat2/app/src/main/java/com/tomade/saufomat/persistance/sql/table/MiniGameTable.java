@@ -27,14 +27,10 @@ public class MiniGameTable extends BaseTable {
     }
 
     @Override
-    public void createTable(SQLiteDatabase sqLiteDatabase) {
-        String miniGameStatement = "CREATE TABLE " + TABLE_NAME + "(" +
-                COLUMN_NAME_NAME + " TEXT PRIMARY KEY, " +
+    protected String getColumnsForCreateStatement() {
+        return COLUMN_NAME_NAME + " TEXT PRIMARY KEY, " +
                 COLUMN_NAME_PLAYER_LIMIT + " INTEGER, " +
-                COLUMN_NAME_ALREADY_USED + " INTEGER) ";
-
-        sqLiteDatabase.execSQL(miniGameStatement);
-        Log.i(TAG, "Table " + TABLE_NAME + " created");
+                COLUMN_NAME_ALREADY_USED + " INTEGER";
     }
 
     /**

@@ -81,10 +81,9 @@ public class IchHabNochNieTable extends BaseTable {
     }
 
     @Override
-    public void createTable(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
-                COLUMN_NAME_TASK + " TEXT PRIMARY KEY, " +
-                COLUMN_NAME_USED + " INTEGER)");
+    protected String getColumnsForCreateStatement() {
+        return COLUMN_NAME_TASK + " TEXT PRIMARY KEY, " +
+                COLUMN_NAME_USED + " INTEGER";
     }
 
     private String convertQuoationMarksToPlaceholder(String task) {

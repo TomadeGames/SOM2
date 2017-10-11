@@ -24,23 +24,29 @@ public class TaskDefinitions {
                 .getToken() + ", right Player: " + RIGHT_PLAYER.getToken() + ", least drinks: " + WITH_LEAST_DRINKS
                 .getToken() + ", most drinks: " + WITH_MOST_DRINKS.getToken() + ", random other: " +
                 RANDOM_OTHER_PLAYER.getToken();
-        int drinkCount = 0;
-        int cost = 0;
-        int maxTasks = 1;
-        int minTasks = 1;
-        TaskTarget taskTarget = TaskTarget.TASK_EVENT;
-        taskList.add(new TaskEvent(taskName, TaskDifficult.EASY, drinkCount, cost, taskTarget, new Task[]{new Task
-                ("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
-        taskList.add(new TaskEvent(taskName, TaskDifficult.MEDIUM, drinkCount, cost, taskTarget, new Task[]{new Task
-                ("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
-        taskList.add(new TaskEvent(taskName, TaskDifficult.HARD, drinkCount, cost, taskTarget, new Task[]{new Task
-                ("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
-        taskList.add(new TaskEvent(taskName, TaskDifficult.EASY_WIN, drinkCount, cost, taskTarget, new Task[]{new
-                Task("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
-        taskList.add(new TaskEvent(taskName, TaskDifficult.MEDIUM_WIN, drinkCount, cost, taskTarget, new Task[]{new
-                Task("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
-        taskList.add(new TaskEvent(taskName, TaskDifficult.HARD_WIN, drinkCount, cost, taskTarget, new Task[]{new
-                Task("event1", TaskDifficult.EASY, 0, 0, TaskTarget.UNDEFINED)}, minTasks, maxTasks));
+        int cost = 1;
+        int drinkCountLost = 2;
+        int drinkCountWon = 1;
+        TaskTarget taskTarget = TaskTarget.SELF;
+        taskList.add(new TimedTask(taskName, TaskDifficult.EASY, cost, taskTarget, new SimpleTask("event1",
+                drinkCountWon,
+                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
+
+        taskList.add(new TimedTask(taskName, TaskDifficult.MEDIUM, cost, taskTarget, new SimpleTask("event1",
+                drinkCountWon,
+                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
+        taskList.add(new TimedTask(taskName, TaskDifficult.HARD, cost, taskTarget, new SimpleTask("event1",
+                drinkCountWon,
+                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
+        taskList.add(new TimedTask(taskName, TaskDifficult.EASY_WIN, cost, taskTarget, new SimpleTask("event1",
+                drinkCountWon,
+                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
+        taskList.add(new TimedTask(taskName, TaskDifficult.MEDIUM_WIN, cost, taskTarget, new SimpleTask("event1",
+                drinkCountWon,
+                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
+        taskList.add(new TimedTask(taskName, TaskDifficult.HARD_WIN, cost, taskTarget, new SimpleTask("event1",
+                drinkCountWon,
+                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
         return taskList;
     }
 
@@ -133,7 +139,9 @@ public class TaskDefinitions {
                 .MEDIUM, 1, 3, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Rufe jemanden an und gesteh ihm/ihr deine Liebe", TaskDifficult.HARD, 0, 3, TaskTarget
                 .SELF));
-        taskList.add(new Task("Nenne 15 Biermarken in einer Minute", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
+        taskList.add(new TimedTask("Nenne 15 Biermarken in einer Minute", TaskDifficult.MEDIUM, 2, TaskTarget.SELF,
+                new SimpleTask("Geschafft!", 0, TaskTarget.UNDEFINED),
+                new SimpleTask("Zu langsam!\nTrink 2", 2, TaskTarget.SELF), 1000));
         taskList.add(new Task("Alle Singles trinken einen", TaskDifficult.EASY, 2, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Entscheide wer trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Erzähle ein Liebesgedicht", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
@@ -145,8 +153,10 @@ public class TaskDefinitions {
         taskList.add(new Task("Die Person, die am nächsten am Ausgang sitzt trinkt 2", TaskDifficult.MEDIUM, 2, 0,
                 TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Jeder ausser dir trinkt", TaskDifficult.MEDIUM, 1, 0, TaskTarget.ALL_BUT_SELF));
-        taskList.add(new Task("Nenne 10 Wörter die mit x enden in einer Minute", TaskDifficult.MEDIUM, 0, 3,
-                TaskTarget.SELF));
+        taskList.add(new TimedTask("Schaffst du es 10 Wörter die mit x enden in einer Minute zu nennen darfst 3 " +
+                "verteilen", TaskDifficult.MEDIUM, 3, TaskTarget.SELF,
+                new SimpleTask("Geschafft!\nDu darfst 3 verteilen!", 3, TaskTarget.CHOOSE_THREE),
+                new SimpleTask("Verloren!\nTrink 3", 3, TaskTarget.SELF), 1000));
         taskList.add(new Task("Jeder mit einem A im Namen trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Tanze mit " + LEFT_PLAYER.getToken(), TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Imitiere jemanden", TaskDifficult.EASY, 0, 1, TaskTarget.SELF));

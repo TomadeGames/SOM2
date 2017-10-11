@@ -37,9 +37,8 @@ public class PlayerTable extends BasePOJOTable<Player> {
     }
 
     @Override
-    public void createTable(SQLiteDatabase sqLiteDatabase) {
-        String statement = "CREATE TABLE " + TABLE_NAME + "(" +
-                COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
+    protected String getColumnsForCreateStatement() {
+        return COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_NAME_NAME + " TEXT, " +
                 COLUMN_NAME_WEIGHT + " INTEGER, " +
                 COLUMN_NAME_IS_MAN + " INTEGER, " +
@@ -48,10 +47,7 @@ public class PlayerTable extends BasePOJOTable<Player> {
                 COLUMN_NAME_MEDIUM_WINS + " INTEGER, " +
                 COLUMN_NAME_HARD_WINS + " INTEGER, " +
                 COLUMN_NAME_NEXT_PLAYER + " INTEGER, " +
-                COLUMN_NAME_LAST_PLAYER + " INTEGER)";
-
-        sqLiteDatabase.execSQL(statement);
-        Log.i(TAG, "Table " + TABLE_NAME + " created");
+                COLUMN_NAME_LAST_PLAYER + " INTEGER";
     }
 
     @Override

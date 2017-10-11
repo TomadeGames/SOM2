@@ -92,11 +92,11 @@ public class IchHabNochNieActivity extends BaseMiniGameActivity<BaseMiniGamePres
         Random random = new Random(System.currentTimeMillis());
         if (this.presenter.isFromMainGame()) {
             DatabaseHelper databaseHelper = new DatabaseHelper(this);
-            List<String> questions = databaseHelper.getUnusedTasks();
+            List<String> questions = databaseHelper.getUnusedIchHabNochNieTasks();
 
             if (questions.isEmpty()) {
                 databaseHelper.resetIchHabNochNieTasks(IchHabNochNieTasks.TASKS);
-                questions = databaseHelper.getUnusedTasks();
+                questions = databaseHelper.getUnusedIchHabNochNieTasks();
             }
 
             int index = random.nextInt(questions.size());

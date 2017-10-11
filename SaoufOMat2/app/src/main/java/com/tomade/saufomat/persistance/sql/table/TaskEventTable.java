@@ -37,42 +37,29 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
 
     @Override
     public void createTable(SQLiteDatabase sqLiteDatabase) {
-        String taskEventStatement = "CREATE TABLE " + TABLE_NAME + "(" +
-                COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
-                COLUMN_NAME_TEXT + " TEXT, " +
-                COLUMN_NAME_DRINK_COUNT + " INTEGER, " +
-                COLUMN_NAME_COST + " INTEGER, " +
-                COLUMN_NAME_DIFFICULT + " TEXT, " +
-                COLUMN_NAME_TARGET + " TEXT, " +
-                COLUMN_NAME_ALREADY_USED + " INTEGER, " +
-                COLUMN_NAME_EVENT_COUNTER + " INTEGER, " +
-                COLUMN_NAME_TASKS_TO_EVENT_COUNTER + " INTEGER, " +
-                COLUMN_NAME_CURRENT_TASK_LIMIT + " INTEGER, " +
-                COLUMN_NAME_MAX_TURN_TIME + " INTEGER, " +
-                COLUMN_NAME_ACTIVE + " INTEGER, " +
-                COLUMN_NAME_MIN_TURN_TIME + " INTEGER)";
+        super.createTable(sqLiteDatabase);
 
-        sqLiteDatabase.execSQL(taskEventStatement);
-        Log.i(TAG, "Table " + TABLE_NAME + " created");
-
-
-        String taskEventTaskStatement = "CREATE TABLE " + TASK_EVENT_TAKS_TABLE_NAME + "(" +
-                COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
-                COLUMN_NAME_TASK_EVENT_ID + " INTEGER, " +
-                COLUMN_NAME_TEXT + " TEXT, " +
-                COLUMN_NAME_DRINK_COUNT + " INTEGER, " +
-                COLUMN_NAME_COST + " INTEGER, " +
-                COLUMN_NAME_DIFFICULT + " TEXT, " +
-                COLUMN_NAME_TARGET + " TEXT, " +
-                COLUMN_NAME_ALREADY_USED + " INTEGER)";
+        String taskEventTaskStatement = "CREATE TABLE " + TASK_EVENT_TAKS_TABLE_NAME + "("
+                + super.getColumnsForCreateStatement() + ")";
 
         sqLiteDatabase.execSQL(taskEventTaskStatement);
         Log.i(TAG, "Table " + TABLE_NAME + " created");
     }
 
     @Override
+    protected String getColumnsForCreateStatement() {
+        return super.getColumnsForCreateStatement() + ", " +
+                COLUMN_NAME_EVENT_COUNTER + " INTEGER, " +
+                COLUMN_NAME_TASKS_TO_EVENT_COUNTER + " INTEGER, " +
+                COLUMN_NAME_CURRENT_TASK_LIMIT + " INTEGER, " +
+                COLUMN_NAME_MAX_TURN_TIME + " INTEGER, " +
+                COLUMN_NAME_ACTIVE + " INTEGER, " +
+                COLUMN_NAME_MIN_TURN_TIME + " INTEGER";
+    }
+
+    @Override
     public void deleteTable(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        super.deleteTable(sqLiteDatabase);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TASK_EVENT_TAKS_TABLE_NAME);
     }
 
@@ -116,8 +103,8 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
      * @param taskDifficult  die Schwierigketisstufe der Aufgaben
      * @return alle TaskEvents einer bestimmten Schweirigkeitsstufe
      */
-    public ArrayList<TaskEvent> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
-        ArrayList<TaskEvent> taskList = new ArrayList<>();
+    public ArrayList<Task> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
+        ArrayList<Task> taskList = new ArrayList<>();
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_DIFFICULT +
                 " = " + taskDifficult.toString(), null);
 
@@ -144,8 +131,8 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
      * @param taskDifficult  die Schwierigketisstufe der Aufgaben
      * @return alle ungenutzen TaskEvents einer bestimmten Schweirigkeitsstufe
      */
-    public ArrayList<TaskEvent> getUnusedTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
-        ArrayList<TaskEvent> unusedTasks = new ArrayList<>();
+    public ArrayList<Task> getUnusedTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
+        ArrayList<Task> unusedTasks = new ArrayList<>();
         String taskEventQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_ALREADY_USED + " = 0 AND " +
                 COLUMN_NAME_DIFFICULT + " = '" +
                 taskDifficult.toString() + "'";
@@ -212,7 +199,7 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
     }
 
     private void fillTaskEventContentValues(ContentValues contentValues, TaskEvent taskEvent) {
-        this.fillTaskContentValue(contentValues, taskEvent);
+        this.fillContentValue(contentValues, taskEvent);
         contentValues.put(COLUMN_NAME_MAX_TURN_TIME, taskEvent.getMaxTurnTime());
         contentValues.put(COLUMN_NAME_MIN_TURN_TIME, taskEvent.getMinTurnTime());
         contentValues.put(COLUMN_NAME_CURRENT_TASK_LIMIT, taskEvent.getCurrentTaskLimit());
@@ -267,7 +254,7 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
     private void insertTasksFromTaskEvent(SQLiteDatabase sqLiteDatabase, TaskEvent taskEvent) {
         for (Task task : taskEvent.getTasks()) {
             ContentValues contentValues = new ContentValues();
-            this.fillTaskContentValue(contentValues, task);
+            this.fillContentValue(contentValues, task);
             contentValues.put(COLUMN_NAME_TASK_EVENT_ID, taskEvent.getId());
 
             if (sqLiteDatabase.replace(TASK_EVENT_TAKS_TABLE_NAME, null, contentValues) == -1) {

@@ -25,31 +25,16 @@ public class TaskTable extends BaseTaskTable<Task> {
     }
 
     @Override
-    public void createTable(SQLiteDatabase sqLiteDatabase) {
-        String statement = "CREATE TABLE " + TABLE_NAME + "(" +
-                COLUMN_NAME_ID + " INTEGER PRIMARY KEY, " +
-                COLUMN_NAME_TEXT + " TEXT, " +
-                COLUMN_NAME_DRINK_COUNT + " INTEGER, " +
-                COLUMN_NAME_COST + " INTEGER, " +
-                COLUMN_NAME_DIFFICULT + " TEXT, " +
-                COLUMN_NAME_TARGET + " TEXT, " +
-                COLUMN_NAME_ALREADY_USED + " INTEGER)";
-
-        sqLiteDatabase.execSQL(statement);
-        Log.i(TAG, "Table " + TABLE_NAME + " created");
-    }
-
-    @Override
     public void insertEntry(SQLiteDatabase sqLiteDatabase, Task task) {
         ContentValues contentValues = new ContentValues();
-        this.fillTaskContentValue(contentValues, task);
+        this.fillContentValue(contentValues, task);
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
     }
 
     @Override
     public void updateEntry(SQLiteDatabase sqLiteDatabase, Task task) {
         ContentValues contentValues = new ContentValues();
-        this.fillTaskContentValue(contentValues, task);
+        this.fillContentValue(contentValues, task);
 
         sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_ID + " = ? ", new String[]{Integer.toString(task
                 .getId())});

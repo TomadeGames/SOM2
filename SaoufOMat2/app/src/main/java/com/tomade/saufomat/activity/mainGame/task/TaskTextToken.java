@@ -7,15 +7,15 @@ package com.tomade.saufomat.activity.mainGame.task;
  */
 
 public enum TaskTextToken {
-    //Ein Token darf nicht mit einem anderen Token anfangen!!!
-    //Beispiel: @random und @random_other würden sich überschneiden
-    //@random und @other_random nicht
     RANDOM_PLAYER("@random"),
     RANDOM_OTHER_PLAYER("@other_random"),
     LEFT_PLAYER("@left"),
     RIGHT_PLAYER("@right"),
     WITH_MOST_DRINKS("@most_drinks"),
-    WITH_LEAST_DRINKS("@least_drinks");
+    WITH_LEAST_DRINKS("@least_drinks"),
+    CURRENT_PLAYER("@current_player"),
+    MALE("@male"),
+    FEMALE("@female");
 
     private String token;
 

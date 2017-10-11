@@ -79,6 +79,9 @@
             android:name=".activity.miniGame.TutorialDialog"
             android:label="@string/dialog.tutorial.caption"
             android:theme="@style/Theme.TutorialDialog"/>
+        <activity
+            android:name=".activity.mainGame.TaskTimerActivity"
+            android:screenOrientation="sensorLandscape"/>
     </application>
 
 </manifest>

@@ -29,4 +29,10 @@ public interface IntentParameter {
     interface Tutorial {
         String TEXT_ID = "tutorial_textKey";
     }
+
+    interface TaskTimer {
+        String TIME = "task_timer_time";
+        String TASK_IF_WON = "task_timer_task_if_won";
+        String TASK_IF_LOST = "task_timer_task_if_lost";
+    }
 }

@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
+import com.tomade.saufomat.activity.mainGame.TaskTimerActivity;
+import com.tomade.saufomat.activity.mainGame.task.Task;
+import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
+import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.persistance.SaveGameHelper;
@@ -23,7 +27,7 @@ import com.tomade.saufomat.persistance.sql.DatabaseHelper;
 
 import java.util.ArrayList;
 
-public class MainMenuActivity extends Activity implements View.OnClickListener {
+public class MainMenuActivity extends Activity implements View.OnClickListener, View.OnTouchListener {
     private static final String TAG = MainMenuActivity.class.getSimpleName();
     private RelativeLayout loadGameField;
 
@@ -49,70 +53,9 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
         }
         versionTextView.setText(versionName);
 
-        this.findViewById(R.id.startButton).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MainMenuActivity.this.loadGameField.getVisibility() == View.GONE) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            ImageButton view = (ImageButton) v;
-                            view.setImageResource(R.drawable.start_button_pressed);
-                            v.invalidate();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP:
-                            SaveGameHelper saveGameHelper = new SaveGameHelper(MainMenuActivity.this);
-                            if (saveGameHelper.isGameSaved()) {
-                                Log.i(TAG, "Saved Game found");
-                                MainMenuActivity.this.loadGameField.setVisibility(View.VISIBLE);
-                            } else {
-                                Log.i(TAG, "No saved Game found");
-                                startNewGame();
-                            }
-                        case MotionEvent.ACTION_CANCEL: {
-                            ImageButton view = (ImageButton) v;
-                            view.setImageResource(R.drawable.start_button);
-                            view.invalidate();
-                            break;
-                        }
-                    }
-                } else {
-                    MainMenuActivity.this.loadGameField.setVisibility(View.GONE);
-                }
-                return true;
-            }
-        });
-
-        this.findViewById(R.id.gamesButton).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MainMenuActivity.this.loadGameField.getVisibility() == View.GONE) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            ImageButton view = (ImageButton) v;
-                            view.setImageResource(R.drawable.minigames_button_pressed);
-                            v.invalidate();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP:
-
-                            Intent intent = new Intent(MainMenuActivity.this.getApplicationContext(),
-                                    ChooseMiniGameActivity.class);
-                            MainMenuActivity.this.startActivity(intent);
-
-                        case MotionEvent.ACTION_CANCEL: {
-                            ImageButton view = (ImageButton) v;
-                            view.setImageResource(R.drawable.minigames_button);
-                            view.invalidate();
-                            break;
-                        }
-                    }
-                } else {
-                    MainMenuActivity.this.loadGameField.setVisibility(View.GONE);
-                }
-                return true;
-            }
-        });
+        this.findViewById(R.id.startButton).setOnTouchListener(this);
+        this.findViewById(R.id.gamesButton).setOnTouchListener(this);
+        this.findViewById(R.id.debugButton).setOnClickListener(this);
     }
 
     @Override
@@ -159,7 +102,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
     private void startNewGame() {
         Intent intent = new Intent(this, CreatePlayerActivity.class);
         intent.putExtra(IntentParameter.MainGame.NEW_GAME, true);
-        MainMenuActivity.this.startActivity(intent);
+        this.startActivity(intent);
     }
 
     @Override
@@ -171,6 +114,82 @@ public class MainMenuActivity extends Activity implements View.OnClickListener {
             case R.id.loadGameButton:
                 this.loadGame();
                 break;
+            case R.id.debugButton:
+                Task taskIfWon = new Task("Gewonnen", TaskDifficult.EASY, 3, 0, TaskTarget.SELF);
+                Task taskIfLost = new Task("Verloren", TaskDifficult.EASY, 10, 0, TaskTarget.SELF);
+
+                Player currentPlayer = new Player();
+                currentPlayer.setNextPlayer(currentPlayer);
+                currentPlayer.setLastPlayer(currentPlayer);
+
+                Intent intent = new Intent(this, TaskTimerActivity.class);
+                intent.putExtra(IntentParameter.TaskTimer.TIME, 60000L);
+                intent.putExtra(IntentParameter.TaskTimer.TASK_IF_WON, taskIfWon);
+                intent.putExtra(IntentParameter.TaskTimer.TASK_IF_LOST, taskIfLost);
+                intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
+                this.startActivity(intent);
+                break;
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (view.equals(this.findViewById(R.id.gamesButton))) {
+            if (this.loadGameField.getVisibility() == View.GONE) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageButton button = (ImageButton) view;
+                        button.setImageResource(R.drawable.minigames_button_pressed);
+                        view.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                        Intent intent = new Intent(this.getApplicationContext(), ChooseMiniGameActivity.class);
+                        this.startActivity(intent);
+                        view.performClick();
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageButton button = (ImageButton) view;
+                        button.setImageResource(R.drawable.minigames_button);
+                        button.invalidate();
+                        break;
+                    }
+                }
+            } else {
+                MainMenuActivity.this.loadGameField.setVisibility(View.GONE);
+            }
+            return true;
+        }
+        if (view.equals(this.findViewById(R.id.startButton))) {
+            if (this.loadGameField.getVisibility() == View.GONE) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageButton button = (ImageButton) view;
+                        button.setImageResource(R.drawable.start_button_pressed);
+                        view.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                        SaveGameHelper saveGameHelper = new SaveGameHelper(this);
+                        if (saveGameHelper.isGameSaved()) {
+                            Log.i(TAG, "Saved Game found");
+                            this.loadGameField.setVisibility(View.VISIBLE);
+                        } else {
+                            Log.i(TAG, "No saved Game found");
+                            this.startNewGame();
+                        }
+                        view.performClick();
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageButton button = (ImageButton) view;
+                        button.setImageResource(R.drawable.start_button);
+                        button.invalidate();
+                        break;
+                    }
+                }
+            } else {
+                this.loadGameField.setVisibility(View.GONE);
+            }
+            return true;
+        }
+        return true;
     }
 }
