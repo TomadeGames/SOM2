@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.tomade.saufomat.activity.mainGame.task.SimpleTask;
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
+import com.tomade.saufomat.activity.mainGame.task.TaskEvent;
 import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
-import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,5 @@
 package com.tomade.saufomat.activity.mainGame.task;
 
-import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,10 +1,6 @@
-package com.tomade.saufomat.activity.mainGame.task.taskevent;
+package com.tomade.saufomat.activity.mainGame.task;
 
 import android.util.Log;
-
-import com.tomade.saufomat.activity.mainGame.task.Task;
-import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
-import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 
 import java.io.Serializable;
 import java.util.Random;

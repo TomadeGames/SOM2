@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.tomade.saufomat.activity.mainGame.task.Task;
 import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
-import com.tomade.saufomat.activity.mainGame.task.taskevent.TaskEvent;
+import com.tomade.saufomat.activity.mainGame.task.TaskEvent;
 
 import java.util.ArrayList;
 import java.util.List;
