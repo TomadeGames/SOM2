@@ -38,6 +38,8 @@ import java.util.ArrayList;
 public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
 
+    private static final int TIMER_SUBMIT_BUTTON_IMAGE_ID = R.drawable.check_button;
+
     private TextView statisticsText;
 
     private ArrayList<Player> playerList;
@@ -128,9 +130,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         ImageButton optionsButton = this.findViewById(R.id.optionsButton);
         ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
+        if (this.currentTask instanceof TimedTask) {
+            yesButton.setImageResource(TIMER_SUBMIT_BUTTON_IMAGE_ID);
+        }
+
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
         alcoholButton.setOnClickListener(this);
+
     }
 
     @Override
