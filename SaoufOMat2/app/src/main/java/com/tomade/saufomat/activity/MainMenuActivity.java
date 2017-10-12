@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,12 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
-import com.tomade.saufomat.activity.mainGame.TaskTimerActivity;
-import com.tomade.saufomat.activity.mainGame.task.Task;
-import com.tomade.saufomat.activity.mainGame.task.TaskDifficult;
-import com.tomade.saufomat.activity.mainGame.task.TaskTarget;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.persistance.SaveGameHelper;
@@ -55,7 +53,7 @@ public class MainMenuActivity extends Activity implements View.OnClickListener, 
 
         this.findViewById(R.id.startButton).setOnTouchListener(this);
         this.findViewById(R.id.gamesButton).setOnTouchListener(this);
-        this.findViewById(R.id.debugButton).setOnClickListener(this);
+        this.findViewById(R.id.debugButton).setVisibility(View.GONE);
     }
 
     @Override
@@ -115,19 +113,13 @@ public class MainMenuActivity extends Activity implements View.OnClickListener, 
                 this.loadGame();
                 break;
             case R.id.debugButton:
-                Task taskIfWon = new Task("Gewonnen", TaskDifficult.EASY, 3, 0, TaskTarget.SELF);
-                Task taskIfLost = new Task("Verloren", TaskDifficult.EASY, 10, 0, TaskTarget.SELF);
-
-                Player currentPlayer = new Player();
-                currentPlayer.setNextPlayer(currentPlayer);
-                currentPlayer.setLastPlayer(currentPlayer);
-
-                Intent intent = new Intent(this, TaskTimerActivity.class);
-                intent.putExtra(IntentParameter.TaskTimer.TIME, 60000L);
-                intent.putExtra(IntentParameter.TaskTimer.TASK_IF_WON, taskIfWon);
-                intent.putExtra(IntentParameter.TaskTimer.TASK_IF_LOST, taskIfLost);
-                intent.putExtra(IntentParameter.CURRENT_PLAYER, currentPlayer);
-                this.startActivity(intent);
+                Intent intent = new AppInviteInvitation.IntentBuilder("titel")
+                        .setMessage("Alter, ist das Spiel geil!")
+                        .setDeepLink(Uri.parse("http://www.google.com"))
+                        .setEmailHtmlContent("Mega geiles Spiel %%APPINVITE_LINK_PLACEHOLDER%%")
+                        .setEmailSubject("SaufOMat ist sau geil")
+                        .build();
+                this.startActivityForResult(intent, 1);
                 break;
         }
     }

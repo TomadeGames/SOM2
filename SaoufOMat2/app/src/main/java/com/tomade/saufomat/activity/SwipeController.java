@@ -34,13 +34,16 @@ public class SwipeController {
         this.duration = -1;
     }
 
+    private void setStartValues(MotionEvent motionEvent) {
+        this.startX = motionEvent.getX();
+        this.startY = motionEvent.getY();
+        this.startTime = System.currentTimeMillis();
+    }
+
     private void startSwipe(MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
             this.swipeStarted = true;
-            this.resetSwipe();
-            this.startX = motionEvent.getX();
-            this.startY = motionEvent.getY();
-            this.startTime = System.currentTimeMillis();
+            this.setStartValues(motionEvent);
             Log.d(TAG, "Swipe started at (" + this.startX + ", " + this.startY + ")");
         } else {
             Log.e(TAG, "Swipe started in wrong MotionEvent Action: " + motionEvent.getAction() + " should be " +
@@ -129,7 +132,9 @@ public class SwipeController {
      * @return true, wenn Swipe abgeschlossen wurde
      */
     public boolean handleSwipe(MotionEvent motionEvent) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && !this.swipeStarted) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            this.setStartValues(motionEvent);
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && !this.swipeStarted) {
             this.startSwipe(motionEvent);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             this.endSwipe(motionEvent);

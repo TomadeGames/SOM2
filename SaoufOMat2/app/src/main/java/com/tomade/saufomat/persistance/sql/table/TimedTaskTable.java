@@ -24,6 +24,7 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
     private static final String COLUMN_NAME_TIME = "time";
     private static final String COLUMN_NAME_TASK_IF_WON = "task_if_won";
     private static final String COLUMN_NAME_TASK_IF_LOST = "task_if_lost";
+    private static final String COLUMN_NAME_TIMER_STOPPABLE = "timer_stoppable";
 
     private static final String TIMED_TASK_TASK_TABLE_NAME = "timed_task_task";
 
@@ -90,6 +91,7 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
         TimedTask timedTask = new TimedTask();
         this.parseTask(result, timedTask);
         timedTask.setTime(result.getLong(result.getColumnIndex(COLUMN_NAME_TIME)));
+        timedTask.setTimerStoppable(result.getInt(result.getColumnIndex(COLUMN_NAME_TIMER_STOPPABLE)) != 0);
         int wonId = result.getInt(result.getColumnIndex(COLUMN_NAME_TASK_IF_WON));
         int lostId = result.getInt(result.getColumnIndex(COLUMN_NAME_TASK_IF_LOST));
 
@@ -130,7 +132,8 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
         return super.getColumnsForCreateStatement() + ", "
                 + COLUMN_NAME_TIME + " LONG, "
                 + COLUMN_NAME_TASK_IF_WON + " INTEGER, "
-                + COLUMN_NAME_TASK_IF_LOST + " INTEGER";
+                + COLUMN_NAME_TASK_IF_LOST + " INTEGER, "
+                + COLUMN_NAME_TIMER_STOPPABLE + " INTEGER";
     }
 
     @Override
@@ -159,7 +162,7 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
     public ArrayList<Task> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
         ArrayList<Task> taskList = new ArrayList<>();
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_DIFFICULT +
-                " = " + taskDifficult.toString(), null);
+                " = \"" + taskDifficult.toString() + "\"", null);
 
         try {
             if (result.moveToFirst()) {
@@ -182,5 +185,10 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
         contentValues.put(COLUMN_NAME_TIME, timedTask.getTime());
         contentValues.put(COLUMN_NAME_TASK_IF_WON, timedTask.getTaskIfWon().getId());
         contentValues.put(COLUMN_NAME_TASK_IF_LOST, timedTask.getTaskIfLost().getId());
+        if (timedTask.isTimerStoppable()) {
+            contentValues.put(COLUMN_NAME_TIMER_STOPPABLE, 1);
+        } else {
+            contentValues.put(COLUMN_NAME_TIMER_STOPPABLE, 0);
+        }
     }
 }

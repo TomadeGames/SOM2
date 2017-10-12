@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "saufomat_database";
 
     //TODO wenn die Datenbank geändert wird muss dieser Wert inkrementiert werden
-    private static final int DATABASE_VERSION = 44;
+    private static final int DATABASE_VERSION = 46;
 
     private Context context;
     private PlayerTable playerTable;

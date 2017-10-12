@@ -11,6 +11,7 @@ public class TimedTask extends Task {
     private SimpleTask taskIfWon;
     private SimpleTask taskIfLost;
     private long time;
+    private boolean timerStoppable;
 
     /**
      * Konstruktor
@@ -29,6 +30,15 @@ public class TimedTask extends Task {
         this.taskIfWon = taskIfWon;
         this.taskIfLost = taskIfLost;
         this.time = time;
+        this.timerStoppable = true;
+    }
+
+    public TimedTask(String text, TaskDifficult difficult, int cost, TaskTarget target, SimpleTask taskIfTimeOut,
+                     long time) {
+        super(text, difficult, 0, cost, target);
+        this.taskIfWon = taskIfTimeOut;
+        this.time = time;
+        this.timerStoppable = false;
     }
 
     public TimedTask() {
@@ -56,5 +66,13 @@ public class TimedTask extends Task {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public boolean isTimerStoppable() {
+        return this.timerStoppable;
+    }
+
+    public void setTimerStoppable(boolean timerStoppable) {
+        this.timerStoppable = timerStoppable;
     }
 }

@@ -1,5 +1,6 @@
 package com.tomade.saufomat.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +10,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
+import com.tomade.saufomat.constant.Direction;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 
 import java.util.EnumSet;
 
-public class ChooseMiniGameActivity extends Activity implements View.OnClickListener {
+public class ChooseMiniGameActivity extends Activity implements View.OnTouchListener {
     private static final MiniGame[] NOT_CHOOSABLE_MINIGAMES = {MiniGame.BIERRUTSCHE};
 
     private MiniGame currentGame;
@@ -22,6 +24,8 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
     private TextView gameText;
     private MiniGame[] allGames;
     private int miniGameIndex = 0;
+
+    private SwipeController swipeController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,6 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         this.currentGame = this.allGames[0];
 
         this.gameText = this.findViewById(R.id.gameText);
-        ImageButton leftButton = this.findViewById(R.id.leftButton);
-        ImageButton rightButton = this.findViewById(R.id.rightButton);
         ImageButton backButton = this.findViewById(R.id.backButton);
 
         Bundle extras = this.getIntent().getExtras();
@@ -57,82 +59,11 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
             }
         }
         this.currentGameButton.setImageResource(this.currentGame.getScreenshotId());
-        leftButton.setOnClickListener(this);
-        rightButton.setOnClickListener(this);
-        backButton.setOnClickListener(this);
-        this.currentGameButton.setOnClickListener(this);
-
-        this.initButtons();
-    }
-
-    private void initButtons() {
-        this.findViewById(R.id.leftButton).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        ImageButton imageButton = (ImageButton) view;
-                        imageButton.setImageResource(R.drawable.left_button_pressed);
-                        imageButton.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-
-                        leftButtonPressed();
-
-                    case MotionEvent.ACTION_CANCEL: {
-                        ImageButton imageButton = (ImageButton) view;
-                        imageButton.setImageResource(R.drawable.left_button);
-                        imageButton.invalidate();
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-
-        this.findViewById(R.id.rightButton).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        ImageButton view = (ImageButton) v;
-                        view.setImageResource(R.drawable.right_button_pressed);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-
-                        rightButtonPressed();
-
-                    case MotionEvent.ACTION_CANCEL: {
-                        ImageButton view = (ImageButton) v;
-                        view.setImageResource(R.drawable.right_button);
-                        view.invalidate();
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.leftButton:
-                this.leftButtonPressed();
-                break;
-            case R.id.rightButton:
-                this.rightButtonPressed();
-                break;
-            case R.id.backButton:
-                this.backButtonPressed();
-                break;
-            case R.id.currentGameButton:
-                this.currentGameButtonPressed();
-                break;
-        }
+        backButton.setOnTouchListener(this);
+        this.currentGameButton.setOnTouchListener(this);
+        this.findViewById(R.id.leftButton).setOnTouchListener(this);
+        this.findViewById(R.id.rightButton).setOnTouchListener(this);
+        this.swipeController = new SwipeController();
     }
 
     private void leftButtonPressed() {
@@ -166,5 +97,80 @@ public class ChooseMiniGameActivity extends Activity implements View.OnClickList
         Intent intent = new Intent(this.getApplicationContext(), this.currentGame.getActivity());
         intent.putExtra(IntentParameter.FROM_MAIN_GAME, false);
         this.startActivity(intent);
+    }
+
+    private void handleSwipe(MotionEvent event) {
+        if (this.swipeController.handleSwipe(event)) {
+            if (this.swipeController.getDirectionX() == Direction.LEFT) {
+                this.rightButtonPressed();
+            } else {
+                this.leftButtonPressed();
+            }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.handleSwipe(event);
+        return true;
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        this.handleSwipe(motionEvent);
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                switch (view.getId()) {
+                    case R.id.rightButton:
+                        ((ImageButton) view).setImageResource(R.drawable.right_button_pressed);
+                        view.invalidate();
+                        break;
+                    case R.id.leftButton:
+                        ((ImageButton) view).setImageResource(R.drawable.left_button_pressed);
+                        view.invalidate();
+                        break;
+                    default:
+                        view.invalidate();
+                        break;
+                }
+                break;
+            }
+
+            case MotionEvent.ACTION_UP:
+                if (ChooseMiniGameActivity.this.swipeController.getDistance() < 10) {
+                    switch (view.getId()) {
+                        case R.id.leftButton:
+                            this.leftButtonPressed();
+                            break;
+                        case R.id.rightButton:
+                            this.rightButtonPressed();
+                            break;
+                        case R.id.backButton:
+                            this.backButtonPressed();
+                            break;
+                        case R.id.currentGameButton:
+                            this.currentGameButtonPressed();
+                            break;
+                    }
+                }
+
+            case MotionEvent.ACTION_CANCEL: {
+                switch (view.getId()) {
+                    case R.id.rightButton:
+                        ((ImageButton) view).setImageResource(R.drawable.right_button);
+                        view.invalidate();
+                        break;
+                    case R.id.leftButton:
+                        ((ImageButton) view).setImageResource(R.drawable.left_button);
+                        view.invalidate();
+                        break;
+                    default:
+                }
+                break;
+            }
+        }
+        return true;
     }
 }

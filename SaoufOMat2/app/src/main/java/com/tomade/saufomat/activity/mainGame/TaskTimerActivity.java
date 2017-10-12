@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.ActivityWithPlayer;
-import com.tomade.saufomat.activity.mainGame.task.SimpleTask;
 import com.tomade.saufomat.activity.mainGame.task.TaskDrinkHandler;
+import com.tomade.saufomat.activity.mainGame.task.TimedTask;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.player.Player;
 
@@ -25,13 +25,13 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
     private Player currentPlayer;
     private ArrayList<Player> playerList;
 
-    private long time = 1000;
-    private SimpleTask taskIfWon;
-    private SimpleTask taskIfLost;
+    private TimedTask timedTask;
 
     private TextView timeView;
     private boolean running = true;
     private boolean leaveAble = false;
+
+    private View submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +39,14 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
         this.setContentView(R.layout.activity_task_timer);
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
-            this.time = extras.getLong(IntentParameter.TaskTimer.TIME);
-            this.taskIfWon = (SimpleTask) extras.getSerializable(IntentParameter.TaskTimer.TASK_IF_WON);
-            this.taskIfLost = (SimpleTask) extras.getSerializable(IntentParameter.TaskTimer.TASK_IF_LOST);
+            this.timedTask = (TimedTask) extras.getSerializable(IntentParameter.TaskTimer.TIMED_TASK);
             this.currentPlayer = (Player) extras.getSerializable(IntentParameter.CURRENT_PLAYER);
             this.playerList = (ArrayList<Player>) extras.getSerializable(IntentParameter.PLAYER_LIST);
         }
 
         this.timeView = this.findViewById(R.id.timer);
 
-        new CountDownTimer(this.time, 50) {
+        new CountDownTimer(this.timedTask.getTime(), 50) {
             public void onTick(long millisUntilFinished) {
                 if (TaskTimerActivity.this.running) {
                     setTimeView(millisUntilFinished);
@@ -57,12 +55,16 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
 
             public void onFinish() {
                 if (TaskTimerActivity.this.running) {
-                    lost();
+                    timeOut();
                 }
             }
         }.start();
 
-        this.findViewById(R.id.submitButton).setOnClickListener(this);
+        this.submitButton = this.findViewById(R.id.submitButton);
+        this.submitButton.setOnClickListener(this);
+        if (!this.timedTask.isTimerStoppable()) {
+            this.submitButton.setVisibility(View.GONE);
+        }
     }
 
     private void setTimeView(long millisUntilFinished) {
@@ -73,17 +75,17 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
                         .toSeconds(millisUntilFinished))) / 1000));
     }
 
-    private void lost() {
+    private void timeOut() {
         this.running = false;
-        this.timeView.setText(this.taskIfLost.getText());
-        TaskDrinkHandler.increaseDrinks(this.taskIfLost, this);
+        this.timeView.setText(this.timedTask.getTaskIfLost().getText());
+        TaskDrinkHandler.increaseDrinks(this.timedTask.getTaskIfLost(), this);
         this.startLeavingCounter();
     }
 
     private void won() {
         this.running = false;
-        this.timeView.setText(this.taskIfWon.getText());
-        TaskDrinkHandler.increaseDrinks(this.taskIfWon, this);
+        this.timeView.setText(this.timedTask.getTaskIfWon().getText());
+        TaskDrinkHandler.increaseDrinks(this.timedTask.getTaskIfWon(), this);
         this.startLeavingCounter();
     }
 
@@ -93,6 +95,7 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
             @Override
             public void run() {
                 TaskTimerActivity.this.leaveAble = true;
+                TaskTimerActivity.this.submitButton.setVisibility(View.VISIBLE);
             }
         }, LEAVEABLE_DELAY);
     }

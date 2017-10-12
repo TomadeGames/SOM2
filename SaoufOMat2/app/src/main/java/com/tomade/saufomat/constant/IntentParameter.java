@@ -31,8 +31,6 @@ public interface IntentParameter {
     }
 
     interface TaskTimer {
-        String TIME = "task_timer_time";
-        String TASK_IF_WON = "task_timer_task_if_won";
-        String TASK_IF_LOST = "task_timer_task_if_lost";
+        String TIMED_TASK = "timed_task";
     }
 }

@@ -106,7 +106,7 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
     public ArrayList<Task> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult taskDifficult) {
         ArrayList<Task> taskList = new ArrayList<>();
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_DIFFICULT +
-                " = " + taskDifficult.toString(), null);
+                " = \"" + taskDifficult.toString() + "\"", null);
 
         try {
             if (result.moveToFirst()) {

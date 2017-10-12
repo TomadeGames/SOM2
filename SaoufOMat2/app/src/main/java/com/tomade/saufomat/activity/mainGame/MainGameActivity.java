@@ -44,6 +44,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
     private Animation middleRollingAnimation;
     private Animation rightRollingAnimation;
 
+    private boolean rollStarted = false;
     private boolean leftRolling = false;
     private boolean middleRolling = false;
     private boolean rightRolling = false;
@@ -110,8 +111,10 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
                 this.startRightAnimation();
                 break;
             case ROLLING_ALL:
-                this.stopLeftAnimation();
-                this.gameState = MainGameState.STOP1;
+                if (this.rollStarted) {
+                    this.stopLeftAnimation();
+                    this.gameState = MainGameState.STOP1;
+                }
                 break;
             case STOP1:
                 this.stopMiddleAnimation();
@@ -426,6 +429,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+                MainGameActivity.this.rollStarted = true;
                 changeIcon(0);
             }
         });

@@ -24,27 +24,13 @@ public class TaskDefinitions {
                 RANDOM_OTHER_PLAYER.getToken();
         int cost = 1;
         int drinkCountLost = 2;
-        int drinkCountWon = 1;
-        TaskTarget taskTarget = TaskTarget.SELF;
-        taskList.add(new TimedTask(taskName, TaskDifficult.EASY, cost, taskTarget, new SimpleTask("event1",
-                drinkCountWon,
-                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
-
-        taskList.add(new TimedTask(taskName, TaskDifficult.MEDIUM, cost, taskTarget, new SimpleTask("event1",
-                drinkCountWon,
-                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
-        taskList.add(new TimedTask(taskName, TaskDifficult.HARD, cost, taskTarget, new SimpleTask("event1",
-                drinkCountWon,
-                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
-        taskList.add(new TimedTask(taskName, TaskDifficult.EASY_WIN, cost, taskTarget, new SimpleTask("event1",
-                drinkCountWon,
-                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
-        taskList.add(new TimedTask(taskName, TaskDifficult.MEDIUM_WIN, cost, taskTarget, new SimpleTask("event1",
-                drinkCountWon,
-                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
-        taskList.add(new TimedTask(taskName, TaskDifficult.HARD_WIN, cost, taskTarget, new SimpleTask("event1",
-                drinkCountWon,
-                taskTarget), new SimpleTask("verloren", drinkCountLost, taskTarget), 60000));
+        TaskTarget taskTarget = TaskTarget.AD;
+        taskList.add(new Task(taskName, TaskDifficult.EASY, drinkCountLost, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.MEDIUM, drinkCountLost, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.HARD, drinkCountLost, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.EASY_WIN, drinkCountLost, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.MEDIUM_WIN, drinkCountLost, cost, taskTarget));
+        taskList.add(new Task(taskName, TaskDifficult.HARD_WIN, drinkCountLost, cost, taskTarget));
         return taskList;
     }
 
@@ -335,8 +321,9 @@ public class TaskDefinitions {
         taskList.add(new Task("Lies folgendes laut vor: \"Ich bin ein dummer Loser ohne SWAG!\" Wer nicht zugehört " +
                 "hat trinkt 5. Haben alle zugehört, bist du schon gestraft genug, du dummer Loser haha",
                 TaskDifficult.HARD, 5, 0, TaskTarget.CHOOSE_ALL));
-        taskList.add(new Task("Reibe 30 Sekunden an deinen Nippeln oder trinke 3", TaskDifficult.HARD, 0, 3,
-                TaskTarget.SELF));
+        taskList.add(new TimedTask("Reibe 30 Sekunden an deinen Nippeln oder trinke 3",
+                TaskDifficult.HARD, 3, TaskTarget.SELF,
+                new SimpleTask("Du darfst jetzt aufhören, du Perversling!", 0, TaskTarget.UNDEFINED), 30000));
         taskList.add(new Task("Jeder, der keinen SWAG hat trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task(LEFT_PLAYER.getToken() + " darf den Namen eines Kontaktes in deinem Handy ändern",
                 TaskDifficult.HARD, 0, 3, TaskTarget.SELF));
@@ -358,6 +345,23 @@ public class TaskDefinitions {
                 TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Zahle 50 Cent an den Besitzer des Handys", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Tanze mit einem Gegenstand", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
+        taskList.add(new TimedTask("Du hast 45 Sekunden Zeit um dich 10 Mal um deine eigene Achse zu drehen",
+                TaskDifficult.HARD, 4, TaskTarget.UNDEFINED,
+                new SimpleTask("Geschafft!", 0, TaskTarget.UNDEFINED),
+                new SimpleTask("Zu langsam!\nTrink 4!", 4, TaskTarget.SELF), 45000));
+        taskList.add(new TimedTask("Wenn du es schaffst 3 Kurze in 15 Sekunden zu trinken, muss jeder einen Kurzen " +
+                "deiner Wahl trinken", TaskDifficult.HARD, 0, TaskTarget.UNDEFINED,
+                new SimpleTask("Jeder bekommt einen Kurzen deiner Wahl", 1, TaskTarget.ALL),
+                new SimpleTask("Zu langsam!\nDie anderen gehen leer aus", 0, TaskTarget.UNDEFINED), 15000));
+        taskList.add(new TimedTask("Wenn du es schaffst ein Glas in 30 Sekunden zu exen, darfst du 5 verteilen",
+                TaskDifficult.HARD, 2, TaskTarget.UNDEFINED,
+                new SimpleTask("Du darfst 5 verteilen", 5, TaskTarget.CHOOSE_FIVE),
+                new SimpleTask("Zu langsam!\nDie anderen gehen leer aus", 0, TaskTarget.UNDEFINED), 30000));
+        taskList.add(new TimedTask("Nenne eine Kategorie (wie z.B. Automarken). " + TaskTextToken.RIGHT_PLAYER +
+                " hat 60 Sekunden Zeit 15 zu nennen. Wenn er/sie es nicht schafft muss er/sie zwei trinken",
+                TaskDifficult.MEDIUM, 0, TaskTarget.UNDEFINED,
+                new SimpleTask("Du darfst trocken bleiben", 0, TaskTarget.UNDEFINED),
+                new SimpleTask("Zu langsam!\nTrink zwei", 2, TaskTarget.NEIGHBOUR_RIGHT), 60000));
 
         //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
@@ -374,6 +378,10 @@ public class TaskDefinitions {
                 .HARD_WIN, 1, 0, TaskTarget.CHOOSE_THREE));
         taskList.add(new Task("Suche dir ein Opfer aus. Dieses Opfer trinkt 3 Runden lang deine Schlucke...\nDoppelt!",
                 TaskDifficult.HARD_WIN, 1, 0, TaskTarget.VICTIM));
+        taskList.add(new TimedTask("Du hast eine Minute Zeit! Für jeden Kurzen, den du in dieser Zeit trinkst, darfst" +
+                " du einen Kurzen deiner Wahl verteilen", TaskDifficult.HARD_WIN, 0, TaskTarget.UNDEFINED,
+                new SimpleTask("Die Zeit ist um!\nJetzt darfst du die anderen abfüllen", 0, TaskTarget.UNDEFINED),
+                60000));
 
         return taskList;
     }

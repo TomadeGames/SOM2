@@ -70,7 +70,7 @@ public class TaskTable extends BaseTaskTable<Task> {
      */
     public ArrayList<Task> getAllTasks(SQLiteDatabase sqLiteDatabase, TaskDifficult difficult) {
         Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME_DIFFICULT +
-                " = " + difficult.toString(), null);
+                " = \"" + difficult.toString() + "\"", null);
 
         ArrayList<Task> taskList = new ArrayList<>();
 

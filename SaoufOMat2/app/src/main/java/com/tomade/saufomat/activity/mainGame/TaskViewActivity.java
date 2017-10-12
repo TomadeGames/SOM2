@@ -103,16 +103,18 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             cost = this.currentTask.getCost();
 
             if (this.currentTask.getTaskTarget() == TaskTarget.AD) {
-                this.interstitialAd = new InterstitialAd(this);
-                this.interstitialAd.setAdUnitId(this.getString(R.string.maingame_ad_id));
-                this.interstitialAd.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdClosed() {
-                        openMainView();
-                    }
-                });
-                AdRequest adRequest = new AdRequest.Builder().build();
-                this.interstitialAd.loadAd(adRequest);
+                if (this.currentTask.getTaskTarget() == TaskTarget.AD) {
+                    this.interstitialAd = new InterstitialAd(this);
+                    this.interstitialAd.setAdUnitId(this.getString(R.string.maingame_ad_id));
+                    this.interstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdClosed() {
+                            openMainView();
+                        }
+                    });
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    this.interstitialAd.loadAd(adRequest);
+                }
             }
         }
 
@@ -163,9 +165,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         Intent intent = new Intent(this, TaskTimerActivity.class);
         intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
         intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-        intent.putExtra(IntentParameter.TaskTimer.TIME, timedTask.getTime());
-        intent.putExtra(IntentParameter.TaskTimer.TASK_IF_WON, timedTask.getTaskIfWon());
-        intent.putExtra(IntentParameter.TaskTimer.TASK_IF_LOST, timedTask.getTaskIfLost());
+        intent.putExtra(IntentParameter.TaskTimer.TIMED_TASK, timedTask);
         this.finish();
         this.startActivity(intent);
     }
