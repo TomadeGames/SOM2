@@ -72,7 +72,7 @@
     <string name="minigame.busfahren.question.first.answer.left">Rot</string>
     <string name="minigame.busfahren.question.first.answer.right">Schwarz</string>
     <string name="maingame.task.jackpot">Hauptgewinn:\n</string>
-    <string name="maingame.button.decline">Trink %d</string>
+    <string name="maingame.button.decline">lieber %d trinken</string>
     <string name="create_player.no_player">Keine Spieler vorhanden</string>
     <string name="create_player.new_player">Neuer Spieler</string>
     <string name="create_player.check_data">Daten überprüfen!</string>

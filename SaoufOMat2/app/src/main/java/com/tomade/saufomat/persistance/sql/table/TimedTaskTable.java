@@ -41,11 +41,13 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
             throw new IllegalStateException("Error at inserting timedTask " + timedTask + " in Table " + TABLE_NAME);
         }
 
-        ContentValues lostValues = new ContentValues();
-        this.fillSimpleTaskContentValues(lostValues, timedTask.getTaskIfLost());
-        if (sqLiteDatabase.insert(TIMED_TASK_TASK_TABLE_NAME, null, lostValues) == -1) {
-            throw new IllegalStateException("Error at inserting lost timedTask_Task in Table " +
-                    TIMED_TASK_TASK_TABLE_NAME);
+        if (timedTask.isTimerStoppable()) {
+            ContentValues lostValues = new ContentValues();
+            this.fillSimpleTaskContentValues(lostValues, timedTask.getTaskIfLost());
+            if (sqLiteDatabase.insert(TIMED_TASK_TASK_TABLE_NAME, null, lostValues) == -1) {
+                throw new IllegalStateException("Error at inserting lost timedTask_Task in Table " +
+                        TIMED_TASK_TASK_TABLE_NAME);
+            }
         }
 
         ContentValues wonValues = new ContentValues();
@@ -63,10 +65,12 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
 
         sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_NAME_ID + " = " + timedTask.getId(), null);
 
-        ContentValues lostValues = new ContentValues();
-        this.fillSimpleTaskContentValues(contentValues, timedTask.getTaskIfLost());
-        sqLiteDatabase.update(TIMED_TASK_TASK_TABLE_NAME, lostValues, COLUMN_NAME_ID + " = "
-                + timedTask.getTaskIfLost().getId(), null);
+        if (timedTask.isTimerStoppable()) {
+            ContentValues lostValues = new ContentValues();
+            this.fillSimpleTaskContentValues(contentValues, timedTask.getTaskIfLost());
+            sqLiteDatabase.update(TIMED_TASK_TASK_TABLE_NAME, lostValues, COLUMN_NAME_ID + " = "
+                    + timedTask.getTaskIfLost().getId(), null);
+        }
 
         ContentValues wonValues = new ContentValues();
         this.fillSimpleTaskContentValues(contentValues, timedTask.getTaskIfWon());
@@ -93,10 +97,12 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
         timedTask.setTime(result.getLong(result.getColumnIndex(COLUMN_NAME_TIME)));
         timedTask.setTimerStoppable(result.getInt(result.getColumnIndex(COLUMN_NAME_TIMER_STOPPABLE)) != 0);
         int wonId = result.getInt(result.getColumnIndex(COLUMN_NAME_TASK_IF_WON));
-        int lostId = result.getInt(result.getColumnIndex(COLUMN_NAME_TASK_IF_LOST));
+        if (timedTask.isTimerStoppable()) {
+            int lostId = result.getInt(result.getColumnIndex(COLUMN_NAME_TASK_IF_LOST));
+            timedTask.setTaskIfLost(this.getSimpleTask(database, lostId));
+        }
 
         timedTask.setTaskIfWon(this.getSimpleTask(database, wonId));
-        timedTask.setTaskIfLost(this.getSimpleTask(database, lostId));
 
         return timedTask;
     }
@@ -184,9 +190,9 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
         this.fillContentValue(contentValues, timedTask);
         contentValues.put(COLUMN_NAME_TIME, timedTask.getTime());
         contentValues.put(COLUMN_NAME_TASK_IF_WON, timedTask.getTaskIfWon().getId());
-        contentValues.put(COLUMN_NAME_TASK_IF_LOST, timedTask.getTaskIfLost().getId());
         if (timedTask.isTimerStoppable()) {
             contentValues.put(COLUMN_NAME_TIMER_STOPPABLE, 1);
+            contentValues.put(COLUMN_NAME_TASK_IF_LOST, timedTask.getTaskIfLost().getId());
         } else {
             contentValues.put(COLUMN_NAME_TIMER_STOPPABLE, 0);
         }

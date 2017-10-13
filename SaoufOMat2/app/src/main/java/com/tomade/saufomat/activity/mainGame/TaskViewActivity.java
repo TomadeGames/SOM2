@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
@@ -40,7 +41,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
     private static final int TIMER_SUBMIT_BUTTON_IMAGE_ID = R.drawable.check_button;
 
-    private TextView statisticsText;
+    //private TextView statisticsText;
 
     private ArrayList<Player> playerList;
     private Task currentTask;
@@ -57,7 +58,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_task_view);
+        this.setContentView(R.layout.activity_new_task_view);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Point size = new Point();
@@ -78,12 +79,15 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             this.isGame = true;
         }
 
-        this.statisticsText = this.findViewById(R.id.statisticText);
-        TextView currentPlayerNameText = this.findViewById(R.id.currentPlayerNameText);
+        //this.statisticsText = this.findViewById(R.id.statisticText);
+        TextView currentPlayerNameText = this.findViewById(R.id.currentPlayerText);
         currentPlayerNameText.setText(this.currentPlayer.getName());
+        ((TextView) this.findViewById(R.id.lastPlayerText)).setText(this.currentPlayer.getLastPlayer().getName());
+        ((TextView) this.findViewById(R.id.nextPlayerText)).setText(this.currentPlayer.getNextPlayer().getName());
         TextView taskText = this.findViewById(R.id.taskText);
         ImageButton noButton = this.findViewById(R.id.declineButton);
-        TextView costText = this.findViewById(R.id.costText);
+        TextView costText = this.findViewById(R.id.declineButtonText);
+        RelativeLayout submitButtonLayout = this.findViewById(R.id.submitButtonLayout);
         int cost = 0;
 
         if (this.isGame) {
@@ -119,8 +123,13 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         }
 
         if (cost <= 0) {
-            noButton.setImageResource(R.drawable.gray_button);
-            costText.setVisibility(View.INVISIBLE);
+            noButton.setVisibility(View.GONE);
+            costText.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams layoutParams;
+            layoutParams = (RelativeLayout.LayoutParams) submitButtonLayout.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, 0);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
         } else {
             costText.setText(this.getString(R.string.maingame_button_decline, this.currentTask.getCost()));
             noButton.setOnClickListener(this);
@@ -128,9 +137,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
         this.alcoholButtonPressed();
 
-        ImageButton yesButton = this.findViewById(R.id.acceptButton);
+        ImageButton yesButton = this.findViewById(R.id.submitButton);
         ImageButton optionsButton = this.findViewById(R.id.optionsButton);
-        ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
+        //ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
         if (this.currentTask instanceof TimedTask) {
             yesButton.setImageResource(TIMER_SUBMIT_BUTTON_IMAGE_ID);
@@ -138,14 +147,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
-        alcoholButton.setOnClickListener(this);
+        //alcoholButton.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.acceptButton:
+            case R.id.submitButton:
                 this.yesButtonPressed();
                 break;
             case R.id.declineButton:
@@ -329,7 +338,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
         } while (player != this.currentPlayer);
 
-        this.statisticsText.setText(statisticValue);
+        // this.statisticsText.setText(statisticValue);
     }
 
     private float calculateAlcohol(int drinks, int weight, boolean isMan) {

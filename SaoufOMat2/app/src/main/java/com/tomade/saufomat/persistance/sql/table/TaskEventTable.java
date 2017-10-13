@@ -40,7 +40,8 @@ public class TaskEventTable extends BaseTaskTable<TaskEvent> {
         super.createTable(sqLiteDatabase);
 
         String taskEventTaskStatement = "CREATE TABLE " + TASK_EVENT_TAKS_TABLE_NAME + "("
-                + super.getColumnsForCreateStatement() + ")";
+                + super.getColumnsForCreateStatement() + ", "
+                + COLUMN_NAME_TASK_EVENT_ID + " INTEGER)";
 
         sqLiteDatabase.execSQL(taskEventTaskStatement);
         Log.i(TAG, "Table " + TABLE_NAME + " created");
