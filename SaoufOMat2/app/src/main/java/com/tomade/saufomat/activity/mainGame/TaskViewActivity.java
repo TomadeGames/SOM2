@@ -156,7 +156,8 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
     }
 
     private void setTextFont(TextView... textViews) {
-        Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/berlin_sans_fb_demi.ttf");
+        Typeface font = Typeface.createFromAsset(this.getApplicationContext().getAssets(), "fonts/berlin_snas_fb_demi" +
+                ".TTF");
         for (TextView textView : textViews) {
             textView.setTypeface(font);
         }
