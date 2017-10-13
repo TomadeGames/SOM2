@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -41,8 +42,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
     private static final int TIMER_SUBMIT_BUTTON_IMAGE_ID = R.drawable.check_button;
 
-    //private TextView statisticsText;
-
     private ArrayList<Player> playerList;
     private Task currentTask;
     private MiniGame miniGame = null;
@@ -79,7 +78,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             this.isGame = true;
         }
 
-        //this.statisticsText = this.findViewById(R.id.statisticText);
         TextView currentPlayerNameText = this.findViewById(R.id.currentPlayerText);
         currentPlayerNameText.setText(this.currentPlayer.getName());
         ((TextView) this.findViewById(R.id.lastPlayerText)).setText(this.currentPlayer.getLastPlayer().getName());
@@ -145,10 +143,23 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             yesButton.setImageResource(TIMER_SUBMIT_BUTTON_IMAGE_ID);
         }
 
+        TextView submitText = this.findViewById(R.id.submitButtonText);
+        TextView lastPlayerNameText = this.findViewById(R.id.lastPlayerText);
+        TextView nextPlayerNameText = this.findViewById(R.id.nextPlayerText);
+
+        this.setTextFont(taskText, costText, submitText, currentPlayerNameText, lastPlayerNameText, nextPlayerNameText);
+
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
         //alcoholButton.setOnClickListener(this);
 
+    }
+
+    private void setTextFont(TextView... textViews) {
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/berlin_sans_fb_demi.ttf");
+        for (TextView textView : textViews) {
+            textView.setTypeface(font);
+        }
     }
 
     @Override

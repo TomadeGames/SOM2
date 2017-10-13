@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1089249925902",
+    "firebase_url": "https://saoufomat2.firebaseio.com",
+    "project_id": "saoufomat2",
+    "storage_bucket": "saoufomat2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089249925902:android:ff3b25038795af19",
+        "android_client_info": {
+          "package_name": "com.tomade.saufomat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089249925902-vkkj0m9l4bfgjkc7sue9p3gm22sivotn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tomade.saufomat",
+            "certificate_hash": "7c5ef248b15f40516e20d599b7f64daa62a0b779"
+          }
+        },
+        {
+          "client_id": "1089249925902-dlopucq67trb6p81e4lgo1eteiegtiqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYFStLWZ0iaZZ3p3NFnrbVPzzpvJrPU2s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089249925902-dlopucq67trb6p81e4lgo1eteiegtiqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

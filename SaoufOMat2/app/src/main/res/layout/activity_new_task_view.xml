@@ -19,7 +19,6 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:fontFamily="@font/berlin_sans_fb_demi"
             android:gravity="center"
             android:text="TextView"
             android:textAlignment="center"
@@ -38,7 +37,6 @@
             android:layout_margin="10dp"
             android:layout_toLeftOf="@id/currentPlayerText"
             android:layout_toStartOf="@id/currentPlayerText"
-            android:fontFamily="@font/berlin_sans_fb_demi"
             android:gravity="center"
             android:text="TextView"
             android:textAlignment="center"
@@ -56,7 +54,6 @@
             android:layout_margin="10dp"
             android:layout_toEndOf="@id/currentPlayerText"
             android:layout_toRightOf="@id/currentPlayerText"
-            android:fontFamily="@font/berlin_sans_fb_demi"
             android:gravity="center"
             android:text="TextView"
             android:textAlignment="center"
@@ -112,7 +109,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:fontFamily="@font/berlin_sans_fb_demi"
                     android:gravity="center"
                     android:text="TextView"
                     android:textAppearance="@android:style/TextAppearance.Large"
@@ -140,6 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#00000000"
+                        android:contentDescription="Ablehnen Button"
                         android:scaleType="fitXY"
                         android:src="@drawable/maingame_decline_button"/>
 
@@ -148,7 +145,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:fontFamily="@font/berlin_sans_fb_demi"
                         android:gravity="center"
                         android:text="TextView"
                         android:textAlignment="center"
@@ -176,6 +172,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#00000000"
+                        android:contentDescription="Zustimmen Button"
                         android:scaleType="fitXY"
                         android:src="@drawable/maingame_submit_button"/>
 
@@ -184,7 +181,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
-                        android:fontFamily="@font/berlin_sans_fb_demi"
                         android:gravity="center"
                         android:text="mach ich"
                         android:textAlignment="center"
