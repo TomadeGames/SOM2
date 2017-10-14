@@ -12,7 +12,7 @@
         android:layout_height="75dp"
         android:background="#FFC928">
 
-        <TextView
+        <com.tomade.saufomat.view.SaufOMatTextView
             android:id="@+id/currentPlayerText"
             android:layout_width="275dp"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
             android:textSize="30sp"
             android:textStyle="bold"/>
 
-        <TextView
+        <com.tomade.saufomat.view.SaufOMatTextView
             android:id="@+id/lastPlayerText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -44,7 +44,7 @@
             android:textColor="#000000"
             android:textSize="18sp"/>
 
-        <TextView
+        <com.tomade.saufomat.view.SaufOMatTextView
             android:id="@+id/nextPlayerText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -104,7 +104,7 @@
                 android:layout_height="match_parent"
                 android:layout_above="@id/buttonsLayout">
 
-                <TextView
+                <com.tomade.saufomat.view.SaufOMatTextView
                     android:id="@+id/taskText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -140,7 +140,7 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/maingame_decline_button"/>
 
-                    <TextView
+                    <com.tomade.saufomat.view.SaufOMatTextView
                         android:id="@+id/declineButtonText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -176,19 +176,18 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/maingame_submit_button"/>
 
-                    <TextView
+                    <com.tomade.saufomat.view.SaufOMatTextView
                         android:id="@+id/submitButtonText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
                         android:gravity="center"
-                        android:text="mach ich"
+                        android:text="mach ich!"
                         android:textAlignment="center"
-                        android:textAllCaps="false"
                         android:textAppearance="@android:style/TextAppearance.Large"
                         android:textColor="#000000"
                         android:textStyle="bold"
-                        tools:text="mach ich"/>
+                        tools:text="mach ich!"/>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>

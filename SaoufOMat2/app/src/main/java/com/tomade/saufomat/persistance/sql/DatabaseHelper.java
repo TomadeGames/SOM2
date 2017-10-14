@@ -139,7 +139,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param task die Aufgabe
      */
     public void updateTask(Task task) {
-        this.taskTable.updateEntry(this.getWritableDatabase(), task);
+        SQLiteDatabase database = this.getWritableDatabase();
+        if (task instanceof TimedTask) {
+            this.timedTaskTable.updateEntry(database, (TimedTask) task);
+        } else if (task instanceof TaskEvent) {
+            this.taskEventTable.updateEntry(database, (TaskEvent) task);
+        } else {
+            this.taskTable.updateEntry(database, task);
+        }
     }
 
     /**

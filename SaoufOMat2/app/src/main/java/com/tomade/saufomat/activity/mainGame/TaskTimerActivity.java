@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
@@ -31,7 +32,8 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
     private boolean running = true;
     private boolean leaveAble = false;
 
-    private View submitButton;
+    private RelativeLayout submitButtonLayout;
+    private TextView submitButtonText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,12 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
             }
         }.start();
 
-        this.submitButton = this.findViewById(R.id.submitButton);
-        this.submitButton.setOnClickListener(this);
+        this.submitButtonText = this.findViewById(R.id.submitButtonText);
+        this.submitButtonLayout = this.findViewById(R.id.submitButtonLayout);
+        View submitButton = this.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(this);
         if (!this.timedTask.isTimerStoppable()) {
-            this.submitButton.setVisibility(View.GONE);
+            submitButton.setVisibility(View.GONE);
         }
     }
 
@@ -95,7 +99,8 @@ public class TaskTimerActivity extends Activity implements ActivityWithPlayer, V
             @Override
             public void run() {
                 TaskTimerActivity.this.leaveAble = true;
-                TaskTimerActivity.this.submitButton.setVisibility(View.VISIBLE);
+                TaskTimerActivity.this.submitButtonLayout.setVisibility(View.VISIBLE);
+                TaskTimerActivity.this.submitButtonText.setText("Weiter");
             }
         }, LEAVEABLE_DELAY);
     }

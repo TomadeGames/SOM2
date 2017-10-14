@@ -125,12 +125,13 @@ public class TaskDefinitions {
                 .SELF));
         taskList.add(new TimedTask("Nenne 15 Biermarken in einer Minute", TaskDifficult.MEDIUM, 2, TaskTarget.SELF,
                 new SimpleTask("Geschafft!", 0, TaskTarget.UNDEFINED),
-                new SimpleTask("Zu langsam!\nTrink 2", 2, TaskTarget.SELF), 1000));
+                new SimpleTask("Zu langsam!\nTrink 2", 2, TaskTarget.SELF), 60000));
         taskList.add(new Task("Alle Singles trinken einen", TaskDifficult.EASY, 2, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Entscheide wer trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Erzähle ein Liebesgedicht", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Verbiete ein Wort", TaskDifficult.HARD, 0, 0, TaskTarget.SELF));
-        taskList.add(new Task("Du bist jetzt der König. Wer dich anspricht muss trinken", TaskDifficult.MEDIUM, 0, 0,
+        taskList.add(new Task("Du bist jetzt für die nächsten zwei Runden der König. Wer dich anspricht muss " +
+                "trinken", TaskDifficult.MEDIUM, 0, 0,
                 TaskTarget.SELF));
         taskList.add(new Task("Die Person mit dem längsten Nachnamen trinkt", TaskDifficult.EASY, 1, 0, TaskTarget
                 .CHOOSE_ONE));
@@ -140,7 +141,7 @@ public class TaskDefinitions {
         taskList.add(new TimedTask("Schaffst du es 10 Wörter die mit x enden in einer Minute zu nennen darfst 3 " +
                 "verteilen", TaskDifficult.MEDIUM, 3, TaskTarget.SELF,
                 new SimpleTask("Geschafft!\nDu darfst 3 verteilen!", 3, TaskTarget.CHOOSE_THREE),
-                new SimpleTask("Verloren!\nTrink 3", 3, TaskTarget.SELF), 1000));
+                new SimpleTask("Verloren!\nTrink 3", 3, TaskTarget.SELF), 60000));
         taskList.add(new Task("Jeder mit einem A im Namen trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Tanze mit " + LEFT_PLAYER.getToken(), TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Imitiere jemanden", TaskDifficult.EASY, 0, 1, TaskTarget.SELF));

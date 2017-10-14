@@ -67,13 +67,13 @@ public class TimedTaskTable extends BaseTaskTable<TimedTask> {
 
         if (timedTask.isTimerStoppable()) {
             ContentValues lostValues = new ContentValues();
-            this.fillSimpleTaskContentValues(contentValues, timedTask.getTaskIfLost());
+            this.fillSimpleTaskContentValues(lostValues, timedTask.getTaskIfLost());
             sqLiteDatabase.update(TIMED_TASK_TASK_TABLE_NAME, lostValues, COLUMN_NAME_ID + " = "
                     + timedTask.getTaskIfLost().getId(), null);
         }
 
         ContentValues wonValues = new ContentValues();
-        this.fillSimpleTaskContentValues(contentValues, timedTask.getTaskIfWon());
+        this.fillSimpleTaskContentValues(wonValues, timedTask.getTaskIfWon());
         sqLiteDatabase.update(TIMED_TASK_TASK_TABLE_NAME, wonValues, COLUMN_NAME_ID + " = "
                 + timedTask.getTaskIfWon().getId(), null);
     }

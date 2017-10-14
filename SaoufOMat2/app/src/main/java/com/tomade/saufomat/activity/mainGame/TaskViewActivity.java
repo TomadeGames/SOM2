@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -39,8 +38,6 @@ import java.util.ArrayList;
  */
 public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
-
-    private static final int TIMER_SUBMIT_BUTTON_IMAGE_ID = R.drawable.check_button;
 
     private ArrayList<Player> playerList;
     private Task currentTask;
@@ -140,27 +137,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         //ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
         if (this.currentTask instanceof TimedTask) {
-            yesButton.setImageResource(TIMER_SUBMIT_BUTTON_IMAGE_ID);
+            TextView submitButtonText = this.findViewById(R.id.submitButtonText);
+            submitButtonText.setText("Los gehts!");
         }
-
-        TextView submitText = this.findViewById(R.id.submitButtonText);
-        TextView lastPlayerNameText = this.findViewById(R.id.lastPlayerText);
-        TextView nextPlayerNameText = this.findViewById(R.id.nextPlayerText);
-
-        this.setTextFont(taskText, costText, submitText, currentPlayerNameText, lastPlayerNameText, nextPlayerNameText);
 
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
         //alcoholButton.setOnClickListener(this);
 
-    }
-
-    private void setTextFont(TextView... textViews) {
-        Typeface font = Typeface.createFromAsset(this.getApplicationContext().getAssets(), "fonts/berlin_snas_fb_demi" +
-                ".TTF");
-        for (TextView textView : textViews) {
-            textView.setTypeface(font);
-        }
     }
 
     @Override
