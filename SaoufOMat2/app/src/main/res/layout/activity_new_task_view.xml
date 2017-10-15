@@ -89,6 +89,21 @@
                 android:cropToPadding="false"
                 android:scaleType="fitXY"
                 android:src="@drawable/options_button"/>
+
+            <ImageButton
+                android:id="@+id/alcoholButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/optionsButton"
+                android:background="#00ffffff"
+                android:contentDescription="Alcoholbutton"
+                android:cropToPadding="false"
+                android:scaleType="fitXY"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:src="@drawable/maingame_alcohol_button"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -99,13 +114,112 @@
             android:layout_toRightOf="@id/leftLayout">
 
             <RelativeLayout
-                android:id="@+id/textLayout"
+                android:id="@+id/taskLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/buttonsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_alignParentBottom="true">
+
+                    <RelativeLayout
+                        android:id="@+id/declineButtonLayout"
+                        android:layout_width="250dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp">
+
+                        <ImageButton
+                            android:id="@+id/declineButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#00000000"
+                            android:contentDescription="Ablehnen Button"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/maingame_decline_button"/>
+
+                        <com.tomade.saufomat.view.SaufOMatTextView
+                            android:id="@+id/declineButtonText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="TextView"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            tools:text="lieber 5 trinken"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/submitButtonLayout"
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignBottom="@id/declineButtonLayout"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@id/declineButtonLayout"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp">
+
+                        <ImageButton
+                            android:id="@+id/submitButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#00000000"
+                            android:contentDescription="Zustimmen Button"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/maingame_submit_button"/>
+
+                        <com.tomade.saufomat.view.SaufOMatTextView
+                            android:id="@+id/submitButtonText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="mach ich!"
+                            android:textAlignment="center"
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            tools:text="mach ich!"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/textLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/buttonsLayout">
+
+                    <com.tomade.saufomat.view.SaufOMatTextView
+                        android:id="@+id/taskText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textAppearance="@android:style/TextAppearance.Large"
+                        android:textColor="#ffffff"/>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/alcoholLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/buttonsLayout">
+                android:visibility="gone">
 
                 <com.tomade.saufomat.view.SaufOMatTextView
-                    android:id="@+id/taskText"
+                    android:id="@+id/alcoholText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -113,82 +227,6 @@
                     android:text="TextView"
                     android:textAppearance="@android:style/TextAppearance.Large"
                     android:textColor="#ffffff"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/buttonsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:layout_alignParentBottom="true">
-
-                <RelativeLayout
-                    android:id="@+id/declineButtonLayout"
-                    android:layout_width="250dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp">
-
-                    <ImageButton
-                        android:id="@+id/declineButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#00000000"
-                        android:contentDescription="Ablehnen Button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/maingame_decline_button"/>
-
-                    <com.tomade.saufomat.view.SaufOMatTextView
-                        android:id="@+id/declineButtonText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:gravity="center"
-                        android:text="TextView"
-                        android:textAlignment="center"
-                        android:textAllCaps="false"
-                        android:textAppearance="@android:style/TextAppearance.Large"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        tools:text="lieber 5 trinken"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/submitButtonLayout"
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignBottom="@id/declineButtonLayout"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@id/declineButtonLayout"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp">
-
-                    <ImageButton
-                        android:id="@+id/submitButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#00000000"
-                        android:contentDescription="Zustimmen Button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/maingame_submit_button"/>
-
-                    <com.tomade.saufomat.view.SaufOMatTextView
-                        android:id="@+id/submitButtonText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:gravity="center"
-                        android:text="mach ich!"
-                        android:textAlignment="center"
-                        android:textAppearance="@android:style/TextAppearance.Large"
-                        android:textColor="#000000"
-                        android:textStyle="bold"
-                        tools:text="mach ich!"/>
-                </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
 

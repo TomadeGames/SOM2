@@ -32,6 +32,7 @@ import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -57,6 +58,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
     private TextView taskText;
     private InterstitialAd interstitialAd;
     private boolean leaveAbleAfterCountdown = false;
+    private boolean alcoholShown = false;
 
     private boolean currentPlayerIsAviable = true;
 
@@ -135,7 +137,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         this.submitButtonText = this.findViewById(R.id.submitButtonText);
         ImageButton yesButton = this.findViewById(R.id.submitButton);
         ImageButton optionsButton = this.findViewById(R.id.optionsButton);
-        //ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
+        ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
         if (this.currentTask instanceof TimedTask) {
             this.submitButtonText.setText("Los gehts!");
@@ -143,7 +145,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
-        //alcoholButton.setOnClickListener(this);
+        alcoholButton.setOnClickListener(this);
     }
 
     private void hideDeclineButton() {
@@ -208,7 +210,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             }
         } else {
             boolean switchToMainView = true;
-            TaskEvent newTaskEvent = null;
+            TaskEvent newTaskEvent;
             if (this.currentPlayerIsAviable) {
                 TaskDrinkHandler.increaseDrinks(this.currentTask, this);
 
@@ -375,18 +377,42 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
     }
 
     private void alcoholButtonPressed() {
+        View taskLayout = this.findViewById(R.id.taskLayout);
+        View alcoholLayout = this.findViewById(R.id.alcoholLayout);
+        this.alcoholShown = !this.alcoholShown;
+        if (this.alcoholShown) {
+            taskLayout.setVisibility(View.GONE);
+            alcoholLayout.setVisibility(View.VISIBLE);
+            TextView alcoholTextView = this.findViewById(R.id.alcoholText);
+            StringBuilder alcoholText = new StringBuilder("Getränkezähler\n");
+
+            Player player = this.currentPlayer;
+            do {
+                alcoholText.append(player.getName()).append(" Drinks: ").append(player.getDrinks()).append(", ")
+                        .append(new DecimalFormat("0.00").format(this.calculateAlcohol(player))).append("‰");
+                player = this.currentPlayer.getNextPlayer();
+                if (player != this.currentPlayer) {
+                    alcoholText.append("\n");
+                }
+            } while (player != this.currentPlayer);
+
+            alcoholTextView.setText(alcoholText);
+        } else {
+            taskLayout.setVisibility(View.VISIBLE);
+            alcoholLayout.setVisibility(View.GONE);
+        }
     }
 
-    private float calculateAlcohol(int drinks, int weight, boolean isMan) {
+    private float calculateAlcohol(Player player) {
         float alcPercent = 0.18f;
         int amount = 20;
-        float alc = amount * alcPercent * drinks * 0.81f;
+        float alc = amount * alcPercent * player.getDrinks() * 0.81f;
 
         float reducedWight;
-        if (isMan) {
-            reducedWight = weight * 0.7f;
+        if (player.getIsMan()) {
+            reducedWight = player.getWeight() * 0.7f;
         } else {
-            reducedWight = weight * 0.6f;
+            reducedWight = player.getWeight() * 0.6f;
         }
         float erg = alc / reducedWight;
         erg -= erg * 0.2f;
