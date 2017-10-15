@@ -313,6 +313,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
         ImageView view = this.icons[viewIndex];
 
         IconState newIconState = this.presenter.getRandomIconState();
+        this.iconStates[viewIndex] = newIconState;
         view.setImageResource(newIconState.getImageId());
     }
 

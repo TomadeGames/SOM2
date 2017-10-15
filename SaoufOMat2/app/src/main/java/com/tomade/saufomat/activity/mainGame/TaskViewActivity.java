@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -30,14 +32,17 @@ import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;
 import com.tomade.saufomat.model.player.Player;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Die Ansicht, in der die Aufgabe angezeigt wird
  */
 public class TaskViewActivity extends Activity implements View.OnClickListener, ActivityWithPlayer {
     private static final String TAG = TaskViewActivity.class.getSimpleName();
+    private static final String FORMAT = "%02d:%02d:%03d";
+    private static final long LEAVEABLE_DELAY = 1000;
+    private boolean timerRunning = false;
 
     private ArrayList<Player> playerList;
     private Task currentTask;
@@ -47,7 +52,11 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
     private boolean isGame;
     private int width;
     private int height;
+    private RelativeLayout submitButtonLayout;
+    private TextView submitButtonText;
+    private TextView taskText;
     private InterstitialAd interstitialAd;
+    private boolean leaveAbleAfterCountdown = false;
 
     private boolean currentPlayerIsAviable = true;
 
@@ -79,14 +88,14 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         currentPlayerNameText.setText(this.currentPlayer.getName());
         ((TextView) this.findViewById(R.id.lastPlayerText)).setText(this.currentPlayer.getLastPlayer().getName());
         ((TextView) this.findViewById(R.id.nextPlayerText)).setText(this.currentPlayer.getNextPlayer().getName());
-        TextView taskText = this.findViewById(R.id.taskText);
+        this.taskText = this.findViewById(R.id.taskText);
         ImageButton noButton = this.findViewById(R.id.declineButton);
         TextView costText = this.findViewById(R.id.declineButtonText);
-        RelativeLayout submitButtonLayout = this.findViewById(R.id.submitButtonLayout);
+        this.submitButtonLayout = this.findViewById(R.id.submitButtonLayout);
         int cost = 0;
 
         if (this.isGame) {
-            taskText.setText(String.format("Minispiel:\n%s", this.getString(this.miniGame.getNameId())));
+            this.taskText.setText(String.format("Minispiel:\n%s", this.getString(this.miniGame.getNameId())));
         } else {
             TaskDifficult difficult = this.currentTask.getDifficult();
             String taskTextValue = "";
@@ -98,7 +107,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                     break;
             }
             taskTextValue += this.currentTask.getParsedText(this.currentPlayer);
-            taskText.setText(taskTextValue);
+            this.taskText.setText(taskTextValue);
             cost = this.currentTask.getCost();
 
             if (this.currentTask.getTaskTarget() == TaskTarget.AD) {
@@ -118,43 +127,42 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         }
 
         if (cost <= 0) {
-            noButton.setVisibility(View.GONE);
-            costText.setVisibility(View.GONE);
-            RelativeLayout.LayoutParams layoutParams;
-            layoutParams = (RelativeLayout.LayoutParams) submitButtonLayout.getLayoutParams();
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, 0);
-            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
+            this.hideDeclineButton();
         } else {
             costText.setText(this.getString(R.string.maingame_button_decline, this.currentTask.getCost()));
             noButton.setOnClickListener(this);
         }
-
-        this.alcoholButtonPressed();
-
+        this.submitButtonText = this.findViewById(R.id.submitButtonText);
         ImageButton yesButton = this.findViewById(R.id.submitButton);
         ImageButton optionsButton = this.findViewById(R.id.optionsButton);
         //ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
         if (this.currentTask instanceof TimedTask) {
-            TextView submitButtonText = this.findViewById(R.id.submitButtonText);
-            submitButtonText.setText("Los gehts!");
+            this.submitButtonText.setText("Los gehts!");
         }
 
         yesButton.setOnClickListener(this);
         optionsButton.setOnClickListener(this);
         //alcoholButton.setOnClickListener(this);
+    }
 
+    private void hideDeclineButton() {
+        this.findViewById(R.id.declineButtonLayout).setVisibility(View.GONE);
+        RelativeLayout.LayoutParams layoutParams;
+        layoutParams = (RelativeLayout.LayoutParams) this.submitButtonLayout.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, 0);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.submitButton:
-                this.yesButtonPressed();
+                this.submitButtonPressed();
                 break;
             case R.id.declineButton:
-                this.noButtonPressed();
+                this.declineButtonPressed();
                 break;
             case R.id.optionsButton:
                 this.optionsButtonPressed();
@@ -163,16 +171,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                 this.alcoholButtonPressed();
                 break;
         }
-    }
-
-    private void openTimerView(TimedTask timedTask) {
-        Log.i(TAG, "Switching to TimerView");
-        Intent intent = new Intent(this, TaskTimerActivity.class);
-        intent.putExtra(IntentParameter.CURRENT_PLAYER, this.currentPlayer);
-        intent.putExtra(IntentParameter.PLAYER_LIST, this.playerList);
-        intent.putExtra(IntentParameter.TaskTimer.TIMED_TASK, timedTask);
-        this.finish();
-        this.startActivity(intent);
     }
 
     private void openMainView(TaskEvent newTaskEvent) {
@@ -191,7 +189,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         this.openMainView(null);
     }
 
-    private void yesButtonPressed() {
+    private void submitButtonPressed() {
         Log.d(TAG, "Yes Button Pressed");
         if (this.isGame) {
             Intent intent = new Intent(this, this.miniGame.getActivity());
@@ -202,6 +200,12 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             this.finish();
             Log.i(TAG, "Starting Minigame " + this.miniGame);
             this.startActivity(intent);
+        } else if (this.timerRunning || this.leaveAbleAfterCountdown) {
+            if (this.timerRunning) {
+                this.wonTimer((TimedTask) this.currentTask);
+            } else {
+                this.openMainView();
+            }
         } else {
             boolean switchToMainView = true;
             TaskEvent newTaskEvent = null;
@@ -231,13 +235,67 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
                 }
                 if (this.currentTask instanceof TimedTask) {
                     switchToMainView = false;
-                    this.openTimerView((TimedTask) this.currentTask);
+                    this.startTimer();
                 }
             }
             if (switchToMainView) {
                 this.openMainView();
             }
         }
+    }
+
+    private void startTimer() {
+        this.submitButtonText.setText("Fertig!");
+        this.hideDeclineButton();
+        this.timerRunning = true;
+        final TimedTask timedTask = (TimedTask) this.currentTask;
+        new CountDownTimer(timedTask.getTime(), 50) {
+            public void onTick(long millisUntilFinished) {
+                if (TaskViewActivity.this.timerRunning) {
+                    setTimeView(millisUntilFinished);
+                }
+            }
+
+            public void onFinish() {
+                if (TaskViewActivity.this.timerRunning) {
+                    timeOut(timedTask);
+                }
+            }
+        }.start();
+    }
+
+    private void setTimeView(long millisUntilFinished) {
+        this.taskText.setText("" + String.format(FORMAT, TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit
+                        .MILLISECONDS.toMinutes(millisUntilFinished)),
+                (TimeUnit.MILLISECONDS.toMicros(millisUntilFinished) - TimeUnit.SECONDS.toMicros(TimeUnit.MILLISECONDS
+                        .toSeconds(millisUntilFinished))) / 1000));
+    }
+
+    private void timeOut(TimedTask timedTask) {
+        this.timerRunning = false;
+        this.taskText.setText(timedTask.getTaskIfLost().getText());
+        TaskDrinkHandler.increaseDrinks(timedTask.getTaskIfLost(), this);
+        this.startLeavingCounter();
+    }
+
+    private void wonTimer(TimedTask timedTask) {
+        this.timerRunning = false;
+        this.taskText.setText(timedTask.getTaskIfWon().getText());
+        TaskDrinkHandler.increaseDrinks(timedTask.getTaskIfWon(), this);
+        this.startLeavingCounter();
+    }
+
+    private void startLeavingCounter() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TaskViewActivity.this.leaveAbleAfterCountdown = true;
+                TaskViewActivity.this.submitButtonLayout.setVisibility(View.VISIBLE);
+                TaskViewActivity.this.submitButtonText.setText("Weiter");
+            }
+        }, LEAVEABLE_DELAY);
     }
 
     private void switchPlayers(Player player1, Player player2) {
@@ -279,7 +337,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void noButtonPressed() {
+    private void declineButtonPressed() {
         Log.i(TAG, "NoButton pressed");
         if (this.currentPlayerIsAviable) {
             this.currentPlayer.setDrinks(this.currentPlayer.getDrinks() + this.currentTask.getCost());
@@ -317,24 +375,6 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
     }
 
     private void alcoholButtonPressed() {
-        this.drinkCountShown = !this.drinkCountShown;
-        Player player = this.currentPlayer;
-        String statisticValue = "";
-        do {
-            String playerText;
-            if (this.drinkCountShown) {
-                playerText = player.getName() + ": " + player.getDrinks();
-            } else {
-                float alc = this.calculateAlcohol(player.getDrinks(), player.getWeight(), player.getIsMan());
-                DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                playerText = player.getName() + ": " + decimalFormat.format(alc) + " ‰";
-            }
-            statisticValue += playerText + "\n";
-            player = player.getNextPlayer();
-
-        } while (player != this.currentPlayer);
-
-        // this.statisticsText.setText(statisticValue);
     }
 
     private float calculateAlcohol(int drinks, int weight, boolean isMan) {

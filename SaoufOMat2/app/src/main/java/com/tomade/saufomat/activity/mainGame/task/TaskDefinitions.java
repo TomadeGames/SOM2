@@ -358,8 +358,9 @@ public class TaskDefinitions {
                 TaskDifficult.HARD, 2, TaskTarget.UNDEFINED,
                 new SimpleTask("Du darfst 5 verteilen", 5, TaskTarget.CHOOSE_FIVE),
                 new SimpleTask("Zu langsam!\nDie anderen gehen leer aus", 0, TaskTarget.UNDEFINED), 30000));
-        taskList.add(new TimedTask("Nenne eine Kategorie (wie z.B. Automarken). " + TaskTextToken.RIGHT_PLAYER +
-                " hat 60 Sekunden Zeit 15 zu nennen. Wenn er/sie es nicht schafft muss er/sie zwei trinken",
+        taskList.add(new TimedTask("Nenne eine Kategorie (wie z.B. Automarken). " + TaskTextToken.RIGHT_PLAYER
+                .getToken() + " hat 60 Sekunden Zeit 15 zu nennen. Wenn er/sie es nicht schafft muss er/sie zwei " +
+                "trinken",
                 TaskDifficult.MEDIUM, 0, TaskTarget.UNDEFINED,
                 new SimpleTask("Du darfst trocken bleiben", 0, TaskTarget.UNDEFINED),
                 new SimpleTask("Zu langsam!\nTrink zwei", 2, TaskTarget.NEIGHBOUR_RIGHT), 60000));

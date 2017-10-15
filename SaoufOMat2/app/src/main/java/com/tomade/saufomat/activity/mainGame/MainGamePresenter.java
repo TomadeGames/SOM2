@@ -81,19 +81,22 @@ public class MainGamePresenter extends BasePresenter {
 
         float difficult = 0;
         int gameCount = 0;
-        if (leftDifficult == middleDifficult && middleDifficult == rightDifficult) {
+        if (leftDifficult.equals(middleDifficult) && middleDifficult.equals(rightDifficult)) {
             switch (leftDifficult) {
                 case EASY:
                     this.currentDificult = TaskDifficult.EASY_WIN;
                     saufOMeterEndFrame = 7;
+                    this.increaseEasyWins();
                     break;
                 case MEDIUM:
                     this.currentDificult = TaskDifficult.MEDIUM_WIN;
                     saufOMeterEndFrame = 8;
+                    this.increaseMediumWins();
                     break;
                 case HARD:
                     this.currentDificult = TaskDifficult.HARD_WIN;
                     saufOMeterEndFrame = 9;
+                    this.increaseHardWins();
                     break;
             }
         }
@@ -166,15 +169,8 @@ public class MainGamePresenter extends BasePresenter {
                     this.currentDificult = TaskDifficult.HARD;
                     break;
             }
-
-            if (this.currentDificult == TaskDifficult.EASY_WIN) {
-                this.increaseEasyWins();
-            } else if (this.currentDificult == TaskDifficult.MEDIUM_WIN) {
-                this.increaseMediumWins();
-            } else if (this.currentDificult == TaskDifficult.HARD_WIN) {
-                this.increaseHardWins();
-            }
         }
+        Log.i(TAG, "difficult is: " + this.currentDificult);
         return saufOMeterEndFrame;
     }
 
