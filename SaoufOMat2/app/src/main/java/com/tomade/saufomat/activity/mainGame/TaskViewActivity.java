@@ -384,7 +384,7 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             taskLayout.setVisibility(View.GONE);
             alcoholLayout.setVisibility(View.VISIBLE);
             TextView alcoholTextView = this.findViewById(R.id.alcoholText);
-            StringBuilder alcoholText = new StringBuilder("Getränkezähler\n");
+            StringBuilder alcoholText = new StringBuilder("Getränkezähler\n\n");
 
             Player player = this.currentPlayer;
             do {
