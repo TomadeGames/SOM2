@@ -216,6 +216,7 @@
                 android:id="@+id/alcoholLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="75dp"
                 android:visibility="gone">
 
                 <com.tomade.saufomat.view.SaufOMatTextView

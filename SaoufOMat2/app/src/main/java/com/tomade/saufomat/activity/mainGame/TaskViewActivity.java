@@ -388,8 +388,9 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
 
             Player player = this.currentPlayer;
             do {
-                alcoholText.append(player.getName()).append(" Drinks: ").append(player.getDrinks()).append(", ")
-                        .append(new DecimalFormat("0.00").format(this.calculateAlcohol(player))).append("‰");
+                alcoholText.append(player.getName()).append(" Drinks: ").append(player.getDrinks()).append(", " +
+                        "Promille: ").append(new DecimalFormat("0.00").format(this.calculateAlcohol(player))).append
+                        ("‰");
                 player = this.currentPlayer.getNextPlayer();
                 if (player != this.currentPlayer) {
                     alcoholText.append("\n");
