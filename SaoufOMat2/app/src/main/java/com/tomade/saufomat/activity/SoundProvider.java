@@ -10,12 +10,15 @@ import android.util.SparseArray;
  */
 
 public class SoundProvider {
-    private Context context;
-    private SparseArray<MediaPlayer> playingSoundeffekts;
+    private static SoundProvider instance = new SoundProvider();
+    private SparseArray<MediaPlayer> playingSoundeffects = new SparseArray<>();
 
-    public SoundProvider(Context context) {
-        this.context = context;
-        this.playingSoundeffekts = new SparseArray<>();
+    private SoundProvider() {
+
+    }
+
+    public static SoundProvider getInstance() {
+        return instance;
     }
 
     /**
@@ -23,12 +26,19 @@ public class SoundProvider {
      *
      * @param soundId die Id des Soundeffekts (Bsp.: R.raw.soundfile.mp3)
      */
-    public void playSound(final int soundId) {
-        MediaPlayer mediaPlayer = MediaPlayer.create(this.context, soundId);
+    public void playSound(final int soundId, Context context) {
+        final MediaPlayer mediaPlayer = MediaPlayer.create(context, soundId);
+        MediaPlayer playingSound = this.playingSoundeffects.get(soundId);
+        if (playingSound != null) {
+            this.stopSound(soundId);
+        }
+        this.playingSoundeffects.put(soundId, mediaPlayer);
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                SoundProvider.this.playingSoundeffekts.remove(soundId);
+                SoundProvider.this.playingSoundeffects.remove(soundId);
+                mediaPlayer.release();
             }
         });
         mediaPlayer.start();
@@ -39,16 +49,10 @@ public class SoundProvider {
      *
      * @param soundId die Id des Soundeffekts (Bsp.: R.raw.soundfile.mp3)
      */
-    public void playSoundloop(final int soundId) {
-        MediaPlayer mediaPlayer = MediaPlayer.create(this.context, soundId);
+    public void playSoundloop(final int soundId, Context context) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(context, soundId);
         mediaPlayer.setLooping(true);
-        this.playingSoundeffekts.put(soundId, mediaPlayer);
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                SoundProvider.this.playingSoundeffekts.remove(soundId);
-            }
-        });
+        this.playingSoundeffects.put(soundId, mediaPlayer);
         mediaPlayer.start();
     }
 
@@ -58,9 +62,11 @@ public class SoundProvider {
      * @param soundId die Id des Soundeffekts (Bsp.: R.raw.soundfile.mp3)
      */
     public void stopSound(int soundId) {
-        MediaPlayer mediaPlayer = this.playingSoundeffekts.get(soundId);
+        MediaPlayer mediaPlayer = this.playingSoundeffects.get(soundId);
         if (mediaPlayer != null) {
             mediaPlayer.stop();
+            mediaPlayer.release();
+            this.playingSoundeffects.remove(soundId);
         }
     }
 }
