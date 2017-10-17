@@ -1,6 +1,5 @@
 package com.tomade.saufomat.activity.mainGame;
 
-import android.animation.Animator;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +15,8 @@ import android.widget.TextView;
 
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.BaseActivity;
+import com.tomade.saufomat.activity.mainGame.listener.IconAnimationListener;
+import com.tomade.saufomat.activity.mainGame.listener.IconAnimatorListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,6 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
     private static final int SAUFOMETER_WAITING_FRAMES_AMOUNT = 2;
     private static final long ICONS_ANIMATION_DISTANCE = 1000;
     private static final int ROLLING_ANIMATION_DISTANCE = 3;
-    private static final long ICON_STOP_DURATION = 500;
 
     private MainGameState gameState;
     private ImageView leftIcon;
@@ -163,153 +163,52 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
         this.rightRolling = false;
     }
 
-    private void checkIfAllRolling() {
+    public void checkIfAllRolling(IconPosition iconPosition) {
+        switch (iconPosition) {
+            case LEFT:
+                this.leftRolling = true;
+                break;
+            case MIDDLE:
+                this.middleRolling = true;
+                break;
+            case RIGHT:
+                this.rightRolling = true;
+                break;
+        }
         if (this.leftRolling && this.middleRolling && this.rightRolling) {
             this.gameState = MainGameState.ROLLING_ALL;
         }
     }
 
     private void startRightAnimation() {
-        Log.d(TAG, "startRightAnimation");
-        this.rightIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new Animator
-                .AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                Log.d(TAG, "right moving to Top");
-                MainGameActivity.this.rightIcon.animate().y(-500).setDuration(0).setListener(new Animator
-                        .AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        Log.d(TAG, "right rolling started");
-                        MainGameActivity.this.rightIcon.animate().setListener(null);
-                        MainGameActivity.this.rightIcon.startAnimation(
-                                MainGameActivity.this.rightRollingAnimation);
-                        MainGameActivity.this.rightRolling = true;
-                        checkIfAllRolling();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                }).start();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        }).start();
+        this.rightIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new IconAnimatorListener
+                (this.rightIcon, this.rightRollingAnimation, IconPosition.RIGHT, this)).start();
     }
 
     private void startMiddleAnimation() {
-        this.middleIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new Animator
-                .AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                MainGameActivity.this.middleIcon.animate().y(-500).setDuration(0).setListener
-                        (new Animator
-                                .AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animator) {
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animator animator) {
-                                MainGameActivity.this.middleIcon.animate().setListener(null);
-                                MainGameActivity.this.middleIcon.startAnimation(
-                                        MainGameActivity.this.middleRollingAnimation);
-                                MainGameActivity.this.middleRolling = true;
-                                checkIfAllRolling();
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animator) {
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animator) {
-                            }
-                        }).start();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        }).start();
+        this.middleIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new IconAnimatorListener
+                (this.middleIcon, this.middleRollingAnimation, IconPosition.MIDDLE, this)).start();
     }
 
     private void startLeftAnimation() {
-        this.leftIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new Animator
-                .AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                MainGameActivity.this.leftIcon.animate().y(-500).setDuration(0).setListener(new Animator
-                        .AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        MainGameActivity.this.leftIcon.animate().setListener(null);
-                        MainGameActivity.this.leftIcon.startAnimation(
-                                MainGameActivity.this.leftRollingAnimation);
-                        MainGameActivity.this.leftRolling = true;
-                        checkIfAllRolling();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-                    }
-                }).start();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-            }
-        }).start();
+        this.leftIcon.animate().y(ICONS_ANIMATION_DISTANCE).setDuration(500).setListener(new IconAnimatorListener
+                (this.leftIcon, this.leftRollingAnimation, IconPosition.LEFT, this)).start();
     }
 
-    private void changeIcon(int viewIndex) {
+    public void changeIcon(IconPosition iconPosition) {
+        int viewIndex = -1;
+        switch (iconPosition) {
+            case LEFT:
+                viewIndex = 0;
+                break;
+            case MIDDLE:
+                viewIndex = 1;
+                break;
+            case RIGHT:
+                viewIndex = 2;
+                break;
+
+        }
         ImageView view = this.icons[viewIndex];
 
         IconState newIconState = this.presenter.getRandomIconState();
@@ -317,7 +216,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
         view.setImageResource(newIconState.getImageId());
     }
 
-    private void moveSaufOMeter() {
+    public void animateSaufOMeter() {
         final int lastFrame = this.presenter.getCurrentDifficult(this.iconStates[0], this.iconStates[1], this
                 .iconStates[2]);
 
@@ -414,68 +313,14 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
     }
 
     private void initRollingAnimations() {
-        this.leftRollingAnimation = this.initRollingAnimation(LEFT_ICON_ANIMATION_DURATION, new Animation
-                .AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                changeIcon(0);
-            }
+        this.leftRollingAnimation = this.initRollingAnimation(LEFT_ICON_ANIMATION_DURATION, new IconAnimationListener
+                (this.leftIcon, this.getIconStopPosition(), IconPosition.LEFT, this));
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d(TAG, "moving leftIcon to endPosition");
-                MainGameActivity.this.leftIcon.animate().y(getIconStopPosition()).setDuration(ICON_STOP_DURATION)
-                        .start();
-            }
+        this.middleRollingAnimation = this.initRollingAnimation(MIDDLE_ICON_ANIMATION_DURATION, new
+                IconAnimationListener(this.middleIcon, this.getIconStopPosition(), IconPosition.MIDDLE, this));
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                MainGameActivity.this.rollStarted = true;
-                changeIcon(0);
-            }
-        });
-
-        this.middleRollingAnimation = this.initRollingAnimation(MIDDLE_ICON_ANIMATION_DURATION, new Animation
-                .AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                changeIcon(1);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d(TAG, "moving middleIcon to endposition");
-                MainGameActivity.this.middleIcon.animate().y(getIconStopPosition()).setDuration(ICON_STOP_DURATION)
-                        .start();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                changeIcon(1);
-            }
-        });
-
-        this.rightRollingAnimation = this.initRollingAnimation(RIGHT_ICON_ANIMATION_DURATION, new Animation
-                .AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                changeIcon(2);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d(TAG, "moving rightIcon to endPosition");
-                MainGameActivity.this.rightIcon.animate().y(getIconStopPosition()).setDuration(ICON_STOP_DURATION)
-                        .start();
-                moveSaufOMeter();
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                changeIcon(2);
-            }
-        });
+        this.rightRollingAnimation = this.initRollingAnimation(RIGHT_ICON_ANIMATION_DURATION, new
+                IconAnimationListener(this.rightIcon, this.getIconStopPosition(), IconPosition.RIGHT, this));
     }
 
     @Override
@@ -485,5 +330,9 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
     @Override
     protected void initPresenter() {
         this.presenter = new MainGamePresenter(this);
+    }
+
+    public void rollStarted() {
+        this.rollStarted = true;
     }
 }
