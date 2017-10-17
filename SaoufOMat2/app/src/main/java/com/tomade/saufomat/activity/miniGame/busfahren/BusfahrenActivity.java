@@ -1,11 +1,12 @@
 package com.tomade.saufomat.activity.miniGame.busfahren;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
@@ -13,6 +14,7 @@ import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import com.tomade.saufomat.model.card.Card;
 import com.tomade.saufomat.model.card.CardValue;
+import com.tomade.saufomat.view.CardImageView;
 
 public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> implements View.OnClickListener {
     private ImageButton leftButton;
@@ -28,7 +30,7 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
     private boolean buttonsClickable = true;
 
     private Card[] cards;
-    private ImageView[] cardImages;
+    private CardImageView[] cardImages;
 
     @Override
     protected void initPresenter() {
@@ -50,7 +52,7 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         }
 
         this.cards = new Card[5];
-        this.cardImages = new ImageView[5];
+        this.cardImages = new CardImageView[5];
         this.initCards();
 
         this.cardImages[0] = this.findViewById(R.id.card1Image);
@@ -213,29 +215,51 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         this.rightButton.setImageResource(R.drawable.busfahren_balck_button);
         this.leftText.setText(R.string.minigame_busfahren_question_first_answer_left);
         this.rightText.setText(R.string.minigame_busfahren_question_first_answer_right);
-        for (ImageView i : this.cardImages) {
-            i.setImageResource(R.drawable.rueckseite);
+
+        int correctCardCount = 0;
+        switch (this.gameState) {
+            case RED_BLACK:
+                correctCardCount = 1;
+                break;
+            case HIGHER_LOWER:
+                correctCardCount = 2;
+                break;
+            case BETWEEN_NOT_BETWEEN:
+                correctCardCount = 3;
+                break;
+            case SAME_NOT_SAME:
+                correctCardCount = 4;
         }
-        this.gameState = BusfahrenState.RED_BLACK;
-        this.buttonsClickable = true;
+        Animator.AnimatorListener animatorListener = new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                BusfahrenActivity.this.gameState = BusfahrenState.RED_BLACK;
+                BusfahrenActivity.this.buttonsClickable = true;
+            }
+        };
+
+        for (int i = 0; i < correctCardCount; i++) {
+            this.cardImages[i].flipCardBack(animatorListener);
+        }
     }
 
     private boolean checkLeftButton() {
         switch (this.gameState) {
             case RED_BLACK:
-                this.cardImages[0].setImageResource(this.cards[0].getImageId());
+                this.cardImages[0].flipCard(this.cards[0].getImageId());
                 return this.cards[0].isRed();
             case HIGHER_LOWER:
-                this.cardImages[1].setImageResource(this.cards[1].getImageId());
+                this.cardImages[1].flipCard(this.cards[1].getImageId());
                 return this.cards[1].isHigherAs(this.cards[0]);
             case BETWEEN_NOT_BETWEEN:
-                this.cardImages[2].setImageResource(this.cards[2].getImageId());
+                this.cardImages[2].flipCard(this.cards[2].getImageId());
                 return this.cards[2].isBetween(this.cards[0], this.cards[1]);
             case SAME_NOT_SAME:
-                this.cardImages[3].setImageResource(this.cards[3].getImageId());
+                this.cardImages[3].flipCard(this.cards[3].getImageId());
                 return this.cards[3].getValue() == this.cards[2].getValue();
             case ACE_NO_ACE:
-                this.cardImages[4].setImageResource(this.cards[4].getImageId());
+                this.cardImages[4].flipCard(this.cards[4].getImageId());
                 return this.cards[4].getValue() == CardValue.ACE;
         }
         return false;
@@ -251,10 +275,10 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
     }
 
     private void leftButtonPressed() {
-        startTimer(checkLeftButton());
+        this.startTimer(this.checkLeftButton());
     }
 
     private void rightButtonPressed() {
-        startTimer(checkRightButton());
+        this.startTimer(this.checkRightButton());
     }
 }

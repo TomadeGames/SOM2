@@ -24,14 +24,13 @@
         android:layout_alignParentTop="false"
         android:layout_below="@+id/popupPanel">
 
-        <ImageView
+        <com.tomade.saufomat.view.CardImageView
             android:id="@+id/cardImage"
             android:layout_width="110dp"
             android:layout_height="170dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/rueckseite"/>
+            android:scaleType="fitXY"/>
 
         <TextView
             android:id="@+id/cardcounterText"

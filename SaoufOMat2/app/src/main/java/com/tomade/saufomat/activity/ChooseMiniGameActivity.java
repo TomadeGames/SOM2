@@ -100,7 +100,7 @@ public class ChooseMiniGameActivity extends Activity implements View.OnTouchList
     }
 
     private void handleSwipe(MotionEvent event) {
-        if (this.swipeController.handleSwipe(event)) {
+        if (this.swipeController.handleSwipe(event) && this.swipeController.getDistance() > 10) {
             if (this.swipeController.getDirectionX() == Direction.LEFT) {
                 this.rightButtonPressed();
             } else {

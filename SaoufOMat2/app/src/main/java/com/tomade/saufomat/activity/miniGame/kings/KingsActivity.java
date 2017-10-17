@@ -1,10 +1,11 @@
 package com.tomade.saufomat.activity.miniGame.kings;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tomade.saufomat.DrinkHelper;
@@ -12,12 +13,13 @@ import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.BaseMiniGamePresenter;
 import com.tomade.saufomat.model.card.Card;
+import com.tomade.saufomat.view.CardImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
-    private ImageView cardImage;
+    private CardImageView cardImage;
     private TextView popupText;
     private TextView cardCounterText;
 
@@ -77,19 +79,18 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
         if (event.getAction() == 0) {
             switch (this.gameState) {
                 case START:
-                    this.gameState = KingsState.ROUND_END;
                     this.getTask();
                     break;
                 case ROUND_END:
                     if (!this.presenter.isFromMainGame()) {
                         this.popupText.setText(R.string.minigame_kings_next_player);
-                        this.gameState = KingsState.START;
+                        this.flipCardBack();
                     } else {
                         this.presenter.nextPlayer();
                         if (this.cardCount < this.maximumCards) {
                             this.popupText.setText(this.getString(R.string.minigame_kings_tap_to_start, this
                                     .presenter.getCurrentPlayer().getName()));
-                            this.gameState = KingsState.START;
+                            this.flipCardBack();
                         } else {
                             this.popupText.setText(R.string.minigame_kings_game_over);
                             this.gameState = KingsState.GAME_OVER;
@@ -104,23 +105,30 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
         return true;
     }
 
-    private void getTask() {
-        boolean validCard = false;
-        if (this.lastCards.size() >= 32) {
-            this.cardCount = 0;
-            this.lastCards.clear();
-        }
-        while (!validCard) {
-            validCard = true;
-            this.card = Card.getRandomCard7OrHigher();
-            for (Card c : this.lastCards) {
-                if (this.card.equals(c)) {
-                    validCard = false;
-                }
+    private void flipCardBack() {
+        this.gameState = KingsState.ANIMATION;
+        this.cardImage.flipCardBack(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                KingsActivity.this.gameState = KingsState.START;
             }
-        }
-        this.lastCards.add(this.card);
-        this.cardImage.setImageResource(this.card.getImageId());
+        });
+    }
+
+    private void flipCard() {
+        this.gameState = KingsState.ANIMATION;
+        this.cardImage.flipCard(this.card.getImageId(), new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                setTaskText();
+                KingsActivity.this.gameState = KingsState.ROUND_END;
+            }
+        });
+    }
+
+    private void setTaskText() {
         if (this.card.isRed()) {
             switch (this.card.getValue()) {
                 case SEVEN:
@@ -188,6 +196,26 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
                     break;
             }
         }
+    }
+
+    private void getTask() {
+        boolean validCard = false;
+        if (this.lastCards.size() >= 32) {
+            this.cardCount = 0;
+            this.lastCards.clear();
+        }
+        while (!validCard) {
+            validCard = true;
+            this.card = Card.getRandomCard7OrHigher();
+            for (Card c : this.lastCards) {
+                if (this.card.equals(c)) {
+                    validCard = false;
+                }
+            }
+        }
+        this.lastCards.add(this.card);
+        this.flipCard();
+
         this.cardCount = this.cardCount + 1;
         this.cardCounterText.setText(this.cardCount + " / " + this.maximumCards);
     }

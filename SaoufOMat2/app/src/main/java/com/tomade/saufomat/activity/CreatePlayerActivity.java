@@ -209,7 +209,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
     }
 
     private void editPlayer(int playerViewId, int playerId) {
-        View playerelemnt = this.playerelements.get(playerViewId);
+        View playerElemnt = this.playerelements.get(playerViewId);
         final Player player = Player.getPlayerById(this.players, playerId);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -218,7 +218,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         final LayoutInflater inflater = this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.activity_new_player_dialog, null);
 
-        final TextView txtvName = playerelemnt.findViewById(R.id.txtvPlayerName);
+        final TextView txtvName = playerElemnt.findViewById(R.id.txtvPlayerName);
 
         final EditText etxtName = view.findViewById(R.id.etxtName);
         final EditText etxtWeight = view.findViewById(R.id.etxtWeight);
