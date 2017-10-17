@@ -52,7 +52,6 @@ public class MainMenuActivity extends Activity implements View.OnClickListener, 
         this.findViewById(R.id.startButton).setOnTouchListener(this);
         this.findViewById(R.id.gamesButton).setOnTouchListener(this);
         this.findViewById(R.id.debugButton).setOnClickListener(this);
-//        this.findViewById(R.id.debugButton).setVisibility(View.GONE);
     }
 
     @Override

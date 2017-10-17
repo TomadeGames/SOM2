@@ -243,8 +243,10 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                     public void onClick(DialogInterface dialog, int id12) {
                         boolean duplicate = false;
                         for (Player tmp : CreatePlayerActivity.this.players) {
-                            if (tmp.getName().equals(etxtName.getText().toString())) {
-                                duplicate = true;
+                            if (tmp != player) {
+                                if (tmp.getName().equals(etxtName.getText().toString())) {
+                                    duplicate = true;
+                                }
                             }
                         }
                         if (!duplicate) {
