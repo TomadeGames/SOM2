@@ -152,4 +152,8 @@ public class BaseMiniGamePresenter<ACTIVITY extends BaseMiniGameActivity> extend
     public Player getCurrentPlayer() {
         return this.currentPlayer;
     }
+
+    public Player getCurrentPlayerAtStart() {
+        return this.currentPlayerAtStart;
+    }
 }

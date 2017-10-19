@@ -94,10 +94,12 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
         ImageButton noButton = this.findViewById(R.id.declineButton);
         TextView costText = this.findViewById(R.id.declineButtonText);
         this.submitButtonLayout = this.findViewById(R.id.submitButtonLayout);
+        this.submitButtonText = this.findViewById(R.id.submitButtonText);
         int cost = 0;
 
         if (this.isGame) {
             this.taskText.setText(String.format("Minispiel:\n%s", this.getString(this.miniGame.getNameId())));
+            this.submitButtonText.setText(R.string.main_game_lets_go);
         } else {
             TaskDifficult difficult = this.currentTask.getDifficult();
             String taskTextValue = "";
@@ -134,13 +136,12 @@ public class TaskViewActivity extends Activity implements View.OnClickListener, 
             costText.setText(this.getString(R.string.maingame_button_decline, this.currentTask.getCost()));
             noButton.setOnClickListener(this);
         }
-        this.submitButtonText = this.findViewById(R.id.submitButtonText);
         ImageButton yesButton = this.findViewById(R.id.submitButton);
         ImageButton optionsButton = this.findViewById(R.id.optionsButton);
         ImageButton alcoholButton = this.findViewById(R.id.alcoholButton);
 
         if (this.currentTask instanceof TimedTask) {
-            this.submitButtonText.setText("Los gehts!");
+            this.submitButtonText.setText(R.string.main_game_lets_go);
         }
 
         yesButton.setOnClickListener(this);

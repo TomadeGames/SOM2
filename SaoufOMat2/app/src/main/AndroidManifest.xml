@@ -82,7 +82,7 @@
         <activity
             android:name=".activity.mainGame.TaskTimerActivity"
             android:screenOrientation="sensorLandscape"/>
-        <activity android:name=".activity.miniGame.dart.DartActivity">
+        <activity android:name=".activity.miniGame.dart.DartsActivity">
         </activity>
     </application>
 

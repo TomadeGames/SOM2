@@ -138,7 +138,9 @@ public class SwipeController {
             this.startSwipe(motionEvent);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             this.endSwipe(motionEvent);
-            return true;
+            if (this.distance > 10) {
+                return true;
+            }
         }
         return false;
     }

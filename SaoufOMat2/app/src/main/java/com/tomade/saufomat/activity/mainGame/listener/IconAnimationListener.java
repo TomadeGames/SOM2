@@ -37,7 +37,9 @@ public class IconAnimationListener implements Animation.AnimationListener {
     public void onAnimationEnd(Animation animation) {
         Log.d(TAG, "moving icon to endPosition");
         this.icon.animate().y(this.iconStopPosition).setDuration(ICON_STOP_DURATION).start();
-        this.source.animateSaufOMeter();
+        if (this.iconPosition == IconPosition.RIGHT) {
+            this.source.animateSaufOMeter();
+        }
     }
 
     @Override

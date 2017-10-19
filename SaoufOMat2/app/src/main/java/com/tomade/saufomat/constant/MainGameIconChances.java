@@ -6,8 +6,8 @@ package com.tomade.saufomat.constant;
  */
 
 public class MainGameIconChances {
-    public static final int EASY_CHANCE = 36;   //Standard: 40
-    public static final int MEDIUM_CHANCE = 30; //Standard: 40
-    public static final int HARD_CHANCE = 26;   //Standard: 30
+    public static final int EASY_CHANCE = 36;   //Standard: 36
+    public static final int MEDIUM_CHANCE = 30; //Standard: 30
+    public static final int HARD_CHANCE = 26;   //Standard: 26
     public static final int GAME_CHANCE = 8;    //Standard: 8
 }

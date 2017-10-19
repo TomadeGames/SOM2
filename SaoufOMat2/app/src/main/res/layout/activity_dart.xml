@@ -4,31 +4,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tomade.saufomat.activity.miniGame.dart.DartActivity">
+    tools:context="com.tomade.saufomat.activity.miniGame.dart.DartsActivity">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/dart_background"/>
+
+    <RelativeLayout
+        android:id="@+id/playerLayout"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/playerBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/popup"/>
+
+        <TextView
+            android:id="@+id/playerNameText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="TextView"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="#000000"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/targetLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/dartLayout">
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="20dp">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/targetImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
             android:contentDescription="Zielscheibe"
             android:src="@drawable/dart_target"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/arrowImage"
+        android:layout_width="40dp"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-25dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="Dartpfeil"
+        android:src="@drawable/dart_arrow"/>
+
+    <ImageButton
+        android:id="@+id/tutorialButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#00000000"
+        android:contentDescription="TutorialButton"
+        android:scaleType="fitXY"
+        android:src="@drawable/help"/>
+
+    <RelativeLayout
+        android:id="@+id/popUpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/popupImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="popup"
+            android:scaleType="fitXY"
+            android:src="@drawable/popup"/>
+
+        <TextView
+            android:id="@+id/popupText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="TextView"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="#000000"/>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/dartLayout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true">
+        android:id="@+id/backButtonLayout"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp">
 
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="false"
+            android:background="#00ffffff"
+            android:contentDescription="Zurückbutton"
+            android:scaleType="center"
+            android:src="@drawable/no_button"/>
+
+        <TextView
+            android:id="@+id/backText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignBottom="@+id/backButton"
+            android:layout_alignLeft="@+id/backButton"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignRight="@+id/backButton"
+            android:layout_alignTop="@+id/backButton"
+            android:gravity="center"
+            android:text="@string/button.back"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"/>
     </RelativeLayout>
-
 </RelativeLayout>

@@ -38,8 +38,8 @@ public class KingsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_kings);
+        super.onCreate(savedInstanceState);
 
 
         if (this.presenter.isFromMainGame()) {

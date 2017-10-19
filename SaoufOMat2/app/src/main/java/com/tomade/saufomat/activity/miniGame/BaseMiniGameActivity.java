@@ -3,6 +3,7 @@ package com.tomade.saufomat.activity.miniGame;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -20,11 +21,27 @@ import com.tomade.saufomat.model.player.Player;
 public abstract class BaseMiniGameActivity<PRESENTER extends BaseMiniGamePresenter> extends BaseActivity<PRESENTER>
         implements ActivityWithPlayer, View.OnClickListener {
     protected static final int TARGET_TURN_COUNT = 15;
+    private static final String TAG = BaseMiniGameActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        View backButton = this.findViewById(R.id.backButton);
+        if (backButton != null) {
+            if (this.presenter.isFromMainGame()) {
+                backButton.setVisibility(View.GONE);
+            }
+            backButton.setOnClickListener(this);
+        } else {
+            Log.e(TAG, "No backbutton found");
+        }
+        View tutorialButton = this.findViewById(R.id.tutorialButton);
+        if (tutorialButton != null) {
+            tutorialButton.setOnClickListener(this);
+        } else {
+            Log.e(TAG, "No tutorialbutton found");
+        }
     }
 
     @Override

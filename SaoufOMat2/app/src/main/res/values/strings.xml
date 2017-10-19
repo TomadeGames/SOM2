@@ -108,4 +108,7 @@
     <string name="minigame_augensaufen_tutorial">Anleitung\nIhr habt Alkohol und einen Würfel… Noch Fragen?</string>
     <string name="minigame_turn_counter">%d/%d</string>
     <string name="toast.tap_back_twice_to_close">Tippe zweimal zum Beenden</string>
+    <string name="minigame_darts_tutorial">Anleitung:\nJeder Spieler bekommt einen Wurf. Je nachdem wo der Pfeil landet gibt es eine andere Belohnung bzw. Strafe</string>
+    <string name="minigame_darts_caption">Darts</string>
+    <string name="main_game.lets_go">Los geht\'s!</string>
 </resources>

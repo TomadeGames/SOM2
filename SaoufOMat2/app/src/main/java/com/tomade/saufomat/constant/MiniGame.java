@@ -5,6 +5,7 @@ import com.tomade.saufomat.activity.miniGame.BaseMiniGameActivity;
 import com.tomade.saufomat.activity.miniGame.augensaufen.AugensaufenActivity;
 import com.tomade.saufomat.activity.miniGame.bierrutsche.BierrutscheActivity;
 import com.tomade.saufomat.activity.miniGame.busfahren.BusfahrenActivity;
+import com.tomade.saufomat.activity.miniGame.dart.DartsActivity;
 import com.tomade.saufomat.activity.miniGame.ichHabNochNie.IchHabNochNieActivity;
 import com.tomade.saufomat.activity.miniGame.kings.KingsActivity;
 import com.tomade.saufomat.activity.miniGame.kistenStapeln.KistenStapelnActivity;
@@ -26,6 +27,8 @@ public enum MiniGame implements Serializable {
             R.string.minigame_bierrutsche_tutorial, 2),
     BUSFAHREN(BusfahrenActivity.class, R.drawable.busfahrer_screen, R.string.minigame_busfahren_caption, R.string
             .minigame_busfahren_tutorial),
+    DARTS(DartsActivity.class, R.drawable.screen_darts, R.string.minigame_darts_caption, R.string
+            .minigame_darts_tutorial),
     ICH_HAB_NOCH_NIE(IchHabNochNieActivity.class, R.drawable.ich_hab_nie_screen, R.string
             .minigame_ich_hab_noch_nie_caption, R.string.minigame_ich_hab_noch_nie_tutorial),
     KINGS(KingsActivity.class, R.drawable.kings_screen, R.string.minigame_kings_caption, R.string

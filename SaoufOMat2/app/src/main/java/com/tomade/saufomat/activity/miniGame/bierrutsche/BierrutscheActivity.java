@@ -310,28 +310,28 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG, "touchEvent. GameState is: " + this.gameState);
         if (this.swipeController.handleSwipe(event)) {
-            if (this.tutorialPanel.getVisibility() == View.VISIBLE) {
-                this.tutorialPanel.setVisibility(View.GONE);
-                if (this.gameState != BierrutscheState.END_GAME) {
-                    if (this.gameState == BierrutscheState.NEXT_PLAYER) {
-                        this.startNextTurn();
-                    }
-                } else {
+        }
+        if (this.tutorialPanel.getVisibility() != View.VISIBLE) {
+            switch (this.gameState) {
+                case START:
+                    this.atStartOnTouch();
+                    break;
+                case END_SINGEL_TURN:
+                    this.startNextTurn();
+                    break;
+                case NEXT_PLAYER:
+                    this.startNextTurn();
+                    break;
+                case END_GAME:
                     this.presenter.leaveGame();
-                }
-            } else {
-                switch (this.gameState) {
-                    case START:
-                        this.atStartOnTouch();
-                        break;
-                    case END_SINGEL_TURN:
-                        this.startNextTurn();
-                        break;
-                    default:
-                        break;
-                }
+                    break;
+                default:
+                    break;
             }
+        } else {
+            this.tutorialPanel.setVisibility(View.GONE);
         }
         return true;
     }
