@@ -111,4 +111,5 @@
     <string name="minigame_darts_tutorial">Anleitung:\nJeder Spieler bekommt einen Wurf. Je nachdem wo der Pfeil landet gibt es eine andere Belohnung bzw. Strafe</string>
     <string name="minigame_darts_caption">Darts</string>
     <string name="main_game.lets_go">Los geht\'s!</string>
+    <string name="minigame.busfahren.question_first">Wird die nächste Karte Rot oder Schwarz?</string>
 </resources>

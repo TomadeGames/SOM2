@@ -80,7 +80,6 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         this.cards[0] = Card.getRandomCard();
 
         for (int i = 1; i < 5; i++) {
-
             boolean valid = false;
             while (!valid) {
                 valid = true;
@@ -197,13 +196,15 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
                         BusfahrenActivity.this.plusText.setTextSize(30);
                         restart();
                     }
-                } else {
+                } else if (this.counter < 5) {
                     if (!correctAnswer) {
                         BusfahrenActivity.this.plusText.setTextSize(30 - this.counter * 10 / 4);
                     }
                 }
                 this.counter++;
-                mHandler.postDelayed(this, 100);
+                if (this.counter <= 5) {
+                    mHandler.postDelayed(this, 100);
+                }
             }
         }, 250);
     }
@@ -211,10 +212,6 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
     private void restart() {
         this.drinkCounterText.setText("" + this.drinkCount);
         this.initCards();
-        this.leftButton.setImageResource(R.drawable.busfahren_red_button);
-        this.rightButton.setImageResource(R.drawable.busfahren_balck_button);
-        this.leftText.setText(R.string.minigame_busfahren_question_first_answer_left);
-        this.rightText.setText(R.string.minigame_busfahren_question_first_answer_right);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -245,6 +242,11 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 BusfahrenActivity.this.gameState = BusfahrenState.RED_BLACK;
+                BusfahrenActivity.this.taskText.setText(R.string.minigame_busfahren_question_first);
+                BusfahrenActivity.this.leftButton.setImageResource(R.drawable.busfahren_red_button);
+                BusfahrenActivity.this.rightButton.setImageResource(R.drawable.busfahren_balck_button);
+                BusfahrenActivity.this.leftText.setText(R.string.minigame_busfahren_question_first_answer_left);
+                BusfahrenActivity.this.rightText.setText(R.string.minigame_busfahren_question_first_answer_right);
                 BusfahrenActivity.this.buttonsClickable = true;
             }
         };
