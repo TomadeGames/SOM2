@@ -216,6 +216,16 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
         this.leftText.setText(R.string.minigame_busfahren_question_first_answer_left);
         this.rightText.setText(R.string.minigame_busfahren_question_first_answer_right);
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                flipCardsBack();
+            }
+        }, 500);
+    }
+
+    private void flipCardsBack() {
         int correctCardCount = 0;
         switch (this.gameState) {
             case RED_BLACK:
@@ -238,7 +248,6 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
                 BusfahrenActivity.this.buttonsClickable = true;
             }
         };
-
         for (int i = 0; i < correctCardCount; i++) {
             this.cardImages[i].flipCardBack(animatorListener);
         }
