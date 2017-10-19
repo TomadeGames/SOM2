@@ -223,19 +223,22 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
     }
 
     private void flipCardsBack() {
-        int correctCardCount = 0;
+        int openCardCount = 0;
         switch (this.gameState) {
             case RED_BLACK:
-                correctCardCount = 1;
+                openCardCount = 1;
                 break;
             case HIGHER_LOWER:
-                correctCardCount = 2;
+                openCardCount = 2;
                 break;
             case BETWEEN_NOT_BETWEEN:
-                correctCardCount = 3;
+                openCardCount = 3;
                 break;
             case SAME_NOT_SAME:
-                correctCardCount = 4;
+                openCardCount = 4;
+                break;
+            case ACE_NO_ACE:
+                openCardCount = 5;
         }
         Animator.AnimatorListener animatorListener = new AnimatorListenerAdapter() {
             @Override
@@ -250,7 +253,7 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
                 BusfahrenActivity.this.buttonsClickable = true;
             }
         };
-        for (int i = 0; i < correctCardCount; i++) {
+        for (int i = 0; i < openCardCount; i++) {
             this.cardImages[i].flipCardBack(animatorListener);
         }
     }
