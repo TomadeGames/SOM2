@@ -245,6 +245,7 @@ public class BusfahrenActivity extends BaseMiniGameActivity<BaseMiniGamePresente
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 BusfahrenActivity.this.gameState = BusfahrenState.RED_BLACK;
+                BusfahrenActivity.this.leftText.setTextColor(Color.WHITE);
                 BusfahrenActivity.this.taskText.setText(R.string.minigame_busfahren_question_first);
                 BusfahrenActivity.this.leftButton.setImageResource(R.drawable.busfahren_red_button);
                 BusfahrenActivity.this.rightButton.setImageResource(R.drawable.busfahren_balck_button);
