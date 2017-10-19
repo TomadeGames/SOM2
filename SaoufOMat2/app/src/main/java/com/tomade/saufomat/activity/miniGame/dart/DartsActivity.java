@@ -332,8 +332,8 @@ public class DartsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter<Da
 
     private Point getArrowTop(Point arrowImagePosition) {
         int imageHeight = this.arrowImage.getHeight();
-        Point arrowTop = new Point(arrowImagePosition.x + (this.arrowImage.getWidth() / 2),
-                (arrowImagePosition.y) + 190);
+        Point arrowTop = new Point((int) (arrowImagePosition.x + (this.arrowImage.getWidth() / 2)), (int)
+                ((arrowImagePosition.y) + this.arrowImage.getHeight() / 2.368));
 
         Log.d(TAG, "Arrow top is (" + arrowTop.x + ", " + arrowTop.y + ") height is " + imageHeight);
         return arrowTop;
