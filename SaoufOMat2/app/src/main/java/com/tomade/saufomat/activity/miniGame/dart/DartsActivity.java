@@ -27,7 +27,7 @@ import com.tomade.saufomat.model.player.Player;
 public class DartsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter<DartsActivity>> {
     private static final String TAG = DartsActivity.class.getSimpleName();
     private static final int X_FACTOR = 50;
-    private static final int Y_FACTOR = 75;
+    private static final int Y_FACTOR = 100;
     private static final int ANIMATION_DURATION = 400;
     private SwipeController swipeController;
     private ImageView arrowImage;
