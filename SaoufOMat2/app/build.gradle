@@ -7,8 +7,8 @@ android {
         applicationId 'com.tomade.saufomat'
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 102031
-        versionName "2.0.0.9"
+        versionCode 102033
+        versionName "2.0.0.11"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -21,10 +21,6 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
-    }
-    compileOptions {
-        //sourceCompatibility JavaVersion.VERSION_1_8 nu wen jackOptios enabled true
-        //targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

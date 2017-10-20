@@ -12,6 +12,7 @@ import com.tomade.saufomat.constant.Direction;
 
 public class SwipeController {
     private static final String TAG = SwipeController.class.getSimpleName();
+    private static final int SWIPE_TOLERANCE = 50;
     private float startX;
     private float startY;
     private Direction directionX;
@@ -138,7 +139,7 @@ public class SwipeController {
             this.startSwipe(motionEvent);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
             this.endSwipe(motionEvent);
-            if (this.distance > 10) {
+            if (this.distance > SWIPE_TOLERANCE) {
                 return true;
             }
         }

@@ -24,7 +24,11 @@ public class PlayerService {
     public static boolean fillPlayerData(Player newPlayer, String name, String weight, String gender) {
         newPlayer.setName(name);
         try {
-            newPlayer.setWeight((int) Float.parseFloat(weight));
+            if (weight.equals("")) {
+                newPlayer.setWeight(70);
+            } else {
+                newPlayer.setWeight((int) Float.parseFloat(weight));
+            }
         } catch (NumberFormatException e) {
             Log.w(TAG, "Error et formating Weight to Float: " + weight, e);
         }

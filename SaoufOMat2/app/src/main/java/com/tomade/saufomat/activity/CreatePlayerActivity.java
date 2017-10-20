@@ -63,6 +63,10 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
                 Player newPlayer = new Player();
                 this.showDialog(newPlayer);
                 break;
+            case R.id.etxtWeight:
+                EditText textView = (EditText) v;
+                textView.setText("");
+                break;
             case R.id.btnStartGame:
                 if (!this.players.isEmpty() && !this.gameStarting) {
                     this.gameStarting = true;
@@ -135,7 +139,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         spGender.setAdapter(arrayAdapter);
 
         etxtName.setText("");
-        etxtWeight.setText(R.string.create_player_activity_weight_default);
+        etxtWeight.setText("");
 
         builder.setMessage(R.string.create_player_new_player)
                 .setView(view)
@@ -235,6 +239,7 @@ public class CreatePlayerActivity extends Activity implements View.OnClickListen
         } else {
             spGender.setSelection(this.getIndex(spGender, this.getString(R.string.enum_gender_woman)));
         }
+        etxtWeight.setOnClickListener(this);
 
         builder.setMessage(R.string.create_player_edit_player)
                 .setView(view)
