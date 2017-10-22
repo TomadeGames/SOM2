@@ -87,7 +87,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         this.onUpgrade(database, 0, 0);
         //Für DEBUG-Zecke kann an dieser Stelle anstatt getTasks() getDebugTasks ausgeführt werden
-        for (Task task : TaskDefinitions.getTasks()) {
+        List<Task> allTasks = TaskDefinitions.getTasks();
+        for (Task task : allTasks) {
             this.insertTask(task);
         }
         for (MiniGame miniGame : EnumSet.allOf(MiniGame.class)) {

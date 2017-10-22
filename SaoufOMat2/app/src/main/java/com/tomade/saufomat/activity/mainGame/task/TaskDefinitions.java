@@ -1,5 +1,7 @@
 package com.tomade.saufomat.activity.mainGame.task;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import static com.tomade.saufomat.activity.mainGame.task.TaskTextToken.WITH_MOST
  */
 
 public class TaskDefinitions {
+    private static final String TAG = TaskDefinitions.class.getSimpleName();
+
     public static List<Task> getDebugTasks() {
         List<Task> taskList = new ArrayList<>();
         String taskName = "DEBUG_TASK Random Player: " + RANDOM_PLAYER.getToken() + ", left Player: " + LEFT_PLAYER
@@ -43,7 +47,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Trinke drei", TaskDifficult.HARD, 3, 0, TaskTarget.SELF));
         taskList.add(new Task("Deine Nachbarn trinken einen", TaskDifficult.EASY, 1, 0, TaskTarget.NEIGHBOUR));
         taskList.add(new Task("Sprich eine Runde lang wie ein Wal", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
-        taskList.add(new Task("Wirf eine Münze, bei Kopf trinkst du, bei Zahl alle", TaskDifficult.MEDIUM, 1, 1,
+        taskList.add(new Task("Wirf eine Münze, bei Kopf trinkst du, bei Zahl alle", TaskDifficult.MEDIUM, 1, 0,
                 TaskTarget.COIN));
         taskList.add(new Task("Jeder springt, der letzte trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Zieh eine Grimasse", TaskDifficult.EASY, 0, 1, TaskTarget.SELF));
@@ -216,7 +220,7 @@ public class TaskDefinitions {
         taskList.add(new Task("Der letzte der Hans schreit trinkt 2", TaskDifficult.MEDIUM, 2, 0, TaskTarget
                 .CHOOSE_ONE));
         taskList.add(new Task("Ruf deine Eltern an", TaskDifficult.HARD, 0, 3, TaskTarget.SELF));
-//^Alt vNeu
+//^Alt(115) vNeu
         taskList.add(new Task("Die schönste Person trinkt 3", TaskDifficult.MEDIUM, 3, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Tausche dein Glas mit " + LEFT_PLAYER.getToken(), TaskDifficult.HARD, 0, 4, TaskTarget
                 .SELF));
@@ -229,8 +233,13 @@ public class TaskDefinitions {
                 TaskDifficult.MEDIUM, 3, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Einstiegshilfe:\nJeder, der noch nie SaufOMat gespielt hat, trinkt 3", TaskDifficult
                 .MEDIUM, 3, 0, TaskTarget.CHOOSE_ALL));
-        taskList.add(new Task("Jeder, der bei der letzten Aufgabe trinken musste, darf jetzt das doppelte verteilen",
-                TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ALL));
+        taskList.add(new TaskEvent("Jeder, der bei der letzten Aufgabe trinken musste, darf jetzt das doppelte " +
+                "verteilen",
+                TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ALL, new Task[]{
+                new Task("Jeder der bei der letzten Aufgabe trinken musste, darf jetzt das doppelte verteilen",
+                        TaskDifficult.MEDIUM, 0, 0, TaskTarget.UNDEFINED),
+                new Task("Jeder der bei der letzten Aufgabe trinken musste, darf jetzt das doppelte verteilen",
+                        TaskDifficult.MEDIUM, 0, 0, TaskTarget.UNDEFINED)}, 1, 1));
         taskList.add(new Task("Trinke dein Glas auf Ex", TaskDifficult.HARD, 1, 0, TaskTarget.SELF));
         taskList.add(new Task("Die Person, die bei seinem ersten mal Saufen am jüngsten war trinkt 2", TaskDifficult
                 .MEDIUM, 2, 0, TaskTarget.CHOOSE_ALL));
@@ -346,10 +355,10 @@ public class TaskDefinitions {
                 TaskDifficult.MEDIUM, 0, 0, TaskTarget.CHOOSE_ONE));
         taskList.add(new Task("Zahle 50 Cent an den Besitzer des Handys", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Tanze mit einem Gegenstand", TaskDifficult.MEDIUM, 0, 2, TaskTarget.SELF));
-        taskList.add(new TimedTask("Du hast 45 Sekunden Zeit um dich 10 Mal um deine eigene Achse zu drehen",
+        taskList.add(new TimedTask("Du hast 20 Sekunden Zeit um dich 10 Mal um deine eigene Achse zu drehen",
                 TaskDifficult.HARD, 4, TaskTarget.UNDEFINED,
                 new SimpleTask("Geschafft!", 0, TaskTarget.UNDEFINED),
-                new SimpleTask("Zu langsam!\nTrink 4!", 4, TaskTarget.SELF), 45000));
+                new SimpleTask("Zu langsam!\nTrink 4!", 4, TaskTarget.SELF), 20000));
         taskList.add(new TimedTask("Wenn du es schaffst 3 Kurze in 15 Sekunden zu trinken, muss jeder einen Kurzen " +
                 "deiner Wahl trinken", TaskDifficult.HARD, 0, TaskTarget.UNDEFINED,
                 new SimpleTask("Jeder bekommt einen Kurzen deiner Wahl", 1, TaskTarget.ALL),
@@ -364,6 +373,29 @@ public class TaskDefinitions {
                 TaskDifficult.MEDIUM, 0, TaskTarget.UNDEFINED,
                 new SimpleTask("Du darfst trocken bleiben", 0, TaskTarget.UNDEFINED),
                 new SimpleTask("Zu langsam!\nTrink zwei", 2, TaskTarget.NEIGHBOUR_RIGHT), 60000));
+        taskList.add(new Task("Sing Karaoke mit den nächstbesten Gegenstand", TaskDifficult.EASY, 0, 2, TaskTarget
+                .UNDEFINED));
+        taskList.add(new Task("Sage im Vornherein, ob du passend 2,50€ an Kleingeld hast. Liegst du falsch musst du 5" +
+                " trinken. Liegst du richtig trinken alle außer dir 2", TaskDifficult.HARD, 2, 3, TaskTarget
+                .UNDEFINED));
+        taskList.add(new TimedTask(TaskTextToken.RIGHT_PLAYER.getToken() + " darf 30 Sekunden lang dein Handy " +
+                "durchsuchen", TaskDifficult.HARD, 4, TaskTarget.UNDEFINED, new SimpleTask("Die Zeit ist um!\nGib das" +
+                " Handy wieder zurück", 0, TaskTarget.UNDEFINED), 30000));
+        taskList.add(new Task("Halte eine Runde lang Händchen mit " + LEFT_PLAYER.getToken(), TaskDifficult.MEDIUM,
+                0, 3, TaskTarget.UNDEFINED));
+        taskList.add(new Task("Halte eine Runde lang deine Augen geschlossen", TaskDifficult.MEDIUM, 0, 3, TaskTarget
+                .UNDEFINED));
+        taskList.add(new Task("Gebe das Handy weiter ohne Hände zu benutzen", TaskDifficult.EASY, 0, 0, TaskTarget
+                .UNDEFINED));
+        taskList.add(new Task("Trinke aus den Glas von " + RIGHT_PLAYER.getToken(), TaskDifficult.HARD, 1, 0,
+                TaskTarget.SELF));
+        taskList.add(new Task("Haue deinen Kopf auf den Tisch", TaskDifficult.MEDIUM, 0, 3, TaskTarget.UNDEFINED));
+        taskList.add(new Task("Deine Füße dürfen zwei Runden lang nicht mehr den Boden berühren", TaskDifficult
+                .MEDIUM, 0, 0, TaskTarget.UNDEFINED));
+        taskList.add(new Task("Schnür dir deine Schuhe mit den Schnürsenkeln deiner Nachbarn zu", TaskDifficult.HARD,
+                0, 3, TaskTarget.UNDEFINED));
+        taskList.add(new Task(LEFT_PLAYER.getToken() + " darf dir ein Haar ausziehen", TaskDifficult.HARD, 0, 3,
+                TaskTarget.UNDEFINED));
 
         //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));
@@ -371,6 +403,8 @@ public class TaskDefinitions {
                 TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));
         taskList.add(new Task("Wähle eine Person, die deine nächsten 3 Aufgaben machen muss. Wenn sie trinken muss, " +
                 "trinkt sie die doppelte Menge", TaskDifficult.EASY_WIN, 0, 0, TaskTarget.UNDEFINED));
+        //^ Alt
+        //v Neu
         taskList.add(new Task("Alle ausser dir trinken drei", TaskDifficult.MEDIUM_WIN, 3, 0, TaskTarget.ALL_BUT_SELF));
         taskList.add(new Task("Vorarbeiter:\nFür die nächsten zwei Runden müssen alle trinken, wenn du trinken " +
                 "musst", TaskDifficult.MEDIUM_WIN, 0, 0, TaskTarget.UNDEFINED));
@@ -380,11 +414,15 @@ public class TaskDefinitions {
                 .HARD_WIN, 1, 0, TaskTarget.CHOOSE_THREE));
         taskList.add(new Task("Suche dir ein Opfer aus. Dieses Opfer trinkt 3 Runden lang deine Schlucke...\nDoppelt!",
                 TaskDifficult.HARD_WIN, 1, 0, TaskTarget.VICTIM));
-        taskList.add(new TimedTask("Du hast eine Minute Zeit! Für jeden Kurzen, den du in dieser Zeit trinkst, darfst" +
+        taskList.add(new TimedTask("Du hast 30 Sekunden Zeit! Für jeden Kurzen, den du in dieser Zeit trinkst, darfst" +
                 " du einen Kurzen deiner Wahl verteilen", TaskDifficult.HARD_WIN, 0, TaskTarget.UNDEFINED,
                 new SimpleTask("Die Zeit ist um!\nJetzt darfst du die anderen abfüllen", 0, TaskTarget.UNDEFINED),
-                60000));
+                30000));
+        taskList.add(new Task("Du darfst jetzt so viele Kurze trinken, wie du willst. Dein linker Nachbar muss " +
+                "mindestens genau so viele trinken. Sein linker Nachbar muss mindestens genau so viele trinken wie er" +
+                ". usw.", TaskDifficult.HARD_WIN, 0, 0, TaskTarget.UNDEFINED));
 
+        Log.i(TAG, taskList.size() + " tasks defined");
         return taskList;
     }
 }
