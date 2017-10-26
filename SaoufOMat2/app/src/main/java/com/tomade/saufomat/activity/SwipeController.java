@@ -12,7 +12,7 @@ import com.tomade.saufomat.constant.Direction;
 
 public class SwipeController {
     private static final String TAG = SwipeController.class.getSimpleName();
-    private static final int SWIPE_TOLERANCE = 50;
+    private static final int SWIPE_TOLERANCE = 40;
     private float startX;
     private float startY;
     private Direction directionX;

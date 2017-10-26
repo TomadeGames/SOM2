@@ -80,19 +80,23 @@ public class MainMenuActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
-        if (this.doubleBackToExitPressedOnce) {
-            this.finishAffinity();
-            return;
-        }
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, R.string.toast_tap_back_twice_to_close, Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MainMenuActivity.this.doubleBackToExitPressedOnce = false;
+        if (this.loadGameField.getVisibility() == View.VISIBLE) {
+            this.loadGameField.setVisibility(View.GONE);
+        } else {
+            if (this.doubleBackToExitPressedOnce) {
+                this.finishAffinity();
+                return;
             }
-        }, 2000);
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, R.string.toast_tap_back_twice_to_close, Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MainMenuActivity.this.doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        }
     }
 
     private void startNewGame() {
