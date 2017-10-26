@@ -11,12 +11,12 @@ import static com.tomade.saufomat.activity.mainGame.task.TaskTextToken.RIGHT_PLA
 public enum DartsField {
     MIDDLE("Bullseye!", "Alle außer dir trinken 3"),
     RING("Hauptgewinn!", "Du darfst 3 Kurze deiner Wahl verteilen"),
-    OUTER_YELLOW("Gelb", "Trink 3 mal"),
-    OUTER_GREEN("Grün", RIGHT_PLAYER.getToken() + " trinkt 3"),
-    OUTER_BLUE("Blau", LEFT_PLAYER.getToken() + " trinkt 3"),
-    INNER_YELLOW("Gelb", "Trink einen"),
-    INNER_GREEN("Grün", RIGHT_PLAYER.getToken() + " trinkt einen"),
-    INNER_BLUE("Blau", LEFT_PLAYER.getToken() + " trinkt einen"),
+    INNER_YELLOW("Gelb", "Trink 3 mal"),
+    INNER_GREEN("Grün", RIGHT_PLAYER.getToken() + " trinkt 3"),
+    INNER_BLUE("Blau", LEFT_PLAYER.getToken() + " trinkt 3"),
+    OUTER_YELLOW("Gelb", "Trink einen"),
+    OUTER_GREEN("Grün", RIGHT_PLAYER.getToken() + " trinkt einen"),
+    OUTER_BLUE("Blau", LEFT_PLAYER.getToken() + " trinkt einen"),
     OUT("Daneben!", "Trink 5");
 
     private String name;
