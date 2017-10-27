@@ -29,6 +29,7 @@ public class DartsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter<Da
     private static final int X_FACTOR = 50;
     private static final int Y_FACTOR = 100;
     private static final int ANIMATION_DURATION = 400;
+    private static final int MAX_PLAYER_TOURN_COUNT = 2;
     private SwipeController swipeController;
     private ImageView arrowImage;
     private ImageView targetImage;
@@ -40,6 +41,7 @@ public class DartsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter<Da
     private TextView popupText;
     private TextView playerText;
     private AnimationSet idleAnimation;
+    private int turnCount = 0;
 
     @Override
     protected void initPresenter() {
@@ -224,8 +226,11 @@ public class DartsActivity extends BaseMiniGameActivity<BaseMiniGamePresenter<Da
         if (this.presenter.isFromMainGame()) {
             if (this.presenter.getCurrentPlayerAtStart() == this.presenter
                     .getCurrentPlayer().getNextPlayer()) {
-                this.gameState = DartState.GAME_OVER;
-                text += "\n\nSpiel " + "vorbei!";
+                this.turnCount++;
+                if (this.turnCount >= MAX_PLAYER_TOURN_COUNT) {
+                    this.gameState = DartState.GAME_OVER;
+                    text += "\n\nSpiel " + "vorbei!";
+                }
             } else {
                 this.presenter.nextPlayer();
                 text += "\n\n" + this.getCurrentPlayer().getName() + " ist dran";

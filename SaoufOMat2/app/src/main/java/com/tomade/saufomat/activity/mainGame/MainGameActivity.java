@@ -106,6 +106,7 @@ public class MainGameActivity extends BaseActivity<MainGamePresenter> {
         Log.d(TAG, "Touch up in Gamestate " + this.gameState);
         switch (this.gameState) {
             case GAME_START:
+                this.gameState = MainGameState.WAITING;
                 this.startLeftAnimation();
                 this.startMiddleAnimation();
                 this.startRightAnimation();
