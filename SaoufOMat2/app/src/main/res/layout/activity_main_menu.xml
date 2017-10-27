@@ -133,4 +133,22 @@
         android:layout_alignParentTop="true"
         android:text="Debug"
         android:visibility="gone"/>
+
+    <com.tomade.saufomat.view.SaufOMatTextView
+        android:id="@+id/tipText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="92dp"
+        android:rotation="-20"
+        android:shadowColor="#000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="4"
+        android:text="TextView"
+        android:textAlignment="viewStart"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="#fff"
+        android:textSize="18sp"/>
 </RelativeLayout>

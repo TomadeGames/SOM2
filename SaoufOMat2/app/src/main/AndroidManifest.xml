@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainMenuActivity"
+            android:name=".activity.mainManue.MainMenuActivity"
             android:screenOrientation="sensorLandscape">
         </activity>
         <activity

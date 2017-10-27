@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tomade.saufomat.R;
+import com.tomade.saufomat.activity.mainManue.MainMenuActivity;
 import com.tomade.saufomat.constant.Direction;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.constant.MiniGame;

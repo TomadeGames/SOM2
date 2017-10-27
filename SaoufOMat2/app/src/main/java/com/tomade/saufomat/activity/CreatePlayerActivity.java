@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.tomade.saufomat.PlayerService;
 import com.tomade.saufomat.R;
 import com.tomade.saufomat.activity.mainGame.MainGameActivity;
+import com.tomade.saufomat.activity.mainManue.MainMenuActivity;
 import com.tomade.saufomat.constant.IntentParameter;
 import com.tomade.saufomat.model.player.Player;
 import com.tomade.saufomat.persistance.SaveGameHelper;
