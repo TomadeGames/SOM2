@@ -118,7 +118,8 @@ public class TaskDefinitions {
                         .MEDIUM, 0, 2, TaskTarget.SELF));
         taskList.add(new Task("Alle ohne Brille trinken", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Jeder der keine 10 Euro hat trinkt", TaskDifficult.EASY, 0, 1, TaskTarget.CHOOSE_ALL));
-        taskList.add(new Task("Trinke und " + LEFT_PLAYER.getToken() + "darf einen verteilen", TaskDifficult.EASY, 0, 1,
+        taskList.add(new Task("Trinke und " + LEFT_PLAYER.getToken() + " darf einen verteilen", TaskDifficult.EASY,
+                0, 1,
                 TaskTarget.SELF_AND_CHOOSE_ONE));
         taskList.add(new Task("Alle unter 24 trinken 2", TaskDifficult.MEDIUM, 2, 0, TaskTarget.CHOOSE_ALL));
         taskList.add(new Task("Jeder mit ungeradem Alter trinkt", TaskDifficult.EASY, 1, 0, TaskTarget.CHOOSE_ALL));
@@ -341,7 +342,7 @@ public class TaskDefinitions {
                 "Nachbarn ansprechen", TaskDifficult.MEDIUM, 0, 0, TaskTarget.UNDEFINED));
         taskList.add(new Task(LEFT_PLAYER.getToken() + " darf den Namen von einen deiner Kontakte ändern", TaskDifficult
                 .HARD, 0, 5, TaskTarget.SELF));
-        taskList.add(new Task("Doppelt hält besser:\nTrinke zwei Runde lang das doppelte", TaskDifficult.MEDIUM, 0,
+        taskList.add(new Task("Doppelt hält besser:\nTrinke zwei Runden lang das doppelte", TaskDifficult.MEDIUM, 0,
                 0, TaskTarget.DOUBLE));
         taskList.add(new Task("Dreifach hält noch besser:\nTrinke drei Runde lang das dreifache", TaskDifficult.HARD,
                 0, 0, TaskTarget.TRIPLE));
@@ -396,6 +397,8 @@ public class TaskDefinitions {
                 0, 3, TaskTarget.UNDEFINED));
         taskList.add(new Task(LEFT_PLAYER.getToken() + " darf dir ein Haar ausziehen", TaskDifficult.HARD, 0, 3,
                 TaskTarget.UNDEFINED));
+        taskList.add(new Task("Ihr dürft 2 Runden lang Namen nur noch rückwärts aussprechen", TaskDifficult.EASY, 0,
+                0, TaskTarget.UNDEFINED));
 
         //Hauptgewinne
         taskList.add(new Task("Deine Nachbarn trinken drei", TaskDifficult.EASY_WIN, 3, 0, TaskTarget.NEIGHBOUR));

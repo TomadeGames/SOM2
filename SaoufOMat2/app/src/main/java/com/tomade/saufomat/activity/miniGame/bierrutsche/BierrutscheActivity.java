@@ -24,7 +24,7 @@ import pl.droidsonroids.gif.GifTextView;
 //TODO: aktuelle Punktzahl anzeigen
 public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresenter> {
     private static final String TAG = BierrutscheActivity.class.getSimpleName();
-    private static final int TARGET_ACCURACY = 30000;
+    private static final int TARGET_ACCURACY = 20000;
     private static final int ANIMATION_DURATION = 1500;
     private static final int FALLING_DELAY = 1500;
 
@@ -50,6 +50,8 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
     private ObjectAnimator turningGlass;
     private ImageButton backButton;
     private TextView backText;
+
+    private boolean exitTouchDown = false;
 
     private SwipeController swipeController;
 
@@ -311,8 +313,7 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.d(TAG, "touchEvent. GameState is: " + this.gameState);
-        if (this.swipeController.handleSwipe(event)) {
-        }
+        this.swipeController.handleSwipe(event);
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (this.tutorialPanel.getVisibility() != View.VISIBLE) {
                 switch (this.gameState) {
@@ -326,13 +327,19 @@ public class BierrutscheActivity extends BaseMiniGameActivity<BierrutschePresent
                         this.startNextTurn();
                         break;
                     case END_GAME:
-                        this.presenter.leaveGame();
+                        if (this.exitTouchDown) {
+                            this.presenter.leaveGame();
+                        }
                         break;
                     default:
                         break;
                 }
             } else {
                 this.tutorialPanel.setVisibility(View.GONE);
+            }
+        } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (this.gameState == BierrutscheState.END_GAME) {
+                this.exitTouchDown = true;
             }
         }
         return true;

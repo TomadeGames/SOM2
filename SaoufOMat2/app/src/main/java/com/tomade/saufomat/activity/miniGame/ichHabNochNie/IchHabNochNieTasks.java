@@ -261,7 +261,7 @@ public class IchHabNochNieTasks {
             "eine Beziehung gehabt die unter 2 Wochen ging",
             "gespendet",
             "mit jemandem geschlafen der auch mit einem meiner Freunde geschlafen hat",
-            "Handschellen am getragen",
+            "Handschellen getragen",
             "das Disneyland besucht",
             "etwas auf der Arbeit geklaut",
             "Silikonbrüste berührt",

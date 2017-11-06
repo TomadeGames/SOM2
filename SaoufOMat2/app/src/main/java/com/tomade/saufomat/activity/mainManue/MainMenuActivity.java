@@ -51,7 +51,56 @@ public class MainMenuActivity extends Activity implements View.OnClickListener, 
             Log.e(TAG, "Could not find the VersionName", e);
         }
         versionTextView.setText(versionName);
-        ((TextView) this.findViewById(R.id.tipText)).setText(TipLoader.getRandomTip(this));
+        final TextView tipText = this.findViewById(R.id.tipText);
+        tipText.setText(TipLoader.getRandomTip(this));
+        final float textSizeChange = 1;
+        final long duration = 600;
+        /*tipText.post(new Runnable() {
+            @Override
+            public void run() {
+                float textSizeBefore = tipText.getTextSize();
+                final ValueAnimator animator = ValueAnimator.ofFloat(textSizeBefore, textSizeBefore + textSizeChange);
+                animator.setDuration(duration);
+                animator.setInterpolator(new LinearInterpolator());
+
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        float animatedValue = (float) valueAnimator.getAnimatedValue();
+                        tipText.setTextSize(animatedValue);
+                    }
+                });
+
+                final ValueAnimator smallerAnimator = ValueAnimator.ofFloat(textSizeBefore + textSizeChange,
+                        textSizeBefore);
+                smallerAnimator.setDuration(duration);
+                smallerAnimator.setInterpolator(new LinearInterpolator());
+                smallerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        float animatedValue = (float) valueAnimator.getAnimatedValue();
+                        tipText.setTextSize(animatedValue);
+                    }
+                });
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        smallerAnimator.start();
+
+                    }
+                });
+                smallerAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        animator.start();
+                    }
+                });
+                animator.start();
+            }
+        });*/
+
         this.findViewById(R.id.startButton).setOnTouchListener(this);
         this.findViewById(R.id.gamesButton).setOnTouchListener(this);
         this.findViewById(R.id.debugButton).setOnClickListener(this);
